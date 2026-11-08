@@ -45,4 +45,4 @@ The author's own code, run records, labels and paper sources are released under 
 
 ## Citation
 
-Please cite the papers (arXiv identifiers to be added) and the archived release (Zenodo DOI to be added).
+Please cite the papers (arXiv identifiers to be added).
