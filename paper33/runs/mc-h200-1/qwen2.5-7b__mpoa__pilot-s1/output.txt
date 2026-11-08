@@ -1,0 +1,785 @@
+18:51:27 █░█░█▀▀░█▀▄░█▀▀░▀█▀░█░█▀▀  v2.0.0
+18:51:27 █▀█░█▀▀░█▀▄░█▀▀░░█░░█░█░░  https://heretic-project.org
+18:51:27 ▀░▀░▀▀▀░▀░▀░▀▀▀░░▀░░▀░▀▀▀  https://github.com/p-e-w/heretic
+18:51:27 
+18:51:28 Detected 1 CUDA device(s) (139.80 GB total VRAM)
+18:51:28 CUDA Version: 13.0
+18:51:28 Driver Version: 580.126.09
+18:51:28 * CUDA 0: NVIDIA H200 NVL (139.80 GB)
+18:51:28 
+18:51:28 Loading model Qwen/Qwen2.5-7B-Instruct...
+18:51:43 * Trying dtype auto...
+18:51:45 Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:00<01:02,  5.41it/s]Loading weights:   9%|▊         | 29/339 [00:00<00:02, 121.30it/s]Loading weights:  19%|█▉        | 64/339 [00:00<00:01, 198.38it/s]Loading weights:  27%|██▋       | 90/339 [00:00<00:01, 211.48it/s]Loading weights:  37%|███▋      | 125/339 [00:00<00:00, 251.41it/s]Loading weights:  46%|████▌     | 155/339 [00:00<00:00, 266.11it/s]Loading weights:  55%|█████▍    | 185/339 [00:00<00:00, 269.92it/s]Loading weights:  64%|██████▎   | 216/339 [00:00<00:00, 280.82it/s]Loading weights:  72%|███████▏  | 245/339 [00:01<00:00, 261.02it/s]Loading weights:  82%|████████▏ | 278/339 [00:01<00:00, 275.86it/s]Loading weights:  91%|█████████ | 307/339 [00:01<00:00, 271.44it/s]Loading weights: 100%|██████████| 339/339 [00:01<00:00, 248.18it/s]
+18:51:46 * Transformer model with 28 layers
+18:51:46 * Modifiable components:
+18:51:46   * attn.o_proj: 28 modules total
+18:51:46   * mlp.down_proj: 28 modules total
+18:51:46 
+18:51:46 Resident system RAM: 1.84 GB
+18:51:46 Allocated GPU VRAM: 14.22 GB
+18:51:46 Reserved GPU VRAM: 14.22 GB
+18:51:46 
+18:51:46 Loading batch size test prompts from mlabonne/harmless_alpaca...
+18:51:46 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+18:51:52 * 256 prompts loaded
+18:51:52 
+18:51:52 Determining optimal batch size...
+18:51:58 * Trying batch size 1... Ok (103 tokens/s)
+18:52:04 * Trying batch size 2... Ok (170 tokens/s)
+18:52:09 * Trying batch size 4... Ok (342 tokens/s)
+18:52:15 * Trying batch size 8... Ok (660 tokens/s)
+18:52:20 * Trying batch size 16... Ok (1389 tokens/s)
+18:52:26 * Trying batch size 32... Ok (2524 tokens/s)
+18:52:31 * Trying batch size 64... Ok (3880 tokens/s)
+18:52:39 * Trying batch size 128... Ok (5613 tokens/s)
+18:52:39 * Chosen batch size: 128
+18:52:39 
+18:52:39 Loading response prefix test prompts from [mlabonne/harmless_alpaca, 
+18:52:39 mlabonne/harmful_behaviors]...
+18:52:55 * 200 prompts loaded
+18:52:55 
+18:52:55 Checking chat template for a closed Chain-of-Thought block or an initializer...
+18:52:55 * None found
+18:52:55 
+18:52:55 Checking for common response prefix...
+18:53:02 * None found
+18:53:02 
+18:53:02 Loading and initializing scorers...
+18:53:02 * Loaded: KeywordRate
+18:53:02 * Loaded: KLDivergence
+18:53:02 
+18:53:03 Loading Refusals evaluation prompts from mlabonne/harmful_behaviors...
+18:53:03 * 100 prompts loaded
+18:53:03 
+18:53:03 Loading KL divergence evaluation prompts from mlabonne/harmless_alpaca...
+18:53:03 * 100 prompts loaded
+18:53:03 * Obtaining baseline first-token probability distributions...
+18:53:04 
+18:53:04 Getting baseline scores...
+18:53:09 * Baseline Refusals: 99/100
+18:53:09 * Baseline KL divergence: 0 (by definition)
+18:53:09 
+18:53:09 Loading and initializing modifiers...
+18:53:09 * Loaded: Abliteration
+18:53:09 
+18:53:09 Loading good prompts from mlabonne/harmless_alpaca...
+18:53:09 * 400 prompts loaded
+18:53:09 
+18:53:09 Loading bad prompts from mlabonne/harmful_behaviors...
+18:53:09 * 400 prompts loaded
+18:53:09 
+18:53:09 Calculating per-layer residual directions...
+18:53:09 * Obtaining residual mean for good prompts...
+18:53:14 * Obtaining residual mean for bad prompts...
+18:53:18 
+18:53:18 Running trial 1 of 30...
+18:53:18 * Parameters:
+18:53:18   * direction_index = per layer
+18:53:18   * attn.o_proj.max_weight = 1.01
+18:53:18   * attn.o_proj.max_weight_position = 17.78
+18:53:18   * attn.o_proj.min_weight = 0.09
+18:53:18   * attn.o_proj.min_weight_distance = 3.83
+18:53:18   * mlp.down_proj.max_weight = 0.35
+18:53:18   * mlp.down_proj.max_weight_position = 20.49
+18:53:18   * mlp.down_proj.min_weight = 0.19
+18:53:18   * mlp.down_proj.min_weight_distance = 7.37
+18:53:18 * Resetting model...
+18:53:18 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:19 * Evaluating...
+18:53:22   * Refusals: 90/100
+18:53:22   * KL divergence: 0.0137
+18:53:22 
+18:53:22 Elapsed time: 3s
+18:53:22 Estimated remaining time: 1m 36s
+18:53:22 Resident system RAM: 3.17 GB
+18:53:22 Allocated GPU VRAM: 14.23 GB
+18:53:22 Reserved GPU VRAM: 14.23 GB
+18:53:22 
+18:53:22 Running trial 2 of 30...
+18:53:22 * Parameters:
+18:53:22   * direction_index = 22.65
+18:53:22   * attn.o_proj.max_weight = 0.82
+18:53:22   * attn.o_proj.max_weight_position = 23.44
+18:53:22   * attn.o_proj.min_weight = 0.34
+18:53:22   * attn.o_proj.min_weight_distance = 9.49
+18:53:22   * mlp.down_proj.max_weight = 0.00
+18:53:22   * mlp.down_proj.max_weight_position = 18.34
+18:53:22   * mlp.down_proj.min_weight = 0.00
+18:53:22   * mlp.down_proj.min_weight_distance = 15.72
+18:53:22 * Resetting model...
+18:53:22 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:22 * Evaluating...
+18:53:25   * Refusals: 97/100
+18:53:25   * KL divergence: 0.0015
+18:53:25 
+18:53:25 Elapsed time: 6s
+18:53:25 Estimated remaining time: 1m 30s
+18:53:25 Resident system RAM: 3.17 GB
+18:53:25 Allocated GPU VRAM: 14.23 GB
+18:53:25 Reserved GPU VRAM: 14.23 GB
+18:53:25 
+18:53:25 Running trial 3 of 30...
+18:53:25 * Parameters:
+18:53:25   * direction_index = per layer
+18:53:25   * attn.o_proj.max_weight = 1.43
+18:53:25   * attn.o_proj.max_weight_position = 17.12
+18:53:25   * attn.o_proj.min_weight = 0.06
+18:53:25   * attn.o_proj.min_weight_distance = 3.58
+18:53:25   * mlp.down_proj.max_weight = 1.29
+18:53:25   * mlp.down_proj.max_weight_position = 17.26
+18:53:25   * mlp.down_proj.min_weight = 0.54
+18:53:25   * mlp.down_proj.min_weight_distance = 15.56
+18:53:25 * Resetting model...
+18:53:25 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:25 * Evaluating...
+18:53:28   * Refusals: 38/100
+18:53:28   * KL divergence: 0.1594
+18:53:28 
+18:53:28 Elapsed time: 10s
+18:53:28 Estimated remaining time: 1m 27s
+18:53:28 Resident system RAM: 3.17 GB
+18:53:28 Allocated GPU VRAM: 14.23 GB
+18:53:28 Reserved GPU VRAM: 14.23 GB
+18:53:28 
+18:53:28 Running trial 4 of 30...
+18:53:28 * Parameters:
+18:53:28   * direction_index = per layer
+18:53:28   * attn.o_proj.max_weight = 1.28
+18:53:28   * attn.o_proj.max_weight_position = 25.21
+18:53:28   * attn.o_proj.min_weight = 0.02
+18:53:28   * attn.o_proj.min_weight_distance = 12.40
+18:53:28   * mlp.down_proj.max_weight = 1.48
+18:53:28   * mlp.down_proj.max_weight_position = 24.28
+18:53:28   * mlp.down_proj.min_weight = 0.42
+18:53:28   * mlp.down_proj.min_weight_distance = 13.00
+18:53:28 * Resetting model...
+18:53:28 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:28 * Evaluating...
+18:53:31   * Refusals: 41/100
+18:53:31   * KL divergence: 0.1084
+18:53:31 
+18:53:31 Elapsed time: 13s
+18:53:31 Estimated remaining time: 1m 24s
+18:53:31 Resident system RAM: 3.17 GB
+18:53:31 Allocated GPU VRAM: 14.23 GB
+18:53:31 Reserved GPU VRAM: 14.23 GB
+18:53:31 
+18:53:31 Running trial 5 of 30...
+18:53:31 * Parameters:
+18:53:31   * direction_index = per layer
+18:53:31   * attn.o_proj.max_weight = 1.01
+18:53:31   * attn.o_proj.max_weight_position = 19.31
+18:53:31   * attn.o_proj.min_weight = 0.13
+18:53:31   * attn.o_proj.min_weight_distance = 1.29
+18:53:31   * mlp.down_proj.max_weight = 0.94
+18:53:31   * mlp.down_proj.max_weight_position = 18.49
+18:53:31   * mlp.down_proj.min_weight = 0.25
+18:53:31   * mlp.down_proj.min_weight_distance = 8.47
+18:53:31 * Resetting model...
+18:53:31 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:31 * Evaluating...
+18:53:34   * Refusals: 67/100
+18:53:34   * KL divergence: 0.0494
+18:53:34 
+18:53:34 Elapsed time: 16s
+18:53:34 Estimated remaining time: 1m 20s
+18:53:34 Resident system RAM: 3.17 GB
+18:53:34 Allocated GPU VRAM: 14.23 GB
+18:53:34 Reserved GPU VRAM: 14.23 GB
+18:53:35 
+18:53:35 Running trial 6 of 30...
+18:53:35 * Parameters:
+18:53:35   * direction_index = per layer
+18:53:35   * attn.o_proj.max_weight = 1.21
+18:53:35   * attn.o_proj.max_weight_position = 23.76
+18:53:35   * attn.o_proj.min_weight = 0.12
+18:53:35   * attn.o_proj.min_weight_distance = 7.29
+18:53:35   * mlp.down_proj.max_weight = 0.97
+18:53:35   * mlp.down_proj.max_weight_position = 20.67
+18:53:35   * mlp.down_proj.min_weight = 0.05
+18:53:35   * mlp.down_proj.min_weight_distance = 9.15
+18:53:35 * Resetting model...
+18:53:35 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:35 * Evaluating...
+18:53:38   * Refusals: 57/100
+18:53:38   * KL divergence: 0.0590
+18:53:38 
+18:53:38 Elapsed time: 19s
+18:53:38 Estimated remaining time: 1m 17s
+18:53:38 Resident system RAM: 3.17 GB
+18:53:38 Allocated GPU VRAM: 14.23 GB
+18:53:38 Reserved GPU VRAM: 14.23 GB
+18:53:38 
+18:53:38 Running trial 7 of 30...
+18:53:38 * Parameters:
+18:53:38   * direction_index = 23.55
+18:53:38   * attn.o_proj.max_weight = 1.21
+18:53:38   * attn.o_proj.max_weight_position = 25.96
+18:53:38   * attn.o_proj.min_weight = 0.17
+18:53:38   * attn.o_proj.min_weight_distance = 3.12
+18:53:38   * mlp.down_proj.max_weight = 1.16
+18:53:38   * mlp.down_proj.max_weight_position = 20.49
+18:53:38   * mlp.down_proj.min_weight = 0.19
+18:53:38   * mlp.down_proj.min_weight_distance = 15.10
+18:53:38 * Resetting model...
+18:53:38 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:39 * Evaluating...
+18:53:42   * Refusals: 79/100
+18:53:42   * KL divergence: 0.0733
+18:53:42 
+18:53:42 Elapsed time: 23s
+18:53:42 Estimated remaining time: 1m 16s
+18:53:42 Resident system RAM: 3.17 GB
+18:53:42 Allocated GPU VRAM: 14.23 GB
+18:53:42 Reserved GPU VRAM: 14.23 GB
+18:53:42 
+18:53:42 Running trial 8 of 30...
+18:53:42 * Parameters:
+18:53:42   * direction_index = per layer
+18:53:42   * attn.o_proj.max_weight = 1.42
+18:53:42   * attn.o_proj.max_weight_position = 22.94
+18:53:42   * attn.o_proj.min_weight = 1.07
+18:53:42   * attn.o_proj.min_weight_distance = 6.30
+18:53:42   * mlp.down_proj.max_weight = 0.22
+18:53:42   * mlp.down_proj.max_weight_position = 25.88
+18:53:42   * mlp.down_proj.min_weight = 0.10
+18:53:42   * mlp.down_proj.min_weight_distance = 15.67
+18:53:42 * Resetting model...
+18:53:42 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:42 * Evaluating...
+18:53:45   * Refusals: 77/100
+18:53:45   * KL divergence: 0.0123
+18:53:45 
+18:53:45 Elapsed time: 27s
+18:53:45 Estimated remaining time: 1m 13s
+18:53:45 Resident system RAM: 3.17 GB
+18:53:45 Allocated GPU VRAM: 14.23 GB
+18:53:45 Reserved GPU VRAM: 14.23 GB
+18:53:45 
+18:53:45 Running trial 9 of 30...
+18:53:45 * Parameters:
+18:53:45   * direction_index = 12.35
+18:53:45   * attn.o_proj.max_weight = 1.46
+18:53:45   * attn.o_proj.max_weight_position = 21.06
+18:53:45   * attn.o_proj.min_weight = 0.85
+18:53:45   * attn.o_proj.min_weight_distance = 7.20
+18:53:45   * mlp.down_proj.max_weight = 0.16
+18:53:45   * mlp.down_proj.max_weight_position = 25.96
+18:53:45   * mlp.down_proj.min_weight = 0.09
+18:53:45   * mlp.down_proj.min_weight_distance = 1.04
+18:53:45 * Resetting model...
+18:53:45 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:45 * Evaluating...
+18:53:49   * Refusals: 99/100
+18:53:49   * KL divergence: 0.0049
+18:53:49 
+18:53:49 Elapsed time: 31s
+18:53:49 Estimated remaining time: 1m 11s
+18:53:49 Resident system RAM: 3.17 GB
+18:53:49 Allocated GPU VRAM: 14.23 GB
+18:53:49 Reserved GPU VRAM: 14.23 GB
+18:53:49 
+18:53:49 Running trial 10 of 30...
+18:53:49 * Parameters:
+18:53:49   * direction_index = 17.92
+18:53:49   * attn.o_proj.max_weight = 1.42
+18:53:49   * attn.o_proj.max_weight_position = 20.06
+18:53:49   * attn.o_proj.min_weight = 1.29
+18:53:49   * attn.o_proj.min_weight_distance = 10.48
+18:53:49   * mlp.down_proj.max_weight = 0.00
+18:53:49   * mlp.down_proj.max_weight_position = 26.24
+18:53:49   * mlp.down_proj.min_weight = 0.00
+18:53:49   * mlp.down_proj.min_weight_distance = 16.16
+18:53:49 * Resetting model...
+18:53:49 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:49 * Evaluating...
+18:53:54   * Refusals: 66/100
+18:53:54   * KL divergence: 0.0072
+18:53:54 
+18:53:54 Elapsed time: 35s
+18:53:54 Estimated remaining time: 1m 10s
+18:53:54 Resident system RAM: 3.17 GB
+18:53:54 Allocated GPU VRAM: 14.23 GB
+18:53:54 Reserved GPU VRAM: 14.23 GB
+18:53:54 
+18:53:54 Running trial 11 of 30...
+18:53:54 * Parameters:
+18:53:54   * direction_index = 20.10
+18:53:54   * attn.o_proj.max_weight = 1.50
+18:53:54   * attn.o_proj.max_weight_position = 19.96
+18:53:54   * attn.o_proj.min_weight = 0.36
+18:53:54   * attn.o_proj.min_weight_distance = 8.81
+18:53:54   * mlp.down_proj.max_weight = 0.00
+18:53:54   * mlp.down_proj.max_weight_position = 24.14
+18:53:54   * mlp.down_proj.min_weight = 0.00
+18:53:54   * mlp.down_proj.min_weight_distance = 13.20
+18:53:54 * Resetting model...
+18:53:54 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:54 * Evaluating...
+18:53:57   * Refusals: 87/100
+18:53:57   * KL divergence: 0.0030
+18:53:57 
+18:53:57 Elapsed time: 38s
+18:53:57 Estimated remaining time: 1m 6s
+18:53:57 Resident system RAM: 3.17 GB
+18:53:57 Allocated GPU VRAM: 14.23 GB
+18:53:57 Reserved GPU VRAM: 14.23 GB
+18:53:57 
+18:53:57 Running trial 12 of 30...
+18:53:57 * Parameters:
+18:53:57   * direction_index = 16.83
+18:53:57   * attn.o_proj.max_weight = 1.42
+18:53:57   * attn.o_proj.max_weight_position = 17.03
+18:53:57   * attn.o_proj.min_weight = 1.36
+18:53:57   * attn.o_proj.min_weight_distance = 9.17
+18:53:57   * mlp.down_proj.max_weight = 0.29
+18:53:57   * mlp.down_proj.max_weight_position = 23.73
+18:53:57   * mlp.down_proj.min_weight = 0.22
+18:53:57   * mlp.down_proj.min_weight_distance = 14.47
+18:53:57 * Resetting model...
+18:53:57 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:53:57 * Evaluating...
+18:54:01   * Refusals: 92/100
+18:54:01   * KL divergence: 0.0284
+18:54:01 
+18:54:01 Elapsed time: 43s
+18:54:01 Estimated remaining time: 1m 5s
+18:54:01 Resident system RAM: 3.17 GB
+18:54:02 Allocated GPU VRAM: 14.23 GB
+18:54:02 Reserved GPU VRAM: 14.23 GB
+18:54:02 
+18:54:02 Running trial 13 of 30...
+18:54:02 * Parameters:
+18:54:02   * direction_index = 15.30
+18:54:02   * attn.o_proj.max_weight = 1.33
+18:54:02   * attn.o_proj.max_weight_position = 21.48
+18:54:02   * attn.o_proj.min_weight = 1.19
+18:54:02   * attn.o_proj.min_weight_distance = 13.24
+18:54:02   * mlp.down_proj.max_weight = 0.63
+18:54:02   * mlp.down_proj.max_weight_position = 26.56
+18:54:02   * mlp.down_proj.min_weight = 0.59
+18:54:02   * mlp.down_proj.min_weight_distance = 14.06
+18:54:02 * Resetting model...
+18:54:02 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:02 * Evaluating...
+18:54:06   * Refusals: 68/100
+18:54:06   * KL divergence: 0.0176
+18:54:06 
+18:54:06 Elapsed time: 48s
+18:54:06 Estimated remaining time: 1m 3s
+18:54:06 Resident system RAM: 3.17 GB
+18:54:06 Allocated GPU VRAM: 14.23 GB
+18:54:06 Reserved GPU VRAM: 14.23 GB
+18:54:06 
+18:54:06 Running trial 14 of 30...
+18:54:06 * Parameters:
+18:54:06   * direction_index = 18.71
+18:54:06   * attn.o_proj.max_weight = 1.50
+18:54:06   * attn.o_proj.max_weight_position = 23.20
+18:54:06   * attn.o_proj.min_weight = 0.43
+18:54:06   * attn.o_proj.min_weight_distance = 12.66
+18:54:06   * mlp.down_proj.max_weight = 0.67
+18:54:06   * mlp.down_proj.max_weight_position = 26.12
+18:54:06   * mlp.down_proj.min_weight = 0.41
+18:54:06   * mlp.down_proj.min_weight_distance = 13.93
+18:54:06 * Resetting model...
+18:54:06 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:07 * Evaluating...
+18:54:11   * Refusals: 36/100
+18:54:11   * KL divergence: 0.0132
+18:54:11 
+18:54:11 Elapsed time: 53s
+18:54:11 Estimated remaining time: 1m 0s
+18:54:11 Resident system RAM: 3.17 GB
+18:54:11 Allocated GPU VRAM: 14.23 GB
+18:54:11 Reserved GPU VRAM: 14.23 GB
+18:54:11 
+18:54:11 Running trial 15 of 30...
+18:54:11 * Parameters:
+18:54:11   * direction_index = 19.10
+18:54:11   * attn.o_proj.max_weight = 1.36
+18:54:11   * attn.o_proj.max_weight_position = 21.23
+18:54:11   * attn.o_proj.min_weight = 1.20
+18:54:11   * attn.o_proj.min_weight_distance = 11.25
+18:54:11   * mlp.down_proj.max_weight = 0.01
+18:54:11   * mlp.down_proj.max_weight_position = 22.71
+18:54:11   * mlp.down_proj.min_weight = 0.01
+18:54:11   * mlp.down_proj.min_weight_distance = 13.34
+18:54:11 * Resetting model...
+18:54:11 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:12 * Evaluating...
+18:54:16   * Refusals: 59/100
+18:54:16   * KL divergence: 0.0040
+18:54:16 
+18:54:16 Elapsed time: 57s
+18:54:16 Estimated remaining time: 57s
+18:54:16 Resident system RAM: 3.17 GB
+18:54:16 Allocated GPU VRAM: 14.23 GB
+18:54:16 Reserved GPU VRAM: 14.23 GB
+18:54:16 
+18:54:16 Running trial 16 of 30...
+18:54:16 * Parameters:
+18:54:16   * direction_index = 17.92
+18:54:16   * attn.o_proj.max_weight = 1.44
+18:54:16   * attn.o_proj.max_weight_position = 21.79
+18:54:16   * attn.o_proj.min_weight = 1.10
+18:54:16   * attn.o_proj.min_weight_distance = 13.99
+18:54:16   * mlp.down_proj.max_weight = 0.32
+18:54:16   * mlp.down_proj.max_weight_position = 22.62
+18:54:16   * mlp.down_proj.min_weight = 0.20
+18:54:16   * mlp.down_proj.min_weight_distance = 13.27
+18:54:16 * Resetting model...
+18:54:16 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:16 * Evaluating...
+18:54:21   * Refusals: 34/100
+18:54:21   * KL divergence: 0.0113
+18:54:21 
+18:54:21 Elapsed time: 1m 3s
+18:54:21 Estimated remaining time: 55s
+18:54:23 Resident system RAM: 3.17 GB
+18:54:23 Allocated GPU VRAM: 14.23 GB
+18:54:23 Reserved GPU VRAM: 14.23 GB
+18:54:23 
+18:54:23 Running trial 17 of 30...
+18:54:23 * Parameters:
+18:54:23   * direction_index = 21.12
+18:54:23   * attn.o_proj.max_weight = 1.34
+18:54:23   * attn.o_proj.max_weight_position = 19.73
+18:54:23   * attn.o_proj.min_weight = 1.29
+18:54:23   * attn.o_proj.min_weight_distance = 14.43
+18:54:23   * mlp.down_proj.max_weight = 0.02
+18:54:23   * mlp.down_proj.max_weight_position = 22.25
+18:54:23   * mlp.down_proj.min_weight = 0.02
+18:54:23   * mlp.down_proj.min_weight_distance = 15.64
+18:54:23 * Resetting model...
+18:54:23 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:23 * Evaluating...
+18:54:27   * Refusals: 85/100
+18:54:27   * KL divergence: 0.0101
+18:54:27 
+18:54:27 Elapsed time: 1m 9s
+18:54:27 Estimated remaining time: 53s
+18:54:30 Resident system RAM: 3.17 GB
+18:54:30 Allocated GPU VRAM: 14.23 GB
+18:54:30 Reserved GPU VRAM: 14.23 GB
+18:54:31 
+18:54:31 Running trial 18 of 30...
+18:54:31 * Parameters:
+18:54:31   * direction_index = 17.85
+18:54:31   * attn.o_proj.max_weight = 1.50
+18:54:31   * attn.o_proj.max_weight_position = 20.62
+18:54:31   * attn.o_proj.min_weight = 0.92
+18:54:31   * attn.o_proj.min_weight_distance = 11.18
+18:54:31   * mlp.down_proj.max_weight = 0.23
+18:54:31   * mlp.down_proj.max_weight_position = 22.21
+18:54:31   * mlp.down_proj.min_weight = 0.12
+18:54:31   * mlp.down_proj.min_weight_distance = 14.18
+18:54:31 * Resetting model...
+18:54:31 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:31 * Evaluating...
+18:54:36   * Refusals: 49/100
+18:54:36   * KL divergence: 0.0082
+18:54:36 
+18:54:36 Elapsed time: 1m 18s
+18:54:36 Estimated remaining time: 52s
+18:54:36 Resident system RAM: 3.17 GB
+18:54:36 Allocated GPU VRAM: 14.23 GB
+18:54:36 Reserved GPU VRAM: 14.23 GB
+18:54:36 
+18:54:36 Running trial 19 of 30...
+18:54:36 * Parameters:
+18:54:36   * direction_index = 15.98
+18:54:36   * attn.o_proj.max_weight = 1.38
+18:54:36   * attn.o_proj.max_weight_position = 21.84
+18:54:36   * attn.o_proj.min_weight = 1.09
+18:54:36   * attn.o_proj.min_weight_distance = 9.95
+18:54:36   * mlp.down_proj.max_weight = 0.35
+18:54:36   * mlp.down_proj.max_weight_position = 24.29
+18:54:36   * mlp.down_proj.min_weight = 0.28
+18:54:36   * mlp.down_proj.min_weight_distance = 12.23
+18:54:36 * Resetting model...
+18:54:36 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:37 * Evaluating...
+18:54:42   * Refusals: 91/100
+18:54:42   * KL divergence: 0.0102
+18:54:42 
+18:54:42 Elapsed time: 1m 24s
+18:54:42 Estimated remaining time: 49s
+18:54:42 Resident system RAM: 3.17 GB
+18:54:42 Allocated GPU VRAM: 14.23 GB
+18:54:42 Reserved GPU VRAM: 14.23 GB
+18:54:42 
+18:54:42 Running trial 20 of 30...
+18:54:42 * Parameters:
+18:54:42   * direction_index = 17.17
+18:54:42   * attn.o_proj.max_weight = 1.37
+18:54:42   * attn.o_proj.max_weight_position = 18.58
+18:54:42   * attn.o_proj.min_weight = 1.14
+18:54:42   * attn.o_proj.min_weight_distance = 12.06
+18:54:42   * mlp.down_proj.max_weight = 0.00
+18:54:42   * mlp.down_proj.max_weight_position = 21.27
+18:54:42   * mlp.down_proj.min_weight = 0.00
+18:54:42   * mlp.down_proj.min_weight_distance = 13.18
+18:54:42 * Resetting model...
+18:54:42 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:42 * Evaluating...
+18:54:47   * Refusals: 89/100
+18:54:47   * KL divergence: 0.0209
+18:54:47 
+18:54:47 Elapsed time: 1m 29s
+18:54:47 Estimated remaining time: 44s
+18:54:47 Resident system RAM: 3.17 GB
+18:54:47 Allocated GPU VRAM: 14.23 GB
+18:54:47 Reserved GPU VRAM: 14.23 GB
+18:54:47 
+18:54:47 Running trial 21 of 30...
+18:54:47 * Parameters:
+18:54:47   * direction_index = 18.07
+18:54:47   * attn.o_proj.max_weight = 1.27
+18:54:47   * attn.o_proj.max_weight_position = 22.52
+18:54:47   * attn.o_proj.min_weight = 1.00
+18:54:47   * attn.o_proj.min_weight_distance = 12.12
+18:54:47   * mlp.down_proj.max_weight = 0.00
+18:54:47   * mlp.down_proj.max_weight_position = 22.50
+18:54:47   * mlp.down_proj.min_weight = 0.00
+18:54:47   * mlp.down_proj.min_weight_distance = 15.34
+18:54:47 * Resetting model...
+18:54:47 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:47 * Evaluating...
+18:54:52   * Refusals: 80/100
+18:54:52   * KL divergence: 0.0041
+18:54:52 
+18:54:52 Elapsed time: 1m 34s
+18:54:52 Estimated remaining time: 40s
+18:54:53 Resident system RAM: 3.17 GB
+18:54:53 Allocated GPU VRAM: 14.23 GB
+18:54:53 Reserved GPU VRAM: 14.23 GB
+18:54:57 
+18:54:57 Running trial 22 of 30...
+18:54:57 * Parameters:
+18:54:57   * direction_index = 22.59
+18:54:57   * attn.o_proj.max_weight = 1.26
+18:54:57   * attn.o_proj.max_weight_position = 23.84
+18:54:57   * attn.o_proj.min_weight = 0.24
+18:54:57   * attn.o_proj.min_weight_distance = 10.60
+18:54:57   * mlp.down_proj.max_weight = 0.04
+18:54:57   * mlp.down_proj.max_weight_position = 16.25
+18:54:57   * mlp.down_proj.min_weight = 0.03
+18:54:57   * mlp.down_proj.min_weight_distance = 14.62
+18:54:57 * Resetting model...
+18:54:57 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:54:58 * Evaluating...
+18:55:03   * Refusals: 96/100
+18:55:03   * KL divergence: 0.0024
+18:55:03 
+18:55:03 Elapsed time: 1m 44s
+18:55:03 Estimated remaining time: 38s
+18:55:03 Resident system RAM: 3.17 GB
+18:55:03 Allocated GPU VRAM: 14.23 GB
+18:55:03 Reserved GPU VRAM: 14.23 GB
+18:55:04 
+18:55:04 Running trial 23 of 30...
+18:55:04 * Parameters:
+18:55:04   * direction_index = 23.89
+18:55:04   * attn.o_proj.max_weight = 1.14
+18:55:04   * attn.o_proj.max_weight_position = 23.16
+18:55:04   * attn.o_proj.min_weight = 0.59
+18:55:04   * attn.o_proj.min_weight_distance = 10.23
+18:55:04   * mlp.down_proj.max_weight = 0.18
+18:55:04   * mlp.down_proj.max_weight_position = 17.88
+18:55:04   * mlp.down_proj.min_weight = 0.12
+18:55:04   * mlp.down_proj.min_weight_distance = 14.69
+18:55:04 * Resetting model...
+18:55:04 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:05 * Evaluating...
+18:55:11   * Refusals: 90/100
+18:55:11   * KL divergence: 0.0071
+18:55:11 
+18:55:11 Elapsed time: 1m 52s
+18:55:11 Estimated remaining time: 34s
+18:55:11 Resident system RAM: 3.17 GB
+18:55:11 Allocated GPU VRAM: 14.23 GB
+18:55:11 Reserved GPU VRAM: 14.23 GB
+18:55:12 
+18:55:12 Running trial 24 of 30...
+18:55:12 * Parameters:
+18:55:12   * direction_index = 17.13
+18:55:12   * attn.o_proj.max_weight = 1.47
+18:55:12   * attn.o_proj.max_weight_position = 20.09
+18:55:12   * attn.o_proj.min_weight = 1.04
+18:55:12   * attn.o_proj.min_weight_distance = 11.44
+18:55:12   * mlp.down_proj.max_weight = 0.23
+18:55:12   * mlp.down_proj.max_weight_position = 25.53
+18:55:12   * mlp.down_proj.min_weight = 0.09
+18:55:12   * mlp.down_proj.min_weight_distance = 15.56
+18:55:12 * Resetting model...
+18:55:12 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:12 * Evaluating...
+18:55:19   * Refusals: 89/100
+18:55:19   * KL divergence: 0.0204
+18:55:19 
+18:55:19 Elapsed time: 2m 0s
+18:55:19 Estimated remaining time: 30s
+18:55:19 Resident system RAM: 3.17 GB
+18:55:19 Allocated GPU VRAM: 14.23 GB
+18:55:19 Reserved GPU VRAM: 14.23 GB
+18:55:19 
+18:55:19 Running trial 25 of 30...
+18:55:19 * Parameters:
+18:55:19   * direction_index = 22.99
+18:55:19   * attn.o_proj.max_weight = 1.19
+18:55:19   * attn.o_proj.max_weight_position = 23.74
+18:55:19   * attn.o_proj.min_weight = 0.63
+18:55:19   * attn.o_proj.min_weight_distance = 8.60
+18:55:19   * mlp.down_proj.max_weight = 0.00
+18:55:19   * mlp.down_proj.max_weight_position = 16.95
+18:55:19   * mlp.down_proj.min_weight = 0.00
+18:55:19   * mlp.down_proj.min_weight_distance = 13.25
+18:55:19 * Resetting model...
+18:55:19 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:19 * Evaluating...
+18:55:25   * Refusals: 96/100
+18:55:25   * KL divergence: 0.0022
+18:55:25 
+18:55:25 Elapsed time: 2m 7s
+18:55:25 Estimated remaining time: 25s
+18:55:25 Resident system RAM: 3.17 GB
+18:55:25 Allocated GPU VRAM: 14.23 GB
+18:55:25 Reserved GPU VRAM: 14.23 GB
+18:55:25 
+18:55:25 Running trial 26 of 30...
+18:55:25 * Parameters:
+18:55:25   * direction_index = 24.13
+18:55:25   * attn.o_proj.max_weight = 0.93
+18:55:25   * attn.o_proj.max_weight_position = 21.56
+18:55:25   * attn.o_proj.min_weight = 0.19
+18:55:25   * attn.o_proj.min_weight_distance = 9.90
+18:55:25   * mlp.down_proj.max_weight = 0.00
+18:55:25   * mlp.down_proj.max_weight_position = 19.57
+18:55:25   * mlp.down_proj.min_weight = 0.00
+18:55:25   * mlp.down_proj.min_weight_distance = 14.54
+18:55:25 * Resetting model...
+18:55:25 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:25 * Evaluating...
+18:55:32   * Refusals: 95/100
+18:55:32   * KL divergence: 0.0019
+18:55:32 
+18:55:32 Elapsed time: 2m 13s
+18:55:32 Estimated remaining time: 21s
+18:55:39 Resident system RAM: 3.17 GB
+18:55:39 Allocated GPU VRAM: 14.23 GB
+18:55:39 Reserved GPU VRAM: 14.23 GB
+18:55:39 
+18:55:39 Running trial 27 of 30...
+18:55:39 * Parameters:
+18:55:39   * direction_index = 21.66
+18:55:39   * attn.o_proj.max_weight = 0.90
+18:55:39   * attn.o_proj.max_weight_position = 23.31
+18:55:39   * attn.o_proj.min_weight = 0.35
+18:55:39   * attn.o_proj.min_weight_distance = 6.91
+18:55:39   * mlp.down_proj.max_weight = 0.00
+18:55:39   * mlp.down_proj.max_weight_position = 17.62
+18:55:39   * mlp.down_proj.min_weight = 0.00
+18:55:39   * mlp.down_proj.min_weight_distance = 14.30
+18:55:39 * Resetting model...
+18:55:39 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:39 * Evaluating...
+18:55:44   * Refusals: 97/100
+18:55:44   * KL divergence: 0.0015
+18:55:44 
+18:55:44 Elapsed time: 2m 26s
+18:55:44 Estimated remaining time: 16s
+18:55:44 Resident system RAM: 3.17 GB
+18:55:44 Allocated GPU VRAM: 14.23 GB
+18:55:44 Reserved GPU VRAM: 14.23 GB
+18:55:44 
+18:55:44 Running trial 28 of 30...
+18:55:44 * Parameters:
+18:55:44   * direction_index = 19.54
+18:55:44   * attn.o_proj.max_weight = 1.42
+18:55:44   * attn.o_proj.max_weight_position = 20.58
+18:55:44   * attn.o_proj.min_weight = 1.08
+18:55:44   * attn.o_proj.min_weight_distance = 10.20
+18:55:44   * mlp.down_proj.max_weight = 0.00
+18:55:44   * mlp.down_proj.max_weight_position = 21.78
+18:55:44   * mlp.down_proj.min_weight = 0.00
+18:55:44   * mlp.down_proj.min_weight_distance = 12.77
+18:55:44 * Resetting model...
+18:55:44 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:44 * Evaluating...
+18:55:49   * Refusals: 66/100
+18:55:49   * KL divergence: 0.0036
+18:55:49 
+18:55:49 Elapsed time: 2m 30s
+18:55:49 Estimated remaining time: 11s
+18:55:49 Resident system RAM: 3.17 GB
+18:55:49 Allocated GPU VRAM: 14.23 GB
+18:55:49 Reserved GPU VRAM: 14.23 GB
+18:55:49 
+18:55:49 Running trial 29 of 30...
+18:55:49 * Parameters:
+18:55:49   * direction_index = 20.73
+18:55:49   * attn.o_proj.max_weight = 0.96
+18:55:49   * attn.o_proj.max_weight_position = 24.08
+18:55:49   * attn.o_proj.min_weight = 0.45
+18:55:49   * attn.o_proj.min_weight_distance = 9.04
+18:55:49   * mlp.down_proj.max_weight = 0.00
+18:55:49   * mlp.down_proj.max_weight_position = 19.42
+18:55:49   * mlp.down_proj.min_weight = 0.00
+18:55:49   * mlp.down_proj.min_weight_distance = 14.50
+18:55:49 * Resetting model...
+18:55:49 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:49 * Evaluating...
+18:55:52   * Refusals: 97/100
+18:55:52   * KL divergence: 0.0010
+18:55:52 
+18:55:52 Elapsed time: 2m 34s
+18:55:52 Estimated remaining time: 5s
+18:55:52 Resident system RAM: 3.17 GB
+18:55:52 Allocated GPU VRAM: 14.23 GB
+18:55:52 Reserved GPU VRAM: 14.23 GB
+18:55:52 
+18:55:52 Running trial 30 of 30...
+18:55:52 * Parameters:
+18:55:52   * direction_index = 18.35
+18:55:52   * attn.o_proj.max_weight = 1.38
+18:55:52   * attn.o_proj.max_weight_position = 23.06
+18:55:52   * attn.o_proj.min_weight = 0.83
+18:55:52   * attn.o_proj.min_weight_distance = 12.49
+18:55:52   * mlp.down_proj.max_weight = 0.23
+18:55:52   * mlp.down_proj.max_weight_position = 21.93
+18:55:52   * mlp.down_proj.min_weight = 0.12
+18:55:52   * mlp.down_proj.min_weight_distance = 13.81
+18:55:52 * Resetting model...
+18:55:52 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:52 * Evaluating...
+18:55:56   * Refusals: 42/100
+18:55:56   * KL divergence: 0.0051
+18:55:56 
+18:55:56 Elapsed time: 2m 37s
+18:55:56 Resident system RAM: 3.17 GB
+18:55:56 Allocated GPU VRAM: 14.23 GB
+18:55:56 Reserved GPU VRAM: 14.23 GB
+18:55:56 
+18:55:56 Optimization finished!
+18:55:56 
+18:55:56 Restoring model from trial 16...
+18:55:56 * Parameters:
+18:55:56   * direction_index = 17.92
+18:55:56   * attn.o_proj.max_weight = 1.44
+18:55:56   * attn.o_proj.max_weight_position = 21.79
+18:55:56   * attn.o_proj.min_weight = 1.10
+18:55:56   * attn.o_proj.min_weight_distance = 13.99
+18:55:56   * mlp.down_proj.max_weight = 0.32
+18:55:56   * mlp.down_proj.max_weight_position = 22.62
+18:55:56   * mlp.down_proj.min_weight = 0.20
+18:55:56   * mlp.down_proj.min_weight_distance = 13.27
+18:55:56 * Resetting model...
+18:55:56 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+18:55:56 Saving merged model...
+18:55:56 * Merging LoRA adapters into base model...
+18:56:09 Writing model shards:   0%|          | 0/4 [00:00<?, ?it/s]Writing model shards:  25%|██▌       | 1/4 [00:03<00:11,  3.91s/it]Writing model shards:  50%|█████     | 2/4 [00:08<00:08,  4.17s/it]Writing model shards:  75%|███████▌  | 3/4 [00:12<00:04,  4.34s/it]Writing model shards: 100%|██████████| 4/4 [00:12<00:00,  2.70s/it]Writing model shards: 100%|██████████| 4/4 [00:12<00:00,  3.25s/it]
+18:56:10 Model saved to ./model.
+18:56:10 * Resetting model...
+18:56:19 Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:00<00:45,  7.44it/s]Loading weights:   1%|          | 2/339 [00:00<00:45,  7.38it/s]Loading weights:   5%|▌         | 18/339 [00:00<00:05, 63.61it/s]Loading weights:  12%|█▏        | 42/339 [00:00<00:02, 118.17it/s]Loading weights:  19%|█▉        | 65/339 [00:00<00:01, 144.82it/s]Loading weights:  27%|██▋       | 90/339 [00:00<00:01, 170.61it/s]Loading weights:  34%|███▎      | 114/339 [00:00<00:01, 189.13it/s]Loading weights:  41%|████      | 138/339 [00:00<00:01, 199.68it/s]Loading weights:  49%|████▉     | 166/339 [00:01<00:00, 221.69it/s]Loading weights:  58%|█████▊    | 196/339 [00:01<00:00, 237.15it/s]Loading weights:  65%|██████▌   | 221/339 [00:01<00:00, 237.69it/s]Loading weights:  73%|███████▎  | 246/339 [00:01<00:00, 234.63it/s]Loading weights:  82%|████████▏ | 279/339 [00:01<00:00, 260.78it/s]Loading weights:  90%|█████████ | 306/339 [00:01<00:00, 234.56it/s]Loading weights:  98%|█████████▊| 331/339 [00:01<00:00, 232.51it/s]Loading weights: 100%|██████████| 339/339 [00:01<00:00, 196.31it/s]
+18:56:19 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...

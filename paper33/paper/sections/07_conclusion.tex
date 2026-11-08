@@ -1,0 +1,47 @@
+% ============================================================
+% CONCLUSION (150--300 words): contribution, key implication, 2--3 specific future directions, closing statement
+% Written 2026-11-06; numbers as in sections/05_results.tex (src: results/analysis/h1h2_tests.csv,
+% h1h2_h2_contrasts.csv, h3_gap_pooled.csv, final_kl_vs_capability.csv). Future directions follow
+% notes/atlas_sweep.md C2 items 1, 4 and D6 / FINAL_NOTES.md 4(f) (judge-based re-selection needs judge labels on
+% non-selected trials, which do not exist yet).
+% 2026-11-06 reframe (author decision 1): first paragraph leads with the baseline-adjusted pooled effect
+% (h1h2_models.csv gee_with_originals) and the seed-noise count (results/analysis/seednoise_summary.md, 5 of 16).
+% ============================================================
+% 2026-11-06 REVIEW REVISION (author decisions A--C): per-pair-first first paragraph (review_sel_pair_effects.csv,
+% review_sel_pair_heterogeneity.csv, review_sel_pair_meta.csv); H3 per window (review_out_c4_gap_pooled.csv); future work now
+% names the second seed for the main cells, the heretic-org ARA trial and ARA refits on the search hardware (author
+% decision C), and the planned-but-not-run SOM / J-space conditions, sampled decoding and reasoning mode.
+\section{Conclusion}
+\label{sec:conclusion}
+
+This study compared direction-based and optimisation-based refusal removal on
+an earlier and a later release of four open-weight model families and one
+smaller pair, under one search budget, KL cap and selection rule, with
+held-out refusal scored by an independent judge. Refusal removal did not
+become uniformly harder. After direction-based removal the generation effect
+was large for OLMo and the small pair, small for Qwen and Gemma and near zero
+for Mistral Small;
+beyond the newer originals' higher starting refusal, the pooled effect was
+near zero with a pair-level interval that spans large effects of either sign.
+ARA lost less effectiveness than the direction-based methods in two families
+and more in one. At the tool's 100-token window, keyword counts matched judged
+refusal on average but not model by model, and first-token KL did not bound
+capability loss. Claims that a model generation resists refusal removal, or
+that a removal tool succeeds, therefore require several model pairs analysed
+as pairs, the unedited models as reference, several method classes and
+optimisation seeds, held-out judged evaluation and a full-sequence measure of
+collateral change.
+
+Four directions follow. First, a second optimisation seed for the 32
+main-study cells would test whether the family-specific effects exceed
+run-to-run variation. Second, running heretic-org's reported Qwen3.8-27B ARA
+trial through this pipeline, and refitting the ARA exports on the search
+hardware, would show whether the Qwen reversal and the Gemma-4-31B result
+depend on the search or on the release step. Third, a human-labelled audit of
+the responses on which keyword matching and the judges disagree would
+establish which measure is correct and estimate judge error on edited models
+\cite{gao2026how}. Fourth, judge labels for non-selected trials would allow
+Pareto fronts to be re-selected with a judged objective and a full-sequence
+divergence constraint. Until such checks are routine, a model's apparent
+resistance to refusal removal should be read as a statement about one family,
+one method and one measure, not about its generation.

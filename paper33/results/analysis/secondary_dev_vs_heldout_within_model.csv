@@ -1,0 +1,11 @@
+model,pair,generation,n_methods,dev_order,heldout_wg_order,heldout_kw_order,best_dev,best_heldout_wg,best_heldout_kw,spearman_dev_vs_wg,spearman_dev_vs_kw,spearman_dev_vs_kw256,best_dev_is_best_wg,best_dev_tied,best_dev_kl_tiebreak,best_dev_kl_tiebreak_is_best_wg,best_dev_unique_is_best_wg
+qwen2.5-32b,qwen,old,4,ARA < MPOA < SOM < DiM,MPOA < ARA < SOM < DiM,MPOA < ARA < SOM < DiM,ARA,MPOA,MPOA,0.7999999999999999,0.7999999999999999,0.7999999999999999,False,False,ARA,False,False
+qwen3.8-27b,qwen,new,4,MPOA < SOM < DiM < ARA,MPOA < SOM < ARA < DiM,MPOA < SOM < ARA < DiM,MPOA,MPOA,MPOA,0.7999999999999999,0.7999999999999999,0.7999999999999999,True,False,MPOA,True,True
+gemma-2-27b,gemma,old,4,ARA < MPOA < SOM < DiM,ARA < MPOA < SOM < DiM,ARA < MPOA < SOM < DiM,ARA,ARA,ARA,1.0,1.0,1.0,True,False,ARA,True,True
+gemma-4-31b,gemma,new,4,ARA < MPOA < SOM < DiM,ARA < MPOA < SOM < DiM,ARA < MPOA < SOM < DiM,ARA,ARA,ARA,1.0,1.0,1.0,True,False,ARA,True,True
+olmo-2-32b,olmo,old,4,DiM < ARA < MPOA < SOM,MPOA < ARA < SOM < DiM,DiM < ARA < MPOA < SOM,DiM,MPOA,DiM,-0.39999999999999997,1.0,1.0,False,False,DiM,False,False
+olmo-3.1-32b,olmo,new,4,ARA < SOM < MPOA < DiM,ARA < SOM < MPOA < DiM,ARA < SOM < MPOA < DiM,ARA,ARA,ARA,1.0,1.0,1.0,True,False,ARA,True,True
+mistral-small-2409,mistral,old,4,ARA < SOM < MPOA < DiM,SOM < ARA < MPOA < DiM,SOM < ARA < MPOA < DiM,ARA,SOM,SOM,0.7999999999999999,0.7999999999999999,0.7999999999999999,False,False,ARA,False,False
+mistral-small-3.2,mistral,new,4,ARA < MPOA < SOM < DiM,MPOA < ARA < SOM < DiM,MPOA < ARA < SOM < DiM,ARA,MPOA,MPOA,0.7999999999999999,0.7999999999999999,0.7999999999999999,False,False,ARA,False,False
+qwen2.5-7b,qwen-small,small-old,5,ARA < MPOA < SOM < DiM < J-space,ARA < SOM < MPOA < DiM < J-space,ARA < SOM < MPOA < DiM < J-space,ARA,ARA,ARA,0.8999999999999998,0.8999999999999998,0.8999999999999998,True,False,ARA,True,True
+qwen3.5-4b,qwen-small,small-new,5,ARA < MPOA < SOM < DiM < J-space,MPOA < ARA < SOM < DiM < J-space,ARA < MPOA < SOM < J-space < DiM,MPOA/ARA,MPOA,ARA,0.9746794344808963,0.8720815992723809,0.8720815992723809,True,True,MPOA,True,False

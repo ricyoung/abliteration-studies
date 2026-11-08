@@ -1,0 +1,9 @@
+cmd: bash -c  cp /workspace/paper33/configs/pilot_mpoa.toml config.toml && /workspace/paper33/heretic/.venv/bin/heretic --model Qwen/Qwen2.5-7B-Instruct --seed 1 --checkpoint-action restart --trial-index 0 --model-action save --export-strategy MERGE --save-directory ./model
+start: 2026-11-04T18:51:22+00:00
+host: 0538-dca2-csh200nvl-prxmx140094
+heretic 0db5c31e10ecc426440b6fb0ce4bf85352faf1a7 docs: prepare for 2.0 release (#531)
+torch 2.14.1+cu130 NVIDIA H200 NVL
+end: 2026-11-04T18:56:23+00:00
+exit_code: 0
+wall_seconds: 301
+peak_vram_mib: 527

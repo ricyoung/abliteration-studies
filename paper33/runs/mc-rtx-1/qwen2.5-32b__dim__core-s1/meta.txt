@@ -1,0 +1,9 @@
+cmd: bash -c  cp /workspace/paper33/configs/core_dim.toml config.toml && /workspace/paper33/heretic/.venv/bin/heretic --model Qwen/Qwen2.5-32B-Instruct --max-batch-size 64 --seed 1 --checkpoint-action restart --trial-index 0 --model-action save --export-strategy ADAPTER --save-directory ./adapter_t0
+start: 2026-11-04T22:05:52+00:00
+host: 0538-dca2-csh200nvl-prxmx140094
+heretic 0db5c31e10ecc426440b6fb0ce4bf85352faf1a7 docs: prepare for 2.0 release (#531)
+torch 2.14.1+cu130 NVIDIA H200 NVL
+end: 2026-11-04T22:28:05+00:00
+exit_code: 0
+wall_seconds: 1333
+peak_vram_mib: 66389

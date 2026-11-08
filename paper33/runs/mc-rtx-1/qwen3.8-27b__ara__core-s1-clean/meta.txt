@@ -1,0 +1,9 @@
+cmd: bash -c  while [ -n "$(nvidia-smi --query-compute-apps=pid --format=csv,noheader)" ]; do sleep 30; done; cp /workspace/paper33/configs/core_ara.toml config.toml && /workspace/paper33/heretic/.venv/bin/heretic --model Qwen/Qwen3.8-27B --seed 1 --checkpoint-action restart --trial-index 0 --model-action save --export-strategy ADAPTER --save-directory ./adapter_t0
+start: 2026-11-05T10:12:44+00:00
+host: 0538-dca2-csh200nvl-prxmx140094
+heretic 0db5c31e10ecc426440b6fb0ce4bf85352faf1a7 docs: prepare for 2.0 release (#531)
+torch 2.14.1+cu130 NVIDIA H200 NVL
+end: 2026-11-05T11:38:21+00:00
+exit_code: 0
+wall_seconds: 5137
+peak_vram_mib: 80243

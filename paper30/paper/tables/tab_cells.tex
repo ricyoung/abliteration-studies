@@ -1,0 +1,44 @@
+\begin{tabular}{@{}lllrrrrrrrr@{}}
+\toprule
+Model & Condition & Source & \multicolumn{2}{c}{WildGuard refusal, harmful (\%)} & Change vs.\ & Keyword (\%) & HarmBench & Over-refusal & Capability & TF div. \\
+ & & & rate & 95\% CI & original (pp) & full / 256 tok. & harmful (\%) & benign (\%) & $\Delta$ (pp) & (nats/tok.) \\
+\midrule
+Qwen2.5-7B & Original & \cite{young2026harder} & 72.1 & [69.2, 74.8] & -- & 75.8 / 74.5 & 23.3 & 4.3 & -- & -- \\
+ & 1.x general & new & 39.6 & [36.6, 42.7] & $-$32.5 & 45.8 / 43.4 & 45.6 & 1.1 & $-$0.36 & 0.009 \\
+ & 1.x code & new & 71.2 & [68.3, 74.0] & $-$0.9$^{\mathrm{ns}}$ & 71.9 / 71.4 & 25.5 & 5.1 & +0.80 & 0.075 \\
+ & 2.0 DiM & \cite{young2026harder} & 20.6 & [18.2, 23.2] & $-$51.5 & 40.1 / 37.8 & 64.0 & 0.3 & +0.23 & 0.019 \\
+ & 2.0 MPOA & \cite{young2026harder} & 13.8 & [11.8, 16.1] & $-$58.3 & 23.7 / 20.5 & 71.5 & 0.3 & $-$0.23 & 0.018 \\
+ & SOM (fork plug-in) & \cite{young2026harder} & 12.2 & [10.3, 14.5] & $-$59.9 & 22.4 / 17.9 & 73.1 & 0.0 & $-$0.33 & 0.026 \\
+ & J-space (fork plug-in) & \cite{young2026harder} & 52.6 & [49.4, 55.7] & $-$19.5 & 53.6 / 51.7 & 36.3 & 1.1 & +0.86 & 0.009 \\
+ & 2.0 ARA & \cite{young2026harder} & 4.7 & [3.6, 6.3] & $-$67.4 & 16.6 / 11.0 & 79.0 & 0.0 & +0.48 & 0.048 \\
+\addlinespace[2pt]
+Qwen2.5-Coder-7B & Original & new & 83.2 & [80.8, 85.4] & -- & 83.6 / 83.5 & 15.4 & 22.6 & -- & -- \\
+ & 1.x general & new & 10.3 & [8.5, 12.4] & $-$72.9 & 18.5 / 15.6 & 77.1 & 2.3 & $-$0.35 & 0.017 \\
+ & 1.x code & new & 62.2 & [59.2, 65.2] & $-$21.0 & 62.3 / 61.8 & 33.4 & 7.1 & +0.24 & 0.008 \\
+\addlinespace[2pt]
+Qwen2.5-14B & Original & new & 77.6 & [74.8, 80.1] & -- & 78.0 / 77.2 & 18.8 & 4.0 & -- & -- \\
+ & 1.x general & new & 58.2 & [55.1, 61.3] & $-$19.3 & 63.6 / 61.8 & 30.6 & 0.3 & $-$0.13 & 0.018 \\
+ & 1.x code & new & 75.0 & [72.2, 77.6] & $-$2.6 & 73.6 / 73.1 & 20.1 & 3.7 & $-$0.15 & 0.006 \\
+\addlinespace[2pt]
+Qwen2.5-Coder-14B & Original & new & 85.5 & [83.1, 87.6] & -- & 85.2 / 85.0 & 13.9 & 17.4 & -- & -- \\
+ & 1.x general & new & 12.3 & [10.4, 14.6] & $-$73.1 & 21.7 / 18.4 & 76.1 & 0.9 & +0.24 & 0.020 \\
+ & 1.x code & new & 77.2 & [74.4, 79.7] & $-$8.3 & 75.8 / 75.5 & 20.5 & 8.0 & +0.47 & 0.007 \\
+\addlinespace[2pt]
+Qwen2.5-32B & Original & \cite{young2026harder} & 76.8 & [74.1, 79.4] & -- & 76.4 / 75.9 & 19.8 & 5.1 & -- & -- \\
+ & 1.x general & new & 73.4 & [70.5, 76.0] & $-$3.4 & 72.9 / 72.1 & 22.1 & 2.3 & +0.19 & 0.007 \\
+ & 1.x general, KL $\le$ 0.1$^{\S}$ & new & 11.6 & [9.8, 13.8] & $-$65.2 & 28.2 / 24.2 & 74.6 & 0.0 & +0.02 & 0.032 \\
+ & 1.x code & new & 65.3 & [62.3, 68.3] & $-$11.4 & 62.8 / 61.3 & 27.6 & 0.6 & $-$0.25 & 0.017 \\
+ & 2.0 DiM & \cite{young2026harder} & 47.4 & [44.3, 50.6] & $-$29.4 & 55.3 / 52.5 & 40.3 & 0.6 & $-$0.05 & 0.017 \\
+ & 2.0 MPOA & \cite{young2026harder} & 3.9 & [2.9, 5.3] & $-$72.9 & 17.1 / 12.3 & 85.3 & 0.0 & $-$0.03 & 0.042 \\
+ & SOM (fork plug-in) & \cite{young2026harder} & 42.7 & [39.6, 45.8] & $-$34.1 & 46.9 / 43.7 & 44.5 & 0.6 & +0.31 & 0.020 \\
+ & 2.0 ARA & \cite{young2026harder} & 6.1 & [4.7, 7.8] & $-$70.8 & 19.1 / 14.2 & 82.3 & 0.0 & $-$0.83 & 0.077 \\
+ & huihui-ai & \cite{young2026harder} & 1.3 & [0.8, 2.3] & $-$75.5 & 8.2 / 6.3 & 90.1 & 0.0 & $-$0.94 & 0.151 \\
+ & zetasepic v2 & \cite{young2026harder} & 1.1 & [0.6, 2.0] & $-$75.7 & 12.9 / 8.8 & 91.0 & 0.0 & $-$0.45 & 0.085 \\
+\addlinespace[2pt]
+Qwen2.5-Coder-32B & Original & new & 75.3 & [72.5, 77.9] & -- & 77.0 / 76.3 & 19.9 & 4.3 & -- & -- \\
+ & 1.x general & new & 64.3 & [61.2, 67.3] & $-$11.0 & 70.5 / 69.3 & 28.7 & 2.0 & +0.50 & 0.004 \\
+ & 1.x code & new & 61.1 & [58.0, 64.1] & $-$14.2 & 69.3 / 67.7 & 30.7 & 1.1 & +0.29 & 0.004 \\
+\bottomrule
+\multicolumn{11}{@{}l}{\footnotesize $^{\S}$ Added after the pre-stated design: the original 1.x general study re-exported at the 2.0 selection rule (dev KL $\le$ 0.1; trial \#96); its test is in a separate Holm family.} \\
+\multicolumn{11}{@{}l}{\footnotesize $^{\mathrm{ns}}$ $p_\mathrm{Holm} \ge 0.05$; all other changes $p_\mathrm{Holm} < 0.001$. External tools and Qwen3.5-4B: Table~\ref{tab:external}.} \\
+\end{tabular}

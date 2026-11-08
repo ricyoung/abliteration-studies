@@ -1,0 +1,87 @@
+% ============================================================
+% APPENDIX D -- ADDITIONAL RESULTS (written 2026-11-06)
+% Appendix floats referenced from Results (sec:results): per-run trial clouds (figA1, figA2), community
+% releases (figA3), per-run search convergence (figA4), and the exact-value tables behind Figures
+% fig:kl-budget, fig:capability and fig:divergence (paper/tables/t1--t3, written by
+% scripts/make_results_tables.py; do not edit those files by hand). Captions of figA1--A4 are verbatim from
+% paper/figures/captions.md (cross-references converted to \ref).
+% ============================================================
+\section{Additional Results}
+\label{app:additional-results}
+
+This appendix gives the per-run optimisation traces and the exact values
+behind several main-text figures. Figures~\ref{fig:trials-old}
+and~\ref{fig:trials-new} show every completed trial of the seed-1 runs of the
+older and newer models (Pareto fronts in Figure~\ref{fig:pareto}).
+Figure~\ref{fig:community-releases} gives the capability change and
+teacher-forced divergence of the eight community releases (refusal in
+Figure~\ref{fig:community}), and Figure~\ref{fig:search-runs} the convergence
+curve of every run (summary in Figure~\ref{fig:search-convergence}).
+Tables~\ref{tab:dev-refusals-main} and~\ref{tab:dev-refusals-small} list the
+dev-set keyword refusals of the trial selected at KL budgets of 0.05, 0.1 and
+0.2 (Figure~\ref{fig:kl-budget}); Tables~\ref{tab:capability-main}
+and~\ref{tab:capability-small} list the benchmark scores
+(Figure~\ref{fig:capability}); and Tables~\ref{tab:teacher-forced-main}
+and~\ref{tab:teacher-forced-small} list the teacher-forced log-likelihood of
+each original model's answers and its shift under each selected model
+(Figure~\ref{fig:divergence}). The four $\gamma$-MPOA models, which
+Figures~\ref{fig:capability} and~\ref{fig:divergence} include, are not listed
+in these tables; their benchmark changes, dev KL and teacher-forced divergence
+are printed in Figure~\ref{fig:gmpoa-heldout}(b). Appendices~\ref{app:trunc256}
+and~\ref{app:dev-rescore} report the 256- and 100-token checks of H3 and the
+dev-set re-score of the released exports; Appendices~\ref{app:kl-cap},
+\ref{app:item-source} and~\ref{app:harm} report the KL-cap binding, the
+pair-level pooling and the two scales, the item-source analysis and harmful
+compliance as the outcome.
+% review revision 2026-11-06: navigation sentence for the new subsections D.3--D.5 (08g, 08h) added.
+% src (2026-11-06 fact-check pass): paper/tables/t2_capability_main.tex, t3_teacher_forced_main.tex (no gamma-MPOA rows;
+% written by scripts/make_results_tables.py, outside the editable tree); values: results/analysis/final_gmpoa_control.csv,
+% final_gmpoa_benchmarks.csv; paper/figures/captions.md (fig12 (b): benchmark deltas, dev KL, teacher-forced divergence)
+
+\begin{figure*}[tp]
+\centering
+\includegraphics[width=\textwidth]{figures/figA1_trials_old_generation.pdf}
+\caption{\textbf{All completed TPE trials of each optimisation run, older releases (dev set).} One panel per run (model $\times$ method, seed 1), laid out as in Figure~\ref{fig:pareto}; the older model of each pair heads its row. Each dot is one completed trial; the line is the run's Pareto front (dashed, hollow markers), the ring the trial chosen by the selection rule (fewest dev keyword refusals at KL $\le$ 0.1; count at the top right of the panel) and the grey star the original model (KL = 0). The x axis is logarithmic, with KL = 0 drawn at the left edge behind an axis break; the dotted line is the selection budget KL = 0.1. 2100 trials from 21 runs; the newer releases are in Figure~\ref{fig:trials-new}. Refusal counts are keyword matches on the 100 dev prompts that were also used for optimisation and selection, not held-out refusal rates.}
+\label{fig:trials-old}
+\end{figure*}
+% caption: paper/figures/captions.md (figA1_trials_old_generation)
+
+\begin{figure*}[tp]
+\centering
+\includegraphics[width=\textwidth]{figures/figA2_trials_new_generation.pdf}
+\caption{\textbf{All completed TPE trials of each optimisation run, newer releases (dev set).} One panel per run (model $\times$ method, seed 1), laid out as in Figure~\ref{fig:pareto}; the newer model of each pair heads its row. Each dot is one completed trial; the line is the run's Pareto front (solid, filled markers), the ring the trial chosen by the selection rule (fewest dev keyword refusals at KL $\le$ 0.1; count at the top right of the panel) and the grey star the original model (KL = 0). The x axis is logarithmic, with KL = 0 drawn at the left edge behind an axis break; the dotted line is the selection budget KL = 0.1. 2099 trials from 21 runs; the older releases are in Figure~\ref{fig:trials-old}. Refusal counts are keyword matches on the 100 dev prompts that were also used for optimisation and selection, not held-out refusal rates.}
+\label{fig:trials-new}
+\end{figure*}
+% caption: paper/figures/captions.md (figA2_trials_new_generation)
+
+\begin{figure*}[tp]
+\centering
+\includegraphics[width=\textwidth]{figures/figA3_community_releases.pdf}
+\caption{\textbf{Public community releases: capability change and divergence from the original.} The 8 community releases evaluated alongside the selected models (2 of older, 6 of newer models; row label = Hugging Face uploader), grouped by the original they were derived from. Left: benchmark score minus that of the same original, in percentage points, with the diverging scale of Figure~\ref{fig:capability} (saturating at $\pm$8 pp; printed values exact); the last column is the unweighted mean of the five benchmarks. Right: teacher-forced divergence on the 350 benign held-out prompts, defined as in Figure~\ref{fig:divergence} (0 = the original); hollow markers are releases of the older, filled of the newer model of a pair. The grey bar spans the divergences of this paper's selected models on the same original (all conditions of Figure~\ref{fig:divergence}). 6 of 8 releases lie above that range; divergences range from 0.026 (heretic-org, Qwen3.8-27B) to 0.191 (llmfan46, Mistral-Small-3.2) nats per token, and mean capability changes from $-$0.9 to +0.1 pp. The releases were made by third parties with their own methods and selection; they were not selected with this paper's rule and are not part of the H1--H3 tests.}
+\label{fig:community-releases}
+\end{figure*}
+% caption: paper/figures/captions.md (figA3_community_releases)
+
+\begin{figure*}[tp]
+\centering
+\includegraphics[width=\textwidth]{figures/figA4_search_convergence_runs.pdf}
+\caption{\textbf{Search-budget convergence of every optimisation run (dev set).} One step curve per run (seed 1): after trial $t$, the fewest dev keyword refusals (of 100) among trials 1 to $t$ with first-token KL divergence $\le$ 0.1 from the original, i.e. the count the selection rule would have returned had the search stopped at trial $t$. Rows are methods and columns the older and newer release of each pair, so that a panel holds at most five runs, each named at its right end; bottom row: J-space (small pair only) and $\gamma$-MPOA (Gemma and OLMo pairs only). Dashed lines with hollow markers are older, solid lines with filled markers newer releases; the marker sits where the run first reached the count it finally selected. Curves start at the run's first trial within the KL budget (trials 5--10 for ARA, 1--2 otherwise). The grey band marks the 30 random startup trials of the TPE sampler, the dotted line trial 75. The medians, spreads and first-reach histogram of the core runs are in Figure~\ref{fig:search-convergence}. All counts are keyword matches on the 100 dev prompts that were also used for search and selection, not held-out refusal rates.}
+\label{fig:search-runs}
+\end{figure*}
+% caption: paper/figures/captions.md (figA4_search_convergence_runs)
+
+\input{tables/t1_dev_refusals_main}
+
+\input{tables/t1_dev_refusals_small}
+
+% t2_capability_main.tex is 60pt wider than the text at \footnotesize; it is auto-generated (do not edit), so it
+% is set here with narrower column gaps and a 7.5pt font, local to this group.
+{\setlength{\tabcolsep}{3pt}\renewcommand{\footnotesize}{\fontsize{7.5}{9}\selectfont}%
+\input{tables/t2_capability_main}
+}
+
+\input{tables/t2_capability_small}
+
+\input{tables/t3_teacher_forced_main}
+
+\input{tables/t3_teacher_forced_small}

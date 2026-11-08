@@ -1,0 +1,43 @@
+% Revised 2026-11-06: external-tool scope (OBLITERATUS: Qwen2.5-7B only; jwest33: + Qwen3.5-4B); seed caveat with
+% the companion study's replicates.
+% Revised 2026-11-06 (draft v3): the selection-cap re-export is done (the "needs a GPU run" TODO is resolved); its remaining
+% limits stated (one study, one seed, one model, one cap, general direction only; code study not re-exportable because
+% its prompt files are missing: reexport_1x/VERSION.md "Inputs not in /data"); external tools no longer pending;
+% jwest33 Qwen3.5-4B: as-released run primary, hybrid-detection run sensitivity (author decision); 7B 1.x cells judged.
+\subsection{Limitations and Future Work}
+\label{sec:limitations}
+
+The evidence is narrower than the question. All base models of the main design are from one family (Qwen2.5), the
+like-for-like contrast rests on two base models, and Heretic~2.0 was not run on Qwen2.5-14B or the coder models. The
+selection-cap check rests on a single re-exported trial: one search with one seed on one model (Qwen2.5-32B), for the
+general direction only and at one cap (dev KL $\le$ 0.1). The 1.x code study could not be re-exported because its
+prompt files were not archived with the run records, the Qwen2.5-7B searches and intermediate caps were not re-exported, and the
+re-exported arm still differs from 2.0 DiM in trial budget, seed, system prompt, marker list and KL objective. The
+external tools were each run once at their documented default or recommended settings, without a search or a
+selection cap, so each cell describes one preset of one tool at an uncontrolled divergence rather than the best that
+tool can do. OBLITERATUS was evaluated on Qwen2.5-7B only, because it does not support Qwen3.5-4B, and jwest33's
+abliterator on Qwen2.5-7B and on Qwen3.5-4B, where the run as released is the primary cell and the run with the
+restored hybrid-architecture detection a sensitivity analysis; the Qwen3.5-4B comparison lies outside the main
+design and uses the companion study's Heretic~2.0 cells. Both tools' prompt pools partly overlap the held-out set
+(\S\ref{sec:external}). ErisForge, llm-abliteration and FailSpy are represented only by the keyword-based results of
+the earlier comparison. Each configuration contributed one search or run with one seed per model, so every test
+compares two released checkpoints, and differences of the size of the companion study's seed-to-seed variation (a
+standard deviation of about 13~pp for the difference between two independently optimised cells
+\cite{young2026harder}) cannot be attributed to the tool or version with confidence. Responses were greedy and
+limited to 512 tokens, so refusal later in long answers and sampling effects are not captured. Residual refusal
+measures willingness, not the usefulness of a harmful answer; the HarmBench classifier's compliance label is only a
+proxy \cite{carleo2026willing}. No human audit of the judged responses was done, so every rate is
+relative to the automatic judges; an audit of a stratified sample is left to future work. The 1.x code variant's prompt files could not
+be recovered (only the size of its dev set, 100 prompts, is recorded), so its overlap with the held-out code prompts was bounded by excluding all 41
+prompts from the same corpora rather than checked item by item. The procedures behind the community releases are
+undocumented.
+
+Five next steps follow directly. Re-exporting the archived 1.x trials at intermediate caps (dev KL 0.02 and 0.05) on
+Qwen2.5-32B and at the 2.0 cap on Qwen2.5-7B, and recovering the code study's prompt files so that its trials can be
+re-exported, would show how the held-out effect of the cap scales and whether it holds beyond one search. Running the
+2.0 DiM search with the 1.x trial budget, seed, system prompt and marker list, or the reverse, would separate these
+settings from the version once the cap is matched. A second search seed per arm, starting with the companion study's
+existing seed-2 Qwen2.5-7B cells, would show how much of each contrast exceeds search-to-search variation. Running
+the external tools across their documented settings, and at a divergence cap where the tool allows one, would
+separate preset from algorithm, and adding at least one non-Qwen family would test generality. Releases of
+abliterated models should state the selection rule and the divergence at which they were selected.

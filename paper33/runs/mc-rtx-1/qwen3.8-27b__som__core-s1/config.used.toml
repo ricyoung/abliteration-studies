@@ -1,0 +1,23 @@
+# heretic 2.0 — SOM multi-directional ablation (Piras et al. 2025, arXiv 2511.08379)
+# Plugin: heretic.modifiers.som.SOM (branch som-plugin of /data/heretic_2/heretic).
+# Defaults: 4x4 hexagonal SOM on harmful residuals, top-4 neurons by data wins,
+# projected + orthonormalized directions, full row normalization (MPOA-style).
+modifiers = [{ plugin = "heretic.modifiers.som.SOM" }]
+scorers = [
+  { plugin = "heretic.scorers.keyword_rate.KeywordRate", optimization = "minimize" },
+  { plugin = "heretic.scorers.kl_divergence.KLDivergence", optimization = "minimize" },
+]
+n_trials = 100
+n_startup_trials = 30
+
+[modifier.SOM]
+som_x = 4
+som_y = 4
+n_directions = 4
+som_iterations = 10000
+som_learning_rate = 0.01
+som_sigma = 0.5
+orthogonalize_direction = true
+orthonormalize_directions = true
+row_normalization = "full"
+full_normalization_lora_rank = 6

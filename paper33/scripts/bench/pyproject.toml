@@ -1,0 +1,20 @@
+[project]
+name = "paper33-bench"
+version = "0.1.0"
+description = "Capability benchmark runner (lm-eval + vLLM) for paper 33"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "lm-eval[vllm,hf,ifeval]==0.4.13",
+    "vllm==0.33.0",
+    "torch==2.14.0",
+    "transformers>=5.16.1,<5.21.0",
+    "accelerate",
+    "datasets",
+    "huggingface_hub",
+    "langdetect",
+    "immutabledict",
+    "nltk>=3.9.1",
+]
+
+[tool.uv]
+package = false

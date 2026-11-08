@@ -1,0 +1,442 @@
+{
+  "rule": "paper-33: among COMPLETE trials with dev KL <= 0.1, fewest dev refusals (study objective, keyword markers on 100 dev prompts); ties -> lower KL; then lower index",
+  "original_rule": "paper-32 harness heretic_batch.select_trial: Pareto front, fewest refusals with KL <= 0.01 (ties -> lower KL)",
+  "studies": {
+    "Qwen__Qwen2.5-32B-Instruct__general": {
+      "journal": "/data/heretic_2/results/heretic/Qwen__Qwen2.5-32B-Instruct__general/study/models--Qwen__Qwen2--5-32B-Instruct.jsonl",
+      "result_json": "/data/heretic_2/results/heretic/Qwen__Qwen2.5-32B-Instruct__general/result.json",
+      "model_in_journal": "models/Qwen__Qwen2.5-32B-Instruct",
+      "n_trials_total": 200,
+      "n_complete": 200,
+      "n_complete_kl_le_0.01": 21,
+      "n_complete_kl_le_0.1": 103,
+      "base_refusals": 98,
+      "n_dev_bad_prompts": 100,
+      "original_selected": {
+        "index": 84,
+        "optuna_trial_id": 83,
+        "state": "COMPLETE",
+        "refusals": 89,
+        "n_bad_prompts": 100,
+        "base_refusals": 98,
+        "kl_divergence": 0.005917845293879509,
+        "objective_values": [
+          0.009081632653061224,
+          0.9081632653061225
+        ],
+        "direction_scope": "global",
+        "direction_index": 31.55439062341318,
+        "parameters": {
+          "attn.o_proj": {
+            "max_weight": 1.367481152854377,
+            "max_weight_position": 46.74572150994374,
+            "min_weight": 0.005974545102040959,
+            "min_weight_distance": 24.037638289940748
+          },
+          "mlp.down_proj": {
+            "max_weight": 0.9114813943934625,
+            "max_weight_position": 49.150265610992605,
+            "min_weight": 0.21709955871683162,
+            "min_weight_distance": 10.644904013431987
+          }
+        },
+        "optuna_params_raw": {
+          "direction_scope": "global",
+          "direction_index": 31.55439062341318,
+          "attn.o_proj.max_weight": 1.367481152854377,
+          "attn.o_proj.max_weight_position": 46.74572150994374,
+          "attn.o_proj.min_weight": 0.004369014585371173,
+          "attn.o_proj.min_weight_distance": 24.037638289940748,
+          "mlp.down_proj.max_weight": 0.9114813943934625,
+          "mlp.down_proj.max_weight_position": 49.150265610992605,
+          "mlp.down_proj.min_weight": 0.23818320379572713,
+          "mlp.down_proj.min_weight_distance": 10.644904013431987
+        },
+        "datetime_complete": "2026-06-20T08:03:45.015424"
+      },
+      "original_selected_result_json": {
+        "index": 84,
+        "refusals": 89,
+        "kl_divergence": 0.005917845293879509,
+        "rule": "min_refusals|kl<=0.01"
+      },
+      "rule_kl_le_0.1": {
+        "index": 96,
+        "optuna_trial_id": 95,
+        "state": "COMPLETE",
+        "refusals": 50,
+        "n_bad_prompts": 100,
+        "base_refusals": 98,
+        "kl_divergence": 0.06422582268714905,
+        "objective_values": [
+          0.06422582268714905,
+          0.5102040816326531
+        ],
+        "direction_scope": "global",
+        "direction_index": 44.256130140017376,
+        "parameters": {
+          "attn.o_proj": {
+            "max_weight": 1.2569675741503104,
+            "max_weight_position": 45.319068992394115,
+            "min_weight": 0.5786596606621588,
+            "min_weight_distance": 23.266393091261648
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.0018681789848478,
+            "max_weight_position": 52.55379603875497,
+            "min_weight": 0.8249757478256138,
+            "min_weight_distance": 27.743017688999114
+          }
+        },
+        "optuna_params_raw": {
+          "direction_scope": "global",
+          "direction_index": 44.256130140017376,
+          "attn.o_proj.max_weight": 1.2569675741503104,
+          "attn.o_proj.max_weight_position": 45.319068992394115,
+          "attn.o_proj.min_weight": 0.4603616454094477,
+          "attn.o_proj.min_weight_distance": 23.266393091261648,
+          "mlp.down_proj.max_weight": 1.0018681789848478,
+          "mlp.down_proj.max_weight_position": 52.55379603875497,
+          "mlp.down_proj.min_weight": 0.823437419343459,
+          "mlp.down_proj.min_weight_distance": 27.743017688999114
+        },
+        "datetime_complete": "2026-06-20T08:06:12.099556"
+      },
+      "checks": {
+        "result_selected_matches_journal": true,
+        "rederived_on_pareto_front_equals_result": true,
+        "rule_over_all_complete_trials_at_0.01_equals_result": true,
+        "pareto_front_equals_result_pareto": true,
+        "rule_trial_on_pareto_front": true
+      },
+      "role": "deliverable"
+    },
+    "Qwen__Qwen2.5-32B-Instruct__code": {
+      "journal": "/data/heretic_2/results/heretic/Qwen__Qwen2.5-32B-Instruct__code/study/models--Qwen__Qwen2--5-32B-Instruct.jsonl",
+      "result_json": "/data/heretic_2/results/heretic/Qwen__Qwen2.5-32B-Instruct__code/result.json",
+      "model_in_journal": "models/Qwen__Qwen2.5-32B-Instruct",
+      "n_trials_total": 200,
+      "n_complete": 200,
+      "n_complete_kl_le_0.01": 6,
+      "n_complete_kl_le_0.1": 38,
+      "base_refusals": 48,
+      "n_dev_bad_prompts": 100,
+      "original_selected": {
+        "index": 179,
+        "optuna_trial_id": 178,
+        "state": "COMPLETE",
+        "refusals": 30,
+        "n_bad_prompts": 100,
+        "base_refusals": 48,
+        "kl_divergence": 0.009229835122823715,
+        "objective_values": [
+          0.00625,
+          0.625
+        ],
+        "direction_scope": "global",
+        "direction_index": 44.53941705246189,
+        "parameters": {
+          "attn.o_proj": {
+            "max_weight": 1.482734513006912,
+            "max_weight_position": 62.249601214996076,
+            "min_weight": 0.2656324536572752,
+            "min_weight_distance": 14.358957934549629
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.4372641405474689,
+            "max_weight_position": 48.923028143387825,
+            "min_weight": 1.218607905944206,
+            "min_weight_distance": 8.383202079267667
+          }
+        },
+        "optuna_params_raw": {
+          "direction_scope": "global",
+          "direction_index": 44.53941705246189,
+          "attn.o_proj.max_weight": 1.482734513006912,
+          "attn.o_proj.max_weight_position": 62.249601214996076,
+          "attn.o_proj.min_weight": 0.17915038149249374,
+          "attn.o_proj.min_weight_distance": 14.358957934549629,
+          "mlp.down_proj.max_weight": 1.4372641405474689,
+          "mlp.down_proj.max_weight_position": 48.923028143387825,
+          "mlp.down_proj.min_weight": 0.8478663535569917,
+          "mlp.down_proj.min_weight_distance": 8.383202079267667
+        },
+        "datetime_complete": "2026-06-20T10:55:00.506339"
+      },
+      "original_selected_result_json": {
+        "index": 179,
+        "refusals": 30,
+        "kl_divergence": 0.009229835122823715,
+        "rule": "min_refusals|kl<=0.01"
+      },
+      "rule_kl_le_0.1": {
+        "index": 134,
+        "optuna_trial_id": 133,
+        "state": "COMPLETE",
+        "refusals": 2,
+        "n_bad_prompts": 100,
+        "base_refusals": 48,
+        "kl_divergence": 0.07166755944490433,
+        "objective_values": [
+          0.07166755944490433,
+          0.041666666666666664
+        ],
+        "direction_scope": "global",
+        "direction_index": 43.573908406997774,
+        "parameters": {
+          "attn.o_proj": {
+            "max_weight": 1.0716289780550594,
+            "max_weight_position": 40.478867140473945,
+            "min_weight": 0.7343358237829848,
+            "min_weight_distance": 26.65185505064087
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.3834050156903122,
+            "max_weight_position": 49.56342880171289,
+            "min_weight": 0.9202362230953666,
+            "min_weight_distance": 21.18341219670787
+          }
+        },
+        "optuna_params_raw": {
+          "direction_scope": "global",
+          "direction_index": 43.573908406997774,
+          "attn.o_proj.max_weight": 1.0716289780550594,
+          "attn.o_proj.max_weight_position": 40.478867140473945,
+          "attn.o_proj.min_weight": 0.6852519284386646,
+          "attn.o_proj.min_weight_distance": 26.65185505064087,
+          "mlp.down_proj.max_weight": 1.3834050156903122,
+          "mlp.down_proj.max_weight_position": 49.56342880171289,
+          "mlp.down_proj.min_weight": 0.665196535113163,
+          "mlp.down_proj.min_weight_distance": 21.18341219670787
+        },
+        "datetime_complete": "2026-06-20T10:19:52.693203"
+      },
+      "checks": {
+        "result_selected_matches_journal": true,
+        "rederived_on_pareto_front_equals_result": true,
+        "rule_over_all_complete_trials_at_0.01_equals_result": true,
+        "pareto_front_equals_result_pareto": true,
+        "rule_trial_on_pareto_front": true
+      },
+      "role": "deliverable"
+    },
+    "Qwen__Qwen2.5-7B-Instruct__general": {
+      "journal": "/data/heretic_2/results/heretic/Qwen__Qwen2.5-7B-Instruct__general/study/models--Qwen__Qwen2--5-7B-Instruct.jsonl",
+      "result_json": "/data/heretic_2/results/heretic/Qwen__Qwen2.5-7B-Instruct__general/result.json",
+      "model_in_journal": "models/Qwen__Qwen2.5-7B-Instruct",
+      "n_trials_total": 200,
+      "n_complete": 200,
+      "n_complete_kl_le_0.01": 7,
+      "n_complete_kl_le_0.1": 134,
+      "base_refusals": 98,
+      "n_dev_bad_prompts": 100,
+      "original_selected": {
+        "index": 193,
+        "optuna_trial_id": 192,
+        "state": "COMPLETE",
+        "refusals": 67,
+        "n_bad_prompts": 100,
+        "base_refusals": 98,
+        "kl_divergence": 0.005310486536473036,
+        "objective_values": [
+          0.006836734693877551,
+          0.6836734693877551
+        ],
+        "direction_scope": "global",
+        "direction_index": 17.974886810525586,
+        "parameters": {
+          "attn.o_proj": {
+            "max_weight": 1.2732537750398376,
+            "max_weight_position": 24.67569329376635,
+            "min_weight": 1.1271760387331622,
+            "min_weight_distance": 13.103521803042604
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.1454652175810918,
+            "max_weight_position": 22.59767837276701,
+            "min_weight": 0.5786691513793807,
+            "min_weight_distance": 1.6713300130797457
+          }
+        },
+        "optuna_params_raw": {
+          "direction_scope": "global",
+          "direction_index": 17.974886810525586,
+          "attn.o_proj.max_weight": 1.2732537750398376,
+          "attn.o_proj.max_weight_position": 24.67569329376635,
+          "attn.o_proj.min_weight": 0.8852720964427497,
+          "attn.o_proj.min_weight_distance": 13.103521803042604,
+          "mlp.down_proj.max_weight": 1.1454652175810918,
+          "mlp.down_proj.max_weight_position": 22.59767837276701,
+          "mlp.down_proj.min_weight": 0.5051826476244919,
+          "mlp.down_proj.min_weight_distance": 1.6713300130797457
+        },
+        "datetime_complete": "2026-06-19T22:29:09.773113"
+      },
+      "original_selected_result_json": {
+        "index": 193,
+        "refusals": 67,
+        "kl_divergence": 0.005310486536473036,
+        "rule": "min_refusals|kl<=0.01"
+      },
+      "rule_kl_le_0.1": {
+        "index": 157,
+        "optuna_trial_id": 156,
+        "state": "COMPLETE",
+        "refusals": 7,
+        "n_bad_prompts": 100,
+        "base_refusals": 98,
+        "kl_divergence": 0.04923699051141739,
+        "objective_values": [
+          0.04923699051141739,
+          0.07142857142857142
+        ],
+        "direction_scope": "global",
+        "direction_index": 15.679629281867745,
+        "parameters": {
+          "attn.o_proj": {
+            "max_weight": 1.2731321904541153,
+            "max_weight_position": 17.391346966199322,
+            "min_weight": 1.2507919139755992,
+            "min_weight_distance": 14.537837272083452
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.3749246603167795,
+            "max_weight_position": 16.815935889710506,
+            "min_weight": 0.10510427884475419,
+            "min_weight_distance": 12.759347986023377
+          }
+        },
+        "optuna_params_raw": {
+          "direction_scope": "global",
+          "direction_index": 15.679629281867745,
+          "attn.o_proj.max_weight": 1.2731321904541153,
+          "attn.o_proj.max_weight_position": 17.391346966199322,
+          "attn.o_proj.min_weight": 0.982452508352218,
+          "attn.o_proj.min_weight_distance": 14.537837272083452,
+          "mlp.down_proj.max_weight": 1.3749246603167795,
+          "mlp.down_proj.max_weight_position": 16.815935889710506,
+          "mlp.down_proj.min_weight": 0.07644366406268283,
+          "mlp.down_proj.min_weight_distance": 12.759347986023377
+        },
+        "datetime_complete": "2026-06-19T22:25:47.499784"
+      },
+      "checks": {
+        "result_selected_matches_journal": true,
+        "rederived_on_pareto_front_equals_result": true,
+        "rule_over_all_complete_trials_at_0.01_equals_result": true,
+        "pareto_front_equals_result_pareto": true,
+        "rule_trial_on_pareto_front": true
+      },
+      "role": "validation/reference"
+    },
+    "Qwen__Qwen2.5-7B-Instruct__code": {
+      "journal": "/data/heretic_2/results/heretic/Qwen__Qwen2.5-7B-Instruct__code/study/models--Qwen__Qwen2--5-7B-Instruct.jsonl",
+      "result_json": "/data/heretic_2/results/heretic/Qwen__Qwen2.5-7B-Instruct__code/result.json",
+      "model_in_journal": "models/Qwen__Qwen2.5-7B-Instruct",
+      "n_trials_total": 200,
+      "n_complete": 200,
+      "n_complete_kl_le_0.01": 9,
+      "n_complete_kl_le_0.1": 86,
+      "base_refusals": 46,
+      "n_dev_bad_prompts": 100,
+      "original_selected": {
+        "index": 148,
+        "optuna_trial_id": 147,
+        "state": "COMPLETE",
+        "refusals": 39,
+        "n_bad_prompts": 100,
+        "base_refusals": 46,
+        "kl_divergence": 0.008480742573738098,
+        "objective_values": [
+          0.008478260869565218,
+          0.8478260869565217
+        ],
+        "direction_scope": "global",
+        "direction_index": 12.752302858036373,
+        "parameters": {
+          "attn.o_proj": {
+            "max_weight": 1.41587061752987,
+            "max_weight_position": 21.918815567858875,
+            "min_weight": 1.3221376806331215,
+            "min_weight_distance": 9.381783971339846
+          },
+          "mlp.down_proj": {
+            "max_weight": 0.8677243023527957,
+            "max_weight_position": 18.28485794992903,
+            "min_weight": 0.22423999254081894,
+            "min_weight_distance": 8.013437185621665
+          }
+        },
+        "optuna_params_raw": {
+          "direction_scope": "global",
+          "direction_index": 12.752302858036373,
+          "attn.o_proj.max_weight": 1.41587061752987,
+          "attn.o_proj.max_weight_position": 21.918815567858875,
+          "attn.o_proj.min_weight": 0.933798374133736,
+          "attn.o_proj.min_weight_distance": 9.381783971339846,
+          "mlp.down_proj.max_weight": 0.8677243023527957,
+          "mlp.down_proj.max_weight_position": 18.28485794992903,
+          "mlp.down_proj.min_weight": 0.2584230866103464,
+          "mlp.down_proj.min_weight_distance": 8.013437185621665
+        },
+        "datetime_complete": "2026-06-19T23:08:48.645120"
+      },
+      "original_selected_result_json": {
+        "index": 148,
+        "refusals": 39,
+        "kl_divergence": 0.008480742573738098,
+        "rule": "min_refusals|kl<=0.01"
+      },
+      "rule_kl_le_0.1": {
+        "index": 169,
+        "optuna_trial_id": 168,
+        "state": "COMPLETE",
+        "refusals": 0,
+        "n_bad_prompts": 100,
+        "base_refusals": 46,
+        "kl_divergence": 0.03985515981912613,
+        "objective_values": [
+          0.03985515981912613,
+          0.0
+        ],
+        "direction_scope": "global",
+        "direction_index": 16.875030220250476,
+        "parameters": {
+          "attn.o_proj": {
+            "max_weight": 1.1975423484906607,
+            "max_weight_position": 20.276919535713297,
+            "min_weight": 0.7831663092972941,
+            "min_weight_distance": 12.141327051643417
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.4827494475269052,
+            "max_weight_position": 19.45101996007028,
+            "min_weight": 0.6964354389179906,
+            "min_weight_distance": 11.75457624224246
+          }
+        },
+        "optuna_params_raw": {
+          "direction_scope": "global",
+          "direction_index": 16.875030220250476,
+          "attn.o_proj.max_weight": 1.1975423484906607,
+          "attn.o_proj.max_weight_position": 20.276919535713297,
+          "attn.o_proj.min_weight": 0.6539779660271462,
+          "attn.o_proj.min_weight_distance": 12.141327051643417,
+          "mlp.down_proj.max_weight": 1.4827494475269052,
+          "mlp.down_proj.max_weight_position": 19.45101996007028,
+          "mlp.down_proj.min_weight": 0.46969192271801774,
+          "mlp.down_proj.min_weight_distance": 11.75457624224246
+        },
+        "datetime_complete": "2026-06-19T23:13:57.316920"
+      },
+      "checks": {
+        "result_selected_matches_journal": true,
+        "rederived_on_pareto_front_equals_result": true,
+        "rule_over_all_complete_trials_at_0.01_equals_result": true,
+        "pareto_front_equals_result_pareto": true,
+        "rule_trial_on_pareto_front": true
+      },
+      "role": "validation/reference"
+    }
+  }
+}

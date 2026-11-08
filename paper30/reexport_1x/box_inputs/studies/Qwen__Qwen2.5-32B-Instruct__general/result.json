@@ -1,0 +1,77 @@
+{
+  "model": "models/Qwen__Qwen2.5-32B-Instruct",
+  "config": "configs/heretic_general.toml",
+  "out": "results/heretic/Qwen__Qwen2.5-32B-Instruct__general",
+  "kl_max": 0.01,
+  "seed": 0,
+  "budget_met": true,
+  "selected": {
+    "index": 84,
+    "refusals": 89,
+    "kl_divergence": 0.005917845293879509,
+    "rule": "min_refusals|kl<=0.01"
+  },
+  "pareto": [
+    {
+      "index": 163,
+      "refusals": 47,
+      "kl_divergence": 0.10343653708696365
+    },
+    {
+      "index": 96,
+      "refusals": 50,
+      "kl_divergence": 0.06422582268714905
+    },
+    {
+      "index": 136,
+      "refusals": 55,
+      "kl_divergence": 0.060738056898117065
+    },
+    {
+      "index": 184,
+      "refusals": 59,
+      "kl_divergence": 0.05982542410492897
+    },
+    {
+      "index": 74,
+      "refusals": 60,
+      "kl_divergence": 0.05648328736424446
+    },
+    {
+      "index": 79,
+      "refusals": 75,
+      "kl_divergence": 0.04634733498096466
+    },
+    {
+      "index": 81,
+      "refusals": 80,
+      "kl_divergence": 0.035460732877254486
+    },
+    {
+      "index": 176,
+      "refusals": 87,
+      "kl_divergence": 0.01224733516573906
+    },
+    {
+      "index": 84,
+      "refusals": 89,
+      "kl_divergence": 0.005917845293879509
+    },
+    {
+      "index": 27,
+      "refusals": 93,
+      "kl_divergence": 0.004029096569865942
+    },
+    {
+      "index": 85,
+      "refusals": 94,
+      "kl_divergence": 0.002487430116161704
+    },
+    {
+      "index": 162,
+      "refusals": 97,
+      "kl_divergence": 0.0017334793228656054
+    }
+  ],
+  "adapter_dir": "results/heretic/Qwen__Qwen2.5-32B-Instruct__general/adapter"
+}

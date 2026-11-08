@@ -1,0 +1,12 @@
+# heretic 2.0 — classic diff-in-means abliteration (no projection, no norm preservation)
+modifiers = [{ plugin = "heretic.modifiers.abliteration.Abliteration" }]
+scorers = [
+  { plugin = "heretic.scorers.keyword_rate.KeywordRate", optimization = "minimize" },
+  { plugin = "heretic.scorers.kl_divergence.KLDivergence", optimization = "minimize" },
+]
+n_trials = 100
+n_startup_trials = 30
+
+[modifier.Abliteration]
+orthogonalize_direction = false
+row_normalization = "none"

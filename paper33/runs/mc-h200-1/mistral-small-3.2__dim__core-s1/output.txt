@@ -1,0 +1,121 @@
+10:12:33 █░█░█▀▀░█▀▄░█▀▀░▀█▀░█░█▀▀  v2.0.0
+10:12:33 █▀█░█▀▀░█▀▄░█▀▀░░█░░█░█░░  https://heretic-project.org
+10:12:33 ▀░▀░▀▀▀░▀░▀░▀▀▀░░▀░░▀░▀▀▀  https://github.com/p-e-w/heretic
+10:12:33 
+10:12:33 Detected 1 CUDA device(s) (139.80 GB total VRAM)
+10:12:33 CUDA Version: 13.0
+10:12:33 Driver Version: 580.126.09
+10:12:33 * CUDA 0: NVIDIA H200 NVL (139.80 GB)
+10:12:33 
+10:12:33 Loading model mistralai/Mistral-Small-3.2-24B-Instruct-2506...
+10:12:35 ╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+10:12:35 │ /workspace/paper33/heretic/.venv/bin/heretic:10 in <module>                  │
+10:12:35 │                                                                              │
+10:12:35 │    7 │   │   sys.argv[0] = sys.argv[0][:-11]                                 │
+10:12:35 │    8 │   elif sys.argv[0].endswith(".exe"):                                  │
+10:12:35 │    9 │   │   sys.argv[0] = sys.argv[0][:-4]                                  │
+10:12:35 │ ❱ 10 │   sys.exit(main())                                                    │
+10:12:35 │   11                                                                         │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/src/heretic/main.py:1474 in main                  │
+10:12:35 │                                                                              │
+10:12:35 │   1471 │   install()                                                         │
+10:12:35 │   1472 │                                                                     │
+10:12:35 │   1473 │   try:                                                              │
+10:12:35 │ ❱ 1474 │   │   run()                                                         │
+10:12:35 │   1475 │   except BaseException as error:                                    │
+10:12:35 │   1476 │   │   # Transformers appears to handle KeyboardInterrupt (or BaseEx │
+10:12:35 │   1477 │   │   # internally in some places, which can re-raise a different e │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/src/heretic/main.py:414 in run                    │
+10:12:35 │                                                                              │
+10:12:35 │    411 │   │   │   backend = JournalFileBackend(study_checkpoint_file, lock_ │
+10:12:35 │    412 │   │   │   storage = JournalStorage(backend)                         │
+10:12:35 │    413 │                                                                     │
+10:12:35 │ ❱  414 │   model = Model(settings)                                           │
+10:12:35 │    415 │   print()                                                           │
+10:12:35 │    416 │   print_memory_usage()                                              │
+10:12:35 │    417                                                                       │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/src/heretic/model.py:145 in __init__              │
+10:12:35 │                                                                              │
+10:12:35 │   142 │   │   # Multimodal models have a processor we'll want to save.       │
+10:12:35 │   143 │   │   self.processor = None                                          │
+10:12:35 │   144 │   │   if get_model_class(settings.model) == AutoModelForImageTextToT │
+10:12:35 │ ❱ 145 │   │   │   self.processor = AutoProcessor.from_pretrained(            │
+10:12:35 │   146 │   │   │   │   settings.model,                                        │
+10:12:35 │   147 │   │   │   │   **self.revision_kwargs,                                │
+10:12:35 │   148 │   │   │   )                                                          │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+10:12:35 │ odels/auto/processing_auto.py:351 in from_pretrained                         │
+10:12:35 │                                                                              │
+10:12:35 │   348 │   │   │   )                                                          │
+10:12:35 │   349 │   │   # Last try: we use the PROCESSOR_MAPPING.                      │
+10:12:35 │   350 │   │   elif type(config) in PROCESSOR_MAPPING:                        │
+10:12:35 │ ❱ 351 │   │   │   return PROCESSOR_MAPPING[type(config)].from_pretrained(pre │
+10:12:35 │   352 │   │                                                                  │
+10:12:35 │   353 │   │   # At this stage, there doesn't seem to be a `Processor` class  │
+10:12:35 │   354 │   │   # Let's try the commonly available classes                     │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/p │
+10:12:35 │ rocessing_utils.py:1754 in from_pretrained                                   │
+10:12:35 │                                                                              │
+10:12:35 │   1751 │   │                                                                 │
+10:12:35 │   1752 │   │   # Get processor_dict first so we can use it to instantiate no │
+10:12:35 │   1753 │   │   processor_dict, instantiation_kwargs = cls.get_processor_dict │
+10:12:35 │ ❱ 1754 │   │   args = cls._get_arguments_from_pretrained(pretrained_model_na │
+10:12:35 │   1755 │   │   return cls.from_args_and_dict(args, processor_dict, **instant │
+10:12:35 │   1756 │                                                                     │
+10:12:35 │   1757 │   @classmethod                                                      │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/p │
+10:12:35 │ rocessing_utils.py:1894 in _get_arguments_from_pretrained                    │
+10:12:35 │                                                                              │
+10:12:35 │   1891 │   │   │   │   │   │   f"which is deprecated. Register the correct m │
+10:12:35 │   1892 │   │   │   │   │   )                                                 │
+10:12:35 │   1893 │   │   │   │   │   auto_processor_class = cls.get_possibly_dynamic_m │
+10:12:35 │ ❱ 1894 │   │   │   │   sub_processor = auto_processor_class.from_pretrained( │
+10:12:35 │   1895 │   │   │   │   │   pretrained_model_name_or_path, subfolder=subfolde │
+10:12:35 │   1896 │   │   │   │   )                                                     │
+10:12:35 │   1897 │   │   │   │   args.append(sub_processor)                            │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+10:12:35 │ odels/auto/image_processing_auto.py:630 in from_pretrained                   │
+10:12:35 │                                                                              │
+10:12:35 │   627 │   │   │   │   raise initial_exception                                │
+10:12:35 │   628 │   │   │                                                              │
+10:12:35 │   629 │   │   │   if not is_timm_config_dict(config_dict):                   │
+10:12:35 │ ❱ 630 │   │   │   │   raise initial_exception                                │
+10:12:35 │   631 │   │                                                                  │
+10:12:35 │   632 │   │   image_processor_type = config_dict.get("image_processor_type", │
+10:12:35 │   633 │   │   image_processor_auto_map = None                                │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+10:12:35 │ odels/auto/image_processing_auto.py:617 in from_pretrained                   │
+10:12:35 │                                                                              │
+10:12:35 │   614 │   │   # Load the image processor config                              │
+10:12:35 │   615 │   │                                                                  │
+10:12:35 │   616 │   │   try:                                                           │
+10:12:35 │ ❱ 617 │   │   │   config_dict, _ = ImageProcessingMixin.get_image_processor_ │
+10:12:35 │   618 │   │   │   │   pretrained_model_name_or_path, image_processor_filenam │
+10:12:35 │   619 │   │   │   )                                                          │
+10:12:35 │   620 │   │   except Exception as initial_exception:                         │
+10:12:35 │                                                                              │
+10:12:35 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/i │
+10:12:35 │ mage_processing_base.py:350 in get_image_processor_dict                      │
+10:12:35 │                                                                              │
+10:12:35 │   347 │   │   │   image_processor_dict = safe_load_json_file(resolved_image_ │
+10:12:35 │   348 │   │                                                                  │
+10:12:35 │   349 │   │   if image_processor_dict is None:                               │
+10:12:35 │ ❱ 350 │   │   │   raise OSError(                                             │
+10:12:35 │   351 │   │   │   │   f"Can't load image processor for '{pretrained_model_na │
+10:12:35 │   352 │   │   │   │   " it from 'https://huggingface.co/models', make sure y │
+10:12:35 │   353 │   │   │   │   f" same name. Otherwise, make sure '{pretrained_model_ │
+10:12:35 ╰──────────────────────────────────────────────────────────────────────────────╯
+10:12:35 OSError: Can't load image processor for 
+10:12:35 'mistralai/Mistral-Small-3.2-24B-Instruct-2506'. If you were trying to load it 
+10:12:35 from 'https://huggingface.co/models', make sure you don't have a local directory
+10:12:35 with the same name. Otherwise, make sure 
+10:12:35 'mistralai/Mistral-Small-3.2-24B-Instruct-2506' is the correct path to a 
+10:12:35 directory containing a preprocessor_config.json file

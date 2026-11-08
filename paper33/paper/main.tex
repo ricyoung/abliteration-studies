@@ -1,0 +1,198 @@
+% ============================================================
+% PAPER TEMPLATE — PRIMEarxiv (arXiv + Overleaf ready)
+% ============================================================
+% WORKFLOW:
+%   1. Copy this entire 00_template/ directory to a new folder
+%   2. Rename the folder to your paper name
+%   3. Edit PAPER METADATA below (title, authors, running header)
+%   4. Fill in each sections/XX_*.tex file
+%   5. Add figures to figures/ as figN_descriptive_name.pdf
+%   6. Add references to references.bib
+%   7. Compile:
+%        pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex
+%      Or: latexmk -pdf main.tex
+%   8. For arXiv submission, zip:
+%        main.tex + sections/ + figures/ + PRIMEarxiv.sty
+%        + references.bib + main.bbl + 00README.json
+%
+% WRITING GUIDE: See WRITING_GUIDE.md for structure, abstract
+%   formula, 4-paragraph intro pattern, and section-level guidance.
+% ============================================================
+
+\documentclass{article}
+
+% --- Core style ---
+\usepackage{PRIMEarxiv}
+
+% --- Encoding ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% --- Links ---
+\usepackage{url}
+
+% --- Tables ---
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% --- Figures ---
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{{figures/}}
+
+% --- Math ---
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+
+% --- Typography ---
+\usepackage{microtype}
+
+% --- Color ---
+\usepackage{xcolor}
+\usepackage{colortbl}
+
+% --- Header/footer ---
+\usepackage{fancyhdr}
+
+% --- Hyperref (loaded last, after float/xcolor/colortbl/fancyhdr, so that float anchors are unique) ---
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\raggedbottom
+
+% --- Draft markers (remove before submission: grep -n todo sections/*.tex) ---
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+% ============================================================
+% PAPER METADATA — edit these for each new paper
+% ============================================================
+\pagestyle{fancy}
+\thispagestyle{empty}
+\rhead{\textit{ }}
+
+% Running header (short title for page headers)
+\fancyhead[LO]{Is Abliteration Getting Harder?}
+
+% Full title
+% 2026-11-06 review revision (author decision B): subtitle replaced; previous title "Is Abliteration Getting Harder?
+% Directional vs. Optimization-Based Refusal Removal Across Generations of Open-Weight LLMs" (main.tex.bak-20261106-rev).
+\title{Is Abliteration Getting Harder?\\ Evidence from Four Open-Weight Model Families}
+
+% Authors
+\author{
+  Richard J. Young \\
+  University of Nevada Las Vegas \\
+  Department of Information Systems \\
+  Las Vegas, NV, USA \\
+  \texttt{ryoung@unlv.edu} \\
+  %
+  % For multi-author papers, add co-authors with \And:
+  %
+  % \And
+  % Co-Author Name \\
+  % Institution \\
+  % Department \\
+  % City, State, Country \\
+  % \texttt{email@example.com} \\
+}
+
+% ============================================================
+\begin{document}
+\maketitle
+
+% ============================================================
+% ABSTRACT
+% ============================================================
+\begin{abstract}
+\input{sections/01_abstract}
+\end{abstract}
+
+% Keywords — separate with \and
+\keywords{Abliteration \and Refusal Removal \and Refusal Direction \and Open-Weight LLMs \and LLM Safety \and Model Editing}
+
+% ============================================================
+% BODY
+% ============================================================
+\input{sections/02_introduction}
+\input{sections/03_related_work}
+\input{sections/04_methods}
+\input{sections/05_results}
+\input{sections/06_discussion}   % \input{sections/06b_limitations} inside
+\input{sections/07_conclusion}
+
+% ============================================================
+% ACKNOWLEDGMENTS (optional — uncomment as needed)
+% ============================================================
+% \section*{Acknowledgments}
+% The authors thank ...
+
+% ============================================================
+% ETHICS STATEMENT (optional — uncomment as needed)
+% ============================================================
+\section*{Ethics Statement}
+% 2026-11-06 review revision (reviewer C7; task item 9): DRAFT replacing the two former todos ("align with
+% sec:setup-ethics once the human-audit decision is made"; "final dual-use statement"). Revise the first sentence if a
+% human audit of the judge labels is added (the human-audit todo stays in sec:setup-ethics).
+% src: results/analysis/final_community_vs_selected.csv (rows with ours_is_best_wg: qwen2.5-32b huihui 1.3% and zetasepic
+% src: 1.1% vs MPOA 3.9%; qwen3.8-27b huihui 1.4% vs MPOA 14.0%; olmo-3.1-32b MuXodious 0.7% vs ARA 10.8%, all p_holm < 0.001;
+% src: gemma-4-31b coder3101 0.9% vs ARA 0.6%, p_holm 0.51; mistral-small-3.2 huihui 5.0% vs MPOA 4.0%, p_holm 0.44);
+% src: sections/08b_setup_details.tex (Export and Release: base licences); sections/04_methods.tex (Ethics: responses private).
+The study involved no human participants and no personal data and was not
+human-subjects research, so no IRB review was required. It creates and
+releases language models whose refusal behaviour has been removed, which is
+dual-use. The marginal risk of this release is limited. For each of the five
+checkpoints for which a public abliteration was evaluated, a public release
+already had held-out residual refusal not significantly different from
+(Gemma-4-31B and Mistral-Small-3.2) or lower than (Qwen2.5-32B,
+Qwen3.8-27B and Olmo-3.1-32B) that of the most effective model released here
+(\S\ref{sec:res-secondary}, Figure~\ref{fig:community}). For the other five
+checkpoints (Gemma-2-27B, OLMo-2-32B, Mistral-Small-2409, Qwen2.5-7B and
+Qwen3.5-4B) no public release was evaluated, so the argument does not extend
+to them. Responses to harmful prompts are stored privately for scoring and are
+not released. Released models keep the licence and use policy of their base
+model; models whose base is licensed under Apache-2.0 additionally carry the
+use restrictions of the OpenRAIL++-M licence.
+
+% ============================================================
+% DATA AND CODE AVAILABILITY (optional — uncomment as needed)
+% ============================================================
+\section*{Data and Code Availability}
+% 2026-11-06 review revision (task item 9): release contents DRAFTED; the GitHub/Zenodo todo stays.
+% src: sections/08b_setup_details.tex (fork branches paper33-plugins @ 8fd4d76 and paper33-gamma @ fdfe54b; "Journals,
+% src: configurations and logs are kept for every run"); sections/04_methods.tex (responses not released).
+The 42 primary models and the four $\gamma$-MPOA control models are public on
+Hugging Face under \url{https://huggingface.co/richardyoung}
+(\texttt{<base>-<METHOD>-heretic}). The release of code and data consists of
+the code (the Heretic fork branches \texttt{paper33-plugins} and
+\texttt{paper33-gamma}, the evaluation harness and the analysis scripts), the
+configuration of every run, the Optuna study journals and run logs, and the
+judged labels of every held-out response (judge, keyword and degeneracy labels
+per prompt and model, without the response text). The held-out prompts come
+from the public sets of Table~\ref{tab:refusal-sets}. The analysis code,
+harness, configurations, journals, logs and labels are at
+\url{https://github.com/ricyoung/abliteration-studies}, and the fork branches
+at \url{https://github.com/ricyoung/heretic}. The Heretic fork is released
+under AGPL-3.0, the licence of upstream Heretic; the other code and the data
+are released under OpenRAIL++-M. \todo{Zenodo DOI of the archived release}
+
+% ============================================================
+% REFERENCES
+% ============================================================
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+% ============================================================
+% APPENDIX (optional — uncomment to include)
+% ============================================================
+\newpage
+\appendix
+\input{sections/08_appendix}
+
+\end{document}

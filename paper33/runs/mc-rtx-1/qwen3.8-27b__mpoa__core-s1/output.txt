@@ -1,0 +1,873 @@
+21:19:22 █░█░█▀▀░█▀▄░█▀▀░▀█▀░█░█▀▀  v2.0.0
+21:19:22 █▀█░█▀▀░█▀▄░█▀▀░░█░░█░█░░  https://heretic-project.org
+21:19:22 ▀░▀░▀▀▀░▀░▀░▀▀▀░░▀░░▀░▀▀▀  https://github.com/p-e-w/heretic
+21:19:22 
+21:19:22 Detected 1 CUDA device(s) (139.80 GB total VRAM)
+21:19:22 CUDA Version: 13.0
+21:19:22 Driver Version: 580.126.09
+21:19:22 * CUDA 0: NVIDIA H200 NVL (139.80 GB)
+21:19:22 
+21:19:22 Loading model Qwen/Qwen3.8-27B...
+21:19:23 * Trying dtype auto...
+21:19:29 Loading weights:   0%|          | 0/1184 [00:00<?, ?it/s]Loading weights:   0%|          | 1/1184 [00:00<03:39,  5.40it/s]Loading weights:   0%|          | 2/1184 [00:00<04:10,  4.73it/s]Loading weights:   2%|▏         | 27/1184 [00:00<00:15, 73.31it/s]Loading weights:   4%|▍         | 46/1184 [00:00<00:10, 104.93it/s]Loading weights:   6%|▌         | 67/1184 [00:00<00:08, 124.13it/s]Loading weights:   8%|▊         | 93/1184 [00:00<00:06, 160.95it/s]Loading weights:   9%|▉         | 112/1184 [00:00<00:06, 161.68it/s]Loading weights:  11%|█         | 133/1184 [00:01<00:06, 171.95it/s]Loading weights:  13%|█▎        | 152/1184 [00:01<00:06, 169.43it/s]Loading weights:  14%|█▍        | 170/1184 [00:01<00:06, 167.21it/s]Loading weights:  17%|█▋        | 197/1184 [00:01<00:05, 194.54it/s]Loading weights:  18%|█▊        | 218/1184 [00:01<00:05, 184.96it/s]Loading weights:  20%|██        | 239/1184 [00:01<00:04, 189.72it/s]Loading weights:  22%|██▏       | 259/1184 [00:01<00:05, 175.21it/s]Loading weights:  24%|██▎       | 280/1184 [00:01<00:04, 183.60it/s]Loading weights:  26%|██▌       | 306/1184 [00:01<00:04, 198.39it/s]Loading weights:  28%|██▊       | 327/1184 [00:02<00:04, 197.36it/s]Loading weights:  29%|██▉       | 347/1184 [00:02<00:04, 185.01it/s]Loading weights:  31%|███       | 366/1184 [00:02<00:04, 174.54it/s]Loading weights:  33%|███▎      | 395/1184 [00:02<00:03, 200.32it/s]Loading weights:  35%|███▌      | 416/1184 [00:02<00:04, 171.20it/s]Loading weights:  38%|███▊      | 446/1184 [00:02<00:03, 200.21it/s]Loading weights:  40%|███▉      | 468/1184 [00:02<00:03, 188.28it/s]Loading weights:  41%|████▏     | 490/1184 [00:02<00:03, 191.66it/s]Loading weights:  43%|████▎     | 510/1184 [00:03<00:03, 190.11it/s]Loading weights:  45%|████▍     | 530/1184 [00:03<00:03, 177.30it/s]Loading weights:  47%|████▋     | 553/1184 [00:03<00:03, 187.55it/s]Loading weights:  48%|████▊     | 573/1184 [00:03<00:03, 179.60it/s]Loading weights:  50%|█████     | 596/1184 [00:03<00:03, 187.41it/s]Loading weights:  52%|█████▏    | 615/1184 [00:03<00:03, 182.16it/s]Loading weights:  54%|█████▎    | 634/1184 [00:03<00:03, 171.56it/s]Loading weights:  56%|█████▌    | 659/1184 [00:03<00:02, 191.31it/s]Loading weights:  57%|█████▋    | 679/1184 [00:04<00:02, 177.70it/s]Loading weights:  59%|█████▉    | 703/1184 [00:04<00:02, 186.43it/s]Loading weights:  61%|██████▏   | 726/1184 [00:04<00:02, 195.31it/s]Loading weights:  63%|██████▎   | 746/1184 [00:04<00:02, 181.51it/s]Loading weights:  65%|██████▍   | 769/1184 [00:04<00:02, 192.09it/s]Loading weights:  67%|██████▋   | 789/1184 [00:04<00:02, 177.89it/s]Loading weights:  68%|██████▊   | 810/1184 [00:04<00:02, 184.72it/s]Loading weights:  71%|███████   | 835/1184 [00:04<00:01, 199.32it/s]Loading weights:  72%|███████▏  | 856/1184 [00:04<00:01, 201.63it/s]Loading weights:  93%|█████████▎| 1097/1184 [00:05<00:00, 824.28it/s]Loading weights: 100%|██████████| 1184/1184 [00:05<00:00, 233.06it/s]
+21:19:31 * Transformer model with 64 layers
+21:19:31 * Modifiable components:
+21:19:31   * attn.o_proj: 64 modules total
+21:19:31   * mlp.down_proj: 64 modules total
+21:19:31 
+21:19:31 Resident system RAM: 2.15 GB
+21:19:31 Allocated GPU VRAM: 50.99 GB
+21:19:31 Reserved GPU VRAM: 51.20 GB
+21:19:31 
+21:19:31 Loading batch size test prompts from mlabonne/harmless_alpaca...
+21:19:31 * 256 prompts loaded
+21:19:31 
+21:19:31 Determining optimal batch size...
+21:19:42 * Trying batch size 1... Ok (24 tokens/s)
+21:19:53 * Trying batch size 2... Ok (46 tokens/s)
+21:20:05 * Trying batch size 4... Ok (88 tokens/s)
+21:20:17 * Trying batch size 8... Ok (156 tokens/s)
+21:20:31 * Trying batch size 16... Ok (256 tokens/s)
+21:21:02 * Trying batch size 32... Ok (213 tokens/s)
+21:21:31 * Trying batch size 64... Ok (509 tokens/s)
+21:22:15 * Trying batch size 128... Ok (606 tokens/s)
+21:22:15 * Chosen batch size: 128
+21:22:15 
+21:22:15 Loading response prefix test prompts from [mlabonne/harmless_alpaca, 
+21:22:15 mlabonne/harmful_behaviors]...
+21:22:16 * 200 prompts loaded
+21:22:16 
+21:22:16 Checking chat template for a closed Chain-of-Thought block or an initializer...
+21:22:16 * Chat template inserts CoT initializer: '<think>'
+21:22:16 * Remaining CoT finalizer: '</think>'
+21:22:16 * Rechecking with prefix...
+21:22:52 * Extended prefix found: '</think>\n'
+21:22:52 
+21:22:52 Loading and initializing scorers...
+21:22:52 * Loaded: KeywordRate
+21:22:52 * Loaded: KLDivergence
+21:22:52 
+21:22:52 Loading Refusals evaluation prompts from mlabonne/harmful_behaviors...
+21:22:52 * 100 prompts loaded
+21:22:52 
+21:22:52 Loading KL divergence evaluation prompts from mlabonne/harmless_alpaca...
+21:22:52 * 100 prompts loaded
+21:22:52 * Obtaining baseline first-token probability distributions...
+21:22:55 
+21:22:55 Getting baseline scores...
+21:23:14 * Baseline Refusals: 98/100
+21:23:14 * Baseline KL divergence: 0 (by definition)
+21:23:14 
+21:23:14 Loading and initializing modifiers...
+21:23:14 * Loaded: Abliteration
+21:23:14 
+21:23:14 Loading good prompts from mlabonne/harmless_alpaca...
+21:23:15 * 400 prompts loaded
+21:23:15 
+21:23:15 Loading bad prompts from mlabonne/harmful_behaviors...
+21:23:15 * 400 prompts loaded
+21:23:15 
+21:23:15 Calculating per-layer residual directions...
+21:23:15 * Obtaining residual mean for good prompts...
+21:23:27 * Obtaining residual mean for bad prompts...
+21:23:40 
+21:23:40 Running trial 1 of 100...
+21:23:40 * Parameters:
+21:23:40   * direction_index = per layer
+21:23:40   * attn.o_proj.max_weight = 1.01
+21:23:40   * attn.o_proj.max_weight_position = 41.50
+21:23:40   * attn.o_proj.min_weight = 0.09
+21:23:40   * attn.o_proj.min_weight_distance = 7.85
+21:23:40   * mlp.down_proj.max_weight = 0.35
+21:23:40   * mlp.down_proj.max_weight_position = 47.80
+21:23:40   * mlp.down_proj.min_weight = 0.19
+21:23:40   * mlp.down_proj.min_weight_distance = 16.43
+21:23:40 * Resetting model...
+21:23:40 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+21:23:41 * Evaluating...
+21:24:02   * Refusals: 97/100
+21:24:02   * KL divergence: 0.0172
+21:24:02 
+21:24:02 Elapsed time: 22s
+21:24:02 Estimated remaining time: 35m 57s
+21:24:02 Resident system RAM: 3.54 GB
+21:24:02 Allocated GPU VRAM: 51.01 GB
+21:24:02 Reserved GPU VRAM: 51.03 GB
+21:24:02 
+21:24:02 Running trial 2 of 100...
+21:24:02 * Parameters:
+21:24:02   * direction_index = 52.86
+21:24:02   * attn.o_proj.max_weight = 0.82
+21:24:02   * attn.o_proj.max_weight_position = 54.70
+21:24:02   * attn.o_proj.min_weight = 0.34
+21:24:02   * attn.o_proj.min_weight_distance = 21.56
+21:24:02   * mlp.down_proj.max_weight = 0.00
+21:24:02   * mlp.down_proj.max_weight_position = 42.79
+21:24:02   * mlp.down_proj.min_weight = 0.00
+21:24:02   * mlp.down_proj.min_weight_distance = 36.63
+21:24:02 * Resetting model...
+21:24:02 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+21:24:02 * Evaluating...
+21:24:23   * Refusals: 98/100
+21:24:23   * KL divergence: 0.0050
+21:24:23 
+21:24:23 Elapsed time: 43s
+21:24:23 Estimated remaining time: 35m 21s
+21:24:23 Resident system RAM: 3.54 GB
+21:24:23 Allocated GPU VRAM: 51.01 GB
+21:24:23 Reserved GPU VRAM: 51.03 GB
+21:24:23 
+21:24:23 Running trial 3 of 100...
+21:24:23 * Parameters:
+21:24:23   * direction_index = per layer
+21:24:23   * attn.o_proj.max_weight = 1.43
+21:24:23   * attn.o_proj.max_weight_position = 39.94
+21:24:23   * attn.o_proj.min_weight = 0.06
+21:24:23   * attn.o_proj.min_weight_distance = 7.25
+21:24:23   * mlp.down_proj.max_weight = 1.29
+21:24:23   * mlp.down_proj.max_weight_position = 40.28
+21:24:23   * mlp.down_proj.min_weight = 0.54
+21:24:23   * mlp.down_proj.min_weight_distance = 36.25
+21:24:23 * Resetting model...
+21:24:23 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+21:24:24 * Evaluating...
+21:24:45   * Refusals: 44/100
+21:24:45   * KL divergence: 0.0972
+21:24:45 
+21:24:45 Elapsed time: 1m 5s
+21:24:45 Estimated remaining time: 35m 10s
+21:24:45 Resident system RAM: 3.54 GB
+21:24:45 Allocated GPU VRAM: 51.01 GB
+21:24:45 Reserved GPU VRAM: 51.03 GB
+21:24:45 
+21:24:45 Running trial 4 of 100...
+21:24:45 * Parameters:
+21:24:45   * direction_index = per layer
+21:24:45   * attn.o_proj.max_weight = 1.28
+21:24:45   * attn.o_proj.max_weight_position = 58.83
+21:24:45   * attn.o_proj.min_weight = 0.02
+21:24:45   * attn.o_proj.min_weight_distance = 28.61
+21:24:45   * mlp.down_proj.max_weight = 1.48
+21:24:45   * mlp.down_proj.max_weight_position = 56.65
+21:24:45   * mlp.down_proj.min_weight = 0.42
+21:24:45   * mlp.down_proj.min_weight_distance = 30.05
+21:24:45 * Resetting model...
+21:24:45 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+21:24:46 * Evaluating...
+21:25:07   * Refusals: 36/100
+21:25:07   * KL divergence: 0.0855
+21:25:07 
+21:25:07 Elapsed time: 1m 27s
+21:25:07 Estimated remaining time: 34m 53s
+21:25:07 Resident system RAM: 3.54 GB
+21:25:07 Allocated GPU VRAM: 51.01 GB
+21:25:07 Reserved GPU VRAM: 51.03 GB
+21:25:07 
+21:25:07 Running trial 5 of 100...
+21:25:07 * Parameters:
+21:25:07   * direction_index = per layer
+21:25:07   * attn.o_proj.max_weight = 1.01
+21:25:07   * attn.o_proj.max_weight_position = 45.05
+21:25:07   * attn.o_proj.min_weight = 0.13
+21:25:07   * attn.o_proj.min_weight_distance = 1.71
+21:25:07   * mlp.down_proj.max_weight = 0.94
+21:25:07   * mlp.down_proj.max_weight_position = 43.13
+21:25:07   * mlp.down_proj.min_weight = 0.25
+21:25:07   * mlp.down_proj.min_weight_distance = 19.09
+21:25:07 * Resetting model...
+21:25:07 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+21:25:08 * Evaluating...
+21:25:29   * Refusals: 95/100
+21:25:29   * KL divergence: 0.0450
+21:25:29 
+21:25:29 Elapsed time: 1m 49s
+21:25:29 Estimated remaining time: 34m 28s
+21:25:29 Resident system RAM: 3.54 GB
+21:25:29 Allocated GPU VRAM: 51.01 GB
+21:25:29 Reserved GPU VRAM: 51.03 GB
+21:25:29 
+21:25:29 Running trial 6 of 100...
+21:25:29 * Parameters:
+21:25:29   * direction_index = per layer
+21:25:29   * attn.o_proj.max_weight = 1.21
+21:25:29   * attn.o_proj.max_weight_position = 55.43
+21:25:29   * attn.o_proj.min_weight = 0.12
+21:25:29   * attn.o_proj.min_weight_distance = 16.24
+21:25:29   * mlp.down_proj.max_weight = 0.97
+21:25:29   * mlp.down_proj.max_weight_position = 48.24
+21:25:29   * mlp.down_proj.min_weight = 0.05
+21:25:29   * mlp.down_proj.min_weight_distance = 20.72
+21:25:29 * Resetting model...
+21:25:29 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+21:25:29 * Evaluating...
+21:25:51   * Refusals: 48/100
+21:25:51   * KL divergence: 0.0524
+21:25:51 
+21:25:51 Elapsed time: 2m 11s
+21:25:51 Estimated remaining time: 34m 8s
+21:25:51 Resident system RAM: 3.54 GB
+21:25:51 Allocated GPU VRAM: 51.01 GB
+21:25:51 Reserved GPU VRAM: 51.03 GB
+21:25:51 
+21:25:51 Running trial 7 of 100...
+21:25:51 * Parameters:
+21:25:51   * direction_index = 54.95
+21:25:51   * attn.o_proj.max_weight = 1.21
+21:25:51   * attn.o_proj.max_weight_position = 60.57
+21:25:51   * attn.o_proj.min_weight = 0.17
+21:25:51   * attn.o_proj.min_weight_distance = 6.13
+21:25:51   * mlp.down_proj.max_weight = 1.16
+21:25:51   * mlp.down_proj.max_weight_position = 47.82
+21:25:51   * mlp.down_proj.min_weight = 0.19
+21:25:51   * mlp.down_proj.min_weight_distance = 35.13
+21:25:51 * Resetting model...
+21:25:51 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+21:25:53 * Evaluating...
+21:25:55 [W 2026-11-04 21:25:55,971] Trial 6 failed with parameters: {'direction_scope': 'global', 'direction_index': 54.95473481371062, 'attn.o_proj.max_weight': 1.210588528351395, 'attn.o_proj.max_weight_position': 60.56572826525466, 'attn.o_proj.min_weight': 0.13747470414623753, 'attn.o_proj.min_weight_distance': 6.1253695788279146, 'mlp.down_proj.max_weight': 1.1629347552416667, 'mlp.down_proj.max_weight_position': 47.82145629203544, 'mlp.down_proj.min_weight': 0.16535419711693278, 'mlp.down_proj.min_weight_distance': 35.132315758574045} because of the following error: OutOfMemoryError('CUDA out of memory. Tried to allocate 300.00 MiB. GPU 0 has a total capacity of 139.80 GiB of which 3.56 MiB is free. Process 25261 has 72.68 GiB memory in use. Including non-PyTorch memory, this process has 67.10 GiB memory in use. Of the allocated memory 66.07 GiB is allocated by PyTorch, and 168.56 MiB is reserved by PyTorch but unallocated.').
+21:25:55 Traceback (most recent call last):
+21:25:55   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/optuna/study/_optimize.py", line 206, in _run_trial
+21:25:55     value_or_values = func(trial)
+21:25:55                       ^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/src/heretic/main.py", line 718, in objective_wrapper
+21:25:55     return objective(trial)
+21:25:55            ^^^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/src/heretic/main.py", line 693, in objective
+21:25:55     scores = evaluator.get_scores()
+21:25:55              ^^^^^^^^^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/src/heretic/evaluator.py", line 150, in get_scores
+21:25:55     (entry.name, entry.scorer.get_score(ctx)) for entry in self._scorer_entries
+21:25:55                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/src/heretic/scorers/keyword_rate.py", line 112, in get_score
+21:25:55     responses = ctx.get_responses(self.prompts)
+21:25:55                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/src/heretic/plugin.py", line 168, in get_responses
+21:25:55     self._responses_cache[key] = self._model.get_responses_batched(
+21:25:55                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/src/heretic/model.py", line 640, in get_responses_batched
+21:25:55     self.get_responses(
+21:25:55   File "/workspace/paper33/heretic/src/heretic/model.py", line 618, in get_responses
+21:25:55     inputs, outputs = self.generate(
+21:25:55                       ^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/src/heretic/model.py", line 604, in generate
+21:25:55     outputs = self.model.generate(
+21:25:55               ^^^^^^^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/peft/peft_model.py", line 2242, in generate
+21:25:55     outputs = self.base_model.generate(*args, **kwargs)
+21:25:55               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+21:25:55     return func(*args, **kwargs)
+21:25:55            ^^^^^^^^^^^^^^^^^^^^^
+21:25:55   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/generation/utils.py", line 2976, in generate
+21:25:55     result = decoding_method(
+21:25:55              ^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/generation/utils.py", line 3176, in _sample
+21:25:56     outputs = self._prefill(
+21:25:56               ^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/generation/utils.py", line 4287, in _prefill
+21:25:56     return self(**model_inputs, return_dict=True)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+21:25:56     return self._call_impl(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+21:25:56     return forward_call(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+21:25:56     output = func(self, *args, **kwargs)
+21:25:56              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 1860, in forward
+21:25:56     outputs = self.model(
+21:25:56               ^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+21:25:56     return self._call_impl(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+21:25:56     return forward_call(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+21:25:56     output = func(self, *args, **kwargs)
+21:25:56              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 1654, in forward
+21:25:56     outputs = self.language_model(
+21:25:56               ^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+21:25:56     return self._call_impl(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+21:25:56     return forward_call(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/utils/generic.py", line 1068, in wrapper
+21:25:56     output = func(self, *args, **kwargs)
+21:25:56              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/utils/output_capturing.py", line 287, in wrapper
+21:25:56     outputs = func(self, *args, **kwargs)
+21:25:56               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 1291, in forward
+21:25:56     hidden_states = decoder_layer(
+21:25:56                     ^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/modeling_layers.py", line 110, in __call__
+21:25:56     return super().__call__(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+21:25:56     return self._call_impl(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1889, in _call_impl
+21:25:56     return inner()
+21:25:56            ^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1837, in inner
+21:25:56     result = forward_call(*args, **kwargs)
+21:25:56              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 888, in forward
+21:25:56     hidden_states = self.linear_attn(
+21:25:56                     ^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+21:25:56     return self._call_impl(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+21:25:56     return forward_call(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/integrations/accelerate.py", line 1010, in wrapped
+21:25:56     output = forward_func(self, *args, **kwargs)
+21:25:56              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 638, in forward
+21:25:56     core_attn_out, last_recurrent_state = torch_chunk_gated_delta_rule(
+21:25:56                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+21:25:56     return self._call_impl(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+21:25:56     return forward_call(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/kernels/layer/layer.py", line 675, in forward
+21:25:56     return func(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/integrations/hub_kernels.py", line 1040, in wrapped
+21:25:56     return implementation(*args, **kwargs)
+21:25:56            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+21:25:56   File "/workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 424, in torch_chunk_gated_delta_rule
+21:25:56     last_recurrent_state = last_recurrent_state * chunk_decay[:, :, i] + key[:, :, i].transpose(-1, -2) @ v_new
+21:25:56                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+21:25:56 torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 300.00 MiB. GPU 0 has a total capacity of 139.80 GiB of which 3.56 MiB is free. Process 25261 has 72.68 GiB memory in use. Including non-PyTorch memory, this process has 67.10 GiB memory in use. Of the allocated memory 66.07 GiB is allocated by PyTorch, and 168.56 MiB is reserved by PyTorch but unallocated.
+21:25:56 [W 2026-11-04 21:25:55,974] Trial 6 failed with value None.
+21:25:57 ╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+21:25:57 │ /workspace/paper33/heretic/.venv/bin/heretic:10 in <module>                  │
+21:25:57 │                                                                              │
+21:25:57 │    7 │   │   sys.argv[0] = sys.argv[0][:-11]                                 │
+21:25:57 │    8 │   elif sys.argv[0].endswith(".exe"):                                  │
+21:25:57 │    9 │   │   sys.argv[0] = sys.argv[0][:-4]                                  │
+21:25:57 │ ❱ 10 │   sys.exit(main())                                                    │
+21:25:57 │   11                                                                         │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/main.py:1474 in main                  │
+21:25:57 │                                                                              │
+21:25:57 │   1471 │   install()                                                         │
+21:25:57 │   1472 │                                                                     │
+21:25:57 │   1473 │   try:                                                              │
+21:25:57 │ ❱ 1474 │   │   run()                                                         │
+21:25:57 │   1475 │   except BaseException as error:                                    │
+21:25:57 │   1476 │   │   # Transformers appears to handle KeyboardInterrupt (or BaseEx │
+21:25:57 │   1477 │   │   # internally in some places, which can re-raise a different e │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/main.py:751 in run                    │
+21:25:57 │                                                                              │
+21:25:57 │    748 │   │   │   print("Resuming existing study.")                         │
+21:25:57 │    749 │   │                                                                 │
+21:25:57 │    750 │   │   try:                                                          │
+21:25:57 │ ❱  751 │   │   │   study.optimize(                                           │
+21:25:57 │    752 │   │   │   │   objective_wrapper,                                    │
+21:25:57 │    753 │   │   │   │   n_trials=settings.n_trials - len(study.trials),       │
+21:25:57 │    754 │   │   │   )                                                         │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/optuna/study/s │
+21:25:57 │ tudy.py:502 in optimize                                                      │
+21:25:57 │                                                                              │
+21:25:57 │    499 │   │   │   RuntimeError:                                             │
+21:25:57 │    500 │   │   │   │   If nested invocation of this method occurs.           │
+21:25:57 │    501 │   │   """                                                           │
+21:25:57 │ ❱  502 │   │   _optimize(                                                    │
+21:25:57 │    503 │   │   │   study=self,                                               │
+21:25:57 │    504 │   │   │   func=func,                                                │
+21:25:57 │    505 │   │   │   n_trials=n_trials,                                        │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/optuna/study/_ │
+21:25:57 │ optimize.py:68 in _optimize                                                  │
+21:25:57 │                                                                              │
+21:25:57 │    65 │                                                                      │
+21:25:57 │    66 │   try:                                                               │
+21:25:57 │    67 │   │   if n_jobs == 1:                                                │
+21:25:57 │ ❱  68 │   │   │   _optimize_sequential(                                      │
+21:25:57 │    69 │   │   │   │   study,                                                 │
+21:25:57 │    70 │   │   │   │   func,                                                  │
+21:25:57 │    71 │   │   │   │   n_trials,                                              │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/optuna/study/_ │
+21:25:57 │ optimize.py:165 in _optimize_sequential                                      │
+21:25:57 │                                                                              │
+21:25:57 │   162 │   │   │   │   break                                                  │
+21:25:57 │   163 │   │                                                                  │
+21:25:57 │   164 │   │   try:                                                           │
+21:25:57 │ ❱ 165 │   │   │   frozen_trial_id = _run_trial(study, func, catch)           │
+21:25:57 │   166 │   │   finally:                                                       │
+21:25:57 │   167 │   │   │   # The following line mitigates memory problems that can be │
+21:25:57 │   168 │   │   │   # environments (e.g., services that use computing containe │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/optuna/study/_ │
+21:25:57 │ optimize.py:263 in _run_trial                                                │
+21:25:57 │                                                                              │
+21:25:57 │   260 │   │   and func_err is not None                                       │
+21:25:57 │   261 │   │   and not isinstance(func_err, catch)                            │
+21:25:57 │   262 │   ):                                                                 │
+21:25:57 │ ❱ 263 │   │   raise func_err                                                 │
+21:25:57 │   264 │   return trial._trial_id                                             │
+21:25:57 │   265                                                                        │
+21:25:57 │   266                                                                        │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/optuna/study/_ │
+21:25:57 │ optimize.py:206 in _run_trial                                                │
+21:25:57 │                                                                              │
+21:25:57 │   203 │                                                                      │
+21:25:57 │   204 │   with get_heartbeat_thread(trial._trial_id, study._storage):        │
+21:25:57 │   205 │   │   try:                                                           │
+21:25:57 │ ❱ 206 │   │   │   value_or_values = func(trial)                              │
+21:25:57 │   207 │   │   except exceptions.TrialPruned as e:                            │
+21:25:57 │   208 │   │   │   # TODO(mamu): Handle multi-objective cases.                │
+21:25:57 │   209 │   │   │   state = TrialState.PRUNED                                  │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/main.py:718 in objective_wrapper      │
+21:25:57 │                                                                              │
+21:25:57 │    715 │                                                                     │
+21:25:57 │    716 │   def objective_wrapper(trial: Trial) -> tuple[float, ...]:         │
+21:25:57 │    717 │   │   try:                                                          │
+21:25:57 │ ❱  718 │   │   │   return objective(trial)                                   │
+21:25:57 │    719 │   │   except KeyboardInterrupt:                                     │
+21:25:57 │    720 │   │   │   # Stop the study gracefully on Ctrl+C.                    │
+21:25:57 │    721 │   │   │   trial.study.stop()                                        │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/main.py:693 in objective              │
+21:25:57 │                                                                              │
+21:25:57 │    690 │   │   print(f"* Modifying model using {modifier_name}...")          │
+21:25:57 │    691 │   │   modifier.modify_model(ctx, parameters)                        │
+21:25:57 │    692 │   │   print("* Evaluating...")                                      │
+21:25:57 │ ❱  693 │   │   scores = evaluator.get_scores()                               │
+21:25:57 │    694 │   │   objective_values = evaluator.get_objective_values(scores)     │
+21:25:57 │    695 │   │   for name, score in scores:                                    │
+21:25:57 │    696 │   │   │   print(f"  * [bold]{name}:[/] [green]{score.rich_display}[ │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/evaluator.py:150 in get_scores        │
+21:25:57 │                                                                              │
+21:25:57 │   147 │   │   """                                                            │
+21:25:57 │   148 │   │   ctx = Context(settings=self.settings, model=self.model)        │
+21:25:57 │   149 │   │   return [                                                       │
+21:25:57 │ ❱ 150 │   │   │   (entry.name, entry.scorer.get_score(ctx)) for entry in sel │
+21:25:57 │   151 │   │   ]                                                              │
+21:25:57 │   152 │                                                                      │
+21:25:57 │   153 │   def get_baseline_scores(self) -> list[tuple[str, Score]]:          │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/scorers/keyword_rate.py:112 in        │
+21:25:57 │ get_score                                                                    │
+21:25:57 │                                                                              │
+21:25:57 │   109 │                                                                      │
+21:25:57 │   110 │   def get_score(self, ctx: Context) -> Score:                        │
+21:25:57 │   111 │   │   match_count = 0                                                │
+21:25:57 │ ❱ 112 │   │   responses = ctx.get_responses(self.prompts)                    │
+21:25:57 │   113 │   │   for prompt, response in zip(self.prompts, responses):          │
+21:25:57 │   114 │   │   │   is_match = self._is_match(response)                        │
+21:25:57 │   115 │   │   │   if is_match:                                               │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/plugin.py:168 in get_responses        │
+21:25:57 │                                                                              │
+21:25:57 │   165 │   │   """Get model responses (cached within this context)."""        │
+21:25:57 │   166 │   │   key = self._cache_key(prompts)                                 │
+21:25:57 │   167 │   │   if key not in self._responses_cache:                           │
+21:25:57 │ ❱ 168 │   │   │   self._responses_cache[key] = self._model.get_responses_bat │
+21:25:57 │   169 │   │   │   │   prompts, skip_special_tokens=True                      │
+21:25:57 │   170 │   │   │   )                                                          │
+21:25:57 │   171 │   │   return self._responses_cache[key]                              │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/model.py:640 in get_responses_batched │
+21:25:57 │                                                                              │
+21:25:57 │   637 │   │                                                                  │
+21:25:57 │   638 │   │   for batch in batchify(prompts, self.settings.batch_size):      │
+21:25:57 │   639 │   │   │   responses.extend(                                          │
+21:25:57 │ ❱ 640 │   │   │   │   self.get_responses(                                    │
+21:25:57 │   641 │   │   │   │   │   batch,                                             │
+21:25:57 │   642 │   │   │   │   │   skip_special_tokens=skip_special_tokens,           │
+21:25:57 │   643 │   │   │   │   )                                                      │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/model.py:618 in get_responses         │
+21:25:57 │                                                                              │
+21:25:57 │   615 │   │   prompts: list[Prompt],                                         │
+21:25:57 │   616 │   │   skip_special_tokens: bool = False,                             │
+21:25:57 │   617 │   ) -> list[str]:                                                    │
+21:25:57 │ ❱ 618 │   │   inputs, outputs = self.generate(                               │
+21:25:57 │   619 │   │   │   prompts,                                                   │
+21:25:57 │   620 │   │   │   max_new_tokens=self.settings.max_response_length,          │
+21:25:57 │   621 │   │   )                                                              │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/src/heretic/model.py:604 in generate              │
+21:25:57 │                                                                              │
+21:25:57 │   601 │   │                                                                  │
+21:25:57 │   602 │   │   # FIXME: The type checker has been disabled here because of th │
+21:25:57 │   603 │   │   #        interplay between different generate() signatures and │
+21:25:57 │ ❱ 604 │   │   outputs = self.model.generate(                                 │
+21:25:57 │   605 │   │   │   **inputs,                                                  │
+21:25:57 │   606 │   │   │   **kwargs,                                                  │
+21:25:57 │   607 │   │   │   pad_token_id=self.tokenizer.pad_token_id,                  │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/peft/peft_mode │
+21:25:57 │ l.py:2242 in generate                                                        │
+21:25:57 │                                                                              │
+21:25:57 │   2239 │   │   │   │   kwargs = get_alora_offsets_for_generate(self, *args,  │
+21:25:57 │   2240 │   │   │   │   with self._enable_peft_forward_hooks(*args, **kwargs) │
+21:25:57 │   2241 │   │   │   │   │   kwargs = {k: v for k, v in kwargs.items() if k no │
+21:25:57 │ ❱ 2242 │   │   │   │   │   outputs = self.base_model.generate(*args, **kwarg │
+21:25:57 │   2243 │   │   │   else:                                                     │
+21:25:57 │   2244 │   │   │   │   outputs = self.base_model.generate(*args, **kwargs)   │
+21:25:57 │   2245 │   │   except Exception:                                             │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/utils/_c │
+21:25:57 │ ontextlib.py:124 in decorate_context                                         │
+21:25:57 │                                                                              │
+21:25:57 │   121 │   def decorate_context(*args, **kwargs):                             │
+21:25:57 │   122 │   │   # pyrefly: ignore [bad-context-manager]                        │
+21:25:57 │   123 │   │   with ctx_factory():                                            │
+21:25:57 │ ❱ 124 │   │   │   return func(*args, **kwargs)                               │
+21:25:57 │   125 │                                                                      │
+21:25:57 │   126 │   return decorate_context                                            │
+21:25:57 │   127                                                                        │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/g │
+21:25:57 │ eneration/utils.py:2976 in generate                                          │
+21:25:57 │                                                                              │
+21:25:57 │   2973 │   │   model_kwargs["use_cache"] = generation_config.use_cache       │
+21:25:57 │   2974 │   │                                                                 │
+21:25:57 │   2975 │   │   # 9. Call generation mode                                     │
+21:25:57 │ ❱ 2976 │   │   result = decoding_method(                                     │
+21:25:57 │   2977 │   │   │   self,                                                     │
+21:25:57 │   2978 │   │   │   input_ids,                                                │
+21:25:57 │   2979 │   │   │   logits_processor=prepared_logits_processor,               │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/g │
+21:25:57 │ eneration/utils.py:3176 in _sample                                           │
+21:25:57 │                                                                              │
+21:25:57 │   3173 │   │   )                                                             │
+21:25:57 │   3174 │   │                                                                 │
+21:25:57 │   3175 │   │   prefill_consumed = False                                      │
+21:25:57 │ ❱ 3176 │   │   outputs = self._prefill(                                      │
+21:25:57 │   3177 │   │   │   input_ids,                                                │
+21:25:57 │   3178 │   │   │   generation_config,                                        │
+21:25:57 │   3179 │   │   │   model_kwargs,                                             │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/g │
+21:25:57 │ eneration/utils.py:4287 in _prefill                                          │
+21:25:57 │                                                                              │
+21:25:57 │   4284 │   │   │   │   is_first_iteration=is_first_iteration,                │
+21:25:57 │   4285 │   │   │   │   **model_kwargs,                                       │
+21:25:57 │   4286 │   │   │   )                                                         │
+21:25:57 │ ❱ 4287 │   │   │   return self(**model_inputs, return_dict=True)             │
+21:25:57 │   4288 │   │                                                                 │
+21:25:57 │   4289 │   │   # Chunked prefill (for very large contexts)                   │
+21:25:57 │   4290 │   │   else:                                                         │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:57 │ es/module.py:1783 in _wrapped_call_impl                                      │
+21:25:57 │                                                                              │
+21:25:57 │   1780 │   │   if self._compiled_call_impl is not None:                      │
+21:25:57 │   1781 │   │   │   return self._compiled_call_impl(*args, **kwargs)  # type: │
+21:25:57 │   1782 │   │   else:                                                         │
+21:25:57 │ ❱ 1783 │   │   │   return self._call_impl(*args, **kwargs)                   │
+21:25:57 │   1784 │                                                                     │
+21:25:57 │   1785 │   # torchrec tests the code consistency with the following code     │
+21:25:57 │   1786 │   # fmt: off                                                        │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:57 │ es/module.py:1794 in _call_impl                                              │
+21:25:57 │                                                                              │
+21:25:57 │   1791 │   │   if not (self._backward_hooks or self._backward_pre_hooks or s │
+21:25:57 │   1792 │   │   │   │   or _global_backward_pre_hooks or _global_backward_hoo │
+21:25:57 │   1793 │   │   │   │   or _global_forward_hooks or _global_forward_pre_hooks │
+21:25:57 │ ❱ 1794 │   │   │   return forward_call(*args, **kwargs)                      │
+21:25:57 │   1795 │   │                                                                 │
+21:25:57 │   1796 │   │   result = None                                                 │
+21:25:57 │   1797 │   │   called_always_called_hooks = set()                            │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/u │
+21:25:57 │ tils/generic.py:939 in wrapper                                               │
+21:25:57 │                                                                              │
+21:25:57 │    936 │   │   return_dict_passed = kwargs.pop("return_dict", return_dict)   │
+21:25:57 │    937 │   │   if return_dict_passed is not None:                            │
+21:25:57 │    938 │   │   │   return_dict = return_dict_passed                          │
+21:25:57 │ ❱  939 │   │   output = func(self, *args, **kwargs)                          │
+21:25:57 │    940 │   │   if not return_dict and not isinstance(output, tuple):         │
+21:25:57 │    941 │   │   │   output = output.to_tuple()                                │
+21:25:57 │    942 │   │   return output                                                 │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+21:25:57 │ odels/qwen3_5/modeling_qwen3_5.py:1860 in forward                            │
+21:25:57 │                                                                              │
+21:25:57 │   1857 │   │   ```                                                           │
+21:25:57 │   1858 │   │   """                                                           │
+21:25:57 │   1859 │   │                                                                 │
+21:25:57 │ ❱ 1860 │   │   outputs = self.model(                                         │
+21:25:57 │   1861 │   │   │   input_ids=input_ids,                                      │
+21:25:57 │   1862 │   │   │   pixel_values=pixel_values,                                │
+21:25:57 │   1863 │   │   │   pixel_values_videos=pixel_values_videos,                  │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:57 │ es/module.py:1783 in _wrapped_call_impl                                      │
+21:25:57 │                                                                              │
+21:25:57 │   1780 │   │   if self._compiled_call_impl is not None:                      │
+21:25:57 │   1781 │   │   │   return self._compiled_call_impl(*args, **kwargs)  # type: │
+21:25:57 │   1782 │   │   else:                                                         │
+21:25:57 │ ❱ 1783 │   │   │   return self._call_impl(*args, **kwargs)                   │
+21:25:57 │   1784 │                                                                     │
+21:25:57 │   1785 │   # torchrec tests the code consistency with the following code     │
+21:25:57 │   1786 │   # fmt: off                                                        │
+21:25:57 │                                                                              │
+21:25:57 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:57 │ es/module.py:1794 in _call_impl                                              │
+21:25:57 │                                                                              │
+21:25:57 │   1791 │   │   if not (self._backward_hooks or self._backward_pre_hooks or s │
+21:25:57 │   1792 │   │   │   │   or _global_backward_pre_hooks or _global_backward_hoo │
+21:25:57 │   1793 │   │   │   │   or _global_forward_hooks or _global_forward_pre_hooks │
+21:25:57 │ ❱ 1794 │   │   │   return forward_call(*args, **kwargs)                      │
+21:25:57 │   1795 │   │                                                                 │
+21:25:57 │   1796 │   │   result = None                                                 │
+21:25:57 │   1797 │   │   called_always_called_hooks = set()                            │
+21:25:57 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/u │
+21:25:58 │ tils/generic.py:939 in wrapper                                               │
+21:25:58 │                                                                              │
+21:25:58 │    936 │   │   return_dict_passed = kwargs.pop("return_dict", return_dict)   │
+21:25:58 │    937 │   │   if return_dict_passed is not None:                            │
+21:25:58 │    938 │   │   │   return_dict = return_dict_passed                          │
+21:25:58 │ ❱  939 │   │   output = func(self, *args, **kwargs)                          │
+21:25:58 │    940 │   │   if not return_dict and not isinstance(output, tuple):         │
+21:25:58 │    941 │   │   │   output = output.to_tuple()                                │
+21:25:58 │    942 │   │   return output                                                 │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+21:25:58 │ odels/qwen3_5/modeling_qwen3_5.py:1654 in forward                            │
+21:25:58 │                                                                              │
+21:25:58 │   1651 │   │   │   │   mm_token_type_ids=mm_token_type_ids,                  │
+21:25:58 │   1652 │   │   │   )                                                         │
+21:25:58 │   1653 │   │                                                                 │
+21:25:58 │ ❱ 1654 │   │   outputs = self.language_model(                                │
+21:25:58 │   1655 │   │   │   input_ids=None,                                           │
+21:25:58 │   1656 │   │   │   position_ids=position_ids,                                │
+21:25:58 │   1657 │   │   │   attention_mask=attention_mask,                            │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1783 in _wrapped_call_impl                                      │
+21:25:58 │                                                                              │
+21:25:58 │   1780 │   │   if self._compiled_call_impl is not None:                      │
+21:25:58 │   1781 │   │   │   return self._compiled_call_impl(*args, **kwargs)  # type: │
+21:25:58 │   1782 │   │   else:                                                         │
+21:25:58 │ ❱ 1783 │   │   │   return self._call_impl(*args, **kwargs)                   │
+21:25:58 │   1784 │                                                                     │
+21:25:58 │   1785 │   # torchrec tests the code consistency with the following code     │
+21:25:58 │   1786 │   # fmt: off                                                        │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1794 in _call_impl                                              │
+21:25:58 │                                                                              │
+21:25:58 │   1791 │   │   if not (self._backward_hooks or self._backward_pre_hooks or s │
+21:25:58 │   1792 │   │   │   │   or _global_backward_pre_hooks or _global_backward_hoo │
+21:25:58 │   1793 │   │   │   │   or _global_forward_hooks or _global_forward_pre_hooks │
+21:25:58 │ ❱ 1794 │   │   │   return forward_call(*args, **kwargs)                      │
+21:25:58 │   1795 │   │                                                                 │
+21:25:58 │   1796 │   │   result = None                                                 │
+21:25:58 │   1797 │   │   called_always_called_hooks = set()                            │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/u │
+21:25:58 │ tils/generic.py:1068 in wrapper                                              │
+21:25:58 │                                                                              │
+21:25:58 │   1065 │   │   │   │   ):                                                    │
+21:25:58 │   1066 │   │   │   │   │   output = func(self, *args, **kwargs)              │
+21:25:58 │   1067 │   │   │   else:                                                     │
+21:25:58 │ ❱ 1068 │   │   │   │   output = func(self, *args, **kwargs)                  │
+21:25:58 │   1069 │   │   # Restore original config value                               │
+21:25:58 │   1070 │   │   finally:                                                      │
+21:25:58 │   1071 │   │   │   if is_causal is not None:                                 │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/u │
+21:25:58 │ tils/output_capturing.py:287 in wrapper                                      │
+21:25:58 │                                                                              │
+21:25:58 │   284 │   │   │                                                              │
+21:25:58 │   285 │   │   │   # Run the forward                                          │
+21:25:58 │   286 │   │   │   try:                                                       │
+21:25:58 │ ❱ 287 │   │   │   │   outputs = func(self, *args, **kwargs)                  │
+21:25:58 │   288 │   │   │   # Reset the states                                         │
+21:25:58 │   289 │   │   │   finally:                                                   │
+21:25:58 │   290 │   │   │   │   _active_collector.reset(output_token)                  │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+21:25:58 │ odels/qwen3_5/modeling_qwen3_5.py:1291 in forward                            │
+21:25:58 │                                                                              │
+21:25:58 │   1288 │   │   position_embeddings = self.rotary_emb(hidden_states, position │
+21:25:58 │   1289 │   │                                                                 │
+21:25:58 │   1290 │   │   for i, decoder_layer in enumerate(self.layers[: self.config.n │
+21:25:58 │ ❱ 1291 │   │   │   hidden_states = decoder_layer(                            │
+21:25:58 │   1292 │   │   │   │   hidden_states,                                        │
+21:25:58 │   1293 │   │   │   │   position_embeddings=position_embeddings,              │
+21:25:58 │   1294 │   │   │   │   attention_mask=causal_mask_mapping[self.config.layer_ │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+21:25:58 │ odeling_layers.py:110 in __call__                                            │
+21:25:58 │                                                                              │
+21:25:58 │   107 │   │   │   │   logger.warning_once(message)                           │
+21:25:58 │   108 │   │   │                                                              │
+21:25:58 │   109 │   │   │   return self._gradient_checkpointing_func(partial(super()._ │
+21:25:58 │ ❱ 110 │   │   return super().__call__(*args, **kwargs)                       │
+21:25:58 │   111                                                                        │
+21:25:58 │   112                                                                        │
+21:25:58 │   113 @auto_docstring                                                        │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1783 in _wrapped_call_impl                                      │
+21:25:58 │                                                                              │
+21:25:58 │   1780 │   │   if self._compiled_call_impl is not None:                      │
+21:25:58 │   1781 │   │   │   return self._compiled_call_impl(*args, **kwargs)  # type: │
+21:25:58 │   1782 │   │   else:                                                         │
+21:25:58 │ ❱ 1783 │   │   │   return self._call_impl(*args, **kwargs)                   │
+21:25:58 │   1784 │                                                                     │
+21:25:58 │   1785 │   # torchrec tests the code consistency with the following code     │
+21:25:58 │   1786 │   # fmt: off                                                        │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1889 in _call_impl                                              │
+21:25:58 │                                                                              │
+21:25:58 │   1886 │   │   │   return inner()                                            │
+21:25:58 │   1887 │   │                                                                 │
+21:25:58 │   1888 │   │   try:                                                          │
+21:25:58 │ ❱ 1889 │   │   │   return inner()                                            │
+21:25:58 │   1890 │   │   except Exception:                                             │
+21:25:58 │   1891 │   │   │   # run always called hooks if they have not already been r │
+21:25:58 │   1892 │   │   │   # For now only forward hooks have the always_call option  │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1837 in inner                                                   │
+21:25:58 │                                                                              │
+21:25:58 │   1834 │   │   │   │   bw_hook = BackwardHook(self, full_backward_hooks, bac │
+21:25:58 │   1835 │   │   │   │   args = bw_hook.setup_input_hook(args)                 │
+21:25:58 │   1836 │   │   │                                                             │
+21:25:58 │ ❱ 1837 │   │   │   result = forward_call(*args, **kwargs)                    │
+21:25:58 │   1838 │   │   │   if _global_forward_hooks or self._forward_hooks:          │
+21:25:58 │   1839 │   │   │   │   for hook_id, hook in (                                │
+21:25:58 │   1840 │   │   │   │   │   *_global_forward_hooks.items(),                   │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+21:25:58 │ odels/qwen3_5/modeling_qwen3_5.py:888 in forward                             │
+21:25:58 │                                                                              │
+21:25:58 │    885 │   │                                                                 │
+21:25:58 │    886 │   │   # Token Mixer                                                 │
+21:25:58 │    887 │   │   if self.block_type == "linear_attention":                     │
+21:25:58 │ ❱  888 │   │   │   hidden_states = self.linear_attn(                         │
+21:25:58 │    889 │   │   │   │   hidden_states=hidden_states,                          │
+21:25:58 │    890 │   │   │   │   cache_params=past_key_values,                         │
+21:25:58 │    891 │   │   │   │   attention_mask=attention_mask,                        │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1783 in _wrapped_call_impl                                      │
+21:25:58 │                                                                              │
+21:25:58 │   1780 │   │   if self._compiled_call_impl is not None:                      │
+21:25:58 │   1781 │   │   │   return self._compiled_call_impl(*args, **kwargs)  # type: │
+21:25:58 │   1782 │   │   else:                                                         │
+21:25:58 │ ❱ 1783 │   │   │   return self._call_impl(*args, **kwargs)                   │
+21:25:58 │   1784 │                                                                     │
+21:25:58 │   1785 │   # torchrec tests the code consistency with the following code     │
+21:25:58 │   1786 │   # fmt: off                                                        │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1794 in _call_impl                                              │
+21:25:58 │                                                                              │
+21:25:58 │   1791 │   │   if not (self._backward_hooks or self._backward_pre_hooks or s │
+21:25:58 │   1792 │   │   │   │   or _global_backward_pre_hooks or _global_backward_hoo │
+21:25:58 │   1793 │   │   │   │   or _global_forward_hooks or _global_forward_pre_hooks │
+21:25:58 │ ❱ 1794 │   │   │   return forward_call(*args, **kwargs)                      │
+21:25:58 │   1795 │   │                                                                 │
+21:25:58 │   1796 │   │   result = None                                                 │
+21:25:58 │   1797 │   │   called_always_called_hooks = set()                            │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/i │
+21:25:58 │ ntegrations/accelerate.py:1010 in wrapped                                    │
+21:25:58 │                                                                              │
+21:25:58 │   1007 │   │   │   │   │   # sense as the module decorated with this should  │
+21:25:58 │   1008 │   │   │   │   │   hook.pre_forward(hooked_module)                   │
+21:25:58 │   1009 │   │   │                                                             │
+21:25:58 │ ❱ 1010 │   │   │   output = forward_func(self, *args, **kwargs)              │
+21:25:58 │   1011 │   │   │                                                             │
+21:25:58 │   1012 │   │   │   for hooked_module, hook in reversed(hooked_modules):      │
+21:25:58 │   1013 │   │   │   │   if hook is not None:                                  │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+21:25:58 │ odels/qwen3_5/modeling_qwen3_5.py:638 in forward                             │
+21:25:58 │                                                                              │
+21:25:58 │    635 │   │   │   │   **kwargs,                                             │
+21:25:58 │    636 │   │   │   )                                                         │
+21:25:58 │    637 │   │   else:                                                         │
+21:25:58 │ ❱  638 │   │   │   core_attn_out, last_recurrent_state = torch_chunk_gated_d │
+21:25:58 │    639 │   │   │   │   query,                                                │
+21:25:58 │    640 │   │   │   │   key,                                                  │
+21:25:58 │    641 │   │   │   │   value,                                                │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1783 in _wrapped_call_impl                                      │
+21:25:58 │                                                                              │
+21:25:58 │   1780 │   │   if self._compiled_call_impl is not None:                      │
+21:25:58 │   1781 │   │   │   return self._compiled_call_impl(*args, **kwargs)  # type: │
+21:25:58 │   1782 │   │   else:                                                         │
+21:25:58 │ ❱ 1783 │   │   │   return self._call_impl(*args, **kwargs)                   │
+21:25:58 │   1784 │                                                                     │
+21:25:58 │   1785 │   # torchrec tests the code consistency with the following code     │
+21:25:58 │   1786 │   # fmt: off                                                        │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/torch/nn/modul │
+21:25:58 │ es/module.py:1794 in _call_impl                                              │
+21:25:58 │                                                                              │
+21:25:58 │   1791 │   │   if not (self._backward_hooks or self._backward_pre_hooks or s │
+21:25:58 │   1792 │   │   │   │   or _global_backward_pre_hooks or _global_backward_hoo │
+21:25:58 │   1793 │   │   │   │   or _global_forward_hooks or _global_forward_pre_hooks │
+21:25:58 │ ❱ 1794 │   │   │   return forward_call(*args, **kwargs)                      │
+21:25:58 │   1795 │   │                                                                 │
+21:25:58 │   1796 │   │   result = None                                                 │
+21:25:58 │   1797 │   │   called_always_called_hooks = set()                            │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/kernels/layer/ │
+21:25:58 │ layer.py:675 in forward                                                      │
+21:25:58 │                                                                              │
+21:25:58 │   672 │   │   has_backward = getattr(func, "has_backward", True)             │
+21:25:58 │   673 │   │                                                                  │
+21:25:58 │   674 │   │   def forward(self, *args, **kwargs):                            │
+21:25:58 │ ❱ 675 │   │   │   return func(*args, **kwargs)                               │
+21:25:58 │   676 │                                                                      │
+21:25:58 │   677 │   # Use function signature with args prepended by self to support    │
+21:25:58 │   678 │   # module validation.                                               │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/i │
+21:25:58 │ ntegrations/hub_kernels.py:1040 in wrapped                                   │
+21:25:58 │                                                                              │
+21:25:58 │   1037 │   │   │   │   )                                                     │
+21:25:58 │   1038 │   │   │                                                             │
+21:25:58 │   1039 │   │   │   kwargs = {k: v for k, v in kwargs.items() if k in applica │
+21:25:58 │ ❱ 1040 │   │   │   return implementation(*args, **kwargs)                    │
+21:25:58 │   1041 │   │                                                                 │
+21:25:58 │   1042 │   │   return kernel_wrapper_decorator(wrapped)                      │
+21:25:58 │   1043                                                                       │
+21:25:58 │                                                                              │
+21:25:58 │ /workspace/paper33/heretic/.venv/lib/python3.12/site-packages/transformers/m │
+21:25:58 │ odels/qwen3_5/modeling_qwen3_5.py:424 in torch_chunk_gated_delta_rule        │
+21:25:58 │                                                                              │
+21:25:58 │    421 │   │   inter_chunk_attn = query[:, :, i] @ last_recurrent_state      │
+21:25:58 │    422 │   │   core_attn_out[:, :, i] = inter_chunk_attn + intra_chunk_attn[ │
+21:25:58 │    423 │   │   # Update the recurrent state: new recurrent state (S_t+1) = d │
+21:25:58 │ ❱  424 │   │   last_recurrent_state = last_recurrent_state * chunk_decay[:,  │
+21:25:58 │    425 │                                                                     │
+21:25:58 │    426 │   # Discard the final state if not requested                        │
+21:25:58 │    427 │   last_recurrent_state = None if not output_final_state else last_r │
+21:25:58 ╰──────────────────────────────────────────────────────────────────────────────╯
+21:25:58 OutOfMemoryError: CUDA out of memory. Tried to allocate 300.00 MiB. GPU 0 has a 
+21:25:58 total capacity of 139.80 GiB of which 3.56 MiB is free. Process 25261 has 72.68 
+21:25:58 GiB memory in use. Including non-PyTorch memory, this process has 67.10 GiB 
+21:25:58 memory in use. Of the allocated memory 66.07 GiB is allocated by PyTorch, and 
+21:25:58 168.56 MiB is reserved by PyTorch but unallocated.

@@ -1,0 +1,75 @@
+label,model,pair,study,generation,method,role,seed,status,source_dir,dev_run,dev_selected_trial,dev_refusals,dev_kl,h1h2_use
+qwen3.8-27b__base,qwen3.8-27b,qwen,main,new,original,original,,judged,runs/mc-rtx-1/results/bench/qwen3.8-27b__base,,,98.0,0.0,used
+qwen2.5-32b__base,qwen2.5-32b,qwen,main,old,original,original,,judged,runs/mc-rtx-1/results/bench/qwen2.5-32b__base,,,98.0,0.0,used
+qwen3.8-27b__dim,qwen3.8-27b,qwen,main,new,dim,primary,1.0,judged,runs/mc-rtx-1/results/bench/qwen3.8-27b__dim,qwen3.8-27b__dim__core-s1,24.0,47.0,0.0529594,used
+qwen2.5-32b__dim,qwen2.5-32b,qwen,main,old,dim,primary,1.0,judged,runs/mc-rtx-1/results/bench/qwen2.5-32b__dim,qwen2.5-32b__dim__core-s1,62.0,89.0,0.0175174,used
+qwen3.8-27b__mpoa,qwen3.8-27b,qwen,main,new,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/bench/qwen3.8-27b__mpoa,qwen3.8-27b__mpoa__core-s1-resume1,30.0,25.0,0.0853892,used
+qwen2.5-32b__mpoa,qwen2.5-32b,qwen,main,old,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/bench/qwen2.5-32b__mpoa,qwen2.5-32b__mpoa__core-s1,79.0,13.0,0.0599341,used
+qwen3.8-27b__som,qwen3.8-27b,qwen,main,new,som,primary,1.0,judged,runs/mc-rtx-1/results/bench/qwen3.8-27b__som,qwen3.8-27b__som__core-s1,7.0,27.0,0.0842983,used
+qwen2.5-32b__som,qwen2.5-32b,qwen,main,old,som,primary,1.0,judged,runs/mc-rtx-1/results/bench/qwen2.5-32b__som,qwen2.5-32b__som__core-s1,30.0,73.0,0.0749924,used
+qwen3.8-27b__ara,qwen3.8-27b,qwen,main,new,ara,primary,1.0,judged,runs/mc-rtx-1/results/bench/qwen3.8-27b__ara,qwen3.8-27b__ara__core-s1-clean,65.0,63.0,0.0605131,used
+qwen2.5-32b__ara,qwen2.5-32b,qwen,main,old,ara,primary,1.0,judged,runs/mc-rtx-1/results/bench/qwen2.5-32b__ara,qwen2.5-32b__ara__core-s1-r2,42.0,10.0,0.0619695,used
+qwen3.8-27b__community-hereticorg-ara,qwen3.8-27b,qwen,main,new,community,external,,judged,runs/mc-rtx-1/results/bench/qwen3.8-27b__community-hereticorg-ara,,,,,not in H1/H2 (role external)
+qwen3.8-27b__community-huihui,qwen3.8-27b,qwen,main,new,community,external,,judged,runs/mc-rtx-1/results/bench/qwen3.8-27b__community-huihui,,,,,not in H1/H2 (role external)
+qwen2.5-32b__community-huihui,qwen2.5-32b,qwen,main,old,community,external,,judged,runs/mc-rtx-1/results/bench/qwen2.5-32b__community-huihui,,,,,not in H1/H2 (role external)
+qwen2.5-32b__community-zetasepic-v2,qwen2.5-32b,qwen,main,old,community,external,,judged,runs/mc-rtx-1/results/bench/qwen2.5-32b__community-zetasepic-v2,,,,,not in H1/H2 (role external)
+gemma-4-31b__base,gemma-4-31b,gemma,main,new,original,original,,judged,runs/mc-rtx-1/results/bench/gemma-4-31b__base,,,99.0,0.0,used
+gemma-2-27b__base,gemma-2-27b,gemma,main,old,original,original,,judged,runs/mc-rtx-1/results/bench/gemma-2-27b__base,,,100.0,0.0,used
+gemma-4-31b__dim,gemma-4-31b,gemma,main,new,dim,primary,1.0,judged,runs/mc-rtx-1/results/bench/gemma-4-31b__dim,gemma-4-31b__dim__core-s1,40.0,98.0,0.0931546,used
+gemma-2-27b__dim,gemma-2-27b,gemma,main,old,dim,primary,1.0,judged,runs/mc-rtx-1/results/bench/gemma-2-27b__dim,gemma-2-27b__dim__core-s1,35.0,89.0,0.0685686,used
+gemma-4-31b__mpoa,gemma-4-31b,gemma,main,new,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/bench/gemma-4-31b__mpoa,gemma-4-31b__mpoa__core-s1,78.0,80.0,0.0691263,used
+gemma-2-27b__mpoa,gemma-2-27b,gemma,main,old,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/bench/gemma-2-27b__mpoa,gemma-2-27b__mpoa__core-s1,99.0,74.0,0.0991083,used
+gemma-4-31b__som,gemma-4-31b,gemma,main,new,som,primary,1.0,judged,runs/mc-rtx-1/results/bench/gemma-4-31b__som,gemma-4-31b__som__core-s1,3.0,82.0,0.0548116,used
+gemma-2-27b__som,gemma-2-27b,gemma,main,old,som,primary,1.0,judged,runs/mc-rtx-1/results/bench/gemma-2-27b__som,gemma-2-27b__som__core-s1,96.0,83.0,0.0860255,used
+gemma-4-31b__ara,gemma-4-31b,gemma,main,new,ara,primary,1.0,judged,runs/mc-rtx-1/results/bench/gemma-4-31b__ara,gemma-4-31b__ara__core-s1,37.0,28.0,0.0844913,used
+gemma-2-27b__ara,gemma-2-27b,gemma,main,old,ara,primary,1.0,judged,runs/mc-rtx-1/results/bench/gemma-2-27b__ara,gemma-2-27b__ara__core-s1,63.0,16.0,0.0990216,used
+gemma-4-31b__community-coder3101,gemma-4-31b,gemma,main,new,community,external,,judged,runs/mc-rtx-1/results/bench/gemma-4-31b__community-coder3101,,,,,not in H1/H2 (role external)
+gemma-4-31b__gmpoa,gemma-4-31b,gemma,main,new,gamma_mpoa,control,1.0,judged,runs/mc-rtx-1/results/bench/gemma-4-31b__gmpoa,gemma-4-31b__gmpoa__core-s1,19.0,78.0,0.0609406,not in H1/H2 (role control)
+gemma-2-27b__gmpoa,gemma-2-27b,gemma,main,old,gamma_mpoa,control,1.0,judged,runs/mc-rtx-1/results/bench/gemma-2-27b__gmpoa,gemma-2-27b__gmpoa__core-s1,54.0,73.0,0.0968736,not in H1/H2 (role control)
+olmo-3.1-32b__base,olmo-3.1-32b,olmo,main,new,original,original,,judged,runs/mc-rtx-1/results/import_h200/olmo-3.1-32b__base,,,100.0,0.0,used
+olmo-2-32b__base,olmo-2-32b,olmo,main,old,original,original,,judged,runs/mc-rtx-1/results/import_h200/olmo-2-32b__base,,,98.0,0.0,used
+olmo-3.1-32b__dim,olmo-3.1-32b,olmo,main,new,dim,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-3.1-32b__dim,olmo-3.1-32b__dim__core-s1,35.0,88.0,0.0891117,used
+olmo-2-32b__dim,olmo-2-32b,olmo,main,old,dim,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-2-32b__dim,olmo-2-32b__dim__core-s1,37.0,32.0,0.0886852,used
+olmo-3.1-32b__mpoa,olmo-3.1-32b,olmo,main,new,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-3.1-32b__mpoa,olmo-3.1-32b__mpoa__core-s1,23.0,84.0,0.0915904,used
+olmo-2-32b__mpoa,olmo-2-32b,olmo,main,old,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-2-32b__mpoa,olmo-2-32b__mpoa__core-s1,34.0,36.0,0.0372167,used
+olmo-3.1-32b__som,olmo-3.1-32b,olmo,main,new,som,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-3.1-32b__som,olmo-3.1-32b__som__core-s1,89.0,79.0,0.0638458,used
+olmo-2-32b__som,olmo-2-32b,olmo,main,old,som,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-2-32b__som,olmo-2-32b__som__core-s1,7.0,63.0,0.0469979,used
+olmo-3.1-32b__ara,olmo-3.1-32b,olmo,main,new,ara,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-3.1-32b__ara,olmo-3.1-32b__ara__core-s1,10.0,48.0,0.0526023,used
+olmo-2-32b__ara,olmo-2-32b,olmo,main,old,ara,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-2-32b__ara,olmo-2-32b__ara__core-s1,54.0,34.0,0.0493958,used
+olmo-3.1-32b__community-muxodious,olmo-3.1-32b,olmo,main,new,community,external,,judged,runs/mc-rtx-1/results/import_h200/olmo-3.1-32b__community-muxodious,,,,,not in H1/H2 (role external)
+olmo-3.1-32b__gmpoa,olmo-3.1-32b,olmo,main,new,gamma_mpoa,control,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-3.1-32b__gmpoa,olmo-3.1-32b__gmpoa__core-s1,34.0,82.0,0.0993146,not in H1/H2 (role control)
+olmo-2-32b__gmpoa,olmo-2-32b,olmo,main,old,gamma_mpoa,control,1.0,judged,runs/mc-rtx-1/results/import_h200/olmo-2-32b__gmpoa,olmo-2-32b__gmpoa__core-s1,87.0,7.0,0.0851524,not in H1/H2 (role control)
+mistral-small-3.2__base,mistral-small-3.2,mistral,main,new,original,original,,judged,runs/mc-rtx-1/results/import_h200/mistral-small-3.2__base,,,98.0,0.0,used
+mistral-small-2409__base,mistral-small-2409,mistral,main,old,original,original,,judged,runs/mc-rtx-1/results/import_h200/mistral-small-2409__base,,,93.0,0.0,used
+mistral-small-3.2__dim,mistral-small-3.2,mistral,main,new,dim,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/mistral-small-3.2__dim,mistral-small-3.2__dim__core-s1-r2,47.0,35.0,0.0931141,used
+mistral-small-2409__dim,mistral-small-2409,mistral,main,old,dim,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/mistral-small-2409__dim,mistral-small-2409__dim__core-s1,56.0,69.0,0.0990129,used
+mistral-small-3.2__mpoa,mistral-small-3.2,mistral,main,new,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/mistral-small-3.2__mpoa,mistral-small-3.2__mpoa__core-s1-r2,61.0,13.0,0.0937556,used
+mistral-small-2409__mpoa,mistral-small-2409,mistral,main,old,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/mistral-small-2409__mpoa,mistral-small-2409__mpoa__core-s1,53.0,10.0,0.0493073,used
+mistral-small-3.2__som,mistral-small-3.2,mistral,main,new,som,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/mistral-small-3.2__som,mistral-small-3.2__som__core-s1,95.0,18.0,0.0995341,used
+mistral-small-2409__som,mistral-small-2409,mistral,main,old,som,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/mistral-small-2409__som,mistral-small-2409__som__core-s1,53.0,5.0,0.0619608,used
+mistral-small-3.2__ara,mistral-small-3.2,mistral,main,new,ara,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/mistral-small-3.2__ara,mistral-small-3.2__ara__core-s1-r2,86.0,6.0,0.0828929,used
+mistral-small-2409__ara,mistral-small-2409,mistral,main,old,ara,primary,1.0,judged,runs/mc-rtx-1/results/import_h200/mistral-small-2409__ara,mistral-small-2409__ara__core-s1,91.0,4.0,0.0655679,used
+mistral-small-3.2__community-huihui,mistral-small-3.2,mistral,main,new,community,external,,judged,runs/mc-rtx-1/results/import_h200/mistral-small-3.2__community-huihui,,,,,not in H1/H2 (role external)
+mistral-small-3.2__community-llmfan46,mistral-small-3.2,mistral,main,new,community,external,,judged,runs/mc-rtx-1/results/import_h200/mistral-small-3.2__community-llmfan46,,,,,not in H1/H2 (role external)
+qwen3.5-4b__base,qwen3.5-4b,qwen-small,small,small-new,original,original,,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__base,,,99.0,0.0,used
+qwen2.5-7b__base,qwen2.5-7b,qwen-small,small,small-old,original,original,,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__base,,,99.0,0.0,used
+qwen3.5-4b__dim,qwen3.5-4b,qwen-small,small,small-new,dim,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__dim,qwen3.5-4b__dim__core-s1,74.0,30.0,0.0538753,used
+qwen3.5-4b__dim-s2,qwen3.5-4b,qwen-small,small,small-new,dim,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__dim-s2,qwen3.5-4b__dim__core-s2,80.0,28.0,0.0468831,not in H1/H2 (role replicate)
+qwen2.5-7b__dim,qwen2.5-7b,qwen-small,small,small-old,dim,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__dim,qwen2.5-7b__dim__core-s1,36.0,55.0,0.0781598,used
+qwen2.5-7b__dim-s2,qwen2.5-7b,qwen-small,small,small-old,dim,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__dim-s2,qwen2.5-7b__dim__core-s2,17.0,20.0,0.0544351,not in H1/H2 (role replicate)
+qwen3.5-4b__mpoa,qwen3.5-4b,qwen-small,small,small-new,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__mpoa,qwen3.5-4b__mpoa__core-s1,67.0,6.0,0.0542861,used
+qwen3.5-4b__mpoa-s2,qwen3.5-4b,qwen-small,small,small-new,mpoa,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__mpoa-s2,qwen3.5-4b__mpoa__core-s2,8.0,18.0,0.0228079,not in H1/H2 (role replicate)
+qwen2.5-7b__mpoa,qwen2.5-7b,qwen-small,small,small-old,mpoa,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__mpoa,qwen2.5-7b__mpoa__core-s1,76.0,19.0,0.0743333,used
+qwen2.5-7b__mpoa-s2,qwen2.5-7b,qwen-small,small,small-old,mpoa,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__mpoa-s2,qwen2.5-7b__mpoa__core-s2,17.0,18.0,0.0416694,not in H1/H2 (role replicate)
+qwen3.5-4b__som,qwen3.5-4b,qwen-small,small,small-new,som,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__som,qwen3.5-4b__som__core-s1,79.0,10.0,0.0549675,used
+qwen3.5-4b__som-s2,qwen3.5-4b,qwen-small,small,small-new,som,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__som-s2,qwen3.5-4b__som__core-s2,58.0,20.0,0.0176385,not in H1/H2 (role replicate)
+qwen2.5-7b__som,qwen2.5-7b,qwen-small,small,small-old,som,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__som,qwen2.5-7b__som__core-s1,41.0,27.0,0.0755758,used
+qwen2.5-7b__som-s2,qwen2.5-7b,qwen-small,small,small-old,som,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__som-s2,qwen2.5-7b__som__core-s2,31.0,45.0,0.0912025,not in H1/H2 (role replicate)
+qwen3.5-4b__jspace,qwen3.5-4b,qwen-small,small,small-new,jspace,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__jspace,qwen3.5-4b__jspace__core-s1,51.0,48.0,0.0188453,used
+qwen3.5-4b__jspace-s2,qwen3.5-4b,qwen-small,small,small-new,jspace,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__jspace-s2,qwen3.5-4b__jspace__core-s2,17.0,54.0,0.0167698,not in H1/H2 (role replicate)
+qwen2.5-7b__jspace,qwen2.5-7b,qwen-small,small,small-old,jspace,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__jspace,qwen2.5-7b__jspace__core-s1,23.0,84.0,0.0216116,used
+qwen2.5-7b__jspace-s2,qwen2.5-7b,qwen-small,small,small-old,jspace,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__jspace-s2,qwen2.5-7b__jspace__core-s2,26.0,87.0,0.0180842,not in H1/H2 (role replicate)
+qwen3.5-4b__ara,qwen3.5-4b,qwen-small,small,small-new,ara,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__ara,qwen3.5-4b__ara__core-s1,75.0,6.0,0.0644591,used
+qwen3.5-4b__ara-s2,qwen3.5-4b,qwen-small,small,small-new,ara,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen3.5-4b__ara-s2,qwen3.5-4b__ara__core-s2,20.0,28.0,0.0686202,not in H1/H2 (role replicate)
+qwen2.5-7b__ara,qwen2.5-7b,qwen-small,small,small-old,ara,primary,1.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__ara,qwen2.5-7b__ara__core-s1,58.0,8.0,0.0205449,used
+qwen2.5-7b__ara-s2,qwen2.5-7b,qwen-small,small,small-old,ara,replicate,2.0,judged,runs/mc-rtx-1/results/import_4090/qwen2.5-7b__ara-s2,qwen2.5-7b__ara__core-s2,36.0,4.0,0.0528927,not in H1/H2 (role replicate)

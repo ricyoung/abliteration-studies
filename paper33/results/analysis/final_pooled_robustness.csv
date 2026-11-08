@@ -1,0 +1,25 @@
+cell_set,term,estimate,se,lo,hi,p,n_obs,n_cells,families
+all main-study modified cells (= h1h2.py),gen effect | direction class,0.621782,0.028008,0.566888,0.676677,3.42123e-109,31104,32,gemma+mistral+olmo+qwen
+all main-study modified cells (= h1h2.py),gen effect | optimisation class,0.123882,0.0617766,0.00280165,0.244962,0.0449294,31104,32,gemma+mistral+olmo+qwen
+all main-study modified cells (= h1h2.py),generation x class (H2),-0.497901,0.06218,-0.619771,-0.37603,1.17152e-15,31104,32,gemma+mistral+olmo+qwen
+without Gemma DiM (failed Gemma-4 edit; both generations dropped),gen effect | direction class,0.608577,0.0281585,0.553388,0.663767,1.36829e-103,29160,30,gemma+mistral+olmo+qwen
+without Gemma DiM (failed Gemma-4 edit; both generations dropped),gen effect | optimisation class,0.118486,0.0570107,0.00674672,0.230225,0.0376813,29160,30,gemma+mistral+olmo+qwen
+without Gemma DiM (failed Gemma-4 edit; both generations dropped),generation x class (H2),-0.490092,0.0582528,-0.604265,-0.375918,3.99041e-17,29160,30,gemma+mistral+olmo+qwen
+leave out qwen,gen effect | direction class,0.692932,0.0331038,0.628049,0.757814,2.73275e-97,23328,24,gemma+mistral+olmo
+leave out qwen,gen effect | optimisation class,-1.37108,0.103144,-1.57324,-1.16892,2.5475e-40,23328,24,gemma+mistral+olmo
+leave out qwen,generation x class (H2),-2.06401,0.108289,-2.27626,-1.85177,5.40682e-81,23328,24,gemma+mistral+olmo
+leave out gemma,gen effect | direction class,0.813413,0.0322881,0.75013,0.876697,4.85543e-140,23328,24,mistral+olmo+qwen
+leave out gemma,gen effect | optimisation class,1.01773,0.080224,0.860495,1.17497,7.0597e-37,23328,24,mistral+olmo+qwen
+leave out gemma,generation x class (H2),0.204318,0.0774741,0.0524716,0.356165,0.0083583,23328,24,mistral+olmo+qwen
+leave out olmo,gen effect | direction class,0.239302,0.0348743,0.170949,0.307654,6.79814e-12,23328,24,gemma+mistral+qwen
+leave out olmo,gen effect | optimisation class,0.237837,0.0716839,0.0973387,0.378335,0.000907125,23328,24,gemma+mistral+qwen
+leave out olmo,generation x class (H2),-0.00146515,0.0749059,-0.148278,0.145348,0.984394,23328,24,gemma+mistral+qwen
+leave out mistral,gen effect | direction class,0.737503,0.0281301,0.682369,0.792637,1.67614e-151,23328,24,gemma+olmo+qwen
+leave out mistral,gen effect | optimisation class,0.150378,0.0598274,0.0331181,0.267637,0.0119531,23328,24,gemma+olmo+qwen
+leave out mistral,generation x class (H2),-0.587125,0.0609169,-0.70652,-0.46773,5.51819e-22,23328,24,gemma+olmo+qwen
+gamma-MPOA replaces MPOA for Gemma and OLMo,gen effect | direction class,0.53633,0.0250804,0.487173,0.585487,1.86685e-101,31104,32,gemma+mistral+olmo+qwen
+gamma-MPOA replaces MPOA for Gemma and OLMo,gen effect | optimisation class,0.120367,0.0583116,0.00607808,0.234655,0.0389989,31104,32,gemma+mistral+olmo+qwen
+gamma-MPOA replaces MPOA for Gemma and OLMo,generation x class (H2),-0.415963,0.0584481,-0.530519,-0.301407,1.10469e-12,31104,32,gemma+mistral+olmo+qwen
+"gamma-MPOA replaces MPOA, without Gemma DiM",gen effect | direction class,0.520442,0.025565,0.470336,0.570548,3.97565e-92,29160,30,gemma+mistral+olmo+qwen
+"gamma-MPOA replaces MPOA, without Gemma DiM",gen effect | optimisation class,0.115776,0.0546041,0.00875402,0.222798,0.0339823,29160,30,gemma+mistral+olmo+qwen
+"gamma-MPOA replaces MPOA, without Gemma DiM",generation x class (H2),-0.404666,0.0555315,-0.513506,-0.295826,3.16601e-13,29160,30,gemma+mistral+olmo+qwen

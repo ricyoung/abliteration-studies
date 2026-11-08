@@ -1,0 +1,692 @@
+18:41:14 █░█░█▀▀░█▀▄░█▀▀░▀█▀░█░█▀▀  v2.0.0
+18:41:14 █▀█░█▀▀░█▀▄░█▀▀░░█░░█░█░░  https://heretic-project.org
+18:41:14 ▀░▀░▀▀▀░▀░▀░▀▀▀░░▀░░▀░▀▀▀  https://github.com/p-e-w/heretic
+18:41:14 
+18:41:14 Detected 1 CUDA device(s) (139.80 GB total VRAM)
+18:41:14 CUDA Version: 13.0
+18:41:14 Driver Version: 580.126.09
+18:41:14 * CUDA 0: NVIDIA H200 NVL (139.80 GB)
+18:41:14 
+18:41:14 Loading model Qwen/Qwen2.5-7B-Instruct...
+18:41:19 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+18:41:20 * Trying dtype auto...
+18:41:37 Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:01<09:42,  1.72s/it]Loading weights:   1%|          | 2/339 [00:03<09:01,  1.61s/it]Loading weights:   1%|          | 4/339 [00:03<03:31,  1.58it/s]Loading weights:   1%|▏         | 5/339 [00:03<02:46,  2.01it/s]Loading weights:   2%|▏         | 6/339 [00:03<02:09,  2.58it/s]Loading weights:   5%|▍         | 16/339 [00:04<00:31, 10.24it/s]Loading weights:   5%|▌         | 18/339 [00:04<00:29, 11.01it/s]Loading weights:   8%|▊         | 28/339 [00:04<00:16, 18.35it/s]Loading weights:   9%|▉         | 31/339 [00:04<00:15, 19.54it/s]Loading weights:  12%|█▏        | 40/339 [00:04<00:10, 28.05it/s]Loading weights:  13%|█▎        | 44/339 [00:04<00:11, 25.04it/s]Loading weights:  15%|█▌        | 52/339 [00:05<00:09, 31.33it/s]Loading weights:  17%|█▋        | 56/339 [00:05<00:10, 26.68it/s]Loading weights:  19%|█▉        | 64/339 [00:05<00:10, 27.34it/s]Loading weights:  20%|█▉        | 67/339 [00:05<00:09, 27.24it/s]Loading weights:  22%|██▏       | 76/339 [00:05<00:09, 29.15it/s]Loading weights:  23%|██▎       | 79/339 [00:06<00:09, 28.60it/s]Loading weights:  26%|██▌       | 88/339 [00:06<00:07, 35.72it/s]Loading weights:  27%|██▋       | 92/339 [00:06<00:08, 29.16it/s]Loading weights:  29%|██▉       | 100/339 [00:06<00:06, 34.41it/s]Loading weights:  31%|███       | 104/339 [00:06<00:08, 28.60it/s]Loading weights:  33%|███▎      | 112/339 [00:07<00:06, 34.40it/s]Loading weights:  34%|███▍      | 116/339 [00:07<00:07, 28.55it/s]Loading weights:  37%|███▋      | 124/339 [00:07<00:06, 34.09it/s]Loading weights:  38%|███▊      | 128/339 [00:07<00:07, 27.92it/s]Loading weights:  40%|████      | 136/339 [00:07<00:06, 33.00it/s]Loading weights:  41%|████▏     | 140/339 [00:08<00:07, 27.66it/s]Loading weights:  44%|████▎     | 148/339 [00:08<00:06, 27.99it/s]Loading weights:  45%|████▍     | 151/339 [00:08<00:06, 27.77it/s]Loading weights:  47%|████▋     | 160/339 [00:08<00:05, 35.19it/s]Loading weights:  48%|████▊     | 164/339 [00:08<00:05, 29.82it/s]Loading weights:  51%|█████     | 172/339 [00:08<00:04, 34.54it/s]Loading weights:  52%|█████▏    | 176/339 [00:09<00:05, 28.69it/s]Loading weights:  54%|█████▍    | 184/339 [00:09<00:04, 33.95it/s]Loading weights:  55%|█████▌    | 188/339 [00:09<00:05, 27.10it/s]Loading weights:  58%|█████▊    | 196/339 [00:09<00:04, 28.98it/s]Loading weights:  59%|█████▉    | 200/339 [00:10<00:07, 19.60it/s]Loading weights:  61%|██████▏   | 208/339 [00:10<00:06, 21.82it/s]Loading weights:  62%|██████▏   | 211/339 [00:10<00:06, 18.53it/s]Loading weights:  65%|██████▍   | 220/339 [00:11<00:05, 23.19it/s]Loading weights:  66%|██████▌   | 223/339 [00:11<00:06, 17.07it/s]Loading weights:  68%|██████▊   | 232/339 [00:11<00:05, 19.74it/s]Loading weights:  69%|██████▉   | 235/339 [00:12<00:07, 14.39it/s]Loading weights:  71%|███████   | 239/339 [00:12<00:05, 16.88it/s]Loading weights:  72%|███████▏  | 243/339 [00:12<00:05, 16.57it/s]Loading weights:  73%|███████▎  | 246/339 [00:13<00:07, 11.64it/s]Loading weights:  75%|███████▍  | 254/339 [00:13<00:04, 18.86it/s]Loading weights:  76%|███████▌  | 258/339 [00:14<00:06, 12.30it/s]Loading weights:  78%|███████▊  | 266/339 [00:14<00:03, 18.83it/s]Loading weights:  80%|███████▉  | 271/339 [00:14<00:04, 14.46it/s]Loading weights:  83%|████████▎ | 280/339 [00:14<00:02, 20.85it/s]Loading weights:  84%|████████▍ | 285/339 [00:15<00:02, 20.94it/s]Loading weights:  86%|████████▌ | 292/339 [00:15<00:01, 25.09it/s]Loading weights:  87%|████████▋ | 296/339 [00:15<00:01, 22.64it/s]Loading weights:  89%|████████▉ | 303/339 [00:15<00:01, 26.80it/s]Loading weights:  91%|█████████ | 307/339 [00:15<00:01, 23.59it/s]Loading weights:  93%|█████████▎| 316/339 [00:16<00:00, 31.29it/s]Loading weights:  94%|█████████▍| 320/339 [00:16<00:00, 26.89it/s]Loading weights:  97%|█████████▋| 328/339 [00:16<00:00, 27.78it/s]Loading weights:  98%|█████████▊| 332/339 [00:16<00:00, 26.10it/s]Loading weights: 100%|██████████| 339/339 [00:16<00:00, 20.06it/s]
+18:41:38 * Transformer model with 28 layers
+18:41:38 * Modifiable components:
+18:41:38   * attn.o_proj: 28 modules total
+18:41:38   * mlp.down_proj: 28 modules total
+18:41:38 
+18:41:38 Resident system RAM: 1.87 GB
+18:41:38 Allocated GPU VRAM: 14.22 GB
+18:41:38 Reserved GPU VRAM: 14.22 GB
+18:41:38 
+18:41:38 Loading batch size test prompts from mlabonne/harmless_alpaca...
+18:41:54 * 256 prompts loaded
+18:41:54 
+18:41:54 Determining optimal batch size...
+18:41:59 * Trying batch size 1... Ok (99 tokens/s)
+18:42:06 * Trying batch size 2... Ok (165 tokens/s)
+18:42:11 * Trying batch size 4... Ok (319 tokens/s)
+18:42:17 * Trying batch size 8... Ok (660 tokens/s)
+18:42:23 * Trying batch size 16... Ok (1314 tokens/s)
+18:42:28 * Trying batch size 32... Ok (2455 tokens/s)
+18:42:34 * Trying batch size 64... Ok (4126 tokens/s)
+18:42:41 * Trying batch size 128... Ok (5521 tokens/s)
+18:42:41 * Chosen batch size: 128
+18:42:41 
+18:42:41 Loading response prefix test prompts from [mlabonne/harmless_alpaca, 
+18:42:41 mlabonne/harmful_behaviors]...
+18:42:41 * 200 prompts loaded
+18:42:41 
+18:42:41 Checking chat template for a closed Chain-of-Thought block or an initializer...
+18:42:41 * None found
+18:42:41 
+18:42:41 Checking for common response prefix...
+18:42:49 * None found
+18:42:49 
+18:42:49 Loading and initializing scorers...
+18:42:49 * Loaded: KeywordRate
+18:42:49 * Loaded: KLDivergence
+18:42:49 
+18:42:49 Loading Refusals evaluation prompts from mlabonne/harmful_behaviors...
+18:42:49 * 100 prompts loaded
+18:42:49 
+18:42:49 Loading KL divergence evaluation prompts from mlabonne/harmless_alpaca...
+18:42:49 * 100 prompts loaded
+18:42:49 * Obtaining baseline first-token probability distributions...
+18:42:50 
+18:42:50 Getting baseline scores...
+18:42:55 * Baseline Refusals: 99/100
+18:42:55 * Baseline KL divergence: 0 (by definition)
+18:42:55 
+18:42:55 Loading and initializing modifiers...
+18:42:55 * Loaded: ARA
+18:42:55 
+18:42:55 Loading good prompts from mlabonne/harmless_alpaca...
+18:42:55 * 400 prompts loaded
+18:42:55 
+18:42:55 Loading bad prompts from mlabonne/harmful_behaviors...
+18:42:55 * 400 prompts loaded
+18:42:55 
+18:42:55 Obtaining module I/O for good prompts...
+18:42:57 
+18:42:57 Obtaining module I/O for bad prompts...
+18:42:59 
+18:42:59 Running trial 1 of 30...
+18:42:59 * Parameters:
+18:42:59   * start_layer_index = 6
+18:42:59   * end_layer_index = 25
+18:42:59   * preserve_good_behavior_weight = 0.0001
+18:42:59   * steer_bad_behavior_weight = 0.0016
+18:42:59   * overcorrect_relative_weight = 0.1908
+18:42:59   * neighbor_count = 2
+18:42:59 * Resetting model...
+18:42:59 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:43:13 * Evaluating...
+18:43:16   * Refusals: 19/100
+18:43:16   * KL divergence: 2.7641
+18:43:16 
+18:43:16 Elapsed time: 18s
+18:43:16 Estimated remaining time: 8m 34s
+18:43:16 Resident system RAM: 5.28 GB
+18:43:16 Allocated GPU VRAM: 14.40 GB
+18:43:16 Reserved GPU VRAM: 14.45 GB
+18:43:16 
+18:43:16 Running trial 2 of 30...
+18:43:16 * Parameters:
+18:43:16   * start_layer_index = 2
+18:43:16   * end_layer_index = 19
+18:43:16   * preserve_good_behavior_weight = 0.3968
+18:43:16   * steer_bad_behavior_weight = 0.0143
+18:43:16   * overcorrect_relative_weight = 0.5450
+18:43:16   * neighbor_count = 11
+18:43:16 * Resetting model...
+18:43:16 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:43:30 * Evaluating...
+18:43:33   * Refusals: 29/100
+18:43:33   * KL divergence: 1.2225
+18:43:33 
+18:43:33 Elapsed time: 34s
+18:43:33 Estimated remaining time: 8m 2s
+18:43:33 Resident system RAM: 5.25 GB
+18:43:33 Allocated GPU VRAM: 14.40 GB
+18:43:33 Reserved GPU VRAM: 14.45 GB
+18:43:33 
+18:43:33 Running trial 3 of 30...
+18:43:33 * Parameters:
+18:43:33   * start_layer_index = 3
+18:43:33   * end_layer_index = 27
+18:43:33   * preserve_good_behavior_weight = 0.0274
+18:43:33   * steer_bad_behavior_weight = 0.0481
+18:43:33   * overcorrect_relative_weight = 0.5425
+18:43:33   * neighbor_count = 9
+18:43:33 * Resetting model...
+18:43:33 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:43:52 * Evaluating...
+18:43:55   * Refusals: 15/100
+18:43:55   * KL divergence: 5.0081
+18:43:55 
+18:43:55 Elapsed time: 56s
+18:43:55 Estimated remaining time: 8m 27s
+18:43:55 Resident system RAM: 5.28 GB
+18:43:55 Allocated GPU VRAM: 14.40 GB
+18:43:55 Reserved GPU VRAM: 14.45 GB
+18:43:55 
+18:43:55 Running trial 4 of 30...
+18:43:55 * Parameters:
+18:43:55   * start_layer_index = 2
+18:43:55   * end_layer_index = 17
+18:43:55   * preserve_good_behavior_weight = 0.8007
+18:43:55   * steer_bad_behavior_weight = 0.7465
+18:43:55   * overcorrect_relative_weight = 0.4075
+18:43:55   * neighbor_count = 11
+18:43:55 * Resetting model...
+18:43:55 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:44:07 * Evaluating...
+18:44:10   * Refusals: 3/100
+18:44:10   * KL divergence: 4.6668
+18:44:10 
+18:44:10 Elapsed time: 1m 11s
+18:44:10 Estimated remaining time: 7m 43s
+18:44:10 Resident system RAM: 5.25 GB
+18:44:10 Allocated GPU VRAM: 14.40 GB
+18:44:10 Reserved GPU VRAM: 14.45 GB
+18:44:10 
+18:44:10 Running trial 5 of 30...
+18:44:10 * Parameters:
+18:44:10   * start_layer_index = 13
+18:44:10   * end_layer_index = 27
+18:44:10   * preserve_good_behavior_weight = 0.0850
+18:44:10   * steer_bad_behavior_weight = 0.0001
+18:44:10   * overcorrect_relative_weight = 0.2208
+18:44:10   * neighbor_count = 14
+18:44:10 * Resetting model...
+18:44:10 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:44:21 * Evaluating...
+18:44:24   * Refusals: 8/100
+18:44:24   * KL divergence: 0.0415
+18:44:24 
+18:44:24 Elapsed time: 1m 25s
+18:44:24 Estimated remaining time: 7m 5s
+18:44:24 Resident system RAM: 5.28 GB
+18:44:24 Allocated GPU VRAM: 14.40 GB
+18:44:24 Reserved GPU VRAM: 14.45 GB
+18:44:24 
+18:44:24 Running trial 6 of 30...
+18:44:24 * Parameters:
+18:44:24   * start_layer_index = 1
+18:44:24   * end_layer_index = 20
+18:44:24   * preserve_good_behavior_weight = 0.9579
+18:44:24   * steer_bad_behavior_weight = 0.0136
+18:44:24   * overcorrect_relative_weight = 0.8994
+18:44:24   * neighbor_count = 5
+18:44:24 * Resetting model...
+18:44:24 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:44:39 * Evaluating...
+18:44:42   * Refusals: 6/100
+18:44:42   * KL divergence: 0.5172
+18:44:42 
+18:44:42 Elapsed time: 1m 43s
+18:44:42 Estimated remaining time: 6m 53s
+18:44:42 Resident system RAM: 5.28 GB
+18:44:42 Allocated GPU VRAM: 14.40 GB
+18:44:42 Reserved GPU VRAM: 14.45 GB
+18:44:42 
+18:44:42 Running trial 7 of 30...
+18:44:42 * Parameters:
+18:44:42   * start_layer_index = 10
+18:44:42   * end_layer_index = 26
+18:44:42   * preserve_good_behavior_weight = 0.0183
+18:44:42   * steer_bad_behavior_weight = 0.1001
+18:44:42   * overcorrect_relative_weight = 1.2855
+18:44:42   * neighbor_count = 12
+18:44:42 * Resetting model...
+18:44:42 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:44:52 * Evaluating...
+18:44:55   * Refusals: 0/100
+18:44:55   * KL divergence: 14.7976
+18:44:55 
+18:44:55 Elapsed time: 1m 56s
+18:44:55 Estimated remaining time: 6m 22s
+18:44:56 Resident system RAM: 5.28 GB
+18:44:56 Allocated GPU VRAM: 14.40 GB
+18:44:56 Reserved GPU VRAM: 14.45 GB
+18:44:56 
+18:44:56 Running trial 8 of 30...
+18:44:56 * Parameters:
+18:44:56   * start_layer_index = 4
+18:44:56   * end_layer_index = 26
+18:44:56   * preserve_good_behavior_weight = 0.1032
+18:44:56   * steer_bad_behavior_weight = 0.0062
+18:44:56   * overcorrect_relative_weight = 1.1812
+18:44:56   * neighbor_count = 5
+18:44:56 * Resetting model...
+18:44:56 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:45:12 * Evaluating...
+18:45:16   * Refusals: 0/100
+18:45:16   * KL divergence: 15.9000
+18:45:16 
+18:45:16 Elapsed time: 2m 17s
+18:45:16 Estimated remaining time: 6m 16s
+18:45:16 Resident system RAM: 5.28 GB
+18:45:16 Allocated GPU VRAM: 14.40 GB
+18:45:16 Reserved GPU VRAM: 14.45 GB
+18:45:16 
+18:45:16 Running trial 9 of 30...
+18:45:16 * Parameters:
+18:45:16   * start_layer_index = 4
+18:45:16   * end_layer_index = 16
+18:45:16   * preserve_good_behavior_weight = 0.0194
+18:45:16   * steer_bad_behavior_weight = 0.0519
+18:45:16   * overcorrect_relative_weight = 0.2751
+18:45:16   * neighbor_count = 4
+18:45:16 * Resetting model...
+18:45:16 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:45:25 * Evaluating...
+18:45:28   * Refusals: 30/100
+18:45:28   * KL divergence: 1.4633
+18:45:28 
+18:45:28 Elapsed time: 2m 29s
+18:45:28 Estimated remaining time: 5m 48s
+18:45:28 Resident system RAM: 5.28 GB
+18:45:28 Allocated GPU VRAM: 14.40 GB
+18:45:28 Reserved GPU VRAM: 14.45 GB
+18:45:28 
+18:45:28 Running trial 10 of 30...
+18:45:28 * Parameters:
+18:45:28   * start_layer_index = 7
+18:45:28   * end_layer_index = 15
+18:45:28   * preserve_good_behavior_weight = 0.5741
+18:45:28   * steer_bad_behavior_weight = 0.0004
+18:45:28   * overcorrect_relative_weight = 0.7661
+18:45:28   * neighbor_count = 11
+18:45:28 * Resetting model...
+18:45:28 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:45:34 * Evaluating...
+18:45:37   * Refusals: 56/100
+18:45:37   * KL divergence: 0.0850
+18:45:37 
+18:45:37 Elapsed time: 2m 38s
+18:45:37 Estimated remaining time: 5m 17s
+18:45:38 Resident system RAM: 5.28 GB
+18:45:38 Allocated GPU VRAM: 14.40 GB
+18:45:38 Reserved GPU VRAM: 14.45 GB
+18:45:38 
+18:45:38 Running trial 11 of 30...
+18:45:38 * Parameters:
+18:45:38   * start_layer_index = 11
+18:45:38   * end_layer_index = 17
+18:45:38   * preserve_good_behavior_weight = 0.9776
+18:45:38   * steer_bad_behavior_weight = 0.3229
+18:45:38   * overcorrect_relative_weight = 0.0411
+18:45:38   * neighbor_count = 15
+18:45:38 * Resetting model...
+18:45:38 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:45:42 * Evaluating...
+18:45:45   * Refusals: 35/100
+18:45:45   * KL divergence: 0.5140
+18:45:45 
+18:45:45 Elapsed time: 2m 47s
+18:45:45 Estimated remaining time: 4m 48s
+18:45:45 Resident system RAM: 5.28 GB
+18:45:45 Allocated GPU VRAM: 14.40 GB
+18:45:45 Reserved GPU VRAM: 14.45 GB
+18:45:45 
+18:45:45 Running trial 12 of 30...
+18:45:45 * Parameters:
+18:45:45   * start_layer_index = 1
+18:45:45   * end_layer_index = 17
+18:45:45   * preserve_good_behavior_weight = 0.8342
+18:45:45   * steer_bad_behavior_weight = 0.6043
+18:45:45   * overcorrect_relative_weight = 0.4563
+18:45:45   * neighbor_count = 8
+18:45:45 * Resetting model...
+18:45:45 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:45:57 * Evaluating...
+18:46:00   * Refusals: 29/100
+18:46:00   * KL divergence: 3.6539
+18:46:00 
+18:46:00 Elapsed time: 3m 1s
+18:46:00 Estimated remaining time: 4m 32s
+18:46:00 Resident system RAM: 5.28 GB
+18:46:00 Allocated GPU VRAM: 14.40 GB
+18:46:00 Reserved GPU VRAM: 14.45 GB
+18:46:00 
+18:46:00 Running trial 13 of 30...
+18:46:00 * Parameters:
+18:46:00   * start_layer_index = 1
+18:46:00   * end_layer_index = 21
+18:46:00   * preserve_good_behavior_weight = 0.9408
+18:46:00   * steer_bad_behavior_weight = 0.0137
+18:46:00   * overcorrect_relative_weight = 1.1756
+18:46:00   * neighbor_count = 6
+18:46:00 * Resetting model...
+18:46:00 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:46:14 * Evaluating...
+18:46:17   * Refusals: 0/100
+18:46:17   * KL divergence: 15.7081
+18:46:17 
+18:46:17 Elapsed time: 3m 19s
+18:46:17 Estimated remaining time: 4m 20s
+18:46:21 Resident system RAM: 5.28 GB
+18:46:21 Allocated GPU VRAM: 14.40 GB
+18:46:21 Reserved GPU VRAM: 14.45 GB
+18:46:21 
+18:46:21 Running trial 14 of 30...
+18:46:21 * Parameters:
+18:46:21   * start_layer_index = 4
+18:46:21   * end_layer_index = 20
+18:46:21   * preserve_good_behavior_weight = 0.7526
+18:46:21   * steer_bad_behavior_weight = 0.7708
+18:46:21   * overcorrect_relative_weight = 0.1329
+18:46:21   * neighbor_count = 12
+18:46:21 * Resetting model...
+18:46:21 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:46:34 * Evaluating...
+18:46:37   * Refusals: 43/100
+18:46:37   * KL divergence: 1.8074
+18:46:37 
+18:46:37 Elapsed time: 3m 38s
+18:46:37 Estimated remaining time: 4m 9s
+18:46:37 Resident system RAM: 5.28 GB
+18:46:37 Allocated GPU VRAM: 14.40 GB
+18:46:37 Reserved GPU VRAM: 14.45 GB
+18:46:37 
+18:46:37 Running trial 15 of 30...
+18:46:37 * Parameters:
+18:46:37   * start_layer_index = 2
+18:46:37   * end_layer_index = 19
+18:46:37   * preserve_good_behavior_weight = 0.9512
+18:46:37   * steer_bad_behavior_weight = 0.0009
+18:46:37   * overcorrect_relative_weight = 0.9839
+18:46:37   * neighbor_count = 2
+18:46:37 * Resetting model...
+18:46:37 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:46:48 * Evaluating...
+18:46:52   * Refusals: 21/100
+18:46:52   * KL divergence: 0.3150
+18:46:52 
+18:46:52 Elapsed time: 3m 53s
+18:46:52 Estimated remaining time: 3m 53s
+18:46:52 Resident system RAM: 5.28 GB
+18:46:52 Allocated GPU VRAM: 14.40 GB
+18:46:52 Reserved GPU VRAM: 14.45 GB
+18:46:52 
+18:46:52 Running trial 16 of 30...
+18:46:52 * Parameters:
+18:46:52   * start_layer_index = 0
+18:46:52   * end_layer_index = 20
+18:46:52   * preserve_good_behavior_weight = 0.9111
+18:46:52   * steer_bad_behavior_weight = 0.0529
+18:46:52   * overcorrect_relative_weight = 0.4778
+18:46:52   * neighbor_count = 8
+18:46:52 * Resetting model...
+18:46:52 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:47:07 * Evaluating...
+18:47:10   * Refusals: 27/100
+18:47:10   * KL divergence: 2.2108
+18:47:10 
+18:47:10 Elapsed time: 4m 11s
+18:47:10 Estimated remaining time: 3m 40s
+18:47:10 Resident system RAM: 5.28 GB
+18:47:10 Allocated GPU VRAM: 14.40 GB
+18:47:10 Reserved GPU VRAM: 14.45 GB
+18:47:10 
+18:47:10 Running trial 17 of 30...
+18:47:10 * Parameters:
+18:47:10   * start_layer_index = 1
+18:47:10   * end_layer_index = 19
+18:47:10   * preserve_good_behavior_weight = 0.8894
+18:47:10   * steer_bad_behavior_weight = 0.8877
+18:47:10   * overcorrect_relative_weight = 0.7910
+18:47:10   * neighbor_count = 4
+18:47:10 * Resetting model...
+18:47:10 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:47:24 * Evaluating...
+18:47:27   * Refusals: 5/100
+18:47:27   * KL divergence: 3.2717
+18:47:27 
+18:47:27 Elapsed time: 4m 29s
+18:47:27 Estimated remaining time: 3m 25s
+18:47:27 Resident system RAM: 5.28 GB
+18:47:27 Allocated GPU VRAM: 14.40 GB
+18:47:27 Reserved GPU VRAM: 14.45 GB
+18:47:27 
+18:47:27 Running trial 18 of 30...
+18:47:27 * Parameters:
+18:47:27   * start_layer_index = 4
+18:47:27   * end_layer_index = 15
+18:47:27   * preserve_good_behavior_weight = 0.9532
+18:47:27   * steer_bad_behavior_weight = 0.5892
+18:47:27   * overcorrect_relative_weight = 0.4968
+18:47:27   * neighbor_count = 15
+18:47:27 * Resetting model...
+18:47:27 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:47:36 * Evaluating...
+18:47:39   * Refusals: 79/100
+18:47:39   * KL divergence: 1.7291
+18:47:39 
+18:47:39 Elapsed time: 4m 41s
+18:47:39 Estimated remaining time: 3m 7s
+18:47:41 Resident system RAM: 5.28 GB
+18:47:41 Allocated GPU VRAM: 14.40 GB
+18:47:41 Reserved GPU VRAM: 14.45 GB
+18:47:41 
+18:47:41 Running trial 19 of 30...
+18:47:41 * Parameters:
+18:47:41   * start_layer_index = 0
+18:47:41   * end_layer_index = 15
+18:47:41   * preserve_good_behavior_weight = 0.8227
+18:47:41   * steer_bad_behavior_weight = 0.0375
+18:47:41   * overcorrect_relative_weight = 0.4376
+18:47:41   * neighbor_count = 12
+18:47:41 * Resetting model...
+18:47:41 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:47:53 * Evaluating...
+18:47:56   * Refusals: 50/100
+18:47:56   * KL divergence: 1.1141
+18:47:56 
+18:47:56 Elapsed time: 4m 57s
+18:47:56 Estimated remaining time: 2m 52s
+18:47:56 Resident system RAM: 5.28 GB
+18:47:56 Allocated GPU VRAM: 14.40 GB
+18:47:56 Reserved GPU VRAM: 14.45 GB
+18:47:56 
+18:47:56 Running trial 20 of 30...
+18:47:56 * Parameters:
+18:47:56   * start_layer_index = 3
+18:47:56   * end_layer_index = 19
+18:47:56   * preserve_good_behavior_weight = 0.6661
+18:47:56   * steer_bad_behavior_weight = 0.7527
+18:47:56   * overcorrect_relative_weight = 0.7823
+18:47:56   * neighbor_count = 11
+18:47:56 * Resetting model...
+18:47:56 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:48:08 * Evaluating...
+18:48:11   * Refusals: 6/100
+18:48:11   * KL divergence: 3.9524
+18:48:11 
+18:48:11 Elapsed time: 5m 13s
+18:48:11 Estimated remaining time: 2m 36s
+18:48:11 Resident system RAM: 5.28 GB
+18:48:11 Allocated GPU VRAM: 14.40 GB
+18:48:11 Reserved GPU VRAM: 14.45 GB
+18:48:11 
+18:48:11 Running trial 21 of 30...
+18:48:11 * Parameters:
+18:48:11   * start_layer_index = 3
+18:48:11   * end_layer_index = 20
+18:48:11   * preserve_good_behavior_weight = 0.7815
+18:48:11   * steer_bad_behavior_weight = 0.0925
+18:48:11   * overcorrect_relative_weight = 0.9524
+18:48:11   * neighbor_count = 6
+18:48:11 * Resetting model...
+18:48:11 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:48:24 * Evaluating...
+18:48:28   * Refusals: 5/100
+18:48:28   * KL divergence: 1.4524
+18:48:28 
+18:48:28 Elapsed time: 5m 29s
+18:48:28 Estimated remaining time: 2m 21s
+18:48:29 Resident system RAM: 5.29 GB
+18:48:29 Allocated GPU VRAM: 14.40 GB
+18:48:29 Reserved GPU VRAM: 14.45 GB
+18:48:29 
+18:48:29 Running trial 22 of 30...
+18:48:29 * Parameters:
+18:48:29   * start_layer_index = 0
+18:48:29   * end_layer_index = 18
+18:48:29   * preserve_good_behavior_weight = 0.7629
+18:48:29   * steer_bad_behavior_weight = 0.4196
+18:48:29   * overcorrect_relative_weight = 0.0926
+18:48:29   * neighbor_count = 9
+18:48:29 * Resetting model...
+18:48:29 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:48:43 * Evaluating...
+18:48:46   * Refusals: 33/100
+18:48:46   * KL divergence: 1.1060
+18:48:46 
+18:48:46 Elapsed time: 5m 48s
+18:48:46 Estimated remaining time: 2m 6s
+18:48:46 Resident system RAM: 5.28 GB
+18:48:46 Allocated GPU VRAM: 14.40 GB
+18:48:46 Reserved GPU VRAM: 14.45 GB
+18:48:46 
+18:48:46 Running trial 23 of 30...
+18:48:46 * Parameters:
+18:48:46   * start_layer_index = 8
+18:48:46   * end_layer_index = 26
+18:48:46   * preserve_good_behavior_weight = 0.0518
+18:48:46   * steer_bad_behavior_weight = 0.0639
+18:48:46   * overcorrect_relative_weight = 1.1602
+18:48:46   * neighbor_count = 12
+18:48:46 * Resetting model...
+18:48:46 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:48:57 * Evaluating...
+18:49:00   * Refusals: 0/100
+18:49:00   * KL divergence: 15.1038
+18:49:00 
+18:49:00 Elapsed time: 6m 1s
+18:49:00 Estimated remaining time: 1m 50s
+18:49:00 Resident system RAM: 5.29 GB
+18:49:00 Allocated GPU VRAM: 14.40 GB
+18:49:00 Reserved GPU VRAM: 14.45 GB
+18:49:00 
+18:49:00 Running trial 24 of 30...
+18:49:00 * Parameters:
+18:49:00   * start_layer_index = 5
+18:49:00   * end_layer_index = 18
+18:49:00   * preserve_good_behavior_weight = 0.7882
+18:49:00   * steer_bad_behavior_weight = 0.7916
+18:49:00   * overcorrect_relative_weight = 0.7698
+18:49:00   * neighbor_count = 15
+18:49:00 * Resetting model...
+18:49:00 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:49:10 * Evaluating...
+18:49:13   * Refusals: 34/100
+18:49:13   * KL divergence: 2.7407
+18:49:13 
+18:49:13 Elapsed time: 6m 15s
+18:49:13 Estimated remaining time: 1m 34s
+18:49:13 Resident system RAM: 5.29 GB
+18:49:13 Allocated GPU VRAM: 14.40 GB
+18:49:13 Reserved GPU VRAM: 14.45 GB
+18:49:13 
+18:49:13 Running trial 25 of 30...
+18:49:13 * Parameters:
+18:49:13   * start_layer_index = 3
+18:49:13   * end_layer_index = 17
+18:49:13   * preserve_good_behavior_weight = 0.6828
+18:49:13   * steer_bad_behavior_weight = 0.8667
+18:49:13   * overcorrect_relative_weight = 1.0599
+18:49:13   * neighbor_count = 14
+18:49:13 * Resetting model...
+18:49:13 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:49:23 * Evaluating...
+18:49:26   * Refusals: 0/100
+18:49:26   * KL divergence: 16.1592
+18:49:26 
+18:49:26 Elapsed time: 6m 28s
+18:49:26 Estimated remaining time: 1m 18s
+18:49:26 Resident system RAM: 5.29 GB
+18:49:26 Allocated GPU VRAM: 14.40 GB
+18:49:26 Reserved GPU VRAM: 14.45 GB
+18:49:26 
+18:49:26 Running trial 26 of 30...
+18:49:26 * Parameters:
+18:49:26   * start_layer_index = 4
+18:49:26   * end_layer_index = 16
+18:49:26   * preserve_good_behavior_weight = 0.8418
+18:49:26   * steer_bad_behavior_weight = 0.2070
+18:49:26   * overcorrect_relative_weight = 0.5956
+18:49:26   * neighbor_count = 11
+18:49:26 * Resetting model...
+18:49:26 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:49:36 * Evaluating...
+18:49:39   * Refusals: 78/100
+18:49:39   * KL divergence: 3.0105
+18:49:39 
+18:49:39 Elapsed time: 6m 40s
+18:49:39 Estimated remaining time: 1m 2s
+18:49:39 Resident system RAM: 5.29 GB
+18:49:39 Allocated GPU VRAM: 14.40 GB
+18:49:39 Reserved GPU VRAM: 14.45 GB
+18:49:39 
+18:49:39 Running trial 27 of 30...
+18:49:39 * Parameters:
+18:49:39   * start_layer_index = 4
+18:49:39   * end_layer_index = 15
+18:49:39   * preserve_good_behavior_weight = 0.6143
+18:49:39   * steer_bad_behavior_weight = 0.7167
+18:49:39   * overcorrect_relative_weight = 0.5386
+18:49:39   * neighbor_count = 9
+18:49:39 * Resetting model...
+18:49:39 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:49:47 * Evaluating...
+18:49:51   * Refusals: 68/100
+18:49:51   * KL divergence: 1.1592
+18:49:51 
+18:49:51 Elapsed time: 6m 52s
+18:49:51 Estimated remaining time: 46s
+18:49:51 Resident system RAM: 5.29 GB
+18:49:51 Allocated GPU VRAM: 14.40 GB
+18:49:51 Reserved GPU VRAM: 14.45 GB
+18:49:51 
+18:49:51 Running trial 28 of 30...
+18:49:51 * Parameters:
+18:49:51   * start_layer_index = 1
+18:49:51   * end_layer_index = 16
+18:49:51   * preserve_good_behavior_weight = 0.8138
+18:49:51   * steer_bad_behavior_weight = 0.0873
+18:49:51   * overcorrect_relative_weight = 0.8657
+18:49:51   * neighbor_count = 7
+18:49:51 * Resetting model...
+18:49:51 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:50:02 * Evaluating...
+18:50:06   * Refusals: 50/100
+18:50:06   * KL divergence: 1.6592
+18:50:06 
+18:50:06 Elapsed time: 7m 7s
+18:50:06 Estimated remaining time: 30s
+18:50:06 Resident system RAM: 5.26 GB
+18:50:06 Allocated GPU VRAM: 14.40 GB
+18:50:06 Reserved GPU VRAM: 14.45 GB
+18:50:06 
+18:50:06 Running trial 29 of 30...
+18:50:06 * Parameters:
+18:50:06   * start_layer_index = 1
+18:50:06   * end_layer_index = 16
+18:50:06   * preserve_good_behavior_weight = 0.5559
+18:50:06   * steer_bad_behavior_weight = 0.5804
+18:50:06   * overcorrect_relative_weight = 0.3719
+18:50:06   * neighbor_count = 12
+18:50:06 * Resetting model...
+18:50:06 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:50:17 * Evaluating...
+18:50:21   * Refusals: 11/100
+18:50:21   * KL divergence: 3.5585
+18:50:21 
+18:50:21 Elapsed time: 7m 22s
+18:50:21 Estimated remaining time: 15s
+18:50:21 Resident system RAM: 5.26 GB
+18:50:21 Allocated GPU VRAM: 14.40 GB
+18:50:21 Reserved GPU VRAM: 14.45 GB
+18:50:21 
+18:50:21 Running trial 30 of 30...
+18:50:21 * Parameters:
+18:50:21   * start_layer_index = 1
+18:50:21   * end_layer_index = 19
+18:50:21   * preserve_good_behavior_weight = 0.8356
+18:50:21   * steer_bad_behavior_weight = 0.2014
+18:50:21   * overcorrect_relative_weight = 0.7929
+18:50:21   * neighbor_count = 11
+18:50:21 * Resetting model...
+18:50:21 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:50:35 * Evaluating...
+18:50:38   * Refusals: 18/100
+18:50:38   * KL divergence: 5.0569
+18:50:38 
+18:50:38 Elapsed time: 7m 39s
+18:50:38 Resident system RAM: 5.29 GB
+18:50:38 Allocated GPU VRAM: 14.40 GB
+18:50:38 Reserved GPU VRAM: 14.45 GB
+18:50:38 
+18:50:38 Optimization finished!
+18:50:38 
+18:50:38 Restoring model from trial 7...
+18:50:38 * Parameters:
+18:50:38   * start_layer_index = 10
+18:50:38   * end_layer_index = 26
+18:50:38   * preserve_good_behavior_weight = 0.0183
+18:50:38   * steer_bad_behavior_weight = 0.1001
+18:50:38   * overcorrect_relative_weight = 1.2855
+18:50:38   * neighbor_count = 12
+18:50:38 * Resetting model...
+18:50:38 * Modifying model using Arbitrary-Rank Ablation (ARA)...
+18:50:48 Saving merged model...
+18:50:48 * Merging LoRA adapters into base model...
+18:50:59 Writing model shards:   0%|          | 0/4 [00:00<?, ?it/s]Writing model shards:  25%|██▌       | 1/4 [00:04<00:12,  4.33s/it]Writing model shards:  50%|█████     | 2/4 [00:07<00:07,  3.72s/it]Writing model shards:  75%|███████▌  | 3/4 [00:10<00:03,  3.54s/it]Writing model shards: 100%|██████████| 4/4 [00:11<00:00,  2.20s/it]Writing model shards: 100%|██████████| 4/4 [00:11<00:00,  2.77s/it]
+18:51:00 Model saved to ./model.
+18:51:00 * Resetting model...
+18:51:07 Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:00<00:45,  7.48it/s]Loading weights:   1%|          | 2/339 [00:00<00:45,  7.35it/s]Loading weights:   5%|▌         | 18/339 [00:00<00:05, 62.55it/s]Loading weights:  12%|█▏        | 41/339 [00:00<00:02, 115.15it/s]Loading weights:  19%|█▉        | 66/339 [00:00<00:01, 152.03it/s]Loading weights:  27%|██▋       | 90/339 [00:00<00:01, 172.14it/s]Loading weights:  33%|███▎      | 113/339 [00:00<00:01, 183.73it/s]Loading weights:  40%|████      | 137/339 [00:00<00:01, 200.01it/s]Loading weights:  47%|████▋     | 161/339 [00:01<00:00, 207.74it/s]Loading weights:  54%|█████▍    | 184/339 [00:01<00:00, 203.40it/s]Loading weights:  62%|██████▏   | 209/339 [00:01<00:00, 207.30it/s]Loading weights:  68%|██████▊   | 231/339 [00:01<00:00, 209.24it/s]Loading weights:  76%|███████▌  | 256/339 [00:01<00:00, 192.75it/s]Loading weights:  82%|████████▏ | 279/339 [00:01<00:00, 202.03it/s]Loading weights:  90%|████████▉ | 305/339 [00:01<00:00, 208.69it/s]Loading weights:  97%|█████████▋| 329/339 [00:01<00:00, 208.07it/s]Loading weights: 100%|██████████| 339/339 [00:01<00:00, 179.72it/s]
+18:51:09 * Modifying model using Arbitrary-Rank Ablation (ARA)...

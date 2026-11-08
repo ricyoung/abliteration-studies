@@ -1,0 +1,249 @@
+% =====================================================================
+% 2  RELATED WORK   (house style, target 800--1200 words; rewritten 2026-11-05)
+% Grouped by theme, critical, ending with how this study differs:
+%   single-direction | multi-direction/subspace | optimisation-based |
+%   representation-space | defences and evaluation | positioning.
+% The former technical background (notation, per-method equations, mechanism /
+% rationale / pros / cons of each method, "Methods not evaluated") moved
+% verbatim to sections/08a_method_definitions.tex (Appendix, \label{app:method-defs});
+% labels sec:methods, sec:m-dim, sec:m-mpoa, sec:m-null, sec:m-svd, sec:m-rdo,
+% sec:m-som, sec:m-ara, sec:m-jspace, sec:m-not are defined there.
+% Table tab:methods stays here.
+% 2026-11-05: winninger2026fast (Multi-Direction) and young2025evaluating
+% (evaluation paragraph) moved here from Introduction P2, wording as in the
+% pre-restructure introduction.
+% 2026-11-05 (reference integration): added marshall2024refusal, evseev2026wrdo,
+% pan2025hidden, wei2024assessing, yeo2025understanding, yu2025refusal,
+% xie2025beyond, tamirisa2025tamper, rosati2024representation,
+% kuo2026openweight (Table 8 setup; best-of-96 layer x alpha search per prompt),
+% agnihotri2025granular, xie2025sorrybench (kappa x100: keyword 37.3, WildGuard
+% 60.6, FT 7-8B judges 80.8-81.2), cui2025orbench (1.2-2.4 pts for two models,
+% up to 5.5 in its Table 8), carleo2026willing, nikolic2025jailbreak
+% (pseudo-alignment on benign topics), qi2025durability, qi2024finetuning,
+% lermen2023lora. To stay <=1200 words, details moved/pointed to the appendix
+% (all still stated in the paper): GSM8K +1.51/-18.81 pp (08a sec:m-dim);
+% J-space AdvBench 0.78 vs 0.06 (already in 08a sec:m-jspace); ARA gpt-oss-20b
+% claim (already in 08a sec:m-ara); OT "up to 11% higher attack success on six
+% 7--32B models" (08a sec:m-not); "ARA is now the default of Heretic 2.0" and
+% "no independent evaluation published" (Introduction P2/P3, Positioning);
+% PR #196 "3--5 vs >33" and "short generations" (Introduction P3); hadetskyi
+% 24-model finding merged into Positioning.
+% =====================================================================
+\section{Related Work}
+\label{sec:related}
+
+Refusal-removal methods are reviewed below by what they assume about the
+geometry of refusal, followed by defences and evaluation practice (definitions
+in Appendix~\ref{app:method-defs}).
+
+% ---------------------------------------------------------------------
+\subsection{Single-Direction Ablation}
+
+Arditi et al.~\cite{arditi2024refusal} showed causally, across 13 chat models,
+that adding the difference between mean harmful and harmless activations
+induces refusal and ablating it suppresses refusal. Orthogonalising
+the weights that write to the residual stream against this direction yields a
+training-free edit that needs only a few hundred prompts
+\cite{labonne2024abliteration,failspy_abliterator}, consistent with the linear
+representation hypothesis \cite{park2024linear}. The edit is fast and
+interpretable, but the direction also carries part of the harmless mean, an
+offset that an affine model of refusal handles explicitly
+\cite{marshall2024refusal}; changed row norms shift activation scales, and
+results depend on a hand-chosen layer and strength, with large capability
+differences between tools \cite{young2025comparative}
+(Appendix~\ref{sec:m-dim}).
+
+Most successors address this collateral damage rather than the
+one-dimensional assumption. Projected abliteration removes the component along
+the harmless mean \cite{lai2024projected}, magnitude-preserving abliteration
+(MPOA) restores row norms \cite{lai2025mpoa}, and Heretic automates the choice
+of layer, strength and direction with TPE \cite{heretic2025,akiba2019optuna}. A
+null-space-constrained variant \cite{jwest33abliterator} adopts the AlphaEdit
+constraint from knowledge editing \cite{fang2025alphaedit,meng2022locating},
+which may also block the refusal edit when harmful and harmless activations
+share directions. Surgical refusal ablation orthogonalises the direction
+against capability and style directions \cite{cristofano2026surgical}, whereas
+Petrov~\cite{petrov2026on} found that a topic-matched harmless baseline yielded
+no functional refusal direction. The evidence remains thin: the projection and
+norm-preservation variants are documented mainly in blog posts, and both
+preprints evaluate models of at most 14B parameters.
+
+% ---------------------------------------------------------------------
+\subsection{Multi-Direction and Subspace Methods}
+
+A second group holds that one mean difference captures only the dominant
+component of refusal. Gabliteration projects out the top singular vectors of
+per-prompt activation differences \cite{gabliteration2024}, OBLITERATUS adds
+whitened, iterative and spectral variants \cite{obliteratus2026}, fast subspace
+estimation finds multi-dimensional refusal subspaces \cite{winninger2026fast},
+and weighted refusal direction optimisation (WRDO) learns weights over
+per-prompt directions, with Heretic as a baseline \cite{evseev2026wrdo}.
+Wollschl\"ager et al.~\cite{wollschlager2025geometry} learned refusal
+directions by gradient descent, found multi-dimensional concept cones, and
+showed that orthogonality does not imply independence under intervention.
+Piras et al.~\cite{piras2025som} proved that self-organising maps (SOMs)
+generalise difference-in-means and reported that ablating several SOM
+directions outperforms the single-direction baseline. Each added direction,
+however, removes capacity. The premise is also
+contested: Joad et al.~\cite{joad2026there} found distinct refusal directions
+that produced nearly identical refusal--over-refusal trade-offs when steered,
+Wang et al.~\cite{wang2026on} found safety-triggered refusal to be
+one-dimensionally steerable, and in Llama-3-8B one dominant direction governed
+refusal while smaller orthogonal directions, such as role-play, modulated it
+\cite{pan2025hidden}. A multi-dimensional representation therefore does not
+establish that multi-directional removal is necessary.
+
+% ---------------------------------------------------------------------
+\subsection{Optimisation-Based Methods}
+
+A third group replaces the estimated direction with an explicit objective.
+Arbitrary-Rank Ablation (ARA) fits, for each targeted module, a low-rank
+update that keeps harmless outputs fixed and moves harmful outputs toward them
+\cite{weidmann2026ara}, so any refusal mechanism carried by module outputs is
+in scope up to the adapter's rank. Its author reports that directional ablation
+increasingly fails on recent models and that ARA outperforms it on gpt-oss-20b
+(Appendix~\ref{sec:m-ara}), but this evidence comes from a pull request, and
+the nearest-neighbour objective may overfit its prompt sets. A low-rank edit may suffice because safety-critical weights occupy about 3\% of parameters and 2.5\% of rank,
+separately from utility \cite{wei2024assessing}, although newer models may
+spread safety more widely. Optimal-transport ablation also
+matches distributions, with a closed-form Gaussian map \cite{nanfack2026ot},
+but no public code was found (Appendix~\ref{sec:m-not}).
+
+% ---------------------------------------------------------------------
+\subsection{Representation-Space Methods}
+
+A fourth group changes the space in which refusal is sought. Jacobian-space
+(J-space) ablation computes the direction in a workspace defined by a Jacobian
+lens and pulls it back to the residual stream
+\cite{sekinal2026jspace,gurnee2026verbalizable,neuronpedia2026jacobian}, to
+isolate the part of the refusal signal the model uses downstream. By its
+authors' own measurements, however, it removes little refusal, and the
+reference code is a single-model forward hook (Appendix~\ref{sec:m-jspace}). Related findings suggest that the
+residual-stream mean difference mixes signals: harmfulness is encoded
+separately from refusal \cite{zhao2025harmfulness,yeo2025understanding}, and at
+fixed intervention strength a direction estimated at a layer's output, before
+the residual stream, controlled refusal whereas one estimated in the summed
+stream did not \cite{bosco2026locating}. Where a direction is estimated may
+matter as much as how many are removed.
+
+% ---------------------------------------------------------------------
+\subsection{Defences and Evaluation Problems}
+
+Defences largely target the single-direction estimator. Adversarial training
+against ablation of the refusal feature cut its attack success from 53\% to
+10\% on Llama-3-8B \cite{yu2025refusal}; extended-refusal fine-tuning spreads
+the refusal signal across tokens, limiting refusal drops under abliteration to
+at most 10\% versus 70--80\% in baseline models \cite{abushairah2025defense};
+and fine-tuning under random ablation of the direction teaches models to
+rebuild refusal, cutting attack success by about 95\% \cite{xie2025beyond}.
+Refusal aliases obscure the direction \cite{truong2026abliteration}; decoy
+directions corrupt the contrastive estimator, cutting a Heretic weight-level
+attack on Llama-3-8B-Instruct from 88.7\% to 18\% success
+\cite{muhamed2026decoy}; and decoy hardening concedes refusal removal but turns
+most answers to hazardous requests into falsified decoys
+\cite{russinovich2026fools}. Circuit breakers instead act on harmful-output
+representations \cite{zou2024circuit}, and tamper-resistant training targets
+fine-tuning attacks \cite{tamirisa2025tamper,rosati2024representation}, yet
+such fine-tuning defences still allowed 79--98\% success to a best-of-96
+single-layer abliteration on Llama-3.1-8B, against 99\% without defence
+\cite{kuo2026openweight}. Training-time defences could make later releases
+resist directional removal, whereas defences built around direction
+estimation may lose value if removal no longer relies on it.
+
+Evaluation practice is a second weakness. Tools are optimised and reported
+with keyword-matched refusal counts and first-token KL divergence, yet
+keyword counts can fall far below an LLM judge's (Heretic PR~\#196), and conclusions can depend on the classifier
+\cite{young2026measuring}, including in abliteration studies
+\cite{agnihotri2025granular}. Against human labels, keyword matching reached
+Cohen's $\kappa=0.37$, WildGuard 0.61 and fine-tuned LLM judges about 0.81
+\cite{xie2025sorrybench}, although on unmodified models keyword matching
+tracked a GPT-4 judge closely (gaps of 1.2--2.4 points for two models, 5.5 for
+a third) \cite{cui2025orbench}, so large gaps may arise only after
+modification. Compliance is also not competence:
+single-vector projection raised a security-task score only from 0.46 to 0.50
+while raising unsafe compliance from 0.10 to 0.47 \cite{david2026ablating};
+abliterated code models complied with SQL-injection requests but succeeded at
+rates bounded by model size \cite{carleo2026willing}; and jailbreaks of models
+aligned to refuse benign topics cut accuracy by up to 92\%
+\cite{nikolic2025jailbreak}. Off-target effects include more optimistic
+decisions on a task that elicited no refusals \cite{fafua2026abliteration} and
+script-dependent bias that abliteration did not remove \cite{ko2026uncensored}.
+Guardrails have proved brittle
+under adversarial pressure \cite{young2025evaluating}, and durability
+claims are easily overstated because small changes to the attack
+configuration can reverse them \cite{qi2025durability}.
+
+% ---------------------------------------------------------------------
+\subsection{Positioning of the Present Study}
+
+The present study differs from this literature in four respects. First,
+whether removal becomes harder in newer model generations has been tested only
+indirectly: with one directional pipeline, susceptibility across 24 open
+models was model-specific rather than size-dependent, with safety-training
+methodology and architecture the strongest predictors \cite{hadetskyi2026not};
+in one 1.7B model only a combined safety-pretraining recipe stayed robust
+to abliteration, and Qwen3 resisted it in one setup \cite{agnihotri2025granular}; and the earlier cross-tool comparison
+covered 7--14B models that predate ARA and the current generation
+\cite{young2025comparative}. A companion benchmark \cite{young2026paper30}
+uses the same harness to compare Heretic 1.x, Heretic 2.0 and community
+releases within the Qwen2.5 family; the Qwen2.5 models shared with that study
+are used here only for the generational question.
+% 2026-11-06 (author decision 2): paper 30 is a NEW arXiv paper that cites 2512.13655 as prior work, so the
+% description of young2025comparative (7--14B, predates ARA) stays true; companion cited "in preparation".
+% 2026-11-06 review revision (A2): "at matched distribution shift" replaced below; the cap is common to all models but did not
+% bind in every run (results/analysis/review_sel_kl_summary.csv).
+Here, earlier- and later-generation models are
+paired within families. Second, all four method classes (representation-space
+methods on the small pair only) share one framework, prompt sets, budget and
+trial-selection rule under one cap on first-token KL divergence. Third, a harness independent of all optimisation
+objectives scores judged refusal on held-out prompts, capability and
+full-sequence distribution shift. Fourth, the study provides the first
+independent evaluation of ARA.
+Table~\ref{tab:methods} summarises the methods considered. Presets of the
+external OBLITERATUS toolkit are evaluated in the companion paper
+\cite{young2026paper30}; null-space-constrained
+abliteration, refusal cones, WRDO and optimal-transport ablation are not
+evaluated (Appendix~\ref{sec:m-not}); and fine-tuning attacks, which remove
+safety training cheaply but require gradient updates
+\cite{qi2024finetuning,lermen2023lora}, are out of scope.
+
+% ---------------------------------------------------------------------
+\begin{table*}[t]
+\centering\small
+\caption{Refusal-removal methods considered in this study, as instantiated
+(\S\ref{sec:setup-methods}). ``Search'' = automated hyperparameter
+optimisation; ``Export'' = produces a standalone model. SVD multi-direction
+(OBLITERATUS) is evaluated in the companion paper \cite{young2026paper30}, not
+here; null-space-constrained
+abliteration and refusal cones are not evaluated (Appendix~\ref{sec:m-not}).
+Formal definitions are given in Appendix~\ref{app:method-defs}.}
+\label{tab:methods}
+\setlength{\tabcolsep}{4pt}%
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Method & Assumption about refusal & Edit & Search & Export & Implementation \\
+\midrule
+Diff-in-means \cite{arditi2024refusal} & 1 direction & rank-1 projection & TPE & yes & Heretic 2.0 (no proj./norm) \\
+Projected / MPOA \cite{lai2024projected,lai2025mpoa} & 1 direction, $\perp$ harmless & rank-1 + norm$^{a}$ & TPE & yes & Heretic 2.0 \\
+SVD multi-dir.\ \cite{gabliteration2024} & $k$-dim subspace & rank-$k$ projection & -- & yes & OBLITERATUS$^{b}$ \\
+SOM \cite{piras2025som} & $k$ cluster directions & rank-$k$ + norm$^{a}$ & TPE & yes & Heretic 2.0 fork$^{c}$ \\
+ARA \cite{weidmann2026ara} & none (per-module map) & rank-50 LoRA & TPE + L-BFGS & yes & Heretic 2.0 \\
+J-space & 1 direction in J-space & rank-1 + norm$^{a}$ & TPE & yes & Heretic 2.0 fork$^{d}$ \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\footnotesize $^{a}$Row-norm restoration approximated by a LoRA adapter of rank 3
+(MPOA, J-space) or 6 (SOM).
+$^{b}$Presets \texttt{advanced} and \texttt{spectral\_cascade} of OBLITERATUS
+v0.1.4 \cite{obliteratus2026}; not evaluated in this study. These presets and
+\texttt{basic} were run on Qwen2.5-7B-Instruct and scored with this study's
+harness in the companion paper \cite{young2026paper30}; v0.1.4 does not
+support Qwen3.5-4B, so it offers no older--newer contrast.
+% 2026-11-06 (author decision): OBLITERATUS reported in paper 30 only. src: results/bench-4090/qwen2.5-7b__obliteratus-{basic,advanced,spectral_cascade}/push_manifest.json (v0.1.4 @461ff086);
+% scripts/run_external_small.sh (header: v0.1.4 fails closed on every Qwen3.5; som extractor not shipped); ../paper30/v3_2611/analysis/RESULTS.md (three presets judged)
+$^{c}$Port of Heretic PR~\#196 with the deviations listed in
+Appendix~\ref{sec:setup-deviations}.
+$^{d}$Small pair only; directions from \texttt{jspace-refusal} baked into the
+weights without harmless-mean projection; the reference forward hook is planned.
+\end{table*}

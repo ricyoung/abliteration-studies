@@ -1,0 +1,171 @@
+% ============================================================
+% APPENDIX -- JUDGING THE FIRST 256 TOKENS (H3 robustness; written 2026-11-06)
+% Self-contained \subsection (app:trunc256, tab:trunc256). \input from sections/08_appendix.tex after 08d (integration,
+% 2026-11-06), so it continues the Additional Results appendix; it answers the former todo "apply judges at 256 tokens"
+% of the "Truncation" paragraph in 08c_validity.tex.
+% Every number comes from results/analysis/trunc256_{cells,h3,pooled,models}.csv (written by
+% scripts/analysis/truncation256.py; overview in results/analysis/trunc256_summary.md) or, for the full-text values,
+% from the paper's H3 outputs h3_gap_pooled.csv / h3_models.csv (copied into the paper_* columns of trunc256_*.csv).
+% Table rounding: ROUND_HALF_UP on the CSV values, as scripts/analysis/make_hypothesis_tables.py.
+% ============================================================
+% 2026-11-06 REVIEW REVISION (reviewer C4): the closing paragraph made consistent with the per-window H3 of sec:res-h3
+% (tab:h3-windows), and a paragraph on the 100-token keyword window (results/analysis/review_out_summary.md C4,
+% review_out_c4_*.csv, review_out_checks.csv) added at the end.
+\subsection{Judging the First 256 Tokens}
+\label{app:trunc256}
+
+Held-out responses were generated with up to 512 new tokens and judged in
+full, whereas Heretic's keyword check reads only the start of a response. To
+test whether the H3 comparison depends on how much text each measure sees,
+WildGuard, Qwen3Guard and the HarmBench classifier were re-run, with the same
+pinned revisions, prompt templates and parsers, on the stored first 256 tokens
+of all 97,828 held-out responses of the 74 judged models, and compared with
+keyword matching on the same 256 tokens. WildGuard's output could not be parsed
+for 7 prefixes, which were dropped from the comparisons that use it. Only
+responses longer than 256 tokens differ between the two texts
+(Table~\ref{tab:trunc256}); on the 24,507 responses of at most 256 tokens,
+WildGuard and Qwen3Guard repeated their full-response label in all but 6 and
+14 cases, and the HarmBench classifier in all but 4 of the 17,967 among them
+that answer harmful prompts. Per model, label changes are paired differences
+of rates (prefix minus full response) with Newcombe intervals and exact
+McNemar tests, Holm-adjusted per judge across the 74 models. The
+keyword-minus-judge gaps, their pooling with the prompt-cluster bootstrap and
+the refitted class and generation effects (prompt-level GEE, model-level OLS)
+follow the H3 analysis of \S\ref{sec:res-h3}.
+% src: results/analysis/trunc256_summary.md (Coverage: 74/74 cells with judgments_256.jsonl, id sets equal to
+% src: judgments.jsonl and to the assembled rows, responses.jsonl md5 equal to dir_status.csv, judge revisions equal to
+% src: the main run; 7 unparsable WildGuard rows; Checks: 6/24,507 WildGuard, 14/24,507 Qwen3Guard, 4/17,967 HarmBench
+% src: discordant on responses of <= 256 tokens); scripts/bench/score_refusals_256.py (same templates, parsers, revisions);
+% src: scripts/analysis/truncation256.py (docstring: statistics imported from h3.py)
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{2.8pt}
+\caption{Keyword matching and LLM judges on the first 256 tokens versus the full response, harmful held-out prompts
+(972 per model; H3 robustness). $>$256: share of responses longer than 256 tokens, the only ones whose 256-token
+prefix differs from the full response. WG change: WildGuard refusal rate on the prefix minus that on the full
+response. Keyword minus judge: refusal rate by Heretic's 33 markers minus the judge's rate; full text = both on the
+full response (as in Table~\ref{tab:h3-gap}); 256 tokens = both on the same prefix (WG = WildGuard, Q3G =
+Qwen3Guard). All differences in pp with prompt-cluster bootstrap 95\% intervals; H3 predicted a negative gap. Cap:
+the 512-token generation limit.}
+\label{tab:trunc256}
+\begin{tabular}{lrrllll}
+\toprule
+ & & & & \multicolumn{3}{c}{Keyword minus judge} \\
+\cmidrule(lr){5-7}
+Models & Cells & $>$256, \% & WG change & WG, full text & WG, 256 tokens & Q3G, 256 tokens \\
+\midrule
+Originals & 10 & 40.7 & +0.3 [+0.1, +0.5] & +2.6 [+1.8, +3.4] & +1.6 [+0.8, +2.4] & +2.7 [+1.9, +3.6] \\
+\midrule
+Ablated (seed 1), all & 42 & 78.9 & +0.6 [+0.5, +0.7] & +8.4 [+6.9, +10.0] & +3.8 [+2.4, +5.2] & +0.9 [$-$0.6, +2.4] \\
+\quad main study & 32 & 79.1 & +0.6 [+0.5, +0.7] & +9.8 [+8.2, +11.3] & +4.9 [+3.5, +6.4] & +2.1 [+0.6, +3.5] \\
+\quad small pair & 10 & 78.1 & +0.7 [+0.5, +0.9] & +4.2 [+2.5, +5.9] & +0.4 [$-$1.4, +2.0] & $-$2.7 [$-$4.5, $-$1.0] \\
+\quad ending before the cap & 42 & 56.9 & +0.0 [$-$0.1, +0.1] & $-$1.2 [$-$3.2, +0.9] & $-$5.6 [$-$7.6, $-$3.8] & $-$7.6 [$-$9.8, $-$5.5] \\
+\quad truncated at the cap & 42 & 100.0 & +1.2 [+1.0, +1.4] & +17.7 [+16.2, +19.3] & +13.0 [+11.5, +14.4] & +9.1 [+7.9, +10.3] \\
+\midrule
+$\gamma$-MPOA control & 4 & 82.0 & +0.7 [+0.4, +1.0] & +17.1 [+14.9, +19.4] & +12.0 [+9.9, +14.0] & +9.1 [+7.1, +11.1] \\
+Community releases & 8 & 90.3 & +0.5 [+0.3, +0.7] & +16.5 [+15.2, +17.8] & +13.6 [+12.4, +14.8] & +8.1 [+6.8, +9.3] \\
+Seed-2 replicates & 10 & 78.2 & +0.8 [+0.5, +1.0] & +3.5 [+2.0, +5.0] & +0.0 [$-$1.5, +1.4] & $-$1.9 [$-$3.4, $-$0.4] \\
+\midrule
+All judged models & 74 & 75.0 & +0.6 [+0.5, +0.7] & +8.3 [+7.0, +9.6] & +4.5 [+3.3, +5.7] & +2.0 [+0.8, +3.2] \\
+\bottomrule
+\end{tabular}
+\end{table}
+% src: results/analysis/trunc256_pooled.csv (subset harmful_all; groups original, ablated_primary, ablated_primary:main,
+% src: ablated_primary:small, role:control, role:external, role:replicate, all_judged). Columns: >256 = share_gt256 of
+% src: variant kw256_vs_wg256[_complete_only|_capped_only]; WG change = gap of wg256_vs_wg[...]; WG full text =
+% src: paper_gap/_lo/_hi of kw256_vs_wg256[...] (= h3_gap_pooled.csv kw_vs_wg[_complete_only|_capped_only]); WG 256
+% src: tokens = gap of kw256_vs_wg256[...]; Q3G 256 tokens = gap of kw256_vs_q3g256[...]. Rows "ending before the cap" /
+% src: "truncated at the cap" = ablated_primary with the _complete_only / _capped_only variants (finish_reason length).
+
+Judging the prefix changed few labels. Over the 42 ablated models, WildGuard
+refusal on the harmful prompts was 32.1\% on the first 256 tokens and 31.5\%
+on the full response (+0.6~pp [+0.5, +0.7]; 385 responses gained and 131 lost
+the refusal label); Qwen3Guard refusal changed by +1.3~pp [+1.1, +1.4] and
+HarmBench harmful compliance by $-$1.6~pp [$-$1.8, $-$1.3]. Per model (Holm
+over the 74 models), WildGuard refusal changed significantly in 6 of the 74, all
+upwards and by 2.0--5.1~pp; Qwen3Guard refusal rose in 22 (by up to 8.3~pp)
+and HarmBench harmful compliance fell in 24 (by up to 9.3~pp), and no judge
+changed significantly in the opposite direction.
+Keyword matching on the same 256 tokens counted 36.0\% refusals, so the
+keyword-minus-WildGuard gap of the ablated models was +3.8~pp [+2.4, +5.2],
+against +8.4~pp [+6.9, +10.0] on the full text (change $-$4.6~pp [$-$4.9,
+$-$4.3]); of this change, 4.0~pp came from the shorter keyword window (39.9\%
+to 36.0\%) and 0.6~pp from WildGuard. The gap was +4.9~pp [+3.5, +6.4] in the
+main study and +0.4~pp [$-$1.4, +2.0] in the small pair, and $-$5.6~pp
+[$-$7.6, $-$3.8] on responses that ended before the cap against +13.0~pp
+[+11.5, +14.4] on responses truncated at the cap. It was positive in 28 of the 42 ablated
+models (21 Holm-significant) and negative in 14 (6 significant), against 34
+(24) and 7 (3) on the full text. Against Qwen3Guard on the same 256 tokens,
+the gap was +0.9~pp [$-$0.6, +2.4] (full text +6.2~pp [+4.6, +7.7]). In the
+main study the gap remained larger for ARA than for the direction-based
+methods, by +5.5~pp [+4.2, +6.8] with the prompt as unit
+($p_\mathrm{Holm}<0.001$; full text +6.0~pp) but not with the model as unit
+($n=32$, $p=0.139$; full text $p=0.151$).
+% src: results/analysis/trunc256_pooled.csv (harmful_all, ablated_primary): wg256_vs_wg rate1 0.321 / rate2 0.315, gap
+% src: +0.6 [+0.5, +0.7], b_r1_only 385, c_r2_only 131; q3g256_vs_q3g +1.3 [+1.1, +1.4]; hb256_vs_hb -1.6 [-1.8, -1.3];
+% src: kw256_vs_wg256 rate1 0.360, gap +3.8 [+2.4, +5.2]; paper_gap +8.4 [+6.9, +10.0]; gap256_minus_gapfull -4.6
+% src: [-4.9, -4.3]; kw_vs_wg rate1 0.3995 (full-text keyword, = h3_gap_pooled.csv) vs kw256_vs_wg256 rate1 0.3598
+% src: (4.0 pp); ablated_primary:main / :small kw256_vs_wg256; kw256_vs_wg256_complete_only / _capped_only;
+% src: kw256_vs_q3g256 +0.9 [-0.6, +2.4] and h3_gap_pooled.csv kw_vs_q3g (ablated_primary) +6.2 [+4.6, +7.7].
+% src: results/analysis/trunc256_cells.csv (wg_direction: 6 cells "256>full", wg_diff 0.020--0.051; q3g_direction: 22
+% src: "256>full"; hb_direction: 24 "256<full"; Holm per judge over 74 cells; no cell with p_holm < 0.05 in the other
+% src: direction; largest changes q3g_diff +0.083 and hb_diff -0.093, both qwen3.8-27b__community-hereticorg-ara); trunc256_h3.csv (harmful_all, kw256_vs_wg256, role primary: gap > 0 in 28, 21 with p_holm < 0.05;
+% src: gap < 0 in 14, 6 significant; full_gap: 34 (24) / 7 (3)); trunc256_models.csv (outcome gap256, study main,
+% src: harmful_all: GEE class effect +5.5 [+4.2, +6.8], p_holm < 0.001, paper_estimate +6.0; OLS_cell_level_gap class
+% src: effect p 0.139, paper_p 0.151)
+
+With keyword matching and WildGuard reading the same 256 tokens, keyword
+matching after ablation still counted more refusals than the judge, so the
+negative gap that H3 predicted was again not observed over the ablated models,
+and the class difference again held with the prompt but not with the model as
+unit. The gap was about half as
+large as on the full text, mostly because markers that occur only after the
+first 256 tokens no longer counted (4.0 of the 4.6~pp), and it was not
+distinguishable from zero in the small pair or against Qwen3Guard. A negative
+gap appeared only in subsets: on responses that ended before the cap
+($-$5.6~pp; full text $-$1.2~pp [$-$3.2, +0.9]) and, against Qwen3Guard, in
+the small pair ($-$2.7~pp [$-$4.5, $-$1.0]). Part of the full-text gap in
+Table~\ref{tab:h3-gap} therefore reflects the length of the keyword window,
+not the amount of text the judges read; at the 100-token window that Heretic
+scores, the pooled gap disappeared (below and Table~\ref{tab:h3-windows}). Pooled over the ablated models, the
+judges' labels changed by at most 1.6~pp with the cut, although single models
+changed by up to 9.3~pp; the HarmBench classifier labelled slightly fewer
+prefixes than full responses as harmful, the direction anticipated for
+truncated answers in Appendix~\ref{app:validity}. As in the main analysis,
+these comparisons show where the measures diverge, not which is correct.
+% src: as the two paragraphs above (trunc256_pooled.csv, trunc256_models.csv); kw256_vs_wg rate1 0.3597 vs kw_vs_wg
+% src: rate1 0.3995 (keyword window) and wg256_vs_wg +0.6 (judge) in trunc256_pooled.csv; 08c_validity.tex "Truncation"
+% src: (checker, 2026-11-06) negative subsets: trunc256_pooled.csv kw256_vs_wg256_complete_only ablated_primary gap
+% src: -0.0564 [-0.0756, -0.0380], paper_gap -0.0121 [-0.0322, +0.0087]; kw256_vs_q3g256 ablated_primary:small gap -0.0273
+% src: [-0.0453, -0.0097]; "at most 1.6 pp" = |hb256_vs_hb| ablated_primary; "up to 9.3 pp" = trunc256_cells.csv hb_diff min
+
+\paragraph{Keyword matching on the first 100 tokens.} Heretic counts a dev
+response as a refusal if any of its markers occurs in at most 100 generated
+tokens. Token ids of the held-out responses were not stored, so each stored
+response was re-tokenised with the tokenizer of the evaluated model, cut to
+its first 100 tokens, decoded and matched with the same 33 markers; because
+decoding was greedy, these are the tokens that a 100-token run would have
+produced, up to numerics. The procedure reproduced the stored full-response
+keyword label in all 97,828 responses and the stored 256-token label in
+97,825 (OLMo-2-32B, which emits each newline as a separate token, needed a
+newline-split encoding). Bounds that do not depend on exact re-encoding fixed
+the 100-token label in 99.98\% of the responses (17 unresolved) and gave the
+same pooled gaps. Over the 42 ablated models the 100-token keyword refusal was
+32.0\%, against 36.0\% at 256 tokens and 39.9\% on the full text, and its gap
+to WildGuard was +0.5~pp [$-$1.0, +1.9] against the full-response label and
+$-$0.1~pp [$-$1.6, +1.3] against the 256-token label; Heretic's own matcher,
+which also strips emphasis and counts empty responses as refusals, gave the
+same +0.5~pp. In the main study, the class, generation and generation
+$\times$ class terms of the gap were +5.2, +4.7 and +8.1~pp with the prompt as
+unit (all $p_\mathrm{Holm}<0.001$) and not significant with the model as unit.
+No judge was run on the 100-token text, and the held-out responses were
+generated with vLLM after the chat template's empty reasoning block, whereas
+Heretic scores Transformers generations on the dev prompts.
+% src (review revision): results/analysis/review_out_checks.csv (full response reproduces keyword_refusal: 0 mismatches of
+% src: 97,828; re-tokenised 256-token cut reproduces keyword_refusal_256: 0 of 89,896 + 3 of 7,932 OLMo-2 rows; OLMo-2
+% src: nl_split encoding; 17 responses (0.02%) not pinned down by the bounds); review_out_summary.md C4 (median 100-token text
+% src: 478 characters; bounds +0.5 to +0.5; Heretic matcher +0.5 [-1.0, +1.9]; caveat on Transformers dev scoring vs vLLM
+% src: held-out responses); review_out_c4_gap_pooled.csv (ablated_primary: kw100_vs_wg rate1 0.320, gap +0.5 [-1.0, +1.9];
+% src: kw100_vs_wg256 -0.1 [-1.6, +1.3]; kw100_heretic_vs_wg +0.5); trunc256_pooled.csv (kw256 rate 0.360);
+% src: review_out_c4_models.csv (kw100_vs_wg, main: GEE class 0.0515, generation 0.0466, interaction 0.0808; OLS p 0.17-0.28).

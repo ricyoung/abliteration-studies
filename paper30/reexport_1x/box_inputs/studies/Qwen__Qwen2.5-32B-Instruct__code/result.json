@@ -1,0 +1,52 @@
+{
+  "model": "models/Qwen__Qwen2.5-32B-Instruct",
+  "config": "configs/heretic_code_specific.toml",
+  "out": "results/heretic/Qwen__Qwen2.5-32B-Instruct__code",
+  "kl_max": 0.01,
+  "seed": 0,
+  "budget_met": true,
+  "selected": {
+    "index": 179,
+    "refusals": 30,
+    "kl_divergence": 0.009229835122823715,
+    "rule": "min_refusals|kl<=0.01"
+  },
+  "pareto": [
+    {
+      "index": 184,
+      "refusals": 0,
+      "kl_divergence": 0.16145005822181702
+    },
+    {
+      "index": 134,
+      "refusals": 2,
+      "kl_divergence": 0.07166755944490433
+    },
+    {
+      "index": 156,
+      "refusals": 14,
+      "kl_divergence": 0.06566362828016281
+    },
+    {
+      "index": 180,
+      "refusals": 26,
+      "kl_divergence": 0.02695140801370144
+    },
+    {
+      "index": 179,
+      "refusals": 30,
+      "kl_divergence": 0.009229835122823715
+    },
+    {
+      "index": 47,
+      "refusals": 44,
+      "kl_divergence": 0.007341690827161074
+    },
+    {
+      "index": 50,
+      "refusals": 49,
+      "kl_divergence": 0.003728648414835334
+    }
+  ],
+  "adapter_dir": "results/heretic/Qwen__Qwen2.5-32B-Instruct__code/adapter"
+}

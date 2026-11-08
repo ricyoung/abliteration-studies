@@ -1,0 +1,737 @@
+{
+  "run": "qwen3.8-27b__dim__core-s1",
+  "run_dir": "/workspace/paper33/runs/qwen3.8-27b__dim__core-s1",
+  "journal": "/workspace/paper33/runs/qwen3.8-27b__dim__core-s1/checkpoints/Qwen--Qwen3--8-27B.jsonl",
+  "model_short": "qwen3.8-27b",
+  "method": "dim",
+  "tag": "core-s1",
+  "seed_from_name": 1,
+  "model": "Qwen/Qwen3.8-27B",
+  "seed": 1,
+  "modifiers": [
+    "heretic.modifiers.abliteration.Abliteration"
+  ],
+  "finished": true,
+  "n_trials_planned": 100,
+  "n_trials_total": 100,
+  "n_trials_complete": 100,
+  "objectives": [
+    "Refusals",
+    "KL divergence"
+  ],
+  "baselines": {
+    "Refusals": 0.98,
+    "KL divergence": 0
+  },
+  "rule": {
+    "text": "among COMPLETE trials with KL <= kl_max: fewest refusals; ties -> lower KL, then lower trial index; none qualifies -> no selection",
+    "kl_max": 0.1
+  },
+  "selected": {
+    "trial_index": 24,
+    "optuna_number": 23,
+    "refusals": 0.47,
+    "refusals_display": "47/100",
+    "kl": 0.05295942723751068,
+    "scores": {
+      "Refusals": 0.47,
+      "KL divergence": 0.05295942723751068
+    },
+    "pareto_position": 2,
+    "parameters": {
+      "direction_index": 51.30864295139183,
+      "weight_distributions": {
+        "attn.o_proj": {
+          "max_weight": 1.2022980532956717,
+          "max_weight_position": 53.62752019734523,
+          "min_weight": 0.3433478075501492,
+          "min_weight_distance": 22.59546693614385
+        },
+        "mlp.down_proj": {
+          "max_weight": 1.062538086479655,
+          "max_weight_position": 59.42950867801187,
+          "min_weight": 0.8023035836693191,
+          "min_weight_distance": 26.68850674286075
+        }
+      }
+    }
+  },
+  "lowest_kl_trial": {
+    "trial_index": 14,
+    "optuna_number": 13,
+    "refusals": 0.98,
+    "refusals_display": "98/100",
+    "kl": 0.0002770978317130357,
+    "scores": {
+      "Refusals": 0.98,
+      "KL divergence": 0.0002770978317130357
+    },
+    "pareto_position": 16,
+    "parameters": {
+      "direction_index": 28.58606506684193,
+      "weight_distributions": {
+        "attn.o_proj": {
+          "max_weight": 0.9579965370254984,
+          "max_weight_position": 55.76732230564345,
+          "min_weight": 0.5362069305222315,
+          "min_weight_distance": 1.4620600698554633
+        },
+        "mlp.down_proj": {
+          "max_weight": 0.0,
+          "max_weight_position": 62.175363516006854,
+          "min_weight": 0.0,
+          "min_weight_distance": 8.48119103552445
+        }
+      }
+    }
+  },
+  "headless_index0_trial": {
+    "trial_index": 21,
+    "optuna_number": 20,
+    "refusals": 0.37,
+    "refusals_display": "37/100",
+    "kl": 0.110448457300663,
+    "scores": {
+      "Refusals": 0.37,
+      "KL divergence": 0.110448457300663
+    },
+    "pareto_position": 0,
+    "parameters": {
+      "direction_index": null,
+      "weight_distributions": {
+        "attn.o_proj": {
+          "max_weight": 1.3666434844886075,
+          "max_weight_position": 46.48736364761899,
+          "min_weight": 1.2847917654498848,
+          "min_weight_distance": 22.418121822052544
+        },
+        "mlp.down_proj": {
+          "max_weight": 1.287955972720727,
+          "max_weight_position": 59.08730802388399,
+          "min_weight": 1.1661054445362729,
+          "min_weight_distance": 17.923593782058497
+        }
+      }
+    }
+  },
+  "per_threshold": {
+    "0.05": {
+      "trial_index": 82,
+      "optuna_number": 81,
+      "refusals": 0.53,
+      "refusals_display": "53/100",
+      "kl": 0.04987701401114464,
+      "scores": {
+        "Refusals": 0.53,
+        "KL divergence": 0.04987701401114464
+      },
+      "pareto_position": 3,
+      "parameters": {
+        "direction_index": 53.962076331097435,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3836368351448516,
+            "max_weight_position": 60.29172462036915,
+            "min_weight": 0.005395992375583693,
+            "min_weight_distance": 10.504250067789343
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.3490397981879048,
+            "max_weight_position": 50.52704843382755,
+            "min_weight": 0.1450218077713204,
+            "min_weight_distance": 27.918688060216414
+          }
+        }
+      }
+    },
+    "0.1": {
+      "trial_index": 24,
+      "optuna_number": 23,
+      "refusals": 0.47,
+      "refusals_display": "47/100",
+      "kl": 0.05295942723751068,
+      "scores": {
+        "Refusals": 0.47,
+        "KL divergence": 0.05295942723751068
+      },
+      "pareto_position": 2,
+      "parameters": {
+        "direction_index": 51.30864295139183,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.2022980532956717,
+            "max_weight_position": 53.62752019734523,
+            "min_weight": 0.3433478075501492,
+            "min_weight_distance": 22.59546693614385
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.062538086479655,
+            "max_weight_position": 59.42950867801187,
+            "min_weight": 0.8023035836693191,
+            "min_weight_distance": 26.68850674286075
+          }
+        }
+      }
+    },
+    "0.2": {
+      "trial_index": 21,
+      "optuna_number": 20,
+      "refusals": 0.37,
+      "refusals_display": "37/100",
+      "kl": 0.110448457300663,
+      "scores": {
+        "Refusals": 0.37,
+        "KL divergence": 0.110448457300663
+      },
+      "pareto_position": 0,
+      "parameters": {
+        "direction_index": null,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3666434844886075,
+            "max_weight_position": 46.48736364761899,
+            "min_weight": 1.2847917654498848,
+            "min_weight_distance": 22.418121822052544
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.287955972720727,
+            "max_weight_position": 59.08730802388399,
+            "min_weight": 1.1661054445362729,
+            "min_weight_distance": 17.923593782058497
+          }
+        }
+      }
+    },
+    "0.5": {
+      "trial_index": 21,
+      "optuna_number": 20,
+      "refusals": 0.37,
+      "refusals_display": "37/100",
+      "kl": 0.110448457300663,
+      "scores": {
+        "Refusals": 0.37,
+        "KL divergence": 0.110448457300663
+      },
+      "pareto_position": 0,
+      "parameters": {
+        "direction_index": null,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3666434844886075,
+            "max_weight_position": 46.48736364761899,
+            "min_weight": 1.2847917654498848,
+            "min_weight_distance": 22.418121822052544
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.287955972720727,
+            "max_weight_position": 59.08730802388399,
+            "min_weight": 1.1661054445362729,
+            "min_weight_distance": 17.923593782058497
+          }
+        }
+      }
+    }
+  },
+  "pareto_front": [
+    {
+      "trial_index": 21,
+      "optuna_number": 20,
+      "refusals": 0.37,
+      "refusals_display": "37/100",
+      "kl": 0.110448457300663,
+      "scores": {
+        "Refusals": 0.37,
+        "KL divergence": 0.110448457300663
+      },
+      "pareto_position": 0,
+      "parameters": {
+        "direction_index": null,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3666434844886075,
+            "max_weight_position": 46.48736364761899,
+            "min_weight": 1.2847917654498848,
+            "min_weight_distance": 22.418121822052544
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.287955972720727,
+            "max_weight_position": 59.08730802388399,
+            "min_weight": 1.1661054445362729,
+            "min_weight_distance": 17.923593782058497
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 4,
+      "optuna_number": 3,
+      "refusals": 0.4,
+      "refusals_display": "40/100",
+      "kl": 0.10692180693149567,
+      "scores": {
+        "Refusals": 0.4,
+        "KL divergence": 0.10692180693149567
+      },
+      "pareto_position": 1,
+      "parameters": {
+        "direction_index": null,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.2805506493771086,
+            "max_weight_position": 58.8325669318138,
+            "min_weight": 0.02341906542909348,
+            "min_weight_distance": 28.6053107899748
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.4805069055863658,
+            "max_weight_position": 56.65377449037195,
+            "min_weight": 0.41519926688155984,
+            "min_weight_distance": 30.045479287014775
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 24,
+      "optuna_number": 23,
+      "refusals": 0.47,
+      "refusals_display": "47/100",
+      "kl": 0.05295942723751068,
+      "scores": {
+        "Refusals": 0.47,
+        "KL divergence": 0.05295942723751068
+      },
+      "pareto_position": 2,
+      "parameters": {
+        "direction_index": 51.30864295139183,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.2022980532956717,
+            "max_weight_position": 53.62752019734523,
+            "min_weight": 0.3433478075501492,
+            "min_weight_distance": 22.59546693614385
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.062538086479655,
+            "max_weight_position": 59.42950867801187,
+            "min_weight": 0.8023035836693191,
+            "min_weight_distance": 26.68850674286075
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 82,
+      "optuna_number": 81,
+      "refusals": 0.53,
+      "refusals_display": "53/100",
+      "kl": 0.04987701401114464,
+      "scores": {
+        "Refusals": 0.53,
+        "KL divergence": 0.04987701401114464
+      },
+      "pareto_position": 3,
+      "parameters": {
+        "direction_index": 53.962076331097435,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3836368351448516,
+            "max_weight_position": 60.29172462036915,
+            "min_weight": 0.005395992375583693,
+            "min_weight_distance": 10.504250067789343
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.3490397981879048,
+            "max_weight_position": 50.52704843382755,
+            "min_weight": 0.1450218077713204,
+            "min_weight_distance": 27.918688060216414
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 75,
+      "optuna_number": 74,
+      "refusals": 0.55,
+      "refusals_display": "55/100",
+      "kl": 0.044017378240823746,
+      "scores": {
+        "Refusals": 0.55,
+        "KL divergence": 0.044017378240823746
+      },
+      "pareto_position": 4,
+      "parameters": {
+        "direction_index": 53.94511541565931,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3748349493031828,
+            "max_weight_position": 60.69407403515437,
+            "min_weight": 0.21906405627952721,
+            "min_weight_distance": 7.062858633607295
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.239158509771908,
+            "max_weight_position": 49.881540751931176,
+            "min_weight": 0.16038133205970975,
+            "min_weight_distance": 29.697336921491303
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 52,
+      "optuna_number": 51,
+      "refusals": 0.58,
+      "refusals_display": "58/100",
+      "kl": 0.042878128588199615,
+      "scores": {
+        "Refusals": 0.58,
+        "KL divergence": 0.042878128588199615
+      },
+      "pareto_position": 5,
+      "parameters": {
+        "direction_index": 54.65804041499701,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.4149259638752487,
+            "max_weight_position": 62.80948062595543,
+            "min_weight": 0.1970445056762611,
+            "min_weight_distance": 10.34257937953631
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.197285719017989,
+            "max_weight_position": 50.871129624373694,
+            "min_weight": 0.22211238439943287,
+            "min_weight_distance": 32.77102798424762
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 90,
+      "optuna_number": 89,
+      "refusals": 0.6,
+      "refusals_display": "60/100",
+      "kl": 0.03899623453617096,
+      "scores": {
+        "Refusals": 0.6,
+        "KL divergence": 0.03899623453617096
+      },
+      "pareto_position": 6,
+      "parameters": {
+        "direction_index": 54.78745236512524,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3922462890653302,
+            "max_weight_position": 60.17097667833008,
+            "min_weight": 0.31779000255457934,
+            "min_weight_distance": 4.631674938352558
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.2452331849929117,
+            "max_weight_position": 50.63373590977091,
+            "min_weight": 0.1841036597960087,
+            "min_weight_distance": 28.047858530840102
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 96,
+      "optuna_number": 95,
+      "refusals": 0.61,
+      "refusals_display": "61/100",
+      "kl": 0.03878962993621826,
+      "scores": {
+        "Refusals": 0.61,
+        "KL divergence": 0.03878962993621826
+      },
+      "pareto_position": 7,
+      "parameters": {
+        "direction_index": 54.558267302628124,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.4319753479605206,
+            "max_weight_position": 59.951482935649096,
+            "min_weight": 0.1316067492413743,
+            "min_weight_distance": 5.603212044191983
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.1706706526121073,
+            "max_weight_position": 51.45989925955969,
+            "min_weight": 0.23942566581984043,
+            "min_weight_distance": 30.566264410384765
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 87,
+      "optuna_number": 86,
+      "refusals": 0.68,
+      "refusals_display": "68/100",
+      "kl": 0.033910322934389114,
+      "scores": {
+        "Refusals": 0.68,
+        "KL divergence": 0.033910322934389114
+      },
+      "pareto_position": 8,
+      "parameters": {
+        "direction_index": 54.42479812415528,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.4089252408079422,
+            "max_weight_position": 58.3331800385386,
+            "min_weight": 0.049037945795206636,
+            "min_weight_distance": 6.7194116082504145
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.1025466144444622,
+            "max_weight_position": 51.77123441301147,
+            "min_weight": 0.18338801677515623,
+            "min_weight_distance": 25.62503626998332
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 54,
+      "optuna_number": 53,
+      "refusals": 0.86,
+      "refusals_display": "86/100",
+      "kl": 0.032853446900844574,
+      "scores": {
+        "Refusals": 0.86,
+        "KL divergence": 0.032853446900844574
+      },
+      "pareto_position": 9,
+      "parameters": {
+        "direction_index": 54.37773346739022,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3781202255055884,
+            "max_weight_position": 59.38967639037181,
+            "min_weight": 0.08090591000763207,
+            "min_weight_distance": 3.807466445136079
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.0465102895301202,
+            "max_weight_position": 49.88359726066569,
+            "min_weight": 0.19016812394828378,
+            "min_weight_distance": 30.320580526088072
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 57,
+      "optuna_number": 56,
+      "refusals": 0.88,
+      "refusals_display": "88/100",
+      "kl": 0.03266236186027527,
+      "scores": {
+        "Refusals": 0.88,
+        "KL divergence": 0.03266236186027527
+      },
+      "pareto_position": 10,
+      "parameters": {
+        "direction_index": 54.89576894588967,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.4379154041966713,
+            "max_weight_position": 62.49566035058808,
+            "min_weight": 0.28488753116786325,
+            "min_weight_distance": 10.156573625196852
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.018013078346924,
+            "max_weight_position": 51.19948910179236,
+            "min_weight": 0.2399480106168925,
+            "min_weight_distance": 30.85059851239708
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 85,
+      "optuna_number": 84,
+      "refusals": 0.89,
+      "refusals_display": "89/100",
+      "kl": 0.031856633722782135,
+      "scores": {
+        "Refusals": 0.89,
+        "KL divergence": 0.031856633722782135
+      },
+      "pareto_position": 11,
+      "parameters": {
+        "direction_index": 54.012257146940705,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.403745707944749,
+            "max_weight_position": 62.06551704576838,
+            "min_weight": 0.04032948123190215,
+            "min_weight_distance": 10.021909382543875
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.0521489098409753,
+            "max_weight_position": 52.04017252045192,
+            "min_weight": 0.16418379585410367,
+            "min_weight_distance": 26.620347499846815
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 79,
+      "optuna_number": 78,
+      "refusals": 0.9,
+      "refusals_display": "90/100",
+      "kl": 0.029028020799160004,
+      "scores": {
+        "Refusals": 0.9,
+        "KL divergence": 0.029028020799160004
+      },
+      "pareto_position": 12,
+      "parameters": {
+        "direction_index": 55.75104134529699,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.4422477854645077,
+            "max_weight_position": 61.487058488370394,
+            "min_weight": 0.1379531063935058,
+            "min_weight_distance": 9.563535213480632
+          },
+          "mlp.down_proj": {
+            "max_weight": 1.0235997121689135,
+            "max_weight_position": 54.25631807059859,
+            "min_weight": 0.21404574291787712,
+            "min_weight_distance": 26.21469912503356
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 63,
+      "optuna_number": 62,
+      "refusals": 0.95,
+      "refusals_display": "95/100",
+      "kl": 0.02719172276556492,
+      "scores": {
+        "Refusals": 0.95,
+        "KL divergence": 0.02719172276556492
+      },
+      "pareto_position": 13,
+      "parameters": {
+        "direction_index": 55.09510964396037,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3968003991268605,
+            "max_weight_position": 61.93060235128301,
+            "min_weight": 0.027119354298285693,
+            "min_weight_distance": 12.226000971445234
+          },
+          "mlp.down_proj": {
+            "max_weight": 0.9450308062000335,
+            "max_weight_position": 49.76464706493495,
+            "min_weight": 0.11025201960830659,
+            "min_weight_distance": 30.528793501707312
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 8,
+      "optuna_number": 7,
+      "refusals": 0.96,
+      "refusals_display": "96/100",
+      "kl": 0.02664589323103428,
+      "scores": {
+        "Refusals": 0.96,
+        "KL divergence": 0.02664589323103428
+      },
+      "pareto_position": 14,
+      "parameters": {
+        "direction_index": null,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.418314263844067,
+            "max_weight_position": 53.51653961780134,
+            "min_weight": 1.0650723655067544,
+            "min_weight_distance": 13.839458984784605
+          },
+          "mlp.down_proj": {
+            "max_weight": 0.22237381058879563,
+            "max_weight_position": 60.376332698540885,
+            "min_weight": 0.09519626917117148,
+            "min_weight_distance": 36.50611373506059
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 28,
+      "optuna_number": 27,
+      "refusals": 0.97,
+      "refusals_display": "97/100",
+      "kl": 0.012939262203872204,
+      "scores": {
+        "Refusals": 0.97,
+        "KL divergence": 0.012939262203872204
+      },
+      "pareto_position": 15,
+      "parameters": {
+        "direction_index": null,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 1.3683010884043778,
+            "max_weight_position": 59.849033452888634,
+            "min_weight": 0.9419566025116839,
+            "min_weight_distance": 21.957394389029826
+          },
+          "mlp.down_proj": {
+            "max_weight": 0.03170001442731535,
+            "max_weight_position": 49.56537657363532,
+            "min_weight": 0.010941959001526346,
+            "min_weight_distance": 9.281470447558313
+          }
+        }
+      }
+    },
+    {
+      "trial_index": 14,
+      "optuna_number": 13,
+      "refusals": 0.98,
+      "refusals_display": "98/100",
+      "kl": 0.0002770978317130357,
+      "scores": {
+        "Refusals": 0.98,
+        "KL divergence": 0.0002770978317130357
+      },
+      "pareto_position": 16,
+      "parameters": {
+        "direction_index": 28.58606506684193,
+        "weight_distributions": {
+          "attn.o_proj": {
+            "max_weight": 0.9579965370254984,
+            "max_weight_position": 55.76732230564345,
+            "min_weight": 0.5362069305222315,
+            "min_weight_distance": 1.4620600698554633
+          },
+          "mlp.down_proj": {
+            "max_weight": 0.0,
+            "max_weight_position": 62.175363516006854,
+            "min_weight": 0.0,
+            "min_weight_distance": 8.48119103552445
+          }
+        }
+      }
+    }
+  ],
+  "reexport": {
+    "pareto_position": 2,
+    "trial_index": 24,
+    "workdir": "/workspace/paper33/runs/qwen3.8-27b__dim__core-s1/reexport_t24",
+    "heretic_command": "/workspace/paper33/heretic/.venv/bin/heretic --model Qwen/Qwen3.8-27B --checkpoint-action continue --trial-index 2 --model-action save --export-strategy MERGE --save-directory /workspace/paper33/runs/qwen3.8-27b__dim__core-s1/model_kl0.1_t24",
+    "script": "cd /workspace/paper33/runs/qwen3.8-27b__dim__core-s1 && \\\n  mkdir -p reexport_t24/checkpoints && \\\n  cp config.toml reexport_t24/config.toml && \\\n  cp checkpoints/Qwen--Qwen3--8-27B.jsonl reexport_t24/checkpoints/Qwen--Qwen3--8-27B.jsonl && \\\n  /workspace/paper33/heretic/.venv/bin/python /workspace/paper33/scripts/select_trial.py --patch-journal reexport_t24/checkpoints/Qwen--Qwen3--8-27B.jsonl --trial-index 2 --expect-trial 24 && \\\n  cd reexport_t24 && \\\n  /workspace/paper33/heretic/.venv/bin/heretic --model Qwen/Qwen3.8-27B --checkpoint-action continue --trial-index 2 --model-action save --export-strategy MERGE --save-directory /workspace/paper33/runs/qwen3.8-27b__dim__core-s1/model_kl0.1_t24 2>&1 | tee reexport.log"
+  }
+}

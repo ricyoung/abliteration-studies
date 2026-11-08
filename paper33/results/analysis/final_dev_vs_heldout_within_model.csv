@@ -1,0 +1,13 @@
+model,seed,n_methods,spearman_dev_vs_wg,spearman_dev_vs_kw,best_dev,best_heldout_wg,best_dev_tied,best_dev_tie_kl,best_dev_is_best_wg,best_dev_unique_is_best_wg,best_dev_kl_tiebreak,best_dev_kl_tiebreak_is_best_wg
+gemma-2-27b,1,4,1,1,ara,ara,False,,True,True,ara,True
+gemma-4-31b,1,4,1,1,ara,ara,False,,True,True,ara,True
+mistral-small-2409,1,4,0.8,0.8,ara,som,False,,False,False,ara,False
+mistral-small-3.2,1,4,0.8,0.8,ara,mpoa,False,,False,False,ara,False
+olmo-2-32b,1,4,-0.4,1,dim,mpoa,False,,False,False,dim,False
+olmo-3.1-32b,1,4,1,1,ara,ara,False,,True,True,ara,True
+qwen2.5-32b,1,4,0.8,0.8,ara,mpoa,False,,False,False,ara,False
+qwen3.8-27b,1,4,0.8,0.8,mpoa,mpoa,False,,True,True,mpoa,True
+qwen2.5-7b,1,5,0.9,0.9,ara,ara,False,,True,True,ara,True
+qwen2.5-7b,2,5,1,0.7,ara,ara,False,,True,True,ara,True
+qwen3.5-4b,1,5,0.974679,0.872082,ara/mpoa,mpoa,True,mpoa 0.054;ara 0.064,True,False,mpoa,True
+qwen3.5-4b,2,5,0.564288,0.564288,mpoa,ara,False,,False,False,mpoa,False

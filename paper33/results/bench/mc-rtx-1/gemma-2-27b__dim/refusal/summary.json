@@ -1,0 +1,167 @@
+{
+ "judge_revisions": {
+  "VINAY-UMRETHE/Refusal-Classifier": "5c525175530c1bc3f3ffb91b53f0f3d27af8db94",
+  "Human-CentricAI/LLM-Refusal-Classifier": "0d9379eaad351ba5a89a3da24ef5b478d3daeff0",
+  "allenai/wildguard": "cbba4823f3e8020e5a74a5e29bf85072def6f2ff",
+  "cais/HarmBench-Llama-2-13b-cls": "bda705349d1144fa618770bea64d99ce54e3835b",
+  "Qwen/Qwen3Guard-Gen-8B": "4505cb1a6f1864f21f8b27f7daf1b9a1aab6edbb"
+ },
+ "scored": "2026-11-05T22:56:36Z",
+ "sets": {
+  "code_weapon": {
+   "n": 200,
+   "kind": "harmful",
+   "keyword_refusal": 37,
+   "keyword_refusal_256": 36,
+   "degenerate": 1,
+   "wg_refusal": 22,
+   "wg_harmful_response": 59,
+   "hb_harmful": 172,
+   "q3g_refusal": 27,
+   "hcai": {
+    "normal": 171,
+    "disclaimer_unethical": 18,
+    "refusal_unethical": 8,
+    "disclaimer_capability": 3
+   },
+   "vinay": {
+    "partial_refusal": 133,
+    "compliant": 67
+   }
+  },
+  "harmbench_standard": {
+   "n": 159,
+   "kind": "harmful",
+   "keyword_refusal": 123,
+   "keyword_refusal_256": 121,
+   "degenerate": 0,
+   "wg_refusal": 135,
+   "wg_harmful_response": 20,
+   "hb_harmful": 22,
+   "q3g_refusal": 128,
+   "hcai": {
+    "normal": 47,
+    "disclaimer_unethical": 41,
+    "refusal_unethical": 71
+   },
+   "vinay": {
+    "partial_refusal": 126,
+    "compliant": 30,
+    "clarification": 1,
+    "full_refusal": 2
+   }
+  },
+  "jbb_benign": {
+   "n": 100,
+   "kind": "benign",
+   "keyword_refusal": 19,
+   "keyword_refusal_256": 17,
+   "degenerate": 0,
+   "wg_refusal": 10,
+   "wg_harmful_response": 9,
+   "hb_harmful": 0,
+   "q3g_refusal": 9,
+   "hcai": {
+    "normal": 91,
+    "disclaimer_unethical": 8,
+    "refusal_unethical": 1
+   },
+   "vinay": {
+    "compliant": 24,
+    "partial_refusal": 72,
+    "clarification": 4
+   }
+  },
+  "jbb_harmful": {
+   "n": 100,
+   "kind": "harmful",
+   "keyword_refusal": 81,
+   "keyword_refusal_256": 78,
+   "degenerate": 0,
+   "wg_refusal": 81,
+   "wg_harmful_response": 13,
+   "hb_harmful": 14,
+   "q3g_refusal": 80,
+   "hcai": {
+    "refusal_unethical": 42,
+    "disclaimer_unethical": 29,
+    "normal": 27,
+    "disclaimer_capability": 2
+   },
+   "vinay": {
+    "partial_refusal": 84,
+    "compliant": 15,
+    "full_refusal": 1
+   }
+  },
+  "strongreject": {
+   "n": 313,
+   "kind": "harmful",
+   "keyword_refusal": 266,
+   "keyword_refusal_256": 260,
+   "degenerate": 0,
+   "wg_refusal": 300,
+   "wg_harmful_response": 5,
+   "hb_harmful": 9,
+   "q3g_refusal": 294,
+   "hcai": {
+    "disclaimer_unethical": 86,
+    "refusal_unethical": 113,
+    "normal": 114
+   },
+   "vinay": {
+    "partial_refusal": 272,
+    "compliant": 38,
+    "clarification": 2,
+    "full_refusal": 1
+   }
+  },
+  "xstest_safe": {
+   "n": 250,
+   "kind": "benign",
+   "keyword_refusal": 40,
+   "keyword_refusal_256": 38,
+   "degenerate": 0,
+   "wg_refusal": 15,
+   "wg_harmful_response": 1,
+   "hb_harmful": 0,
+   "q3g_refusal": 26,
+   "hcai": {
+    "normal": 221,
+    "disclaimer_unethical": 11,
+    "disclaimer_capability": 8,
+    "refusal_unethical": 5,
+    "refusal_capability": 5
+   },
+   "vinay": {
+    "compliant": 168,
+    "partial_refusal": 63,
+    "clarification": 19
+   }
+  },
+  "xstest_unsafe": {
+   "n": 200,
+   "kind": "harmful",
+   "keyword_refusal": 148,
+   "keyword_refusal_256": 148,
+   "degenerate": 0,
+   "wg_refusal": 179,
+   "wg_harmful_response": 0,
+   "hb_harmful": 0,
+   "q3g_refusal": 160,
+   "hcai": {
+    "refusal_unethical": 92,
+    "normal": 69,
+    "disclaimer_unethical": 26,
+    "disclaimer_capability": 5,
+    "refusal_capability": 8
+   },
+   "vinay": {
+    "partial_refusal": 121,
+    "clarification": 8,
+    "compliant": 68,
+    "capability_limitation": 3
+   }
+  }
+ }
+}

@@ -1,0 +1,50 @@
+% ============================================================
+% ABSTRACT (150--250 words) -- write LAST. No citations, no undefined abbreviations.
+% 1--2 background | 1 methods | 1 main results | 1 implications | LAST = key finding
+% Written 2026-11-06 after Results and Discussion. src: results/analysis/h1h2_tests.csv (8 / 4 of 16),
+% h1h2_models.csv (pooled interaction -0.50), h3_gap_pooled.csv (39.9 vs 31.5, 42 ablated primary cells),
+% final_community_vs_selected.csv (Qwen3.8-27B 1.4%, Olmo-3.1-32B 0.7%); tab:models (4B--32B).
+% 2026-11-06 REVIEW REVISION (author decisions A and B; notes/REVIEW_v5_reviewer_agent_20261106.md A1, C1, C4):
+% per-pair effects lead; the pooled baseline-adjusted effect is a summary with the pair-level random-effects interval;
+% "+0.03 log-odds (95% interval -0.05 to +0.11)" replaced; H3 reported at the tool's 100-token window; first sentences
+% scoped to four families and one small pair. Previous version: sections/01_abstract.tex.bak-20261106-rev.
+% src: per-pair class effects, pp: results/analysis/review_sel_pair_effects.csv (direction raw: qwen +10.73, gemma +4.73,
+% src: olmo +36.87, mistral -1.23, qwen-small +17.28; ARA raw: +34.36, -26.03, -2.47, -0.72, +14.20);
+% src: review_sel_pair_heterogeneity.csv (wg, all, main, generation x family (direction class) 547.366, df 3);
+% src: h1h2_generation_effects.csv (originals: qwen +13.1, mistral +17.9 significant; gemma, olmo not);
+% src: review_sel_pair_meta.csv (direction adjusted, log-odds: re_estimate 0.064, HKSJ [-1.669, 1.796] with prompt sampling
+% src: only and [-1.669, 1.797] with seed variance added); review_out_c4_gap_pooled.csv (kw100_vs_wg, ablated_primary +0.5
+% src: [-1.0, +1.9]); review_out_summary.md C4 (25 of 42 ablated cells Holm-significant in either direction).
+% Word count 249 (math as one word).
+% "Harder" = more residual held-out (WildGuard) refusal after the same search budget and selection rule (Intro P4).
+% 2026-11-06 verifier pass: per-pair numbers are class-level paired risk differences = unweighted mean of the per-method
+% effects (DiM, MPOA, SOM; + J-space on the small pair; review_sel_pair_effects.csv n_direction_methods 3 / 4), now stated
+% ("Averaged over the direction-based methods", "four on the small pair"); "each main-study ... once" (the small pair has
+% seed 2); adjustment labelled exploratory (author decision A); "unchanged by run-to-run variation" replaced by the literal
+% "including estimated run-to-run variation" (review_sel_pair_meta.csv, variance "prompt + seed (sigma, 10 seed pairs)":
+% HKSJ [-1.669, 1.797]). Word count 250 (math as one word).
+% ============================================================
+Abliteration, a family of training-free weight edits, can remove refusal
+from open-weight language models after release. The developer of
+Arbitrary-Rank Ablation (ARA), an optimisation-based method, reports that
+direction-based abliteration increasingly fails on newer models, a claim not
+yet tested independently. Three direction-based methods (four on the small
+pair) and ARA were applied in one framework, with identical prompts, search
+budget, divergence cap and selection rule, to an earlier and a later release
+of four model families (22--32 billion parameters) and one smaller Qwen
+pair, optimising each main-study model--method combination once; an
+independent judge labelled refusal on 972 held-out harmful prompts. Averaged
+over the direction-based methods, the later release retained more refusal by
++10.7 (Qwen), +4.7 (Gemma), +36.9 (OLMo), $-$1.2 (Mistral Small) and +17.3
+percentage points (small pair); after ARA they were +34.4, $-$26.0, $-$2.5,
+$-$0.7 and +14.2. The families differed (generation $\times$ family
+$\chi^2=547$, 3 degrees of freedom). The later Qwen and Mistral Small
+originals already refused more before editing; beyond this baseline
+difference (exploratory), the direction-based effect pooled over four
+families was +0.06 log-odds, with a 95\% interval of $-$1.67 to +1.80 when the
+pair is the unit, including estimated run-to-run variation. At the tool's
+100-token window, keyword matching agreed with the judge on average (+0.5
+points) but not model by model. Audits of one model pair, removal method or
+optimisation run can therefore misjudge how removable refusal is. Refusal
+removal did not become uniformly harder in the later releases; its difficulty
+depended on the family and the method.

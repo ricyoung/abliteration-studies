@@ -1,0 +1,19 @@
+group,n_runs,n_late_after_75,share_late,median_first_reach,median_gain_after_50,mean_gain_after_75,max_gain_after_75,late_runs
+core seed-1 runs (all),42,8,0.190476,48,0.5,1.30952,14,qwen2.5-32b__mpoa__core-s1;gemma-2-27b__mpoa__core-s1;gemma-2-27b__som__core-s1;gemma-4-31b__mpoa__core-s1;olmo-3.1-32b__som__core-s1;mistral-small-2409__ara__core-s1;mistral-small-3.2__ara__core-s1-r2;mistral-small-3.2__som__core-s1
+"core seed-1, main",32,8,0.25,43.5,0,1.71875,14,qwen2.5-32b__mpoa__core-s1;gemma-2-27b__mpoa__core-s1;gemma-2-27b__som__core-s1;gemma-4-31b__mpoa__core-s1;olmo-3.1-32b__som__core-s1;mistral-small-2409__ara__core-s1;mistral-small-3.2__ara__core-s1-r2;mistral-small-3.2__som__core-s1
+"core seed-1, small",10,0,0,54.5,1,0,0,
+"core seed-1, older models",21,4,0.190476,45,0,1.57143,13,qwen2.5-32b__mpoa__core-s1;gemma-2-27b__mpoa__core-s1;gemma-2-27b__som__core-s1;mistral-small-2409__ara__core-s1
+"core seed-1, newer models",21,4,0.190476,51,1,1.04762,14,gemma-4-31b__mpoa__core-s1;olmo-3.1-32b__som__core-s1;mistral-small-3.2__ara__core-s1-r2;mistral-small-3.2__som__core-s1
+"core seed-1, method dim",10,0,0,38.5,0,0,0,
+"core seed-1, method mpoa",10,3,0.3,57,6,2.5,13,qwen2.5-32b__mpoa__core-s1;gemma-2-27b__mpoa__core-s1;gemma-4-31b__mpoa__core-s1
+"core seed-1, method som",10,3,0.3,47,0.5,2.3,14,gemma-2-27b__som__core-s1;olmo-3.1-32b__som__core-s1;mistral-small-3.2__som__core-s1
+"core seed-1, method jspace",2,0,0,37,0.5,0,0,
+"core seed-1, method ara",10,2,0.2,60.5,2,0.7,5,mistral-small-2409__ara__core-s1;mistral-small-3.2__ara__core-s1-r2
+"core seed-1, family Qwen",8,1,0.125,36,0,1.375,11,qwen2.5-32b__mpoa__core-s1
+"core seed-1, family Gemma",8,3,0.375,51.5,1,2.625,13,gemma-2-27b__mpoa__core-s1;gemma-2-27b__som__core-s1;gemma-4-31b__mpoa__core-s1
+"core seed-1, family OLMo",8,1,0.125,28.5,0,0.25,2,olmo-3.1-32b__som__core-s1
+"core seed-1, family Mistral Small",8,3,0.375,58.5,8,2.625,14,mistral-small-2409__ara__core-s1;mistral-small-3.2__ara__core-s1-r2;mistral-small-3.2__som__core-s1
+"core seed-1, family Qwen (small pair)",10,0,0,54.5,1,0,0,
+seed-2 runs (small pair),10,1,0.1,18.5,0,0.1,1,qwen3.5-4b__dim__core-s2
+seed-1 runs of the same 10 small-pair cells,10,0,0,54.5,1,0,0,
+gamma-MPOA runs,4,1,0.25,44,1,0.25,1,olmo-2-32b__gmpoa__core-s1

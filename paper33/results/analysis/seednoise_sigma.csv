@@ -1,0 +1,11 @@
+quantity,estimate,lo,hi,method
+"n_cells (small pair, seed 1 vs seed 2)",10.0000,,,"Qwen2.5-7B and Qwen3.5-4B x DiM, MPOA, SOM, J-space, ARA"
+"mean d = seed2 - seed1, pp",0.1338,,,arithmetic mean (assumed 0 by the estimator)
+"median |d|, pp",9.4136,,,median
+"max |d|, pp",25.2057,,,max
+"sigma (per-cell run-to-run SD), pp",9.1542,6.3962,16.0650,"sqrt(mean(d^2)/2); 95% chi-square interval, df = 10"
+"sigma bootstrap interval, pp",9.1542,5.7263,12.1375,"percentile bootstrap over cells, 20000 resamples, seed 20261106"
+"sigma_mad (robust sensitivity), pp",9.8688,,,median|d| / (0.6745 * sqrt 2)
+"SD_diff (older-minus-newer difference), pp",12.9460,9.0456,22.7194,sigma * sqrt(2); interval from the chi-square interval of sigma
+"threshold = 2 * SD_diff, pp",25.8920,18.0912,45.4387,flag |effect| > threshold as 'exceeds seed noise'
+"threshold from sigma_mad, pp",27.9132,,,sensitivity

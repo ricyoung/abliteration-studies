@@ -1,0 +1,30 @@
+\begin{tabular}{@{}llrrrrrr@{}}
+\toprule
+Model & Search & Selected: refusals (KL) & \multicolumn{5}{c}{Fewest dev refusals at first-token KL $\le$} \\
+\cmidrule(l){4-8}
+ & & & 0.01 & 0.02 & 0.05 & 0.1 & 0.5 \\
+\midrule
+Qwen2.5-7B & 1.x general & 67 (0.005) & 67 & 30 & 7 & 7 & 7 \\
+ & 2.0 DiM & 55 (0.078) & 63 & 63 & 63 & 55 & 11 \\
+ & 2.0 MPOA & 19 (0.074) & 64 & 64 & 33 & 19 & 14 \\
+ & SOM (fork plug-in) & 27 (0.076) & 81 & 64 & 39 & 27 & 5 \\
+ & J-space (fork plug-in) & 84 (0.022) & 88 & 88 & 84 & 84 & 84 \\
+ & 2.0 ARA & 8 (0.021) & 14 & 10 & 8 & 8 & 3 \\
+\addlinespace[2pt]
+Qwen2.5-Coder-7B & 1.x general & 21 (0.010) & 21 & 5 & 5 & 5 & 5 \\
+\addlinespace[2pt]
+Qwen2.5-14B & 1.x general & 91 (0.008) & 91 & 91 & 25 & 12 & 3 \\
+\addlinespace[2pt]
+Qwen2.5-Coder-14B & 1.x general & 36 (0.010) & 36 & 14 & 9 & 9 & 9 \\
+\addlinespace[2pt]
+Qwen2.5-32B & 1.x general & 89 (0.006) & 89 & 87 & 75 & 50$^{a}$ & 47 \\
+ & 2.0 DiM & 89 (0.018) & 94 & 89 & 89 & 89 & 56 \\
+ & 2.0 MPOA & 13 (0.060) & 83 & 79 & 75 & 13 & 13 \\
+ & SOM (fork plug-in) & 73 (0.075) & 96 & 81 & 81 & 73 & 30 \\
+ & 2.0 ARA & 10 (0.062) & -- & 16 & 12 & 10 & 7 \\
+\addlinespace[2pt]
+Qwen2.5-Coder-32B & 1.x general & 94 (0.007) & 94 & 86 & 74 & 22 & 4 \\
+\bottomrule
+\multicolumn{8}{@{}l}{\footnotesize $^{a}$ Trial \#96 (KL 0.064), re-exported and evaluated held-out (Table~\ref{tab:h1}b);} \\
+\multicolumn{8}{@{}l}{\footnotesize \phantom{$^{a}$} dev re-evaluation after export: 51 of 100 at KL 0.064.} \\
+\end{tabular}

@@ -1,0 +1,67 @@
+{
+ "how": "re-exported on box with heretic-llm 1.4.0 (git v1.4.0 6ea3b8d) via export_1x_trial.py: 1.x refusal directions recomputed, study trial re-applied, adapter merged with the merge_adapter.py procedure (CPU, bf16)",
+ "label": "qwen2.5-32b__heretic1x-general-kl0.1",
+ "study": "/workspace/paper33/reexport_1x/studies/Qwen__Qwen2.5-32B-Instruct__general",
+ "journal_sha256": "bf60f0540a0a57da1237a16447197767b055a4afc10f954941184327b1e93510",
+ "trial_index": 96,
+ "trial_direction_index": 44.256130140017376,
+ "trial_parameters": {
+  "attn.o_proj": {
+   "max_weight": 1.2569675741503104,
+   "max_weight_position": 45.319068992394115,
+   "min_weight": 0.5786596606621588,
+   "min_weight_distance": 23.266393091261648
+  },
+  "mlp.down_proj": {
+   "max_weight": 1.0018681789848478,
+   "max_weight_position": 52.55379603875497,
+   "min_weight": 0.8249757478256138,
+   "min_weight_distance": 27.743017688999114
+  }
+ },
+ "journal_values": {
+  "refusals": 50,
+  "kl_divergence": 0.06422582268714905,
+  "base_refusals": 98,
+  "n_bad_prompts": 100,
+  "objective_values": [
+   0.06422582268714905,
+   0.5102040816326531
+  ],
+  "datetime_complete": "2026-06-20T08:06:12.099556"
+ },
+ "reevaluated": {
+  "refusals": 51,
+  "kl_divergence": 0.06366880238056183,
+  "score": [
+   0.06366880238056183,
+   0.5257731958762887
+  ],
+  "seconds": 19.6,
+  "device": "cuda:0"
+ },
+ "selection_rule": "paper-33: complete trials with dev KL <= 0.1, fewest dev refusals, ties -> lower KL",
+ "adapter_sha256": "88347ef175c64c3e720e06c3405f2ba262c4d10f8335603d4d003b22c592c4a3",
+ "base_snapshot": "/workspace/paper33/hf/hub/models--Qwen--Qwen2.5-32B-Instruct/snapshots/5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+ "base_revision": "5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+ "refusal_directions_sha256": "0a5481700d12cf97d03b2cb5688ddee5b43697c3ba6070c473f6c200857fa237",
+ "shards_sha256": {
+  "model-00001-of-00014.safetensors": "74deab43bf4d1d06a666360a704fcc6b809e1775b866cb8f5c711aa57f285128",
+  "model-00002-of-00014.safetensors": "d062674543ab0dae31284391e8cde24734d5bc0f05d9fb4b318d64c8af7b8764",
+  "model-00003-of-00014.safetensors": "6930f0a4b0d91dba488feb9aebea6f075190aa395fc89d86cb592fbba3036bf5",
+  "model-00004-of-00014.safetensors": "20a3037e23f44269d8beacd971981bd9bda6d0075c2f93b4d2cc6bb055562808",
+  "model-00005-of-00014.safetensors": "93798c73d7cff6d5e87ae4bb2a805983e142ab8b2792bc7a936467a858d48cfb",
+  "model-00006-of-00014.safetensors": "28139f6f4f58717e612c81f44677608d9f0423f2889d5c652b3b75a35c6f073c",
+  "model-00007-of-00014.safetensors": "f1446b897f8bf8ffa3a25bd8d51af604f4c60754103739d5db64788d3e1a54c8",
+  "model-00008-of-00014.safetensors": "1f8ad61620fa959b177cfe136058cca961cfccc217f404a7c908f2ddea3c1646",
+  "model-00009-of-00014.safetensors": "c72f68e6d8c94f47a1c409a4120e875bcc115eaf6665ee6cef20b8dc04d2276e",
+  "model-00010-of-00014.safetensors": "10965ded77055b8420acb006785e3d2756cae4e7990bd53c01cbf07e953231e4",
+  "model-00011-of-00014.safetensors": "7ddd96eca39279e90f5969ae91cdcfc12f28b6e76aa6d9db1f2bc7d332a0291f",
+  "model-00012-of-00014.safetensors": "0974c6dac11425731da738f0af02878472267d978fec1a5858edf3fa9a94b07e",
+  "model-00013-of-00014.safetensors": "664972bbc680a4a362318e89dea2dcd349c6bc45fb8cf54258c6fbec0e95a9af",
+  "model-00014-of-00014.safetensors": "6c7420a9113b4c5c147871baae728449446cac6cbcb11902a6fbebbc4e3680e9"
+ },
+ "tensor_hashes": "/workspace/paper33/results/reexport_1x/qwen2.5-32b__heretic1x-general-kl0.1/tensor_hashes.json",
+ "provenance": "/workspace/paper33/results/reexport_1x/qwen2.5-32b__heretic1x-general-kl0.1/PROVENANCE.json",
+ "rule_trial_verdict": "PASS (dev re-eval within tolerance of the journal; no reference weights)"
+}

@@ -1,0 +1,461 @@
+{
+  "run": "olmo-3.1-32b__ara__core-s1",
+  "run_dir": "/workspace/paper33/runs/olmo-3.1-32b__ara__core-s1",
+  "journal": "/workspace/paper33/runs/olmo-3.1-32b__ara__core-s1/checkpoints/allenai--Olmo-3--1-32B-Instruct.jsonl",
+  "model_short": "olmo-3.1-32b",
+  "method": "ara",
+  "tag": "core-s1",
+  "seed_from_name": 1,
+  "model": "allenai/Olmo-3.1-32B-Instruct",
+  "seed": 1,
+  "modifiers": [
+    "heretic.modifiers.ara.ARA"
+  ],
+  "finished": true,
+  "n_trials_planned": 100,
+  "n_trials_total": 100,
+  "n_trials_complete": 100,
+  "objectives": [
+    "Refusals",
+    "KL divergence"
+  ],
+  "baselines": {
+    "Refusals": 1.0,
+    "KL divergence": 0
+  },
+  "rule": {
+    "text": "among COMPLETE trials with KL <= kl_max: fewest refusals; ties -> lower KL, then lower trial index; none qualifies -> no selection",
+    "kl_max": 0.1
+  },
+  "selected": {
+    "trial_index": 10,
+    "optuna_number": 9,
+    "refusals": 0.48,
+    "refusals_display": "48/100",
+    "kl": 0.052602335810661316,
+    "scores": {
+      "Refusals": 0.48,
+      "KL divergence": 0.052602335810661316
+    },
+    "pareto_position": 10,
+    "parameters": {
+      "start_layer_index": 16,
+      "end_layer_index": 34,
+      "preserve_good_behavior_weight": 0.5741176054920131,
+      "steer_bad_behavior_weight": 0.00038629074184943265,
+      "overcorrect_relative_weight": 0.7660971979742696,
+      "neighbor_count": 11
+    }
+  },
+  "lowest_kl_trial": {
+    "trial_index": 24,
+    "optuna_number": 23,
+    "refusals": 0.99,
+    "refusals_display": "99/100",
+    "kl": 0.009737125597894192,
+    "scores": {
+      "Refusals": 0.99,
+      "KL divergence": 0.009737125597894192
+    },
+    "pareto_position": 13,
+    "parameters": {
+      "start_layer_index": 28,
+      "end_layer_index": 56,
+      "preserve_good_behavior_weight": 0.5562402339904189,
+      "steer_bad_behavior_weight": 0.00035141549149589655,
+      "overcorrect_relative_weight": 0.07789299636587516,
+      "neighbor_count": 2
+    }
+  },
+  "headless_index0_trial": {
+    "trial_index": 13,
+    "optuna_number": 12,
+    "refusals": 0.0,
+    "refusals_display": "0/100",
+    "kl": 10.808619499206543,
+    "scores": {
+      "Refusals": 0.0,
+      "KL divergence": 10.808619499206543
+    },
+    "pareto_position": 0,
+    "parameters": {
+      "start_layer_index": 4,
+      "end_layer_index": 58,
+      "preserve_good_behavior_weight": 0.3976768369855336,
+      "steer_bad_behavior_weight": 0.00045858177236332294,
+      "overcorrect_relative_weight": 1.2057611545148441,
+      "neighbor_count": 6
+    }
+  },
+  "per_threshold": {
+    "0.05": {
+      "trial_index": 28,
+      "optuna_number": 27,
+      "refusals": 0.89,
+      "refusals_display": "89/100",
+      "kl": 0.039349816739559174,
+      "scores": {
+        "Refusals": 0.89,
+        "KL divergence": 0.039349816739559174
+      },
+      "pareto_position": 11,
+      "parameters": {
+        "start_layer_index": 20,
+        "end_layer_index": 59,
+        "preserve_good_behavior_weight": 0.15679139464608427,
+        "steer_bad_behavior_weight": 0.0001186601269698492,
+        "overcorrect_relative_weight": 0.09102878683498904,
+        "neighbor_count": 8
+      }
+    },
+    "0.1": {
+      "trial_index": 10,
+      "optuna_number": 9,
+      "refusals": 0.48,
+      "refusals_display": "48/100",
+      "kl": 0.052602335810661316,
+      "scores": {
+        "Refusals": 0.48,
+        "KL divergence": 0.052602335810661316
+      },
+      "pareto_position": 10,
+      "parameters": {
+        "start_layer_index": 16,
+        "end_layer_index": 34,
+        "preserve_good_behavior_weight": 0.5741176054920131,
+        "steer_bad_behavior_weight": 0.00038629074184943265,
+        "overcorrect_relative_weight": 0.7660971979742696,
+        "neighbor_count": 11
+      }
+    },
+    "0.2": {
+      "trial_index": 22,
+      "optuna_number": 21,
+      "refusals": 0.34,
+      "refusals_display": "34/100",
+      "kl": 0.1184801310300827,
+      "scores": {
+        "Refusals": 0.34,
+        "KL divergence": 0.1184801310300827
+      },
+      "pareto_position": 8,
+      "parameters": {
+        "start_layer_index": 18,
+        "end_layer_index": 59,
+        "preserve_good_behavior_weight": 0.12417331511991114,
+        "steer_bad_behavior_weight": 0.0013083824679722255,
+        "overcorrect_relative_weight": 0.7614870528957742,
+        "neighbor_count": 15
+      }
+    },
+    "0.5": {
+      "trial_index": 11,
+      "optuna_number": 10,
+      "refusals": 0.33,
+      "refusals_display": "33/100",
+      "kl": 0.41856783628463745,
+      "scores": {
+        "Refusals": 0.33,
+        "KL divergence": 0.41856783628463745
+      },
+      "pareto_position": 7,
+      "parameters": {
+        "start_layer_index": 3,
+        "end_layer_index": 46,
+        "preserve_good_behavior_weight": 0.6944001577277451,
+        "steer_bad_behavior_weight": 0.004536459919009388,
+        "overcorrect_relative_weight": 0.06493949662991332,
+        "neighbor_count": 9
+      }
+    }
+  },
+  "pareto_front": [
+    {
+      "trial_index": 13,
+      "optuna_number": 12,
+      "refusals": 0.0,
+      "refusals_display": "0/100",
+      "kl": 10.808619499206543,
+      "scores": {
+        "Refusals": 0.0,
+        "KL divergence": 10.808619499206543
+      },
+      "pareto_position": 0,
+      "parameters": {
+        "start_layer_index": 4,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.3976768369855336,
+        "steer_bad_behavior_weight": 0.00045858177236332294,
+        "overcorrect_relative_weight": 1.2057611545148441,
+        "neighbor_count": 6
+      }
+    },
+    {
+      "trial_index": 78,
+      "optuna_number": 77,
+      "refusals": 0.01,
+      "refusals_display": "1/100",
+      "kl": 10.243795394897461,
+      "scores": {
+        "Refusals": 0.01,
+        "KL divergence": 10.243795394897461
+      },
+      "pareto_position": 1,
+      "parameters": {
+        "start_layer_index": 22,
+        "end_layer_index": 63,
+        "preserve_good_behavior_weight": 0.016679094629865887,
+        "steer_bad_behavior_weight": 0.37757537434812566,
+        "overcorrect_relative_weight": 1.147646817401919,
+        "neighbor_count": 15
+      }
+    },
+    {
+      "trial_index": 54,
+      "optuna_number": 53,
+      "refusals": 0.03,
+      "refusals_display": "3/100",
+      "kl": 1.345619797706604,
+      "scores": {
+        "Refusals": 0.03,
+        "KL divergence": 1.345619797706604
+      },
+      "pareto_position": 2,
+      "parameters": {
+        "start_layer_index": 0,
+        "end_layer_index": 56,
+        "preserve_good_behavior_weight": 0.09386367074326125,
+        "steer_bad_behavior_weight": 0.9114581165176885,
+        "overcorrect_relative_weight": 0.730672423357752,
+        "neighbor_count": 8
+      }
+    },
+    {
+      "trial_index": 72,
+      "optuna_number": 71,
+      "refusals": 0.04,
+      "refusals_display": "4/100",
+      "kl": 1.2752667665481567,
+      "scores": {
+        "Refusals": 0.04,
+        "KL divergence": 1.2752667665481567
+      },
+      "pareto_position": 3,
+      "parameters": {
+        "start_layer_index": 0,
+        "end_layer_index": 54,
+        "preserve_good_behavior_weight": 0.040804941416925214,
+        "steer_bad_behavior_weight": 0.7289189148039412,
+        "overcorrect_relative_weight": 0.6652592085298449,
+        "neighbor_count": 7
+      }
+    },
+    {
+      "trial_index": 50,
+      "optuna_number": 49,
+      "refusals": 0.05,
+      "refusals_display": "5/100",
+      "kl": 0.9250209331512451,
+      "scores": {
+        "Refusals": 0.05,
+        "KL divergence": 0.9250209331512451
+      },
+      "pareto_position": 4,
+      "parameters": {
+        "start_layer_index": 0,
+        "end_layer_index": 37,
+        "preserve_good_behavior_weight": 0.021688129243582207,
+        "steer_bad_behavior_weight": 0.21864333020116816,
+        "overcorrect_relative_weight": 0.6174026639449222,
+        "neighbor_count": 10
+      }
+    },
+    {
+      "trial_index": 39,
+      "optuna_number": 38,
+      "refusals": 0.06,
+      "refusals_display": "6/100",
+      "kl": 0.601093053817749,
+      "scores": {
+        "Refusals": 0.06,
+        "KL divergence": 0.601093053817749
+      },
+      "pareto_position": 5,
+      "parameters": {
+        "start_layer_index": 14,
+        "end_layer_index": 64,
+        "preserve_good_behavior_weight": 0.2619550383130133,
+        "steer_bad_behavior_weight": 0.16953619992162913,
+        "overcorrect_relative_weight": 0.46642173085958605,
+        "neighbor_count": 10
+      }
+    },
+    {
+      "trial_index": 48,
+      "optuna_number": 47,
+      "refusals": 0.11,
+      "refusals_display": "11/100",
+      "kl": 0.5043143630027771,
+      "scores": {
+        "Refusals": 0.11,
+        "KL divergence": 0.5043143630027771
+      },
+      "pareto_position": 6,
+      "parameters": {
+        "start_layer_index": 3,
+        "end_layer_index": 55,
+        "preserve_good_behavior_weight": 0.07684275137663382,
+        "steer_bad_behavior_weight": 0.004225365066583645,
+        "overcorrect_relative_weight": 0.4891202407270341,
+        "neighbor_count": 11
+      }
+    },
+    {
+      "trial_index": 11,
+      "optuna_number": 10,
+      "refusals": 0.33,
+      "refusals_display": "33/100",
+      "kl": 0.41856783628463745,
+      "scores": {
+        "Refusals": 0.33,
+        "KL divergence": 0.41856783628463745
+      },
+      "pareto_position": 7,
+      "parameters": {
+        "start_layer_index": 3,
+        "end_layer_index": 46,
+        "preserve_good_behavior_weight": 0.6944001577277451,
+        "steer_bad_behavior_weight": 0.004536459919009388,
+        "overcorrect_relative_weight": 0.06493949662991332,
+        "neighbor_count": 9
+      }
+    },
+    {
+      "trial_index": 22,
+      "optuna_number": 21,
+      "refusals": 0.34,
+      "refusals_display": "34/100",
+      "kl": 0.1184801310300827,
+      "scores": {
+        "Refusals": 0.34,
+        "KL divergence": 0.1184801310300827
+      },
+      "pareto_position": 8,
+      "parameters": {
+        "start_layer_index": 18,
+        "end_layer_index": 59,
+        "preserve_good_behavior_weight": 0.12417331511991114,
+        "steer_bad_behavior_weight": 0.0013083824679722255,
+        "overcorrect_relative_weight": 0.7614870528957742,
+        "neighbor_count": 15
+      }
+    },
+    {
+      "trial_index": 69,
+      "optuna_number": 68,
+      "refusals": 0.42,
+      "refusals_display": "42/100",
+      "kl": 0.11203040182590485,
+      "scores": {
+        "Refusals": 0.42,
+        "KL divergence": 0.11203040182590485
+      },
+      "pareto_position": 9,
+      "parameters": {
+        "start_layer_index": 19,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.07255766283826826,
+        "steer_bad_behavior_weight": 0.0011198968000155553,
+        "overcorrect_relative_weight": 0.7558307644716595,
+        "neighbor_count": 15
+      }
+    },
+    {
+      "trial_index": 10,
+      "optuna_number": 9,
+      "refusals": 0.48,
+      "refusals_display": "48/100",
+      "kl": 0.052602335810661316,
+      "scores": {
+        "Refusals": 0.48,
+        "KL divergence": 0.052602335810661316
+      },
+      "pareto_position": 10,
+      "parameters": {
+        "start_layer_index": 16,
+        "end_layer_index": 34,
+        "preserve_good_behavior_weight": 0.5741176054920131,
+        "steer_bad_behavior_weight": 0.00038629074184943265,
+        "overcorrect_relative_weight": 0.7660971979742696,
+        "neighbor_count": 11
+      }
+    },
+    {
+      "trial_index": 28,
+      "optuna_number": 27,
+      "refusals": 0.89,
+      "refusals_display": "89/100",
+      "kl": 0.039349816739559174,
+      "scores": {
+        "Refusals": 0.89,
+        "KL divergence": 0.039349816739559174
+      },
+      "pareto_position": 11,
+      "parameters": {
+        "start_layer_index": 20,
+        "end_layer_index": 59,
+        "preserve_good_behavior_weight": 0.15679139464608427,
+        "steer_bad_behavior_weight": 0.0001186601269698492,
+        "overcorrect_relative_weight": 0.09102878683498904,
+        "neighbor_count": 8
+      }
+    },
+    {
+      "trial_index": 5,
+      "optuna_number": 4,
+      "refusals": 0.96,
+      "refusals_display": "96/100",
+      "kl": 0.030086977407336235,
+      "scores": {
+        "Refusals": 0.96,
+        "KL divergence": 0.030086977407336235
+      },
+      "pareto_position": 12,
+      "parameters": {
+        "start_layer_index": 28,
+        "end_layer_index": 61,
+        "preserve_good_behavior_weight": 0.08504421136977791,
+        "steer_bad_behavior_weight": 0.00014329107238467855,
+        "overcorrect_relative_weight": 0.22077954543393957,
+        "neighbor_count": 14
+      }
+    },
+    {
+      "trial_index": 24,
+      "optuna_number": 23,
+      "refusals": 0.99,
+      "refusals_display": "99/100",
+      "kl": 0.009737125597894192,
+      "scores": {
+        "Refusals": 0.99,
+        "KL divergence": 0.009737125597894192
+      },
+      "pareto_position": 13,
+      "parameters": {
+        "start_layer_index": 28,
+        "end_layer_index": 56,
+        "preserve_good_behavior_weight": 0.5562402339904189,
+        "steer_bad_behavior_weight": 0.00035141549149589655,
+        "overcorrect_relative_weight": 0.07789299636587516,
+        "neighbor_count": 2
+      }
+    }
+  ],
+  "reexport": {
+    "pareto_position": 10,
+    "trial_index": 10,
+    "workdir": "/workspace/paper33/runs/olmo-3.1-32b__ara__core-s1/reexport_t10",
+    "heretic_command": "/workspace/paper33/heretic/.venv/bin/heretic --model allenai/Olmo-3.1-32B-Instruct --checkpoint-action continue --trial-index 10 --model-action save --export-strategy MERGE --save-directory /workspace/paper33/runs/olmo-3.1-32b__ara__core-s1/model_kl0.1_t10",
+    "script": "cd /workspace/paper33/runs/olmo-3.1-32b__ara__core-s1 && \\\n  mkdir -p reexport_t10/checkpoints && \\\n  cp config.toml reexport_t10/config.toml && \\\n  cp checkpoints/allenai--Olmo-3--1-32B-Instruct.jsonl reexport_t10/checkpoints/allenai--Olmo-3--1-32B-Instruct.jsonl && \\\n  /workspace/paper33/heretic/.venv/bin/python /workspace/paper33/scripts/select_trial.py --patch-journal reexport_t10/checkpoints/allenai--Olmo-3--1-32B-Instruct.jsonl --trial-index 10 --expect-trial 10 && \\\n  cd reexport_t10 && \\\n  /workspace/paper33/heretic/.venv/bin/heretic --model allenai/Olmo-3.1-32B-Instruct --checkpoint-action continue --trial-index 10 --model-action save --export-strategy MERGE --save-directory /workspace/paper33/runs/olmo-3.1-32b__ara__core-s1/model_kl0.1_t10 2>&1 | tee reexport.log"
+  }
+}

@@ -1,0 +1,903 @@
+17:12:21 █░█░█▀▀░█▀▄░█▀▀░▀█▀░█░█▀▀  v2.0.0
+17:12:21 █▀█░█▀▀░█▀▄░█▀▀░░█░░█░█░░  https://heretic-project.org
+17:12:21 ▀░▀░▀▀▀░▀░▀░▀▀▀░░▀░░▀░▀▀▀  https://github.com/p-e-w/heretic
+17:12:21 
+17:12:21 Detected 1 CUDA device(s) (139.80 GB total VRAM)
+17:12:21 CUDA Version: 13.0
+17:12:21 Driver Version: 580.126.09
+17:12:21 * CUDA 0: NVIDIA H200 NVL (139.80 GB)
+17:12:21 
+17:12:21 Loading model Qwen/Qwen3.5-4B...
+17:12:31 Could not reach the Hub ([Errno -3] Temporary failure in name resolution). Using cached commit hash for 'Qwen/Qwen3.5-4B'.
+17:13:11 Could not reach the Hub ([Errno -3] Temporary failure in name resolution). Using cached commit hash for 'Qwen/Qwen3.5-4B'.
+17:13:21 Could not reach the Hub ([Errno -3] Temporary failure in name resolution). Using cached commit hash for 'Qwen/Qwen3.5-4B'.
+17:14:02 * Trying dtype auto...
+17:14:12 Could not reach the Hub ([Errno -3] Temporary failure in name resolution). Using cached commit hash for 'Qwen/Qwen3.5-4B'.
+17:14:22 Could not reach the Hub ([Errno -3] Temporary failure in name resolution). Using cached commit hash for 'Qwen/Qwen3.5-4B'.
+17:14:23 Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   2%|▏         | 13/723 [00:00<00:05, 125.95it/s]Loading weights:  12%|█▏        | 89/723 [00:00<00:01, 485.70it/s]Loading weights:  22%|██▏       | 160/723 [00:00<00:00, 585.98it/s]Loading weights:  32%|███▏      | 234/723 [00:00<00:00, 644.00it/s]Loading weights:  42%|████▏     | 301/723 [00:00<00:00, 652.03it/s]Loading weights:  51%|█████     | 367/723 [00:00<00:00, 649.55it/s]Loading weights:  72%|███████▏  | 518/723 [00:00<00:00, 926.34it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 952.35it/s]
+17:14:24 * Transformer model with 32 layers
+17:14:24 * Modifiable components:
+17:14:24   * attn.o_proj: 32 modules total
+17:14:24   * mlp.down_proj: 32 modules total
+17:14:24 
+17:14:24 Resident system RAM: 2.17 GB
+17:14:24 Allocated GPU VRAM: 8.49 GB
+17:14:24 Reserved GPU VRAM: 8.56 GB
+17:14:24 
+17:14:24 Loading batch size test prompts from mlabonne/harmless_alpaca...
+17:14:34 Warning: Could not fetch the latest commit hash for dataset 
+17:14:34 mlabonne/harmless_alpaca ([Errno -3] Temporary failure in name resolution). The 
+17:14:34 dataset version will not be pinned.
+17:14:54 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:14:54 Retrying in 1s [Retry 1/5].
+17:15:05 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:15:05 Retrying in 2s [Retry 2/5].
+17:15:17 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:15:17 Retrying in 4s [Retry 3/5].
+17:15:31 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:15:31 Retrying in 8s [Retry 4/5].
+17:15:50 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:15:50 Retrying in 8s [Retry 5/5].
+17:16:08 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:16:08 Using the latest cached version of the dataset since mlabonne/harmless_alpaca couldn't be found on the Hugging Face Hub
+17:16:08 Found the latest cached dataset configuration 'default' at /workspace/paper33/hf/datasets/mlabonne___harmless_alpaca/default/0.0.0/02c6a92cfcf11bb0c387334f8146d149d65b587f (last modified on Wed Nov  4 16:59:27 2026).
+17:16:08 * 256 prompts loaded
+17:16:08 
+17:16:08 Determining optimal batch size...
+17:16:14 * Trying batch size 1... Ok (52 tokens/s)
+17:16:23 * Trying batch size 2... Ok (100 tokens/s)
+17:16:29 * Trying batch size 4... Ok (202 tokens/s)
+17:16:35 * Trying batch size 8... Ok (405 tokens/s)
+17:16:44 * Trying batch size 16... Ok (669 tokens/s)
+17:16:51 * Trying batch size 32... Ok (1418 tokens/s)
+17:17:00 * Trying batch size 64... Ok (1990 tokens/s)
+17:17:12 * Trying batch size 128... Ok (2431 tokens/s)
+17:17:12 * Chosen batch size: 128
+17:17:12 
+17:17:12 Loading response prefix test prompts from [mlabonne/harmless_alpaca, 
+17:17:12 mlabonne/harmful_behaviors]...
+17:17:22 Warning: Could not fetch the latest commit hash for dataset 
+17:17:22 mlabonne/harmless_alpaca ([Errno -3] Temporary failure in name resolution). The 
+17:17:22 dataset version will not be pinned.
+17:17:51 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:17:51 Retrying in 1s [Retry 1/5].
+17:18:02 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:18:02 Retrying in 2s [Retry 2/5].
+17:18:14 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:18:14 Retrying in 4s [Retry 3/5].
+17:18:28 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:18:28 Retrying in 8s [Retry 4/5].
+17:18:46 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:18:46 Retrying in 8s [Retry 5/5].
+17:19:04 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:19:04 Using the latest cached version of the dataset since mlabonne/harmless_alpaca couldn't be found on the Hugging Face Hub
+17:19:04 Found the latest cached dataset configuration 'default' at /workspace/paper33/hf/datasets/mlabonne___harmless_alpaca/default/0.0.0/02c6a92cfcf11bb0c387334f8146d149d65b587f (last modified on Wed Nov  4 16:59:27 2026).
+17:19:14 Warning: Could not fetch the latest commit hash for dataset 
+17:19:14 mlabonne/harmful_behaviors ([Errno -3] Temporary failure in name resolution). 
+17:19:14 The dataset version will not be pinned.
+17:19:34 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:19:34 Retrying in 1s [Retry 1/5].
+17:19:46 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:19:46 Retrying in 2s [Retry 2/5].
+17:19:58 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:19:58 Retrying in 4s [Retry 3/5].
+17:20:12 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:20:12 Retrying in 8s [Retry 4/5].
+17:20:30 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:20:30 Retrying in 8s [Retry 5/5].
+17:20:48 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:20:48 Using the latest cached version of the dataset since mlabonne/harmful_behaviors couldn't be found on the Hugging Face Hub
+17:20:48 Found the latest cached dataset configuration 'default' at /workspace/paper33/hf/datasets/mlabonne___harmful_behaviors/default/0.0.0/01cead01398926d81f7c52bdb790ee8cf77ebba7 (last modified on Wed Nov  4 17:00:49 2026).
+17:20:48 * 200 prompts loaded
+17:20:48 
+17:20:48 Checking chat template for a closed Chain-of-Thought block or an initializer...
+17:20:48 * Chat template inserts CoT initializer: '<think>'
+17:20:48 * Remaining CoT finalizer: '</think>'
+17:20:48 * Rechecking with prefix...
+17:20:59 * Extended prefix found: '</think>\n\n'
+17:20:59 
+17:20:59 Loading and initializing scorers...
+17:20:59 * Loaded: KeywordRate
+17:20:59 * Loaded: KLDivergence
+17:20:59 
+17:20:59 Loading Refusals evaluation prompts from mlabonne/harmful_behaviors...
+17:21:09 Warning: Could not fetch the latest commit hash for dataset 
+17:21:09 mlabonne/harmful_behaviors ([Errno -3] Temporary failure in name resolution). 
+17:21:09 The dataset version will not be pinned.
+17:21:29 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:21:29 Retrying in 1s [Retry 1/5].
+17:21:40 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:21:40 Retrying in 2s [Retry 2/5].
+17:21:52 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:21:52 Retrying in 4s [Retry 3/5].
+17:22:06 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:22:06 Retrying in 8s [Retry 4/5].
+17:22:24 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:22:24 Retrying in 8s [Retry 5/5].
+17:22:42 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:22:42 Using the latest cached version of the dataset since mlabonne/harmful_behaviors couldn't be found on the Hugging Face Hub
+17:22:42 Found the latest cached dataset configuration 'default' at /workspace/paper33/hf/datasets/mlabonne___harmful_behaviors/default/0.0.0/01cead01398926d81f7c52bdb790ee8cf77ebba7 (last modified on Wed Nov  4 17:00:49 2026).
+17:22:42 * 100 prompts loaded
+17:22:42 
+17:22:42 Loading KL divergence evaluation prompts from mlabonne/harmless_alpaca...
+17:22:52 Warning: Could not fetch the latest commit hash for dataset 
+17:22:52 mlabonne/harmless_alpaca ([Errno -3] Temporary failure in name resolution). The 
+17:22:52 dataset version will not be pinned.
+17:23:12 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:23:12 Retrying in 1s [Retry 1/5].
+17:23:23 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:23:23 Retrying in 2s [Retry 2/5].
+17:23:36 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:23:36 Retrying in 4s [Retry 3/5].
+17:23:50 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:23:50 Retrying in 8s [Retry 4/5].
+17:24:08 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:24:08 Retrying in 8s [Retry 5/5].
+17:24:26 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:24:26 Using the latest cached version of the dataset since mlabonne/harmless_alpaca couldn't be found on the Hugging Face Hub
+17:24:26 Found the latest cached dataset configuration 'default' at /workspace/paper33/hf/datasets/mlabonne___harmless_alpaca/default/0.0.0/02c6a92cfcf11bb0c387334f8146d149d65b587f (last modified on Wed Nov  4 16:59:27 2026).
+17:24:26 * 100 prompts loaded
+17:24:26 * Obtaining baseline first-token probability distributions...
+17:24:27 
+17:24:27 Getting baseline scores...
+17:24:34 * Baseline Refusals: 99/100
+17:24:34 * Baseline KL divergence: 0 (by definition)
+17:24:34 
+17:24:34 Loading and initializing modifiers...
+17:24:34 * Loaded: Abliteration
+17:24:34 
+17:24:34 Loading good prompts from mlabonne/harmless_alpaca...
+17:24:44 Warning: Could not fetch the latest commit hash for dataset 
+17:24:44 mlabonne/harmless_alpaca ([Errno -3] Temporary failure in name resolution). The 
+17:24:44 dataset version will not be pinned.
+17:25:04 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:25:04 Retrying in 1s [Retry 1/5].
+17:25:15 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:25:15 Retrying in 2s [Retry 2/5].
+17:25:27 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:25:27 Retrying in 4s [Retry 3/5].
+17:25:41 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:25:41 Retrying in 8s [Retry 4/5].
+17:25:59 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:25:59 Retrying in 8s [Retry 5/5].
+17:26:17 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmless_alpaca/resolve/main/README.md
+17:26:17 Using the latest cached version of the dataset since mlabonne/harmless_alpaca couldn't be found on the Hugging Face Hub
+17:26:17 Found the latest cached dataset configuration 'default' at /workspace/paper33/hf/datasets/mlabonne___harmless_alpaca/default/0.0.0/02c6a92cfcf11bb0c387334f8146d149d65b587f (last modified on Wed Nov  4 16:59:27 2026).
+17:26:17 * 400 prompts loaded
+17:26:17 
+17:26:18 Loading bad prompts from mlabonne/harmful_behaviors...
+17:26:28 Warning: Could not fetch the latest commit hash for dataset 
+17:26:28 mlabonne/harmful_behaviors ([Errno -3] Temporary failure in name resolution). 
+17:26:28 The dataset version will not be pinned.
+17:26:48 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:26:48 Retrying in 1s [Retry 1/5].
+17:26:59 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:26:59 Retrying in 2s [Retry 2/5].
+17:27:11 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:27:11 Retrying in 4s [Retry 3/5].
+17:27:25 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:27:25 Retrying in 8s [Retry 4/5].
+17:27:43 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:27:43 Retrying in 8s [Retry 5/5].
+17:28:01 '[Errno -3] Temporary failure in name resolution' thrown while requesting HEAD https://huggingface.co/datasets/mlabonne/harmful_behaviors/resolve/main/README.md
+17:28:01 Using the latest cached version of the dataset since mlabonne/harmful_behaviors couldn't be found on the Hugging Face Hub
+17:28:01 Found the latest cached dataset configuration 'default' at /workspace/paper33/hf/datasets/mlabonne___harmful_behaviors/default/0.0.0/01cead01398926d81f7c52bdb790ee8cf77ebba7 (last modified on Wed Nov  4 17:00:49 2026).
+17:28:01 * 400 prompts loaded
+17:28:01 
+17:28:01 Calculating per-layer residual directions...
+17:28:01 * Obtaining residual mean for good prompts...
+17:28:06 * Obtaining residual mean for bad prompts...
+17:28:12 
+17:28:12 Running trial 1 of 30...
+17:28:12 * Parameters:
+17:28:12   * direction_index = per layer
+17:28:12   * attn.o_proj.max_weight = 1.01
+17:28:12   * attn.o_proj.max_weight_position = 20.42
+17:28:12   * attn.o_proj.min_weight = 0.09
+17:28:12   * attn.o_proj.min_weight_distance = 4.28
+17:28:12   * mlp.down_proj.max_weight = 0.35
+17:28:12   * mlp.down_proj.max_weight_position = 23.52
+17:28:12   * mlp.down_proj.min_weight = 0.19
+17:28:12   * mlp.down_proj.min_weight_distance = 8.38
+17:28:12 * Resetting model...
+17:28:12 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:28:12 * Evaluating...
+17:28:18   * Refusals: 95/100
+17:28:18   * KL divergence: 0.0076
+17:28:18 
+17:28:18 Elapsed time: 6s
+17:28:18 Estimated remaining time: 2m 59s
+17:28:18 Resident system RAM: 3.45 GB
+17:28:18 Allocated GPU VRAM: 8.49 GB
+17:28:18 Reserved GPU VRAM: 8.49 GB
+17:28:18 
+17:28:18 Running trial 2 of 30...
+17:28:18 * Parameters:
+17:28:18   * direction_index = 26.01
+17:28:18   * attn.o_proj.max_weight = 0.82
+17:28:18   * attn.o_proj.max_weight_position = 26.91
+17:28:18   * attn.o_proj.min_weight = 0.34
+17:28:18   * attn.o_proj.min_weight_distance = 10.83
+17:28:18   * mlp.down_proj.max_weight = 0.00
+17:28:18   * mlp.down_proj.max_weight_position = 21.06
+17:28:18   * mlp.down_proj.min_weight = 0.00
+17:28:18   * mlp.down_proj.min_weight_distance = 18.04
+17:28:18 * Resetting model...
+17:28:18 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:28:18 * Evaluating...
+17:28:24   * Refusals: 99/100
+17:28:24   * KL divergence: 0.0011
+17:28:24 
+17:28:24 Elapsed time: 12s
+17:28:24 Estimated remaining time: 2m 51s
+17:28:24 Resident system RAM: 3.45 GB
+17:28:24 Allocated GPU VRAM: 8.49 GB
+17:28:24 Reserved GPU VRAM: 8.49 GB
+17:28:24 
+17:28:24 Running trial 3 of 30...
+17:28:24 * Parameters:
+17:28:24   * direction_index = per layer
+17:28:24   * attn.o_proj.max_weight = 1.43
+17:28:24   * attn.o_proj.max_weight_position = 19.65
+17:28:24   * attn.o_proj.min_weight = 0.06
+17:28:24   * attn.o_proj.min_weight_distance = 3.99
+17:28:24   * mlp.down_proj.max_weight = 1.29
+17:28:24   * mlp.down_proj.max_weight_position = 19.82
+17:28:24   * mlp.down_proj.min_weight = 0.54
+17:28:24   * mlp.down_proj.min_weight_distance = 17.86
+17:28:24 * Resetting model...
+17:28:24 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:28:24 * Evaluating...
+17:28:30   * Refusals: 32/100
+17:28:30   * KL divergence: 0.0473
+17:28:30 
+17:28:30 Elapsed time: 18s
+17:28:30 Estimated remaining time: 2m 46s
+17:28:30 Resident system RAM: 3.45 GB
+17:28:30 Allocated GPU VRAM: 8.49 GB
+17:28:30 Reserved GPU VRAM: 8.49 GB
+17:28:30 
+17:28:30 Running trial 4 of 30...
+17:28:30 * Parameters:
+17:28:30   * direction_index = per layer
+17:28:30   * attn.o_proj.max_weight = 1.28
+17:28:30   * attn.o_proj.max_weight_position = 28.95
+17:28:30   * attn.o_proj.min_weight = 0.02
+17:28:30   * attn.o_proj.min_weight_distance = 14.20
+17:28:30   * mlp.down_proj.max_weight = 1.48
+17:28:30   * mlp.down_proj.max_weight_position = 27.88
+17:28:30   * mlp.down_proj.min_weight = 0.42
+17:28:30   * mlp.down_proj.min_weight_distance = 14.89
+17:28:30 * Resetting model...
+17:28:30 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:28:30 * Evaluating...
+17:28:36   * Refusals: 34/100
+17:28:36   * KL divergence: 0.0330
+17:28:36 
+17:28:36 Elapsed time: 25s
+17:28:36 Estimated remaining time: 2m 39s
+17:28:36 Resident system RAM: 3.45 GB
+17:28:36 Allocated GPU VRAM: 8.49 GB
+17:28:36 Reserved GPU VRAM: 8.49 GB
+17:28:36 
+17:28:36 Running trial 5 of 30...
+17:28:36 * Parameters:
+17:28:36   * direction_index = per layer
+17:28:36   * attn.o_proj.max_weight = 1.01
+17:28:36   * attn.o_proj.max_weight_position = 22.17
+17:28:36   * attn.o_proj.min_weight = 0.13
+17:28:36   * attn.o_proj.min_weight_distance = 1.34
+17:28:36   * mlp.down_proj.max_weight = 0.94
+17:28:36   * mlp.down_proj.max_weight_position = 21.22
+17:28:36   * mlp.down_proj.min_weight = 0.25
+17:28:36   * mlp.down_proj.min_weight_distance = 9.65
+17:28:36 * Resetting model...
+17:28:36 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:28:36 * Evaluating...
+17:28:42   * Refusals: 52/100
+17:28:42   * KL divergence: 0.0179
+17:28:42 
+17:28:42 Elapsed time: 31s
+17:28:42 Estimated remaining time: 2m 33s
+17:28:42 Resident system RAM: 3.45 GB
+17:28:42 Allocated GPU VRAM: 8.49 GB
+17:28:42 Reserved GPU VRAM: 8.49 GB
+17:28:42 
+17:28:42 Running trial 6 of 30...
+17:28:42 * Parameters:
+17:28:42   * direction_index = per layer
+17:28:42   * attn.o_proj.max_weight = 1.21
+17:28:42   * attn.o_proj.max_weight_position = 27.28
+17:28:42   * attn.o_proj.min_weight = 0.12
+17:28:42   * attn.o_proj.min_weight_distance = 8.29
+17:28:42   * mlp.down_proj.max_weight = 0.97
+17:28:42   * mlp.down_proj.max_weight_position = 23.74
+17:28:42   * mlp.down_proj.min_weight = 0.05
+17:28:42   * mlp.down_proj.min_weight_distance = 10.43
+17:28:42 * Resetting model...
+17:28:42 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:28:43 * Evaluating...
+17:28:49   * Refusals: 53/100
+17:28:49   * KL divergence: 0.0193
+17:28:49 
+17:28:49 Elapsed time: 37s
+17:28:49 Estimated remaining time: 2m 27s
+17:28:49 Resident system RAM: 3.45 GB
+17:28:49 Allocated GPU VRAM: 8.49 GB
+17:28:49 Reserved GPU VRAM: 8.49 GB
+17:28:49 
+17:28:49 Running trial 7 of 30...
+17:28:49 * Parameters:
+17:28:49   * direction_index = 27.04
+17:28:49   * attn.o_proj.max_weight = 1.21
+17:28:49   * attn.o_proj.max_weight_position = 29.80
+17:28:49   * attn.o_proj.min_weight = 0.17
+17:28:49   * attn.o_proj.min_weight_distance = 3.45
+17:28:49   * mlp.down_proj.max_weight = 1.16
+17:28:49   * mlp.down_proj.max_weight_position = 23.53
+17:28:49   * mlp.down_proj.min_weight = 0.19
+17:28:49   * mlp.down_proj.min_weight_distance = 17.32
+17:28:49 * Resetting model...
+17:28:49 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:28:49 * Evaluating...
+17:28:54   * Refusals: 76/100
+17:28:54   * KL divergence: 0.0124
+17:28:54 
+17:28:54 Elapsed time: 42s
+17:28:54 Estimated remaining time: 2m 19s
+17:28:54 Resident system RAM: 3.45 GB
+17:28:54 Allocated GPU VRAM: 8.49 GB
+17:28:54 Reserved GPU VRAM: 8.49 GB
+17:28:54 
+17:28:54 Running trial 8 of 30...
+17:28:54 * Parameters:
+17:28:54   * direction_index = per layer
+17:28:54   * attn.o_proj.max_weight = 1.42
+17:28:54   * attn.o_proj.max_weight_position = 26.33
+17:28:54   * attn.o_proj.min_weight = 1.07
+17:28:54   * attn.o_proj.min_weight_distance = 7.14
+17:28:54   * mlp.down_proj.max_weight = 0.22
+17:28:54   * mlp.down_proj.max_weight_position = 29.71
+17:28:54   * mlp.down_proj.min_weight = 0.10
+17:28:54   * mlp.down_proj.min_weight_distance = 17.98
+17:28:54 * Resetting model...
+17:28:54 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:28:54 * Evaluating...
+17:29:00   * Refusals: 85/100
+17:29:00   * KL divergence: 0.0108
+17:29:00 
+17:29:00 Elapsed time: 49s
+17:29:00 Estimated remaining time: 2m 13s
+17:29:00 Resident system RAM: 3.45 GB
+17:29:00 Allocated GPU VRAM: 8.49 GB
+17:29:00 Reserved GPU VRAM: 8.49 GB
+17:29:00 
+17:29:00 Running trial 9 of 30...
+17:29:00 * Parameters:
+17:29:00   * direction_index = 14.18
+17:29:00   * attn.o_proj.max_weight = 1.46
+17:29:00   * attn.o_proj.max_weight_position = 24.18
+17:29:00   * attn.o_proj.min_weight = 0.85
+17:29:00   * attn.o_proj.min_weight_distance = 8.18
+17:29:00   * mlp.down_proj.max_weight = 0.16
+17:29:00   * mlp.down_proj.max_weight_position = 29.80
+17:29:00   * mlp.down_proj.min_weight = 0.09
+17:29:00   * mlp.down_proj.min_weight_distance = 1.05
+17:29:00 * Resetting model...
+17:29:00 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:00 * Evaluating...
+17:29:06   * Refusals: 99/100
+17:29:06   * KL divergence: 0.0017
+17:29:06 
+17:29:06 Elapsed time: 55s
+17:29:06 Estimated remaining time: 2m 7s
+17:29:06 Resident system RAM: 3.45 GB
+17:29:06 Allocated GPU VRAM: 8.49 GB
+17:29:06 Reserved GPU VRAM: 8.49 GB
+17:29:06 
+17:29:06 Running trial 10 of 30...
+17:29:06 * Parameters:
+17:29:06   * direction_index = 20.57
+17:29:06   * attn.o_proj.max_weight = 1.42
+17:29:06   * attn.o_proj.max_weight_position = 23.03
+17:29:06   * attn.o_proj.min_weight = 1.29
+17:29:06   * attn.o_proj.min_weight_distance = 11.97
+17:29:06   * mlp.down_proj.max_weight = 0.00
+17:29:06   * mlp.down_proj.max_weight_position = 30.13
+17:29:06   * mlp.down_proj.min_weight = 0.00
+17:29:06   * mlp.down_proj.min_weight_distance = 18.55
+17:29:06 * Resetting model...
+17:29:06 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:06 * Evaluating...
+17:29:12   * Refusals: 97/100
+17:29:12   * KL divergence: 0.0042
+17:29:12 
+17:29:12 Elapsed time: 1m 0s
+17:29:12 Estimated remaining time: 2m 0s
+17:29:12 Resident system RAM: 3.45 GB
+17:29:12 Allocated GPU VRAM: 8.49 GB
+17:29:12 Reserved GPU VRAM: 8.49 GB
+17:29:12 
+17:29:12 Running trial 11 of 30...
+17:29:12 * Parameters:
+17:29:12   * direction_index = per layer
+17:29:12   * attn.o_proj.max_weight = 0.92
+17:29:12   * attn.o_proj.max_weight_position = 20.73
+17:29:12   * attn.o_proj.min_weight = 0.05
+17:29:12   * attn.o_proj.min_weight_distance = 2.56
+17:29:12   * mlp.down_proj.max_weight = 0.86
+17:29:12   * mlp.down_proj.max_weight_position = 26.52
+17:29:12   * mlp.down_proj.min_weight = 0.30
+17:29:12   * mlp.down_proj.min_weight_distance = 9.07
+17:29:12 * Resetting model...
+17:29:12 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:12 * Evaluating...
+17:29:18   * Refusals: 72/100
+17:29:18   * KL divergence: 0.0116
+17:29:18 
+17:29:18 Elapsed time: 1m 6s
+17:29:18 Estimated remaining time: 1m 54s
+17:29:18 Resident system RAM: 3.45 GB
+17:29:18 Allocated GPU VRAM: 8.49 GB
+17:29:18 Reserved GPU VRAM: 8.49 GB
+17:29:18 
+17:29:18 Running trial 12 of 30...
+17:29:18 * Parameters:
+17:29:18   * direction_index = per layer
+17:29:18   * attn.o_proj.max_weight = 1.45
+17:29:18   * attn.o_proj.max_weight_position = 30.11
+17:29:18   * attn.o_proj.min_weight = 0.26
+17:29:18   * attn.o_proj.min_weight_distance = 15.12
+17:29:18   * mlp.down_proj.max_weight = 1.40
+17:29:18   * mlp.down_proj.max_weight_position = 21.50
+17:29:18   * mlp.down_proj.min_weight = 0.54
+17:29:18   * mlp.down_proj.min_weight_distance = 16.30
+17:29:18 * Resetting model...
+17:29:18 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:18 * Evaluating...
+17:29:24   * Refusals: 38/100
+17:29:24   * KL divergence: 0.0502
+17:29:24 
+17:29:24 Elapsed time: 1m 12s
+17:29:24 Estimated remaining time: 1m 48s
+17:29:24 Resident system RAM: 3.45 GB
+17:29:24 Allocated GPU VRAM: 8.49 GB
+17:29:24 Reserved GPU VRAM: 8.49 GB
+17:29:24 
+17:29:24 Running trial 13 of 30...
+17:29:24 * Parameters:
+17:29:24   * direction_index = per layer
+17:29:24   * attn.o_proj.max_weight = 0.97
+17:29:24   * attn.o_proj.max_weight_position = 28.32
+17:29:24   * attn.o_proj.min_weight = 0.20
+17:29:24   * attn.o_proj.min_weight_distance = 12.15
+17:29:24   * mlp.down_proj.max_weight = 1.41
+17:29:24   * mlp.down_proj.max_weight_position = 30.83
+17:29:24   * mlp.down_proj.min_weight = 0.38
+17:29:24   * mlp.down_proj.min_weight_distance = 13.09
+17:29:24 * Resetting model...
+17:29:24 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:24 * Evaluating...
+17:29:29   * Refusals: 43/100
+17:29:29   * KL divergence: 0.0195
+17:29:29 
+17:29:29 Elapsed time: 1m 17s
+17:29:29 Estimated remaining time: 1m 41s
+17:29:29 Resident system RAM: 3.45 GB
+17:29:29 Allocated GPU VRAM: 8.49 GB
+17:29:29 Reserved GPU VRAM: 8.49 GB
+17:29:29 
+17:29:29 Running trial 14 of 30...
+17:29:29 * Parameters:
+17:29:29   * direction_index = per layer
+17:29:29   * attn.o_proj.max_weight = 0.95
+17:29:29   * attn.o_proj.max_weight_position = 23.25
+17:29:29   * attn.o_proj.min_weight = 0.04
+17:29:29   * attn.o_proj.min_weight_distance = 9.84
+17:29:29   * mlp.down_proj.max_weight = 1.11
+17:29:29   * mlp.down_proj.max_weight_position = 28.92
+17:29:29   * mlp.down_proj.min_weight = 0.31
+17:29:29   * mlp.down_proj.min_weight_distance = 10.30
+17:29:29 * Resetting model...
+17:29:29 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:29 * Evaluating...
+17:29:35   * Refusals: 42/100
+17:29:35   * KL divergence: 0.0170
+17:29:35 
+17:29:35 Elapsed time: 1m 24s
+17:29:35 Estimated remaining time: 1m 35s
+17:29:35 Resident system RAM: 3.45 GB
+17:29:35 Allocated GPU VRAM: 8.49 GB
+17:29:35 Reserved GPU VRAM: 8.49 GB
+17:29:35 
+17:29:35 Running trial 15 of 30...
+17:29:35 * Parameters:
+17:29:35   * direction_index = per layer
+17:29:35   * attn.o_proj.max_weight = 0.88
+17:29:35   * attn.o_proj.max_weight_position = 22.06
+17:29:35   * attn.o_proj.min_weight = 0.03
+17:29:35   * attn.o_proj.min_weight_distance = 1.93
+17:29:35   * mlp.down_proj.max_weight = 1.05
+17:29:35   * mlp.down_proj.max_weight_position = 24.24
+17:29:35   * mlp.down_proj.min_weight = 0.21
+17:29:35   * mlp.down_proj.min_weight_distance = 7.76
+17:29:35 * Resetting model...
+17:29:35 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:35 * Evaluating...
+17:29:41   * Refusals: 59/100
+17:29:41   * KL divergence: 0.0139
+17:29:41 
+17:29:41 Elapsed time: 1m 30s
+17:29:41 Estimated remaining time: 1m 30s
+17:29:41 Resident system RAM: 3.45 GB
+17:29:41 Allocated GPU VRAM: 8.49 GB
+17:29:41 Reserved GPU VRAM: 8.49 GB
+17:29:41 
+17:29:41 Running trial 16 of 30...
+17:29:41 * Parameters:
+17:29:41   * direction_index = per layer
+17:29:41   * attn.o_proj.max_weight = 1.02
+17:29:41   * attn.o_proj.max_weight_position = 22.61
+17:29:41   * attn.o_proj.min_weight = 0.07
+17:29:41   * attn.o_proj.min_weight_distance = 9.40
+17:29:41   * mlp.down_proj.max_weight = 0.96
+17:29:41   * mlp.down_proj.max_weight_position = 29.18
+17:29:41   * mlp.down_proj.min_weight = 0.44
+17:29:41   * mlp.down_proj.min_weight_distance = 9.33
+17:29:41 * Resetting model...
+17:29:41 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:42 * Evaluating...
+17:29:47   * Refusals: 41/100
+17:29:47   * KL divergence: 0.0156
+17:29:47 
+17:29:47 Elapsed time: 1m 36s
+17:29:47 Estimated remaining time: 1m 24s
+17:29:47 Resident system RAM: 3.45 GB
+17:29:47 Allocated GPU VRAM: 8.49 GB
+17:29:47 Reserved GPU VRAM: 8.49 GB
+17:29:47 
+17:29:47 Running trial 17 of 30...
+17:29:47 * Parameters:
+17:29:47   * direction_index = per layer
+17:29:47   * attn.o_proj.max_weight = 0.88
+17:29:47   * attn.o_proj.max_weight_position = 20.85
+17:29:47   * attn.o_proj.min_weight = 0.26
+17:29:47   * attn.o_proj.min_weight_distance = 2.95
+17:29:47   * mlp.down_proj.max_weight = 0.92
+17:29:47   * mlp.down_proj.max_weight_position = 26.01
+17:29:47   * mlp.down_proj.min_weight = 0.37
+17:29:47   * mlp.down_proj.min_weight_distance = 7.77
+17:29:48 * Resetting model...
+17:29:48 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:48 * Evaluating...
+17:29:53   * Refusals: 58/100
+17:29:53   * KL divergence: 0.0124
+17:29:53 
+17:29:53 Elapsed time: 1m 41s
+17:29:53 Estimated remaining time: 1m 17s
+17:29:53 Resident system RAM: 3.45 GB
+17:29:53 Allocated GPU VRAM: 8.49 GB
+17:29:53 Reserved GPU VRAM: 8.49 GB
+17:29:53 
+17:29:53 Running trial 18 of 30...
+17:29:53 * Parameters:
+17:29:53   * direction_index = per layer
+17:29:53   * attn.o_proj.max_weight = 0.86
+17:29:53   * attn.o_proj.max_weight_position = 21.27
+17:29:53   * attn.o_proj.min_weight = 0.14
+17:29:53   * attn.o_proj.min_weight_distance = 8.69
+17:29:53   * mlp.down_proj.max_weight = 0.90
+17:29:53   * mlp.down_proj.max_weight_position = 30.65
+17:29:53   * mlp.down_proj.min_weight = 0.39
+17:29:53   * mlp.down_proj.min_weight_distance = 9.23
+17:29:53 * Resetting model...
+17:29:53 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:53 * Evaluating...
+17:29:59   * Refusals: 69/100
+17:29:59   * KL divergence: 0.0115
+17:29:59 
+17:29:59 Elapsed time: 1m 47s
+17:29:59 Estimated remaining time: 1m 12s
+17:29:59 Resident system RAM: 3.45 GB
+17:29:59 Allocated GPU VRAM: 8.49 GB
+17:29:59 Reserved GPU VRAM: 8.49 GB
+17:29:59 
+17:29:59 Running trial 19 of 30...
+17:29:59 * Parameters:
+17:29:59   * direction_index = per layer
+17:29:59   * attn.o_proj.max_weight = 0.94
+17:29:59   * attn.o_proj.max_weight_position = 24.75
+17:29:59   * attn.o_proj.min_weight = 0.02
+17:29:59   * attn.o_proj.min_weight_distance = 7.87
+17:29:59   * mlp.down_proj.max_weight = 0.79
+17:29:59   * mlp.down_proj.max_weight_position = 28.26
+17:29:59   * mlp.down_proj.min_weight = 0.35
+17:29:59   * mlp.down_proj.min_weight_distance = 7.33
+17:29:59 * Resetting model...
+17:29:59 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:29:59 * Evaluating...
+17:30:05   * Refusals: 87/100
+17:30:05   * KL divergence: 0.0104
+17:30:05 
+17:30:05 Elapsed time: 1m 53s
+17:30:05 Estimated remaining time: 1m 5s
+17:30:05 Resident system RAM: 3.45 GB
+17:30:05 Allocated GPU VRAM: 8.49 GB
+17:30:05 Reserved GPU VRAM: 8.49 GB
+17:30:05 
+17:30:05 Running trial 20 of 30...
+17:30:05 * Parameters:
+17:30:05   * direction_index = per layer
+17:30:05   * attn.o_proj.max_weight = 1.00
+17:30:05   * attn.o_proj.max_weight_position = 21.62
+17:30:05   * attn.o_proj.min_weight = 0.41
+17:30:05   * attn.o_proj.min_weight_distance = 8.47
+17:30:05   * mlp.down_proj.max_weight = 0.97
+17:30:05   * mlp.down_proj.max_weight_position = 29.93
+17:30:05   * mlp.down_proj.min_weight = 0.51
+17:30:05   * mlp.down_proj.min_weight_distance = 7.02
+17:30:05 * Resetting model...
+17:30:05 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:05 * Evaluating...
+17:30:11   * Refusals: 44/100
+17:30:11   * KL divergence: 0.0142
+17:30:11 
+17:30:11 Elapsed time: 1m 59s
+17:30:11 Estimated remaining time: 59s
+17:30:11 Resident system RAM: 3.45 GB
+17:30:11 Allocated GPU VRAM: 8.49 GB
+17:30:11 Reserved GPU VRAM: 8.49 GB
+17:30:11 
+17:30:11 Running trial 21 of 30...
+17:30:11 * Parameters:
+17:30:11   * direction_index = per layer
+17:30:11   * attn.o_proj.max_weight = 0.88
+17:30:11   * attn.o_proj.max_weight_position = 19.05
+17:30:11   * attn.o_proj.min_weight = 0.07
+17:30:11   * attn.o_proj.min_weight_distance = 9.48
+17:30:11   * mlp.down_proj.max_weight = 1.01
+17:30:11   * mlp.down_proj.max_weight_position = 29.20
+17:30:11   * mlp.down_proj.min_weight = 0.60
+17:30:11   * mlp.down_proj.min_weight_distance = 12.35
+17:30:11 * Resetting model...
+17:30:11 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:11 * Evaluating...
+17:30:16   * Refusals: 33/100
+17:30:16   * KL divergence: 0.0231
+17:30:16 
+17:30:16 Elapsed time: 2m 5s
+17:30:16 Estimated remaining time: 53s
+17:30:16 Resident system RAM: 3.45 GB
+17:30:16 Allocated GPU VRAM: 8.49 GB
+17:30:16 Reserved GPU VRAM: 8.49 GB
+17:30:16 
+17:30:16 Running trial 22 of 30...
+17:30:16 * Parameters:
+17:30:16   * direction_index = per layer
+17:30:16   * attn.o_proj.max_weight = 0.86
+17:30:16   * attn.o_proj.max_weight_position = 20.91
+17:30:16   * attn.o_proj.min_weight = 0.09
+17:30:16   * attn.o_proj.min_weight_distance = 9.11
+17:30:16   * mlp.down_proj.max_weight = 1.17
+17:30:16   * mlp.down_proj.max_weight_position = 26.95
+17:30:16   * mlp.down_proj.min_weight = 0.66
+17:30:16   * mlp.down_proj.min_weight_distance = 10.70
+17:30:16 * Resetting model...
+17:30:16 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:17 * Evaluating...
+17:30:22   * Refusals: 29/100
+17:30:22   * KL divergence: 0.0270
+17:30:22 
+17:30:22 Elapsed time: 2m 10s
+17:30:22 Estimated remaining time: 47s
+17:30:22 Resident system RAM: 3.45 GB
+17:30:22 Allocated GPU VRAM: 8.49 GB
+17:30:22 Reserved GPU VRAM: 8.49 GB
+17:30:22 
+17:30:22 Running trial 23 of 30...
+17:30:22 * Parameters:
+17:30:22   * direction_index = per layer
+17:30:22   * attn.o_proj.max_weight = 0.86
+17:30:22   * attn.o_proj.max_weight_position = 18.63
+17:30:22   * attn.o_proj.min_weight = 0.06
+17:30:22   * attn.o_proj.min_weight_distance = 11.99
+17:30:22   * mlp.down_proj.max_weight = 1.43
+17:30:22   * mlp.down_proj.max_weight_position = 30.55
+17:30:22   * mlp.down_proj.min_weight = 0.74
+17:30:22   * mlp.down_proj.min_weight_distance = 4.89
+17:30:22 * Resetting model...
+17:30:22 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:22 * Evaluating...
+17:30:28   * Refusals: 58/100
+17:30:28   * KL divergence: 0.0123
+17:30:28 
+17:30:28 Elapsed time: 2m 16s
+17:30:28 Estimated remaining time: 41s
+17:30:28 Resident system RAM: 3.45 GB
+17:30:28 Allocated GPU VRAM: 8.49 GB
+17:30:28 Reserved GPU VRAM: 8.49 GB
+17:30:28 
+17:30:28 Running trial 24 of 30...
+17:30:28 * Parameters:
+17:30:28   * direction_index = per layer
+17:30:28   * attn.o_proj.max_weight = 0.86
+17:30:28   * attn.o_proj.max_weight_position = 21.86
+17:30:28   * attn.o_proj.min_weight = 0.31
+17:30:28   * attn.o_proj.min_weight_distance = 6.99
+17:30:28   * mlp.down_proj.max_weight = 1.46
+17:30:28   * mlp.down_proj.max_weight_position = 30.26
+17:30:28   * mlp.down_proj.min_weight = 1.02
+17:30:28   * mlp.down_proj.min_weight_distance = 7.49
+17:30:28 * Resetting model...
+17:30:28 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:28 * Evaluating...
+17:30:34   * Refusals: 39/100
+17:30:34   * KL divergence: 0.0160
+17:30:34 
+17:30:34 Elapsed time: 2m 22s
+17:30:34 Estimated remaining time: 35s
+17:30:34 Resident system RAM: 3.45 GB
+17:30:34 Allocated GPU VRAM: 8.49 GB
+17:30:34 Reserved GPU VRAM: 8.49 GB
+17:30:34 
+17:30:34 Running trial 25 of 30...
+17:30:34 * Parameters:
+17:30:34   * direction_index = per layer
+17:30:34   * attn.o_proj.max_weight = 0.83
+17:30:34   * attn.o_proj.max_weight_position = 20.26
+17:30:34   * attn.o_proj.min_weight = 0.08
+17:30:34   * attn.o_proj.min_weight_distance = 7.72
+17:30:34   * mlp.down_proj.max_weight = 1.13
+17:30:34   * mlp.down_proj.max_weight_position = 30.61
+17:30:34   * mlp.down_proj.min_weight = 0.51
+17:30:34   * mlp.down_proj.min_weight_distance = 3.78
+17:30:34 * Resetting model...
+17:30:34 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:34 * Evaluating...
+17:30:39   * Refusals: 98/100
+17:30:39   * KL divergence: 0.0068
+17:30:39 
+17:30:39 Elapsed time: 2m 27s
+17:30:39 Estimated remaining time: 29s
+17:30:39 Resident system RAM: 3.45 GB
+17:30:39 Allocated GPU VRAM: 8.49 GB
+17:30:39 Reserved GPU VRAM: 8.49 GB
+17:30:39 
+17:30:39 Running trial 26 of 30...
+17:30:39 * Parameters:
+17:30:39   * direction_index = per layer
+17:30:39   * attn.o_proj.max_weight = 0.87
+17:30:39   * attn.o_proj.max_weight_position = 20.81
+17:30:39   * attn.o_proj.min_weight = 0.26
+17:30:39   * attn.o_proj.min_weight_distance = 8.01
+17:30:39   * mlp.down_proj.max_weight = 1.03
+17:30:39   * mlp.down_proj.max_weight_position = 29.63
+17:30:39   * mlp.down_proj.min_weight = 0.30
+17:30:39   * mlp.down_proj.min_weight_distance = 6.68
+17:30:39 * Resetting model...
+17:30:39 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:39 * Evaluating...
+17:30:45   * Refusals: 77/100
+17:30:45   * KL divergence: 0.0109
+17:30:45 
+17:30:45 Elapsed time: 2m 33s
+17:30:45 Estimated remaining time: 24s
+17:30:45 Resident system RAM: 3.45 GB
+17:30:45 Allocated GPU VRAM: 8.49 GB
+17:30:45 Reserved GPU VRAM: 8.49 GB
+17:30:45 
+17:30:45 Running trial 27 of 30...
+17:30:45 * Parameters:
+17:30:45   * direction_index = per layer
+17:30:45   * attn.o_proj.max_weight = 0.87
+17:30:45   * attn.o_proj.max_weight_position = 22.84
+17:30:45   * attn.o_proj.min_weight = 0.07
+17:30:45   * attn.o_proj.min_weight_distance = 11.69
+17:30:45   * mlp.down_proj.max_weight = 0.39
+17:30:45   * mlp.down_proj.max_weight_position = 28.76
+17:30:45   * mlp.down_proj.min_weight = 0.15
+17:30:45   * mlp.down_proj.min_weight_distance = 12.85
+17:30:45 * Resetting model...
+17:30:45 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:45 * Evaluating...
+17:30:51   * Refusals: 81/100
+17:30:51   * KL divergence: 0.0107
+17:30:51 
+17:30:51 Elapsed time: 2m 39s
+17:30:51 Estimated remaining time: 18s
+17:30:51 Resident system RAM: 3.45 GB
+17:30:51 Allocated GPU VRAM: 8.49 GB
+17:30:51 Reserved GPU VRAM: 8.49 GB
+17:30:51 
+17:30:51 Running trial 28 of 30...
+17:30:51 * Parameters:
+17:30:51   * direction_index = per layer
+17:30:51   * attn.o_proj.max_weight = 0.93
+17:30:51   * attn.o_proj.max_weight_position = 22.18
+17:30:51   * attn.o_proj.min_weight = 0.28
+17:30:51   * attn.o_proj.min_weight_distance = 9.86
+17:30:51   * mlp.down_proj.max_weight = 1.49
+17:30:51   * mlp.down_proj.max_weight_position = 28.20
+17:30:51   * mlp.down_proj.min_weight = 0.66
+17:30:51   * mlp.down_proj.min_weight_distance = 13.84
+17:30:51 * Resetting model...
+17:30:51 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:51 * Evaluating...
+17:30:57   * Refusals: 28/100
+17:30:57   * KL divergence: 0.0354
+17:30:57 
+17:30:57 Elapsed time: 2m 45s
+17:30:57 Estimated remaining time: 12s
+17:30:57 Resident system RAM: 3.45 GB
+17:30:57 Allocated GPU VRAM: 8.49 GB
+17:30:57 Reserved GPU VRAM: 8.49 GB
+17:30:57 
+17:30:57 Running trial 29 of 30...
+17:30:57 * Parameters:
+17:30:57   * direction_index = per layer
+17:30:57   * attn.o_proj.max_weight = 0.87
+17:30:57   * attn.o_proj.max_weight_position = 21.96
+17:30:57   * attn.o_proj.min_weight = 0.08
+17:30:57   * attn.o_proj.min_weight_distance = 8.52
+17:30:57   * mlp.down_proj.max_weight = 1.47
+17:30:57   * mlp.down_proj.max_weight_position = 25.04
+17:30:57   * mlp.down_proj.min_weight = 1.07
+17:30:57   * mlp.down_proj.min_weight_distance = 8.50
+17:30:57 * Resetting model...
+17:30:57 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:30:57 * Evaluating...
+17:31:03   * Refusals: 26/100
+17:31:03   * KL divergence: 0.0339
+17:31:03 
+17:31:03 Elapsed time: 2m 51s
+17:31:03 Estimated remaining time: 6s
+17:31:03 Resident system RAM: 3.46 GB
+17:31:03 Allocated GPU VRAM: 8.49 GB
+17:31:03 Reserved GPU VRAM: 8.49 GB
+17:31:03 
+17:31:03 Running trial 30 of 30...
+17:31:03 * Parameters:
+17:31:03   * direction_index = 26.92
+17:31:03   * attn.o_proj.max_weight = 0.90
+17:31:03   * attn.o_proj.max_weight_position = 29.44
+17:31:03   * attn.o_proj.min_weight = 0.26
+17:31:03   * attn.o_proj.min_weight_distance = 10.41
+17:31:03   * mlp.down_proj.max_weight = 0.00
+17:31:03   * mlp.down_proj.max_weight_position = 21.22
+17:31:03   * mlp.down_proj.min_weight = 0.00
+17:31:03   * mlp.down_proj.min_weight_distance = 15.50
+17:31:03 * Resetting model...
+17:31:03 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:31:03 * Evaluating...
+17:31:09   * Refusals: 99/100
+17:31:09   * KL divergence: 0.0011
+17:31:09 
+17:31:09 Elapsed time: 2m 57s
+17:31:09 Resident system RAM: 3.46 GB
+17:31:09 Allocated GPU VRAM: 8.49 GB
+17:31:09 Reserved GPU VRAM: 8.49 GB
+17:31:09 
+17:31:09 Optimization finished!
+17:31:09 
+17:31:09 Restoring model from trial 29...
+17:31:09 * Parameters:
+17:31:09   * direction_index = per layer
+17:31:09   * attn.o_proj.max_weight = 0.87
+17:31:09   * attn.o_proj.max_weight_position = 21.96
+17:31:09   * attn.o_proj.min_weight = 0.08
+17:31:09   * attn.o_proj.min_weight_distance = 8.52
+17:31:09   * mlp.down_proj.max_weight = 1.47
+17:31:09   * mlp.down_proj.max_weight_position = 25.04
+17:31:09   * mlp.down_proj.min_weight = 1.07
+17:31:09   * mlp.down_proj.min_weight_distance = 8.50
+17:31:09 * Resetting model...
+17:31:09 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...
+17:31:09 Saving merged model...
+17:31:09 * Merging LoRA adapters into base model...
+17:31:16 Writing model shards:   0%|          | 0/2 [00:00<?, ?it/s]Writing model shards:  50%|█████     | 1/2 [00:03<00:03,  3.99s/it]Writing model shards: 100%|██████████| 2/2 [00:07<00:00,  3.48s/it]Writing model shards: 100%|██████████| 2/2 [00:07<00:00,  3.56s/it]
+17:31:17 Model saved to ./model.
+17:31:17 * Resetting model...
+17:31:28 Could not reach the Hub ([Errno -3] Temporary failure in name resolution). Using cached commit hash for 'Qwen/Qwen3.5-4B'.
+17:31:38 Could not reach the Hub ([Errno -3] Temporary failure in name resolution). Using cached commit hash for 'Qwen/Qwen3.5-4B'.
+17:31:39 Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   0%|          | 1/723 [00:00<01:13,  9.81it/s]Loading weights:   9%|▉         | 67/723 [00:00<00:01, 384.82it/s]Loading weights:  20%|█▉        | 142/723 [00:00<00:01, 549.78it/s]Loading weights:  28%|██▊       | 204/723 [00:00<00:00, 574.98it/s]Loading weights:  38%|███▊      | 276/723 [00:00<00:00, 613.48it/s]Loading weights:  47%|████▋     | 343/723 [00:00<00:00, 629.37it/s]Loading weights:  57%|█████▋    | 412/723 [00:00<00:00, 641.24it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 889.54it/s]
+17:31:50 * Modifying model using Magnitude-Preserving Orthogonal Ablation (MPOA)...

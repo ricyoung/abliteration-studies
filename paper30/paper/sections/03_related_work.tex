@@ -1,0 +1,45 @@
+% =====================================================================
+% 2 RELATED WORK (short; claims follow paper 33's verified related work, references.bib copied from paper 33)
+% Revised 2026-11-06: 2512.13655 = earlier comparison (prior work, not a previous version); J-space sentence added.
+% =====================================================================
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Directional abliteration and its variants.} Arditi et al.~\cite{arditi2024refusal} showed across 13
+chat models that the difference between mean harmful and harmless activations induces refusal when added and
+suppresses it when ablated; orthogonalising the output weights against it yields a training-free edit
+\cite{labonne2024abliteration,failspy_abliterator}. Later variants mainly reduce collateral damage: projected
+abliteration removes the harmless-mean component \cite{lai2024projected}, magnitude-preserving orthogonal ablation
+(MPOA) restores row norms \cite{lai2025mpoa}, and SVD- or SOM-based methods remove several directions
+\cite{gabliteration2024,piras2025som}. Arbitrary-rank ablation (ARA) abandons the direction and fits a low-rank
+update per module that maps harmful outputs toward harmless ones \cite{weidmann2026ara}. Jacobian-space (J-space)
+ablation computes the direction in a workspace defined by a Jacobian lens and pulls it back to the residual stream
+\cite{sekinal2026jspace,gurnee2026verbalizable,neuronpedia2026jacobian}. Most of this evidence comes
+from blog posts, pull requests and author-run evaluations on few models, and refusal geometry is contested:
+refusal can occupy multi-dimensional cones \cite{wollschlager2025geometry}, and distinct directions can give
+nearly identical trade-offs \cite{joad2026there}. A practitioner comparison therefore has to measure outcomes
+rather than infer them from the method's assumptions.
+
+\paragraph{Tools and their defaults.} FailSpy's abliterator relies on TransformerLens and covers few
+architectures; ErisForge wraps decoder layers; llm-abliteration processes quantised shards in a single pass; and
+Heretic searches layer profiles and strengths with a TPE sampler \cite{bergstra2011algorithms} under a
+keyword-refusal and KL objective
+\cite{failspy_abliterator,erisforge,jimplus_llmabliteration,heretic2025}. OBLITERATUS bundles whitened, spectral
+and iterative variants \cite{obliteratus2026}, and a null-space-constrained abliterator borrows the AlphaEdit
+constraint \cite{jwest33abliterator,fang2025alphaedit}. The tools differ not only in the edit but in prompt sets,
+trial budgets and the rule that picks the released model; an earlier comparison \cite{young2025comparative} ran
+each at its defaults, so its capability differences mix algorithm and selection rule. Public abliterated checkpoints
+on Hugging Face add a further population whose procedure is often undocumented; in the companion study, four of
+eight such releases refused less than the best model selected under a KL cap, at a larger divergence
+\cite{young2026harder}.
+
+\paragraph{Evaluation practice.} Against human labels, keyword matching reached Cohen's $\kappa=0.37$, WildGuard
+0.61 and fine-tuned LLM judges about 0.81 \cite{xie2025sorrybench}; conclusions can depend on the classifier
+\cite{young2026measuring}, including in abliteration studies \cite{agnihotri2025granular}. Compliance is not
+competence: abliterated code models complied with malicious-code requests but succeeded at rates bounded by model
+size \cite{carleo2026willing}, and a single-vector projection raised unsafe compliance far more than task skill
+\cite{david2026ablating}. Susceptibility to abliteration was model-specific rather than size-dependent across 24
+open models \cite{hadetskyi2026not}. The companion study \cite{young2026harder} used the harness adopted here to
+ask whether newer model generations resist abliteration with one tool, and it reported keyword counts above judge
+counts after ablation. The present study holds the model family fixed and varies the tool, the tool version and the
+source of the refusal direction, which neither the earlier comparison nor the companion study did.

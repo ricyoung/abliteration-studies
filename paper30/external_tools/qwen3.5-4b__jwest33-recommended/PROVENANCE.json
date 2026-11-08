@@ -1,0 +1,261 @@
+{
+  "tool": "jwest33/abliterator",
+  "repo_url": "https://github.com/jwest33/abliterator",
+  "commit": "6ca3356e493ee43a1e124f50b73e531205b11ceb",
+  "local_modifications": {
+    "commit": "6ca3356e493ee43a1e124f50b73e531205b11ceb",
+    "remote": "https://github.com/jwest33/abliterator.git",
+    "dirty": false,
+    "local_diff_sha256": null,
+    "local_diff_files": []
+  },
+  "runtime_patches": [
+    {
+      "name": "cli_hybrid_detection",
+      "what": "set config._hybrid_info = detect_hybrid_architecture(model_path) before compute_refusal_directions, as src.abliterate.run_abliteration does; the CLI path omits it, so --hybrid-strategy auto (default) was a no-op. No effect on non-hybrid models.",
+      "file": "/data/heretic_2/tools_ext/scripts/run_jwest33.py"
+    }
+  ],
+  "square_writer_fix_report": null,
+  "hybrid_detection": {
+    "is_hybrid": true,
+    "full_attention_indices": [
+      3,
+      7,
+      11,
+      15,
+      19,
+      23,
+      27,
+      31
+    ]
+  },
+  "preset": "recommended",
+  "preset_definition": "interactive CLI preset 'Recommended standard (winsorize + null-space)' / 'Recommended for hybrid model (hybrid-aware + null-space + winsorization)'; batch flags: --dtype bfloat16 --device cuda --winsorize --null-space",
+  "resolved_config": {
+    "model_path": "/data/huggingface/hub/models--Qwen--Qwen3.5-4B/snapshots/851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "output_path": "/data/heretic_2/tools_ext/work/qwen3.5-4b__jwest33-recommended.tmp153087/out",
+    "timestamp": "2026-11-06T08:44:01.503482",
+    "target_layers": null,
+    "extraction_layer_indices": null,
+    "use_mean_direction": true,
+    "normalize_directions": true,
+    "norm_preservation": true,
+    "direction_multiplier": 1.0,
+    "token_position": "last",
+    "dtype": "bfloat16",
+    "device": "cuda",
+    "batch_size": 4,
+    "max_new_tokens": 1,
+    "save_directions": true,
+    "load_directions_path": null,
+    "num_prompts": 30,
+    "harmful_prompts_path": "/data/heretic_2/tools_ext/home/jwest33/abliterate/prompts/harmful.txt",
+    "harmless_prompts_path": "/data/heretic_2/tools_ext/home/jwest33/abliterate/prompts/harmless.txt",
+    "num_harmful_prompts": 30,
+    "num_harmless_prompts": 30,
+    "filter_harmful_prompts": true,
+    "refusal_test_max_tokens": 50,
+    "refusal_test_batch_size": 16,
+    "refusal_threshold": -7.0,
+    "use_winsorization": true,
+    "winsorize_percentile": 0.995,
+    "use_magnitude_clipping": false,
+    "magnitude_clip_percentile": null,
+    "use_welford_mean": true,
+    "use_float64_subtraction": true,
+    "use_projected_refusal": true,
+    "use_null_space": true,
+    "null_space_rank_ratio": 0.95,
+    "null_space_regularization": 0.0001,
+    "preservation_prompts_path": null,
+    "use_adaptive_weighting": false,
+    "adaptive_position_center": null,
+    "adaptive_position_sigma": null,
+    "use_biprojection": false,
+    "use_per_neuron_norm": false,
+    "target_layer_types": null,
+    "num_measurement_layers": null,
+    "measurement_layers": null,
+    "intervention_layers": null,
+    "intervention_range": null,
+    "use_harmless_boundary": false,
+    "harmless_clamp_ratio": null,
+    "use_quality_selection": false,
+    "min_quality_threshold": null,
+    "layer_targeting_mode": "none",
+    "layer_target_map_path": null,
+    "exclude_layers": null,
+    "unmapped_layer_behavior": null,
+    "unmapped_layer_multiplier": null,
+    "num_layers_with_multipliers": null,
+    "dynamic_layer_targeting": false,
+    "hybrid_strategy": "auto",
+    "hybrid_full_attn_weight": 1.0,
+    "hybrid_linear_attn_weight": 0.4,
+    "hybrid_skip_recurrent_proj": true,
+    "hybrid_skip_state_proj": false,
+    "use_gabliteration": false,
+    "gab_num_directions": null,
+    "gab_ridge_lambda": null,
+    "gab_layer_scaling_beta": null,
+    "gab_skip_first_layers": null,
+    "gab_skip_last_layers": null,
+    "use_kl_monitoring": false,
+    "use_kl_auto_tune": false,
+    "kl_reference_prompts_path": null,
+    "kl_num_reference_prompts": null,
+    "kl_top_k": null,
+    "kl_batch_size": null,
+    "kl_threshold": null,
+    "kl_search_min": null,
+    "kl_search_max": null,
+    "kl_search_tolerance": null,
+    "kl_max_search_iterations": null
+  },
+  "command": [
+    "/data/heretic_2/tools_ext/venv-jwest33/bin/python",
+    "/data/heretic_2/tools_ext/scripts/run_jwest33.py",
+    "--repo",
+    "Qwen/Qwen3.5-4B",
+    "--revision",
+    "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "--seed",
+    "1",
+    "--out",
+    "/data/heretic_2/models/external/qwen3.5-4b__jwest33-recommended",
+    "--",
+    "--dtype",
+    "bfloat16",
+    "--device",
+    "cuda",
+    "--winsorize",
+    "--null-space"
+  ],
+  "tool_cli_args": [
+    "--batch",
+    "-m",
+    "/data/huggingface/hub/models--Qwen--Qwen3.5-4B/snapshots/851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "-o",
+    "/data/heretic_2/tools_ext/work/qwen3.5-4b__jwest33-recommended.tmp153087/out",
+    "--dtype",
+    "bfloat16",
+    "--device",
+    "cuda",
+    "--winsorize",
+    "--null-space"
+  ],
+  "env": {
+    "HOME": "/data/heretic_2/tools_ext/home/jwest33",
+    "HF_HOME": "/data/huggingface",
+    "HF_HUB_OFFLINE": "1",
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "seed": 1,
+  "base_repo": "Qwen/Qwen3.5-4B",
+  "base_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "base_local_path": "/data/huggingface/hub/models--Qwen--Qwen3.5-4B/snapshots/851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "prompt_sets": {
+    "source": "jwest33 default prompt files from commit a2a7940 (prompts/ removed from the repo in deb3ac4)",
+    "files_sha256": {
+      "harmful.txt": "351fd73f8f517155b78526b9e4741799e7282aa045aff0972b6a4fc00413ce3c",
+      "harmless.txt": "65e2d8b237f2eed4e15299f1d0d070c93410a13e1de393a93aaf92800f38f910",
+      "preservation.txt": "de15308a4eded52fcb522c265f2159d9f2ff1ba41b7c45ade6bd89862fc5285c"
+    },
+    "n_harmful_used": 30,
+    "n_harmless_used": 30,
+    "full_lists": "tool_artifacts/prompts_used.json"
+  },
+  "wall_seconds_tool": 91.5,
+  "wall_seconds_total": 117.0,
+  "tool_reported_metrics": {
+    "num_harmful_prompts": 30,
+    "num_harmless_prompts": 30,
+    "refusal_test_max_tokens": 50,
+    "refusal_test_batch_size": 16,
+    "refusal_threshold": -7.0,
+    "use_projected_refusal": true,
+    "use_quality_selection": false,
+    "min_quality_threshold": null,
+    "use_kl_monitoring": false,
+    "use_kl_auto_tune": false,
+    "kl_reference_prompts_path": null,
+    "kl_num_reference_prompts": null,
+    "kl_top_k": null,
+    "kl_batch_size": null,
+    "kl_threshold": null,
+    "kl_search_min": null,
+    "kl_search_max": null,
+    "kl_search_tolerance": null,
+    "kl_max_search_iterations": null
+  },
+  "finalize_report": {
+    "tool_output_files": [
+      "abliteration_config.json",
+      "chat_template.jinja",
+      "config.json",
+      "generation_config.json",
+      "model-00001-of-00002.safetensors",
+      "model-00002-of-00002.safetensors",
+      "model.safetensors.index.json",
+      "null_space_projectors.pt",
+      "preprocessor_config.json",
+      "prompts_used.json",
+      "refusal_directions.pt",
+      "tokenizer.json",
+      "tokenizer_config.json",
+      "video_preprocessor_config.json"
+    ],
+    "tool_architectures": [
+      "Qwen3_5ForConditionalGeneration"
+    ],
+    "qwen35_rewrapped_from_text_only": false,
+    "tool_saved_dtypes": {
+      "torch.bfloat16": 723
+    },
+    "n_tensors": 723,
+    "tool_config_diff_vs_base": {
+      "text_config.partial_rotary_factor": {
+        "tool": 0.25,
+        "base": null
+      },
+      "vision_config.model_type": {
+        "tool": "qwen3_5_vision",
+        "base": "qwen3_5"
+      },
+      "vision_config.rope_parameters": {
+        "tool": {
+          "rope_theta": 10000.0,
+          "rope_type": "axial"
+        },
+        "base": null
+      }
+    },
+    "config_source": "base",
+    "keys_missing_vs_base": [],
+    "keys_extra_vs_base": [],
+    "copied_from_base": [
+      "tokenizer.json",
+      "tokenizer_config.json",
+      "vocab.json",
+      "merges.txt",
+      "chat_template.jinja",
+      "preprocessor_config.json",
+      "video_preprocessor_config.json"
+    ],
+    "generation_config": "base has none; transformers-generated copy from the tool output (as in the Heretic exports)",
+    "staging_dir": "/data/heretic_2/models/external/qwen3.5-4b__jwest33-recommended.staging"
+  },
+  "verify": {
+    "n_tensors": 723,
+    "non_bf16": []
+  },
+  "torch": "2.14.1+cu130",
+  "transformers": "5.18.0",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "written_at": "2026-11-06T08:44:27-0800",
+  "weights_sha256": {
+    "model-00001-of-00002.safetensors": "8eca0806443191f9f5d6e87cd999dc9ef79c1eba3e824d305987f0c578adc6cb",
+    "model-00002-of-00002.safetensors": "eb78ae1460b9755284a8fc408106a7a9d099c1c6a388e880833ab4e16ab1528e"
+  }
+}

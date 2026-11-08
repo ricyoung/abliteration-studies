@@ -1,0 +1,8 @@
+# heretic 2.0 — ARA (default modifier)
+modifiers = [{ plugin = "heretic.modifiers.ara.ARA" }]
+scorers = [
+  { plugin = "heretic.scorers.keyword_rate.KeywordRate", optimization = "minimize" },
+  { plugin = "heretic.scorers.kl_divergence.KLDivergence", optimization = "minimize" },
+]
+n_trials = 100
+n_startup_trials = 30

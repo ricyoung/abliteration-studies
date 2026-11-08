@@ -1,0 +1,186 @@
+{
+ "protocol_version": "1",
+ "started": "2026-11-05T18:27:43+00:00",
+ "limit_mode": "paper",
+ "method": "olmo-3.1-32b__dim",
+ "base_model": "allenai/Olmo-3.1-32B-Instruct",
+ "backend": "vllm",
+ "seeds": {
+  "random_seed": 0,
+  "numpy_random_seed": 1234,
+  "torch_random_seed": 1234,
+  "fewshot_random_seed": 1234,
+  "vllm_seed": 1234
+ },
+ "subset_seed": 20261104,
+ "decoding": {
+  "greedy": true,
+  "do_sample": false,
+  "temperature": 0.0,
+  "apply_chat_template": true,
+  "fewshot_as_multiturn": true,
+  "enable_thinking": false,
+  "max_model_len": 8192
+ },
+ "versions": {
+  "python": "3.12.16",
+  "platform": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+  "host": "0538-dca2-csh200nvl-prxmx140094",
+  "lm_eval": "0.4.13",
+  "vllm": "0.33.0",
+  "torch": "2.14.0",
+  "transformers": "5.20.2",
+  "datasets": "5.1.0",
+  "accelerate": "1.15.0",
+  "flashinfer-python": "0.7.2.post1",
+  "torch_cuda": "13.0",
+  "gpu": "NVIDIA H200 NVL",
+  "driver": "580.126.09",
+  "env": {
+   "VLLM_USE_FLASHINFER_SAMPLER": "0",
+   "VLLM_ATTENTION_BACKEND": null,
+   "BENCH_VLLM_EXTRA": "{}",
+   "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "sha256:uv.lock": "f76643a5de210306a28674c91ca9703792d02b8e01a0a281ba4457c9410fc25f",
+  "sha256:bench.py": "f220db7bb900771428e7d4cf23af65d93ab9202a402877cb8054c54a4edfa754",
+  "sha256:subsets.json": "4f54c82184d9ae01a2b361a433d72604a290322fbe27882f9b37dab91fcdd4d9",
+  "sha256:run.sh": "b7396b52cbaefceb8bab22acfbbbd3866cf3b9d7a6ec247bcbf0b8a3f2f07686"
+ },
+ "benchmarks": {
+  "mmlu_pro": {
+   "metric": "exact_match,custom-extract",
+   "score": 0.646,
+   "stderr": 0.015129868238451812,
+   "n": 1000,
+   "wall_seconds": 217.9,
+   "max_gen_toks": 2048,
+   "fewshot": "5-shot CoT (task default)",
+   "lm_eval_tasks": [
+    "mmlu_pro_biology",
+    "mmlu_pro_business",
+    "mmlu_pro_chemistry",
+    "mmlu_pro_computer_science",
+    "mmlu_pro_economics",
+    "mmlu_pro_engineering",
+    "mmlu_pro_health",
+    "mmlu_pro_history",
+    "mmlu_pro_law",
+    "mmlu_pro_math",
+    "mmlu_pro_other",
+    "mmlu_pro_philosophy",
+    "mmlu_pro_physics",
+    "mmlu_pro_psychology"
+   ],
+   "per_subject": {
+    "mmlu_pro_biology": 0.8166666666666667,
+    "mmlu_pro_business": 0.6212121212121212,
+    "mmlu_pro_chemistry": 0.7446808510638298,
+    "mmlu_pro_computer_science": 0.7058823529411765,
+    "mmlu_pro_economics": 0.7142857142857143,
+    "mmlu_pro_engineering": 0.35802469135802467,
+    "mmlu_pro_health": 0.6764705882352942,
+    "mmlu_pro_history": 0.59375,
+    "mmlu_pro_law": 0.42857142857142855,
+    "mmlu_pro_math": 0.7946428571428571,
+    "mmlu_pro_other": 0.5454545454545454,
+    "mmlu_pro_philosophy": 0.5853658536585366,
+    "mmlu_pro_physics": 0.6759259259259259,
+    "mmlu_pro_psychology": 0.7727272727272727
+   }
+  },
+  "gsm8k": {
+   "metric": "exact_match,flexible-extract",
+   "score": 0.904,
+   "stderr": 0.0131877151797924,
+   "n": 500,
+   "wall_seconds": 76.5,
+   "max_gen_toks": 512,
+   "fewshot": "5-shot (task default)",
+   "lm_eval_tasks": [
+    "gsm8k"
+   ],
+   "secondary": {
+    "exact_match,strict-match": 0.726
+   }
+  },
+  "ifeval": {
+   "metric": "prompt_level_strict_acc,none",
+   "score": 0.8724584103512015,
+   "stderr": 0.014354940597336746,
+   "n": 541,
+   "wall_seconds": 47.8,
+   "max_gen_toks": 1280,
+   "fewshot": "0-shot",
+   "lm_eval_tasks": [
+    "ifeval"
+   ],
+   "secondary": {
+    "inst_level_strict_acc,none": 0.9124700239808153,
+    "prompt_level_loose_acc,none": 0.88909426987061
+   }
+  },
+  "humaneval": {
+   "metric": "pass@1,create_test",
+   "score": 0.8841463414634146,
+   "stderr": 0.02506820002302353,
+   "n": 164,
+   "wall_seconds": 54.1,
+   "max_gen_toks": 1024,
+   "fewshot": "0-shot",
+   "lm_eval_tasks": [
+    "humaneval_instruct"
+   ]
+  },
+  "mbpp": {
+   "metric": "pass_at_1,extract_code",
+   "score": 0.702,
+   "stderr": 0.020475118092988964,
+   "n": 500,
+   "wall_seconds": 130.8,
+   "max_gen_toks": 1024,
+   "fewshot": "3-shot (task default)",
+   "lm_eval_tasks": [
+    "mbpp_instruct"
+   ]
+  }
+ },
+ "model": "/workspace/paper33/tmpmodels/olmo-3.1-32b__dim",
+ "model_info": {
+  "model": "/workspace/paper33/tmpmodels/olmo-3.1-32b__dim",
+  "source": "local",
+  "path": "/workspace/paper33/tmpmodels/olmo-3.1-32b__dim",
+  "tree_sha256": "f2028d604b864498889e24b66a1551e94be29bd2573ab2660550df7155eb2718",
+  "weights_bytes": 64474329849
+ },
+ "postprocess": "vLLM output text: U+2581 -> space (detokenizer workaround)",
+ "load_seconds": 84.3,
+ "lm_kwargs": {
+  "pretrained": "/workspace/paper33/tmpmodels/olmo-3.1-32b__dim",
+  "dtype": "auto",
+  "max_model_len": 8192,
+  "gpu_memory_utilization": 0.85,
+  "seed": 1234,
+  "batch_size": "auto",
+  "trust_remote_code": false,
+  "enable_thinking": false
+ },
+ "refusal_generation": {
+  "file": "/workspace/paper33/results/bench/olmo-3.1-32b__dim/refusal/responses.jsonl",
+  "n": 1322,
+  "items_sha256": "ef772bfb0799df70245fa3a4d654e0ffe27d32e19e127afbce582011c65bb556",
+  "max_tokens": 512,
+  "wall_seconds": 94.4
+ },
+ "teacher_forced": {
+  "file": "/workspace/paper33/results/bench/olmo-3.1-32b__dim/refusal/teacher_forced.jsonl",
+  "n_items": 350,
+  "n_tokens": 136772,
+  "mean_logprob": -0.29593456797891865,
+  "reference": "/workspace/paper33/results/bench/olmo-3.1-32b__base/refusal/responses.jsonl",
+  "wall_seconds": 16.4
+ },
+ "finished": "2026-11-05T18:40:14+00:00",
+ "total_seconds": 750.6,
+ "failed": []
+}

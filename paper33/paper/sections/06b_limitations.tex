@@ -1,0 +1,155 @@
+% =====================================================================
+% LIMITATIONS AND THREATS TO VALIDITY   (condensed v1, 2026-11-05)
+%    \input inside the Discussion. House style: constructive paragraphs
+%    ("One limitation is X; however, ..."), most consequential threats
+%    only. The complete list (all 15 items of draft v0, unchanged in
+%    substance, with their src comments) is in sections/08c_validity.tex
+%    (\label{app:validity}).
+%    2026-11-06 fact-check pass: rewritten for the completed data (seed 2 on the small pair,
+%    judges on all 74 cells, gamma-MPOA control run); stale \todo markers removed. Numbers are those of
+%    sections/05_results.tex (src comments below).
+%    2026-11-05 review fix: the unsourced sentence "conclusions about both are
+%    restricted to their Heretic instantiations" was replaced by sourced facts
+%    (Heretic-variant labels; planned reference versions); held-out-set pointer
+%    now targets Table tab:refusal-sets (described under sec:setup-models).
+%    2026-11-05 (reference integration): bouthillier2021accounting,
+%    qi2025durability (seed/configuration variance), cawley2010overfitting
+%    (dev-set selection bias), sainz2023nlp (benchmark exposure; new fact,
+%    detailed in 08c), zhang2019rmsnorm, gemmateam2024gemma2, kim2025periln
+%    ("latest Gemma and OLMo families adopt peri-normalisation"; Gemma-4 itself
+%    has no cited report), walsh2025olmo2, olmo2025olmo3, baayen2008mixed.
+% =====================================================================
+% 2026-11-06 REVIEW REVISION (author decision C): single seed, greedy decoding / reasoning off and the ARA caveats stated as
+% limitations; second seed for the main cells and a test of heretic-org's ARA trial named as future work; the two
+% "planned but not run" todos (reference-hook J-space, paper-faithful SOM) converted into future-work statements.
+\subsection{Limitations and threats to validity}
+\label{sec:limitations}
+
+One limitation is that each main-study cell was optimised with a single seed
+(seed~1), although TPE search is stochastic. On the small pair, a second seed
+changed held-out refusal in all 10 cells (median 9.4~pp, maximum 25.2~pp;
+run-to-run standard deviation 9.2~pp [6.4, 16.1]) and
+erased the ARA generation effect (+14.2~pp with seed~1, +0.0~pp with
+seed~2). Variance of this size could create or mask a generation effect in a
+single main-study cell, as seed and configuration changes have altered
+conclusions about algorithm comparisons \cite{bouthillier2021accounting} and
+safeguard durability \cite{qi2025durability}. The band used to flag
+main-study effects as within seed noise (Table~\ref{tab:h1-heldout}) assumes
+that this variance, measured on 4B and 7B models, transfers to the 22--32B
+main-study models and is the same for every method and refusal level; neither
+assumption can be tested with one seed per cell, and on the percentage-point
+scale run-to-run variation is likely smaller near 0\% refusal than at
+intermediate rates. However, full Pareto fronts and
+four KL thresholds are reported, method rankings were more stable than
+single-cell generation effects (method accounted for $\eta^2=0.94$ and 0.88 of
+the variance among the small-pair cell rates), the pooled estimates average
+run-to-run variation over the 32 main-study cells (24 direction-based, only 8
+for ARA), the per-pair intervals of \S\ref{sec:res-h1} add the estimated
+run-to-run variance to prompt sampling (the pair-level pooled intervals barely
+change when it is added), and the 11 main-study
+effects within the band are flagged as provisional. Three of the ten seed-2
+runs also used a smaller generation batch size after running out of memory;
+without them the run-to-run standard deviation was 7.2~pp instead of 9.2~pp,
+and the same five raw effects exceeded the band. A second seed for the 32
+main-study cells, which would replace the transferred band with a direct
+estimate, is left to future work.
+% src: results/analysis/final_seed_cells.csv (10 cells, all p_holm < 0.05; |s2 - s1| median 9.4, max 25.2 pp);
+% src: results/analysis/seednoise_summary.md (sigma 9.2 [6.4, 16.1] pp; 11 of 16 main-study effects within 25.9 pp);
+% src: final_seed_generation.csv (ara seed1 +14.2, seed2 +0.0 pp); final_seed_method_vs_seed.csv (eta_sq_method 0.94 / 0.88);
+% src: runs/mc-h200-1/runs/*/meta.txt (--seed 1 for every main-study run)
+% src (review revision): results/analysis/review_sel_seed_runs.csv (batch 64 in 3 seed-2 runs); review_sel_seed_sigma.csv (7.20 pp);
+% src: review_sel_seed_flags.csv (same 5 raw effects).
+
+A second limitation is that each held-out prompt received one greedy
+response of at most 512 tokens, with reasoning disabled although the chat
+templates of Qwen3.8-27B and Qwen3.5-4B open a reasoning block. Sampled
+decoding can change refusal rates substantially \cite{huang2024catastrophic},
+and chain of thought can carry refusal \cite{yang2026beyond}, possibly by
+different amounts in each generation. However, decoding was identical for
+every model, so within-pair comparisons are matched on it, and the
+conclusions are stated for greedy decoding in non-thinking mode.
+% src: scripts/bench/refusal_sets.json (meta: max_tokens 512, greedy); sections/04_methods.tex (Generation: reasoning disabled);
+% src: sections/08b_setup_details.tex (Objective details: reasoning block for Qwen3.8-27B / Qwen3.5-4B).
+
+The ARA cells carry limitations of their own. The released ARA model is
+rebuilt by refitting its adapter, and the four ARA exports refitted on a
+different GPU from the search drifted by 5 to 9 dev refusals on re-score,
+whereas those refitted on the search machine drifted by at most 2; the
+Gemma-4-31B ARA export re-scored at a first-token KL of 0.107, above the cap;
+and the 0 of 100 dev refusals reported by heretic-org for an ARA model of
+Qwen3.8-27B with the same defaults was not reproduced (59 and 63 of 100 in two
+runs here). Held-out results describe the released models, so these points
+concern the link between search and release rather than the reported rates,
+but they bear directly on H2, whose Qwen reversal and Gemma support both rest
+on single ARA cells. Running heretic-org's reported trial through this
+pipeline and refitting the ARA exports on the search hardware are left to
+future work.
+% src (review revision): results/analysis/review_sel_export_drift.csv (|d refusals| 6, 9, 5, 7 on mc-rtx-1 vs 0, 1, 2, 0 on
+% src: mc-h200-1; Gemma-4-31B KL 0.1070); review_sel_export_tests.csv (Fisher p 0.029); sections/08b_setup_details.tex
+% src: (Qwen3.8-27B ARA rerun: 59/100 and clean 63/100; heretic-org 0/100 at KL 0.054, notes/EXECUTION_PLAN_v2.md finding 1).
+
+A further limitation is that trials are optimised and selected on the 100
+development prompts that produce Heretic's refusal count, which relies on 33
+keyword markers with a reported recall of about 0.48, against 0.77 for an LLM
+judge (Heretic~\#419). Development-set refusal is therefore optimistic
+\cite{cawley2010overfitting}, and the best dev method was the best held-out
+method in only 7 of 12 model $\times$ seed sets. However, keyword counts drive
+optimisation and selection only: reported refusal comes from a frozen held-out
+set of 1,322 prompts (Table~\ref{tab:refusal-sets}), labelled by WildGuard as
+primary judge with Qwen3Guard as a second judge ($\kappa=0.82$ [0.80, 0.83]
+on the 42 ablated models).
+% src: configs/core_*.toml; heretic config.default.toml @ 8fd4d76 (33 keyword_markers; max_response_length = 100);
+% src: scripts/bench/refusal_sets.json (counts per set); results/analysis/dir_status.csv (74 judged);
+% src: h3_agreement_pairs.csv (harmful, pooled, ablated_primary, wg vs q3g 0.8193 [0.8041, 0.8334]);
+% src: final_dev_vs_heldout_within_model.csv (7 of 12 with the KL tie-break)
+A related limitation is that no human-labelled audit exists. Where keyword
+matching and the judges diverged (H3), which measure is correct therefore
+cannot be decided, and agreement between LLM judges with correlated errors
+overstates the evidence \cite{hossain2026agreement}.
+% src: results/analysis/FINAL_NOTES.md (sec. 5, D1: no human audit exists); /data/heretic_2/PAPERS.md (stage 8 pending)
+
+Another limitation is that generation is confounded with size, architecture,
+training data, post-training recipe and release interval, and later
+checkpoints may have been safety-tuned on the public held-out benchmarks
+\cite{sainz2023nlp}. In particular,
+post-norm models (Gemma-2/4, OLMo-2/Olmo-3.1) apply an RMSNorm \cite{zhang2019rmsnorm} after $W_O$ and
+$W_{\mathrm{down}}$, so the normalised output retains a component along the
+ablated direction, handicapping direction-based methods on four of the eight
+main-study models. Because both generations of each post-norm family
+share this design
+\cite{gemmateam2024gemma2,kim2025periln,walsh2025olmo2,olmo2025olmo3}, the leak confounds H1 and H2 only to the extent that its
+size differs between generations. However, comparisons are made within family
+and against each pair's own originals, with family as a random effect in the
+planned model \cite{baayen2008mixed}; the $\boldsymbol{\gamma}$-corrected MPOA
+control on the four post-norm models lowered held-out refusal on all four but
+left the OLMo generation effect (+57.0~pp) and the pooled H2 interaction
+($-$0.42) in place; and conclusions are stated about later releases, not about
+mechanisms such as safety training.
+% src: notes/EXECUTION_PLAN_v2.md (Design; Statistics; Findings 6); results/analysis/final_gmpoa_control.csv
+% src: (vs_mpoa_diff < 0 in all 4, p_holm <= 0.0018); final_gmpoa_generation.csv (OLMo +57.0 pp);
+% src: final_pooled_robustness.csv (gamma-MPOA in place of MPOA: interaction -0.42)
+
+A final limitation concerns the scope of two implementations. J-space
+ablation is limited to the small pair, because instruction-tuned Jacobian
+lenses exist only for Qwen3.5-4B and Qwen2.5-7B-Instruct; the lens is fitted on
+non-chat text, and the direction is baked into the weights rather than applied
+as the reference forward hook, with unknown direction of bias; J-space as a
+forward hook ($\alpha=1$) was planned on the small pair but not run and is
+left to future work.
+% src: notes/EXECUTION_PLAN_v2.md (Findings 7); notes/overnight_log.md (23:05); scripts/jspace_directions.py; directions/*.pt (meta: lens_repo, lens_file, lens_revision); configs/core_jspace.toml
+Heretic-tuned SOM deviates from Piras et al.~\cite{piras2025som} in neuron
+ranking, orthonormalisation, decay, layer scope and adapter rank, and its
+narrower search may understate SOM; a paper-faithful SOM configuration was
+planned but not run and is left to future work.
+% src: notes/overnight_log.md (02:42); configs/core_som.toml; heretic git log (45a4e6e ancestor of 8fd4d76); notes/heretic2_methods_and_eval.md (Modifier 1); notes/EXECUTION_PLAN_v2.md (Findings 4, 10); scripts/eval_one.sh, scripts/eval_one_local.sh (MERGE export)
+However, both are evaluated, and labelled, as Heretic variants
+(Heretic-tuned SOM; weight-baked J-space), so the conclusions about them are
+restricted to these variants.
+% src: notes/EXECUTION_PLAN_v2.md (Design: small pair "SOM(Heretic-tuned + paper-faithful), J-space (baked + reference hook alpha=1)"); sections/08b_setup_details.tex (Additional conditions: not run; SOM deviations: "hence Heretic-tuned SOM"; J-space "weight-baked here")
+% review revision 2026-11-06 (task item 9): the two todos converted into future-work statements (no run dirs exist:
+% results/analysis/dir_status.csv; author decision C, no new GPU experiments).
+All threats,
+including those not discussed here (tokenisation, truncation, decoding,
+first-token KL, benchmark exposure,
+benchmark coverage, judge validity, preregistration, generalisation, and dual
+use), are detailed in Appendix~\ref{app:validity}.

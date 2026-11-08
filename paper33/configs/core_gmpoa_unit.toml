@@ -1,0 +1,13 @@
+# heretic 2.0 — directional ablation, defaults = MPOA (projected + full row normalization)
+modifiers = [{ plugin = "heretic.modifiers.gamma_mpoa.GammaMPOA" }]
+scorers = [
+  { plugin = "heretic.scorers.keyword_rate.KeywordRate", optimization = "minimize" },
+  { plugin = "heretic.scorers.kl_divergence.KLDivergence", optimization = "minimize" },
+]
+n_trials = 100
+n_startup_trials = 30
+
+# Matched control for the 4 post-norm models: the same exact, kernel-confined GammaMPOA edit
+# with Gamma := 1 (removes v^T o, not (Gamma v)^T o). GammaMPOA vs this arm isolates the gain correction.
+[modifier.GammaMPOA]
+gamma_mode = "unit"

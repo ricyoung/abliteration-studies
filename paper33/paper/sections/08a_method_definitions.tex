@@ -1,0 +1,326 @@
+% =====================================================================
+% APPENDIX: METHOD DEFINITIONS
+% Moved on 2026-11-05 from the former main-text section "Refusal-Removal
+% Methods" (sections/03_related_work.tex, draft v0 2026-11-04) when that
+% section was rewritten as a house-style Related Work section
+% (\label{sec:related}). Content is kept verbatim apart from cross-reference
+% wording; every original \label is kept (sec:methods, sec:m-*).
+% Table tab:methods stays in the Related Work section.
+% Must be \input after \appendix (e.g. from sections/08_appendix.tex).
+% =====================================================================
+\section{Method Definitions}
+\label{app:method-defs}
+\label{sec:methods}
+\label{app:methods}% former template placeholder label from 08_appendix.tex (never referenced; kept)
+
+This appendix gives the notation, the update rule and the rationale of each
+refusal-removal method reviewed in Section~\ref{sec:related}, together with
+the strengths and weaknesses of each and the way it is instantiated in this
+study.
+
+\paragraph{Notation.}
+A decoder-only transformer maintains a residual stream
+$\mathbf{x}^{(\ell)} \in \mathbb{R}^{d}$ at each layer $\ell$. Each layer reads
+from the stream and writes back to it through two matrices:
+the attention output projection $W_O^{(\ell)}$ and the MLP down-projection
+$W_{\mathrm{down}}^{(\ell)}$. Let $\mathcal{D}_{\mathrm{harm}}$ and
+$\mathcal{D}_{\mathrm{safe}}$ be sets of harmful and harmless prompts, and let
+$\boldsymbol{\mu}^{(\ell)}_{\mathrm{harm}}$ and
+$\boldsymbol{\mu}^{(\ell)}_{\mathrm{safe}}$ be the mean residual activations at
+the last prompt token over each set.
+
+Methods are grouped by \emph{what they assume about refusal}: (i) it is a single
+linear direction, (ii) it is a low-dimensional subspace or cone, (iii) it is
+whatever transformation of each module's outputs separates harmful from
+harmless inputs (no geometric assumption), or (iv) it is best located in a
+different representation space altogether. Table~\ref{tab:methods}
+(Section~\ref{sec:related}) summarises
+the evaluated methods as instantiated in this study (\S\ref{sec:setup-methods}).
+
+% ---------------------------------------------------------------------
+\subsection{Single-direction methods}
+
+\subsubsection{Classic abliteration (difference-in-means)}
+\label{sec:m-dim}
+\textbf{Mechanism.} Compute the refusal direction
+$\hat{\mathbf{r}}^{(\ell)} =
+\mathrm{normalize}(\boldsymbol{\mu}^{(\ell)}_{\mathrm{harm}} -
+\boldsymbol{\mu}^{(\ell)}_{\mathrm{safe}})$, pick one layer's direction
+$\hat{\mathbf{r}}$, and orthogonalise every matrix that writes to the residual
+stream against it:
+$W \leftarrow W - \lambda\,\hat{\mathbf{r}}\hat{\mathbf{r}}^{\top} W$
+\cite{arditi2024refusal}. With $\lambda=1$ the model can no longer write any
+component along $\hat{\mathbf{r}}$.
+
+\textbf{Why it works.} Under the linear representation hypothesis
+\cite{park2024linear}, high-level features correspond to directions.
+Arditi et al.~\cite{arditi2024refusal} showed causally that adding $\hat{\mathbf{r}}$
+induces refusal on harmless prompts and ablating it suppresses refusal on
+harmful ones, across 13 chat models. Because the edit is a rank-one projection,
+most of the weight matrix is untouched.
+
+\textbf{Why it exists.} It turned an interpretability finding into a
+practical, training-free procedure that needs only forward passes on a few
+hundred prompts \cite{labonne2024abliteration,failspy_abliterator}.
+
+\textbf{Pros.} Simple, fast (minutes), interpretable, rank-one, few
+hyperparameters (layer, strength).
+\textbf{Cons.} Assumes refusal is one-dimensional; the direction also carries
+part of the harmless mean, so removing it damages unrelated behaviour (refusal
+is better described as an affine function whose offset plain ablation ignores;
+on a recurrent RWKV model plain ablation produced nonsense where affine concept
+editing stayed coherent \cite{marshall2024refusal}); changing row norms shifts
+activation scales; quality depends heavily on the chosen layer and strength,
+which are usually set by hand (in an earlier cross-tool comparison, GSM8K
+accuracy changed by between $+1.51$ and $-18.81$ percentage points
+\cite{young2025comparative}). DECCP, ErisForge and
+FailSpy's tool are implementations of this recipe with different layer-selection
+heuristics. In this study diff-in-means runs inside Heretic with the same
+automated search over direction, strength and layer profile as MPOA
+(``Heretic-tuned DiM'', \S\ref{sec:setup-methods}).
+
+\subsubsection{Projected and magnitude-preserving abliteration (MPOA)}
+\label{sec:m-mpoa}
+\textbf{Mechanism.} Two refinements of \S\ref{sec:m-dim}.
+(1) \emph{Projection}: remove from $\hat{\mathbf{r}}$ its component along the
+normalised harmless mean, so that only the part of the refusal direction
+orthogonal to ordinary activations is ablated \cite{lai2024projected}.
+(2) \emph{Magnitude preservation}: row-normalise $W$, apply the ablation, then
+restore each row's original norm \cite{lai2025mpoa}.
+Heretic adds a search over a per-layer weight kernel (peak strength, peak
+position, minimum strength, falloff distance) for attention and MLP separately,
+global versus per-layer directions, and a fractional direction index
+interpolated between layers, all tuned by multivariate TPE
+\cite{akiba2019optuna,heretic2025}. The edit is stored as a low-rank LoRA
+adapter \cite{hu2022lora}.
+
+\textbf{Why it works.} Projection reduces collateral damage: the part of
+$\hat{\mathbf{r}}$ shared with harmless activations is exactly what is
+needed for normal behaviour. Norm preservation keeps downstream layer norms and
+activation magnitudes in the range the model was trained on, so edits
+change \emph{direction} rather than \emph{scale}.
+
+\textbf{Why it exists.} Plain abliteration measurably degraded capability
+(for example GSM8K drops of several points in an earlier comparison
+\cite{young2025comparative}); these refinements recover much of that loss.
+
+\textbf{Pros.} Better capability retention at the same refusal rate;
+automated hyperparameter search removes manual tuning.
+\textbf{Cons.} Still assumes a single direction per layer; norm preservation is
+only approximate when stored as a low-rank adapter; the search adds many
+evaluation passes (one per trial).
+
+\subsubsection{Null-space-constrained abliteration (jwest33)}
+\label{sec:m-null}
+\textbf{Mechanism.} Compute a projected, norm-rescaled diff-in-means edit
+$\Delta W$ as above, then restrict it to the null space of activations on a
+set of \emph{preservation} prompts: with $V$ the top singular vectors of
+those activations, apply $\Delta W (I - V V^{\top})$
+(the AlphaEdit constraint \cite{fang2025alphaedit}). Optional Gaussian layer
+weighting spreads the edit around a chosen depth.
+
+\textbf{Why it works.} If an input lies in the span of $V$, the constrained
+edit has no effect on it, so behaviour on preserved inputs is guaranteed
+unchanged to first order; the edit can only act on directions that harmless
+inputs do not use.
+
+\textbf{Why it exists.} It brings guarantees from knowledge editing
+\cite{meng2022locating,fang2025alphaedit} to refusal removal, as an
+alternative to tuning strength against a KL budget.
+
+\textbf{Pros.} Principled protection of chosen behaviour; single pass, no
+search.
+\textbf{Cons.} If harmful and harmless activations share directions (likely in
+newer models), the constraint also blocks the refusal edit; the rank ratio is a
+new hyperparameter; dense models only in the current implementation. It is not
+evaluated in this study (\S\ref{sec:m-not}).
+
+% ---------------------------------------------------------------------
+\subsection{Multi-direction and subspace methods}
+
+\subsubsection{SVD multi-direction (Gabliteration, OBLITERATUS presets)}
+\label{sec:m-svd}
+\textbf{Mechanism.} Instead of the mean difference, take the top-$k$ singular
+vectors of the matrix of per-prompt differences between harmful and harmless
+activations, and project all $k$ out, typically with ridge regularisation and
+selected layers \cite{gabliteration2024}. OBLITERATUS packages this
+(``advanced'', 4 directions), whitened and iterative variants (``aggressive''),
+frequency-band weighting of layers via a DCT (``spectral cascade''), and a
+re-implementation of gradient-refined directions (``rdo'') in one toolkit.
+
+\textbf{Why it works.} When refusal is spread over several correlated
+directions, one mean difference captures only the dominant one; the remaining
+components can re-trigger refusal. Removing a subspace closes those
+alternative routes.
+
+\textbf{Why it exists.} Single-direction ablation leaves residual refusals on
+some prompt categories and some models; multi-direction methods target that
+residual.
+
+\textbf{Pros.} Removes more refusal on models where one direction is
+insufficient; still closed-form and fast.
+\textbf{Cons.} Every extra direction removed is extra capacity destroyed;
+choosing $k$ trades refusal against damage; several presets are heuristic
+combinations without a clear theoretical justification. The OBLITERATUS
+v0.1.4 presets \texttt{advanced} and \texttt{spectral\_cascade}, together with
+\texttt{basic}, are not evaluated in this study; they were run on
+Qwen2.5-7B-Instruct and scored with this study's harness in the companion
+paper \cite{young2026paper30}. Version 0.1.4 lists a \texttt{som} preset but
+does not ship its direction module and does not run on Qwen3.5-4B
+(Appendix~\ref{app:setup-methods}).
+% src (2026-11-06, author decision: OBLITERATUS reported in paper 30 only): results/bench-4090/qwen2.5-7b__obliteratus-{basic,advanced,spectral_cascade}/push_manifest.json;
+% scripts/run_external_small.sh (header NOTE: som extractor obliteratus.analysis.som_directions not shipped; v0.1.4 fails closed on every Qwen3.5); ../paper30/v3_2611/analysis/RESULTS.md
+
+\subsubsection{Refusal cones (RDO)}
+\label{sec:m-rdo}
+\textbf{Mechanism.} Learn refusal directions by gradient descent on an
+objective that requires ablation to remove refusal and addition to induce it,
+while keeping other behaviour fixed; multiple such directions form a
+polyhedral \emph{concept cone} \cite{wollschlager2025geometry}.
+
+\textbf{Why it works / exists.} It showed that refusal is not a single
+direction but a multi-dimensional cone of causally relevant, representationally
+independent directions, and that directions found by optimisation outperform
+diff-in-means.
+\textbf{Pros.} Directly targets the causal effect rather than a statistical
+proxy. \textbf{Cons.} Requires gradients and more compute. It is not evaluated
+in this study (\S\ref{sec:m-not}).
+
+\subsubsection{Self-organising-map directions (SOM)}
+\label{sec:m-som}
+\textbf{Mechanism.} Fit a small self-organising map (e.g.\ $4\times4$) to the
+harmful activations at each layer, take $k$ map neurons as prototypes of
+distinct ``kinds'' of harmful input, and use each prototype minus the harmless
+mean as a refusal direction; ablate all $k$, each with its own strength
+\cite{piras2025som}. The proof-of-concept Heretic integration (PR~\#196)
+tunes the per-direction strengths with TPE.
+
+\textbf{Why it works.} Different harm categories (weapons, self-harm, cyber,
+\ldots) may trigger refusal through different directions; a single mean
+averages them and represents none well. The SOM finds the clusters
+without labels. Piras et al.~\cite{piras2025som} show diff-in-means is a special case.
+
+\textbf{Pros.} Strong reported results (3/100 refusals at KL $\approx 0.1$ on
+gpt-oss-20b, PR~\#196); principled multi-direction choice.
+\textbf{Cons.} More hyperparameters (map size, $k$, per-direction strengths)
+make TPE converge slowly; the PoC's top-$k$ selection counts winners over the
+map's own weights instead of the data. In this study SOM is ported to
+Heretic~2.0 as a modifier (``Heretic-tuned SOM'') that ranks neurons by wins
+over the harmful residuals, orthonormalises the $k$ directions and replaces the
+per-direction strengths with one searched decay; these and the other deviations
+from Piras et al.~\cite{piras2025som} are listed in \S\ref{sec:setup-deviations}.
+
+% ---------------------------------------------------------------------
+\subsection{Optimisation-based methods}
+
+\subsubsection{Arbitrary-Rank Ablation (ARA)}
+\label{sec:m-ara}
+\textbf{Mechanism.} ARA makes no assumption about the geometry of refusal
+\cite{weidmann2026ara}. For each targeted linear module $W$ in a layer range
+(in Heretic, the attention output projection and the MLP down-projection), it
+records the module's inputs $X$ and outputs $Y = XW^{\top}$ on harmless
+($g$) and harmful ($b$) prompts, then learns a low-rank update
+$\Delta W = BA$ (rank 50 by default) minimising
+\begin{equation}
+\label{eq:ara-objective}
+\mathcal{L} = w_p\,\big\|\tilde{Y}_g - Y_g\big\|^2
+ + w_s\Big[\,d_k(\tilde{Y}_b, Y_g) - w_o\, d_k(\tilde{Y}_b, Y_b)\Big],
+\end{equation}
+where $\tilde{Y}$ is the output of $W+BA$ with each row rescaled to the norm of
+the corresponding row of $W$, and $d_k(\cdot,\cdot)$ is the mean distance to the
+$k$ nearest neighbours. The rescaling enters only the objective; the exported
+adapter $BA$ is not renormalised (\S\ref{sec:setup-methods}).
+The three terms keep harmless outputs fixed, pull harmful outputs toward
+harmless ones, and push them away from where they were (``overcorrection'').
+Each module is solved independently with L-BFGS; Heretic's TPE searches the
+layer range, the three weights and $k$.
+
+\textbf{Why it works.} Rather than guessing the shape of the refusal
+representation, ARA directly asks each module to make harmful inputs produce
+the outputs harmless inputs produce. Any refusal mechanism that a module's
+output carries, whether linear, multi-directional or non-linear across
+prompts, is in scope, up to the adapter's rank. The objective is close to
+convex and starts at its optimum for the preservation term, so L-BFGS
+converges in a few iterations.
+
+\textbf{Why it exists.} Its author reports that directional ablation
+increasingly fails on recent models, and that ARA reaches lower refusal at
+lower KL on gpt-oss-20b than any directional result \cite{weidmann2026ara}.
+
+\textbf{Pros.} No geometric assumption; fewer search parameters than
+per-component directional kernels; memory similar to abliteration because
+modules are solved one at a time.
+\textbf{Cons.} Slower per trial; rank-50 adapters per module are larger
+artefacts; the nearest-neighbour objective depends on the prompt sets, so it
+may overfit them; no published analysis yet (preprint forthcoming).
+
+% ---------------------------------------------------------------------
+\subsection{Methods in other representation spaces}
+
+\subsubsection{Jacobian-space (J-space) ablation}
+\label{sec:m-jspace}
+\textbf{Mechanism.} Using a Jacobian lens, map each layer's activations into a
+``workspace'' where features are read out by the model's later computation;
+compute the refusal direction there and pull it back to the residual stream
+through the layer Jacobian, $\mathbf{d}_\ell = J_\ell^{\top}(\cdot)$; ablate it
+with a forward hook rather than a weight edit
+\cite{sekinal2026jspace}.
+
+\textbf{Why it exists.} To localise the part of the refusal signal the model
+actually uses downstream, rather than everything correlated with harmfulness.
+\textbf{Pros.} Very targeted (small distribution shift).
+\textbf{Cons.} By its authors' own measurements removes little refusal
+(AdvBench refusal 0.78 versus 0.06 for diff-in-means on Qwen3.5-4B); the
+reference code is hook-based, so not directly an exportable model, and is a
+single-model implementation. In this study the J-space directions are instead
+baked into the weights with Heretic's directional-ablation edit and search
+(full row normalisation, no harmless-mean projection), which yields an
+exportable model (\S\ref{sec:setup-methods}); the reference forward hook is
+planned as a further condition. Because, among the candidate models,
+instruction-tuned Jacobian lenses (\texttt{neuronpedia/jacobian-lens}) exist
+only for the two small-pair models, J-space is run on the small pair only.
+
+% ---------------------------------------------------------------------
+\subsection{Methods not evaluated}
+\label{sec:m-not}
+Null-space-constrained abliteration (\S\ref{sec:m-null}) and refusal cones
+(\S\ref{sec:m-rdo}) are described above for completeness but are not part of
+the final design. A code audit before the main runs found that the available
+null-space implementation (\texttt{jwest33/abliterator}) applies the
+constraint on the output side, where it gives no preservation guarantee, and
+edits square attention output projections, as in Qwen2.5-32B, OLMo-2-32B,
+Olmo-3.1-32B and Mistral-Small-2409, in the wrong space; the revised
+plan therefore dropped it. The only RDO implementation considered, the
+\texttt{rdo} preset of OBLITERATUS, is a probe-based proxy rather than the
+gradient-based optimisation of Wollschl\"ager et
+al.~\cite{wollschlager2025geometry}, and it is not among the OBLITERATUS
+presets evaluated in the companion paper \cite{young2026paper30}.
+% src (2026-11-05 todo pass): notes/EXECUTION_PLAN_v2.md (finding 9: "jwest33 square-o_proj bug"; Design: no null-space condition; small-pair OBLITERATUS presets basic/advanced/spectral_cascade/som); notes/methods_survey_other_tools.md (jwest33 null-space constraint; OBLITERATUS presets incl. rdo); notes/session_logs/transcripts_redacted/b7a10890-24c5-4939-ba96-da845ba9da41.jsonl (code-audit report, line 4489: jwest33 "AlphaEdit-style null-space constraint, but it is applied on the output side, so it gives no preservation guarantee. Has the square o_proj bug"; "abliterate.py:2085,2157 and null_space.py:314 test the input dimension first. A square o_proj (Qwen2.5-32B, OLMo-2-32B, Olmo-3.1-32B, Mistral-Small-2409) is therefore ablated in the wrong space"; "Its rdo is a probe-proxy, not Wollschlaeger's RDO"; line 7173: null-space "dropped because its tool was buggy"). No note gives a separate, explicit reason for leaving the OBLITERATUS rdo preset out of the plan. (2026-11-06) Presets evaluated in paper 30: basic, advanced, spectral_cascade (results/bench-4090/qwen2.5-7b__obliteratus-*; ../paper30/v3_2611/analysis/RESULTS.md), no rdo.
+Other diff-in-means implementations (DECCP, ErisForge, FailSpy's tool) are not
+run separately; Heretic-tuned DiM represents this recipe
+\cite{young2025comparative}.
+Optimal-transport ablation maps the harmful activation distribution onto the
+harmless one with a closed-form Gaussian transport map at one or two layers
+and reports up to 11\% higher attack success than baselines on six 7--32B
+models \cite{nanfack2026ot}; no public code was found. Weighted refusal
+direction optimisation (WRDO) learns weights over a bank of per-prompt refusal
+directions and was benchmarked against basic refusal-direction ablation, RDO,
+RDO cones and Heretic on Qwen3-8B-Base and Olmo~3 7B \cite{evseev2026wrdo};
+it is not evaluated. Circuit-breaker training
+\cite{zou2024circuit} and extended-refusal fine-tuning
+\cite{abushairah2025defense} are defences rather than removal methods and are
+discussed in Section~\ref{sec:related}.
+
+% ---------------------------------------------------------------------
+% NOTE FOR AUTHORS (not for the paper): design space for new methods.
+% Each method above fixes one choice on each axis; new methods = new combinations.
+%  1. Where to look:   residual stream | module I/O | J-space | attention heads | experts (MoE)
+%  2. What refusal is: 1 direction | subspace | cone | clusters | no assumption (learned map)
+%  3. How to find it:  mean diff | SVD | SOM | gradients | direct output matching (ARA)
+%  4. How to protect:  nothing | projection | norm preservation | null space | KL budget | preserve-loss
+%  5. How to apply:    weight projection | low-rank adapter | hook | per-expert / router edit
+%  6. How to tune:     fixed | grid | TPE | closed form
+% Candidate ideas:  null-space-constrained ARA (axis 4 on ARA); per-harm-category ARA
+% (SOM clusters as ARA targets); MoE router/expert-aware ARA; judge-in-the-loop objective
+% instead of keywords; multi-token / sequence-level preservation loss.
+

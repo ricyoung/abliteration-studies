@@ -1,0 +1,585 @@
+% ============================================================
+% APPENDIX: EXPERIMENTAL DETAILS
+% Secondary detail moved out of sections/04_methods.tex (Methods) on
+% 2026-11-05 to keep the main text within the house target of 1000--1500
+% words. Moved blocks follow the pre-restructure draft
+% (notes/paper_sections_backup_20261105_0942.tgz:
+% sections/03_experimental_setup.tex) verbatim or near-verbatim, plus short
+% linking sentences; every \label moved with its content. Every factual paragraph/table
+% carries a "% src:" comment; paths are relative to the paper-33 root
+% (../heretic = /data/heretic_2/heretic).
+% NOTE: this file must be \input from sections/08_appendix.tex (or
+% main.tex, after the appendix) for its labels to resolve.
+% ============================================================
+\section{Experimental Details}
+\label{app:setup-details}
+
+This appendix gives the implementation detail behind the Methods
+(\S\ref{sec:setup}), in the same order: models, method instantiation and
+search spaces, optimisation and prompt splits, held-out evaluation, export and
+release, multiple-testing families, compute and software, and deviations from
+the study plan.
+
+% ---------------------------------------------------------------------
+\subsection{Models}
+\label{app:setup-models}
+
+Except for the Mistral-Small-3.2 mirror, Heretic was not given an explicit
+revision; it used the locally cached snapshot, whose commit
+(Table~\ref{tab:models}) equals the commit recorded by the evaluation harness
+wherever both exist. The small pair (Qwen2.5-7B-Instruct and Qwen3.5-4B) fits a
+24\,GB consumer GPU.
+% src: runs/mc-h200-1/logs/download.log (snapshot paths); runs/mc-rtx-1/results/bench/*__base/summary.json and results/bench-4090/*__base/summary.json (model_info.hf_commit, weights_bytes); runs/mc-h200-1/runs/*/meta.txt (no --model-commit except unsloth mirror); notes/EXECUTION_PLAN_v2.md (finding 7; Design: small pair)
+
+Three architectural properties matter. First, Gemma-2, Gemma-4, OLMo-2 and
+Olmo-3.1 apply an RMSNorm \cite{zhang2019rmsnorm} with elementwise gain
+$\boldsymbol{\gamma}$ to the outputs of $W_O$ and $W_{\mathrm{down}}$ before
+they enter the residual stream (``post-norm''; output normalisation in the
+terminology of Kim et al.~\cite{kim2025periln}, distinct from classic Post-LN,
+which normalises after the residual addition). Gemma~2 normalises both the
+input and the output of each sublayer \cite{gemmateam2024gemma2}, whereas
+OLMo~2 and Olmo~3 normalise outputs only \cite{walsh2025olmo2,olmo2025olmo3}. Orthogonalising $W$ against $\hat{\mathbf{r}}$ then removes
+$\hat{\mathbf{r}}$ only from the pre-norm output $\mathbf{u}$; the residual
+stream still receives
+$(\boldsymbol{\gamma}\odot\hat{\mathbf{r}})^{\top}\mathbf{u}/\mathrm{rms}(\mathbf{u})$
+along $\hat{\mathbf{r}}$, which vanishes only for constant
+$\boldsymbol{\gamma}$. Direction-based edits are thus incomplete on four of the
+eight main-study models; this potential confound is disclosed rather than
+corrected in the primary runs, and a $\boldsymbol{\gamma}$-corrected MPOA
+control was run on all four post-norm models (\S\ref{app:setup-methods};
+results in \S\ref{sec:res-secondary}). Second, Qwen3.8-27B and Qwen3.5-4B use the
+Transformers \texttt{qwen3\_5} model class, which interleaves gated-delta-rule
+linear-attention layers \cite{yang2025gated} with full-attention layers (three to one in
+Qwen3.5-4B); on linear-attention layers Heretic edits the linear-attention
+output projection in place of $W_O$. Third, Qwen3.8-27B, Gemma-4-31B,
+Mistral-Small-3.2 and Qwen3.5-4B are image-text checkpoints used with text
+only, and the Gemma-2
+chat template has no system role, so the system prompt is prepended to the
+user turn (in Heretic and in the evaluation harness).
+% src: notes/EXECUTION_PLAN_v2.md (finding 6); runs/mc-h200-1/runs/qwen3.8-27b__ara__core-s1/output.log (traceback in transformers/models/qwen3_5/modeling_qwen3_5.py); runs/local-4090/qwen3.5-4b__ara__core-s1/model_kl0.1_t75/config.json (architectures, layer_types); ../heretic/src/heretic/model.py (get_layer_modules: linear_attn.out_proj; _apply_system_role); scripts/eval_one.sh (Gemma-4 limit_mm_per_prompt image 0); scripts/bench/bench.py (render_prompt fallback); runs/mc-rtx-1/results/bench/qwen3.8-27b__base/bench.log (Qwen3_5ForConditionalGeneration); runs/mc-rtx-1/results/bench/qwen3.8-27b__mpoa/model_hash.json (processor_config.json)
+
+% ---------------------------------------------------------------------
+\subsection{Method Instantiation and Search Spaces}
+\label{app:setup-methods}
+
+All methods run inside Heretic~2.0 \cite{heretic2025}, so prompt sets,
+scorers, trial budget and selection are shared, while the weight edit and its
+search space differ (Table~\ref{tab:search}). In every layer Heretic targets the attention output projection
+and the MLP down-projection. During optimisation each edit is held in a PEFT
+LoRA adapter \cite{hu2022lora} ($\Delta W=BA$, with LoRA $\alpha$ equal to the
+rank so that the scaling $\alpha/r$ is 1 and the adapter acts at full strength;
+no dropout); adapters are reset to zero before every
+trial and the base weights are not modified. Models were loaded unquantised in
+bf16; activation winsorisation was off. Built-in methods on the GPU boxes ran
+from upstream Heretic commit \texttt{0db5c31}; SOM, J-space and all small-pair
+runs ran from the fork branch \texttt{paper33-plugins} at \texttt{8fd4d76},
+which only adds the SOM (commit \texttt{45a4e6e}) and
+\texttt{PrecomputedDirections} modifiers, SOM tests and a SOM section of the
+configuration template to \texttt{0db5c31}, leaving the built-in modifiers
+identical. The $\gamma$-MPOA control ran from a third fork branch,
+\texttt{paper33-gamma} at \texttt{fdfe54b}, which adds only the $\gamma$-MPOA
+modifier to \texttt{8fd4d76}. On the GPU boxes the fork code was loaded
+through \texttt{PYTHONPATH} into the \texttt{0db5c31} environment, so the run
+records there name \texttt{0db5c31}; the fork commits are recorded in the
+environment captures. Configurations are
+\texttt{configs/core\_\{dim,mpoa,ara,som,jspace,gmpoa\}.toml};
+Table~\ref{tab:search} lists the search spaces.
+% src: ../heretic/src/heretic/model.py (apply_lora: LoraConfig r, lora_alpha=r, dropout 0; _zero_lora_weights; get_layer_modules); ../heretic/src/heretic/config.py (dtypes, quantization none); ../heretic/src/heretic/modifiers/abliteration.py (winsorization_quantile=1.0); git -C ../heretic diff --name-status 0db5c31 8fd4d76; runs/mc-h200-1/runs/*/meta.txt; runs/local-4090/*/meta.txt; runs/mc-h200-1/env/heretic_commit_p33.txt; ../heretic/src/heretic/modifiers/{abliteration,som,ara}.py (suggest_parameters); diff -r configs runs/mc-h200-1/configs (identical except core_jspace.toml and pilot_jspace.toml, which exist only locally; J-space ran only on the workstation); runs/mc-h200-1/runs/*__{som,gmpoa}__core-s1/meta.txt (cmd: PYTHONPATH=.../heretic-p33/src or .../heretic-gamma/src; heretic line 0db5c31); env/final_capture_{mc-h200,mc-rtx,4090-local}/git_commits.txt (heretic-gamma fdfe54b paper33-gamma); git -C ../heretic diff --stat 8fd4d76 fdfe54b (gamma_mpoa.py, test_gamma_mpoa.py only); runs/*/results/bench/*__gmpoa/plugin_commit.txt (fdfe54b)
+
+\paragraph{DiM.} The refusal direction of layer $\ell$ is the normalised
+difference of harmful and harmless mean residuals at the last prompt position
+\cite{arditi2024refusal}, removed by the rank-1 edit
+$\Delta W=-\lambda\,\hat{\mathbf{r}}(\hat{\mathbf{r}}^{\top}W)$ with neither
+projection nor row normalisation. Unlike the original procedure
+(\S\ref{sec:m-dim}), only $W_O$ and $W_{\mathrm{down}}$ are edited, the
+embedding matrix is not, and direction, strength and layer profile are tuned
+by the same search as MPOA (``Heretic-tuned DiM''). The strength $\lambda$
+follows a per-component kernel: the maximum weight at the maximum-weight
+position, decreasing linearly to the minimum weight at the minimum-weight
+distance, and zero beyond. A global direction is interpolated between the two
+layers adjacent to a fractional index; the per-layer scope uses each layer's
+own direction.
+% src: configs/core_dim.toml; ../heretic/src/heretic/modifiers/abliteration.py (init, suggest_parameters, modify_model; embedding comment); notes/EXECUTION_PLAN_v2.md (Design: Heretic-tuned DiM)
+
+\paragraph{MPOA.} Heretic's defaults: the direction is projected orthogonal to
+the normalised harmless mean \cite{lai2024projected}, and the edit is computed
+on row-normalised weights whose row norms are then restored
+\cite{lai2025mpoa}, approximated by a rank-3 adapter from a randomised SVD
+reseeded with the run seed.
+% src: configs/core_mpoa.toml (defaults); ../heretic/src/heretic/modifiers/abliteration.py (orthogonalize_direction=True, row_normalization=FULL, full_normalization_lora_rank=3, svd_lowrank q=2r+4 niter=6, manual_seed)
+
+\paragraph{SOM.} A port of the proof of concept in Heretic PR~\#196
+\cite{piras2025som}. Per layer, a $4\times4$ hexagonal self-organising map is
+fitted to the per-prompt harmful residuals (10{,}000 online iterations,
+learning rate 0.01 and neighbourhood radius 0.5, both decayed as
+$1/(1+2t/T)$; seeded with the run seed). The $k=4$ neurons that win the most
+harmful residuals yield directions
+$\mathrm{normalize}(\text{prototype}-\boldsymbol{\mu}_{\mathrm{safe}})$, which
+are projected orthogonal to the harmless mean and Gram--Schmidt orthonormalised
+in rank order. Direction $i$ is ablated with strength $\lambda(\ell)\,\delta^{i}$
+($\lambda$ as above, $\delta$ a searched decay: $\delta=0$ is single-direction
+ablation, $\delta=1$ removes the $k$-dimensional subspace), with full row
+normalisation in a rank-6 adapter. A global scope uses one integer layer.
+Deviations from Piras et al.~\cite{piras2025som} are listed in
+\S\ref{sec:setup-deviations}.
+% src: configs/core_som.toml; ../heretic/src/heretic/modifiers/som.py (Settings, fit_som, count_wins, select_top_k_neurons, orthonormalize, suggest_parameters, compute_lora); notes/overnight_log.md (02:42)
+
+\paragraph{ARA.} Heretic's default modifier \cite{weidmann2026ara}. For each
+targeted module in a searched layer range, inputs and outputs at the last
+prompt position are recorded on the harmless and harmful estimation prompts,
+and a rank-50 adapter is fitted by L-BFGS (5 outer steps of at most 20
+iterations, history 10, learning rate 1.0, strong-Wolfe line search) to the
+objective of \S\ref{sec:m-ara}, with $A$ initialised from the run seed.
+Row-magnitude preservation enters only the objective; the exported adapter is
+not renormalised.
+% src: configs/core_ara.toml (defaults); ../heretic/src/heretic/modifiers/ara.py (Settings, ara_loss, modify_model); notes/heretic2_methods_and_eval.md (final token); notes/EXECUTION_PLAN_v2.md (finding 10)
+
+\paragraph{J-space (small pair only).} Directions follow the
+\texttt{jspace-refusal} code
+\cite{sekinal2026jspace,neuronpedia2026jacobian,gurnee2026verbalizable}:
+$\mathbf{d}_\ell=J_\ell^{\top}\big(\mathbf{g}\odot(\overline{W_U[\mathcal{R}]}-\overline{W_U})\big)$,
+unit-normalised, with $W_U$ the unembedding, $\mathcal{R}$ the token ids of the
+package's 29 refusal words (34 ids), $\mathbf{g}$ the final-norm gain probed by
+normalising an all-ones vector, and $J_\ell$ the WikiText-fitted Jacobian lens
+of layer $\ell$ (\texttt{neuronpedia/jacobian-lens}, revision
+\texttt{qwen-n1000}); the lenses cover all blocks but the last, where $J=I$. No
+harmful/harmless contrast set is used. The \texttt{PrecomputedDirections}
+modifier then applies these directions with DiM/MPOA's edit and search space
+unchanged, without harmless-mean projection and with full row normalisation
+(rank 3). J-space is thus weight-baked here, not the forward-hook intervention
+of the original code.
+% src: scripts/jspace_directions.py; directions/{qwen3.5-4b,qwen2.5-7b}__jspace.pt (meta: lens_file, lens_revision, covered/filled layers, n_refusal_token_ids=34, 29 refusal_words, use_gain); configs/core_jspace.toml; ../heretic/src/heretic/modifiers/precomputed.py; env/env_4090-omarchy.txt (jspace-refusal 30a1b9c)
+
+\begin{table*}[t]
+\centering\small
+\caption{Search spaces sampled by multivariate TPE. $L$ = number of layers;
+intervals are closed; ``$\to0$'' marks a negative lower bound whose draws are
+clamped to 0, giving positive probability to switching the term off. Kernel
+parameters are sampled separately for the attention and MLP components (10
+parameters for DiM, MPOA and J-space, 11 for SOM, 6 for ARA).}
+\label{tab:search}
+\begin{tabular}{lll}
+\toprule
+Parameter & Range & Methods \\
+\midrule
+Direction scope & \{global, per layer\} & DiM, MPOA, J-space, SOM \\
+Direction index (global scope) & $[0.4(L-1),\,0.9(L-1)]$, continuous, interpolated & DiM, MPOA, J-space \\
+                               & integers in $[\mathrm{round}(0.4(L-1)),\,\mathrm{round}(0.9(L-1))]$ & SOM \\
+Direction decay $\delta$ & $[-0.2,\,1.0]$, $\to0$ & SOM \\
+Max.\ weight, attention & $[0.8,\,1.5]$ & DiM, MPOA, J-space, SOM \\
+Max.\ weight, MLP & $[-0.25,\,1.5]$, $\to0$ & DiM, MPOA, J-space, SOM \\
+Max.-weight position (layer) & $[0.6(L-1),\,L-1]$ & DiM, MPOA, J-space, SOM \\
+Min.\ weight (fraction of max.) & $[0,\,1]$ & DiM, MPOA, J-space, SOM \\
+Min.-weight distance (layers) & $[1,\,\max(0.6(L-1),1)]$ & DiM, MPOA, J-space, SOM \\
+\midrule
+Start layer & integers in $[0,\,\lfloor L/2\rfloor]$ & ARA \\
+End layer (exclusive) & integers in $[\lfloor L/2\rfloor+1,\,L]$ & ARA \\
+$w_p$ (preserve harmless outputs) & $[0,\,1]$ & ARA \\
+$w_s$ (steer harmful outputs) & $[10^{-4},\,1]$, log scale & ARA \\
+$w_o$ (overcorrection, relative) & $[0,\,1.3]$ & ARA \\
+$k$ (nearest neighbours) & integers in $[1,\,15]$ & ARA \\
+\bottomrule
+\end{tabular}
+\end{table*}
+% src: ../heretic/src/heretic/modifiers/abliteration.py (suggest_parameters); ../heretic/src/heretic/modifiers/som.py (suggest_parameters); ../heretic/src/heretic/modifiers/ara.py (suggest_parameters; k <= min(15, 400, 400)); configs/core_*.toml (no range overrides)
+
+{\raggedright
+\paragraph{Additional conditions.} Three further conditions were run: a
+$\boldsymbol{\gamma}$-corrected MPOA control on the four post-norm models; a
+second seed (seed~2) for all five methods on the small pair (10 runs), in
+place of the planned second seed for DiM, MPOA and ARA on the Qwen and Gemma
+pairs; and eight publicly released community abliterations as external
+references under the same evaluation protocol
+(\texttt{huihui-ai/Qwen2.5-32B-Instruct-abliterated},
+\texttt{zetasepic/Qwen2.5-32B-Instruct-abliterated-v2},
+\texttt{heretic-org/Qwen3.8-27B-heretic-ara},
+\texttt{huihui-ai/Huihui-Qwen3.8-27B-abliterated},
+\texttt{coder3101/gemma-4-31B-it-heretic},
+\texttt{MuXodious/Olmo-3.1-32B-Instruct-impotent-heresy},
+\texttt{huihui-ai/Huihui-Mistral-Small-3.2-24B-Instruct-2506-abliterated} and
+\texttt{llmfan46/Mistral-Small-3.2-24B-Instruct-2506-ultra-uncensored-heretic}).
+The external OBLITERATUS toolkit \cite{obliteratus2026} is not part of this
+study. Its v0.1.4 presets \texttt{basic}, \texttt{advanced} and
+\texttt{spectral\_cascade} (commit \texttt{461ff086}) were run on
+Qwen2.5-7B-Instruct and scored with this study's harness; the results are
+reported, with other external tools, in the companion paper
+\cite{young2026paper30}. Version 0.1.4 lists a \texttt{som} preset but does not
+ship its direction module and does not support the hybrid-attention Qwen3.5-4B, so
+it could provide no older--newer contrast. A paper-faithful SOM configuration
+and J-space as a forward hook with $\alpha=1$ were planned on the small pair
+but not run; they are left to future work (\S\ref{sec:limitations}).\par}
+% review revision 2026-11-06 (task item 9; author decision C): todo converted into a future-work statement.
+% 2026-11-06 (author decision, supersedes author decision 3): OBLITERATUS is reported in paper 30 only
+% (young2026paper30), not in paper 33; the note that "basic" is not faithful to Arditi et al. (no chat template, heuristic
+% layers; push_manifest.json preset_definition use_chat_template false) was dropped here and belongs in paper 30 (not yet in its v3 draft).
+% src (2026-11-06): results/bench-4090/qwen2.5-7b__obliteratus-{basic,advanced,spectral_cascade}/push_manifest.json
+% (OBLITERATUS 0.1.4 @461ff086, base Qwen2.5-7B-Instruct); scripts/run_external_small.sh (header NOTE: som extractor not
+% shipped, preset fails in the constructor; OBLITERATUS v0.1.4 fails closed on every Qwen3.5); ../paper30/v3_2611/analysis/RESULTS.md
+% src: notes/EXECUTION_PLAN_v2.md (findings 6, 7, 9; Design; Seeds; External references)
+% src (2026-11-06 fact-check pass): results/analysis/dir_status.csv (gamma-MPOA 4, seed-2 10, community 8 judged; no
+% OBLITERATUS, paper-faithful SOM or J-space-hook dirs among the paper-33 cells); paper/figures/captions.md (fig14 "For the text": release repositories)
+
+% ---------------------------------------------------------------------
+\subsection{Optimisation, Prompt Splits and Selection}
+\label{app:setup-opt}
+
+\paragraph{Sampler, seeding and resumption.} The TPE sampler uses 128
+expected-improvement candidates. Seed~1 is applied to Python, NumPy, PyTorch
+and Optuna and to the method-internal random steps (randomised SVD, SOM, ARA
+initialisation). In resumed processes (Qwen3.8-27B MPOA and the
+interrupted Qwen3.8-27B ARA study, \S\ref{sec:setup-deviations}) the stored seed
+(1) was restored for the sampler and the method-internal steps, but the global
+Python, NumPy and PyTorch generators were seeded randomly, because the resume
+commands did not pass \texttt{-{}-seed}. Heretic chose the generation batch size
+automatically (upper bound 128); it was 128 in every run except Qwen2.5-32B
+DiM, capped at 64, and the seed-2 Qwen3.5-4B DiM, SOM and ARA runs on the
+workstation, where batch size 128 ran out of memory and 64 was chosen, so
+those three seed pairs differ in batch size as well as seed (sensitivity of the
+seed-noise band in \S\ref{sec:res-h1} and Appendix~\ref{app:kl-cap}).
+Journals, configurations and logs are kept for every run.
+% src: ../heretic/src/heretic/main.py (TPESampler n_startup_trials, n_ei_candidates=128, multivariate=True, seed; transformers.set_seed); ../heretic/src/heretic/config.py (n_trials, n_startup_trials, seed, max_batch_size=128); configs/core_*.toml; runs/mc-h200-1/queue.txt, queue_b.txt (--seed 1, --max-batch-size 64); runs/*/output.log ("Chosen batch size"); notes/RUNBOOK.md (What is kept); runs/mc-h200-1/runs/qwen3.8-27b__mpoa__core-s1-resume1/meta.txt and qwen3.8-27b__ara__core-s1-resume{1,2}/meta.txt (no --seed); ../heretic/src/heretic/main.py lines 275-278 (random seed + transformers.set_seed when seed unset) and 405-407 (stored settings restored on continue); runs/mc-h200-1/runs/qwen3.8-27b__mpoa__core-s1-resume1/checkpoints/*.jsonl (stored "seed":1); runs/local-4090/qwen3.5-4b__{dim,som,ara}__core-s2/output.log ("Trying batch size 128... Failed (CUDA out of memory"; "Chosen batch size: 64")
+
+\paragraph{Prompt splits.} The refusal objective uses the first 100
+\emph{test} prompts of \texttt{harmful\_behaviors}, which serve as the
+development (dev) set for both search and selection, and the KL objective the
+first 100 test prompts of \texttt{harmless\_alpaca}. Batch-size probing and
+response-prefix detection use training prompts only. Dataset revisions were
+not pinned in the Heretic configurations. All primary and secondary refusal,
+capability and teacher-forced outcomes come from the held-out sets of
+\S\ref{sec:setup-models} and \S\ref{sec:setup-eval}. Dev-set values are reported only to document selection
+(Pareto fronts, KL-threshold sensitivity), as the first-token KL measure of
+distribution shift, and for the dev-versus-held-out overfitting check
+(\S\ref{sec:setup-stats}).
+% src: ../heretic/src/heretic/modifiers/{abliteration,ara,som}.py (good_prompts/bad_prompts train[:400]); ../heretic/src/heretic/scorers/keyword_rate.py (test[:100]); ../heretic/src/heretic/scorers/kl_divergence.py (test[:100]); ../heretic/src/heretic/config.py (batch_size_test_prompts train[:256], response_prefix_test_prompts train[:100] x2); notes/EXECUTION_PLAN_v2.md (finding 2; Selection: "full Pareto fronts reported"; Distribution shift: "first-token KL (dev)"; Statistics: "Spearman dev-vs-test refusal")
+
+\paragraph{Objective details.} Heretic's refusal markers are matched
+case-insensitively, after removing emphasis and normalising apostrophes and
+whitespace; empty responses count as refusals. Prompts use each model's chat
+template with the system prompt ``You are a helpful assistant.''. Heretic
+determines a response prefix automatically and prefills it when one is found:
+if the chat template opens a reasoning block, the prefix closes it; otherwise
+Heretic searches for a prefix common to all responses to the detection prompts.
+A prefix was found only for Qwen3.8-27B and Qwen3.5-4B, whose templates open a
+reasoning block, so their dev-set responses contain no reasoning; no prefix was
+found for any other model.
+% src: ../heretic/src/heretic/scorers/keyword_rate.py (REFUSAL_MARKERS, _is_match); ../heretic/src/heretic/scorers/kl_divergence.py (F.kl_div log_target batchmean); ../heretic/src/heretic/config.py (max_response_length=100, system_prompt; response_prefix default None, auto-detected); ../heretic/src/heretic/main.py (CoT initializer/finalizer check, "Checking for common response prefix", "Rechecking with prefix"); ../heretic/src/heretic/model.py (do_sample=False); runs/mc-h200-1/runs/qwen3.8-27b__*/output.log ("Extended prefix found: '</think>\n'"), runs/local-4090/qwen3.5-4b__*/output.log ("Extended prefix found: '</think>\n\n'"); all other runs/mc-h200-1/runs/*/output.log and runs/local-4090/qwen2.5-7b__*/output.log ("None found"); resumed runs restore the stored response_prefix from checkpoints/*.jsonl
+
+\paragraph{Selection.} Heretic's headless default exports the trial with the
+fewest refusals irrespective of KL divergence; the fixed rule of
+\S\ref{sec:setup-opt} is applied instead in every run. The selected trial
+always lies on the Pareto front.
+% src: scripts/select_trial.py (docstring, RULE_TEXT, KL_MAX=0.1, REPORT_THRESHOLDS, select()); notes/EXECUTION_PLAN_v2.md (Selection)
+
+% ---------------------------------------------------------------------
+\subsection{Held-out Evaluation}
+\label{app:setup-eval}
+
+\paragraph{Held-out refusal set.} The held-out file is version~2 of
+\texttt{refusal\_sets.json}; its HarmBench items are the standard category of
+the HarmBench text test set \cite{mazeika2024harmbench}, and its 200
+malicious-code requests come from the code-as-weapon bank \cite{young2026code}.
+The code items come from the bank's \texttt{code\_safety} split, restricted to
+unanimous labeller agreement (tiers 5/5, 4/4), excluding items sourced from
+\texttt{harmful\_behaviors} or JailbreakBench, and drawn proportionally by
+source with seed 20261105 (\texttt{astra} 88, \texttt{scam2prompt} 43,
+\texttt{rmcbench} 24, \texttt{cysecbench} 23, \texttt{malwarebench} 17,
+\texttt{redcode} 5). Each harmful item was compared with all 520
+\texttt{harmful\_behaviors} prompts (exact match after normalisation, or token
+Jaccard $\ge0.6$ with \texttt{SequenceMatcher} ratio $\ge0.8$); 44 items are
+flagged and results are reported with and without them. In a check made after
+evaluation with the same criterion, none of the 350 benign items matched any
+of the 31{,}323 \texttt{harmless\_alpaca} prompts (training and test splits).
+Dataset revisions and file hashes are stored in the file's metadata.
+% src: scripts/bench/refusal_sets.json (meta; Counter of set/kind/source/advbench_overlap); scripts/build_refusal_sets.py; notes/overnight_log.md (22:45, 22:50); notes/EXECUTION_PLAN_v2.md (Held-out refusal)
+% src (2026-11-05 todo pass): mlabonne/harmless_alpaca @ 02c6a92cfcf11bb0c387334f8146d149d65b587f, data/{train,test}-00000-of-00001.parquet (25,058 + 6,265 prompts) from https://huggingface.co/datasets/mlabonne/harmless_alpaca; benign items (jbb_benign 100, xstest_safe 250) of scripts/bench/refusal_sets.json; norm() and exact / fuzzy rule (token Jaccard >= 0.6 and SequenceMatcher >= 0.8) copied from scripts/build_refusal_sets.py; 0 exact, 0 fuzzy matches (highest token Jaccard 0.625, template-only matches such as "what is an execution" / "what is an api")
+
+\paragraph{Generation.} Where the chat template lacks a system role, the system
+prompt is folded into the user turn; reasoning is disabled with
+\texttt{enable\_thinking=False}. A copy of each response truncated to 256
+tokens and the finish reason are stored.
+% src: scripts/bench/refusal_sets.json (meta: system_prompt, max_tokens 512, greedy); scripts/bench/bench.py (render_prompt, generate_refusal_set: response_256, finish_reason)
+
+\paragraph{Teacher-forced divergence.} The original model's responses are
+scored under teacher forcing from vLLM prompt log-probabilities; the measure is
+a sequence-level complement to the first-token KL objective.
+% src: scripts/bench/bench.py (teacher_forced_logprobs; kind == "benign"); runs/mc-rtx-1/results/bench/qwen3.8-27b__mpoa/summary.json (teacher_forced.n_items 350)
+
+\paragraph{Capability benchmarks.} Subsets were drawn
+once with seed 20261104 (MMLU-Pro allocated proportionally over its 14
+subjects); their document identifiers are re-verified before every run.
+Decoding is greedy with fixed budgets, chat templates are applied (few-shot
+examples as multi-turn chat), reasoning is disabled and the context is 8{,}192
+tokens; harness seeds are 0 (Python) and 1234 (NumPy, PyTorch, few-shot
+sampling, vLLM). A Transformers backend is reserved for models vLLM cannot load;
+all evaluations so far used vLLM. Each summary records library versions and
+a SHA-256 over the evaluated model's files.
+% src: scripts/bench/README.md (Protocol); scripts/bench/bench.py (BENCHMARKS, SEEDS, build_lm, verify_ids); scripts/bench/run.sh (exit 3 -> hf fallback); scripts/bench/make_subsets.py; scripts/bench/subsets.json (seed 20261104); runs/mc-rtx-1/results/bench/*/summary.json, results/bench-4090/*/summary.json (backend vllm; only qwen3.8-27b__base.hf-fallback-aborted used hf)
+
+\paragraph{Judges and degeneracy heuristic.} All judges score the same stored
+responses: WildGuard \cite{han2024wildguard} (\texttt{allenai/wildguard};
+primary judge of refusal and harmful response), the HarmBench classifier
+(\texttt{cais/HarmBench-Llama-2-13b-cls}; harmful compliance on harmful prompts),
+Qwen3Guard-Gen-8B \cite{zhao2025qwen3guard} (second LLM judge; safety and refusal
+labels), each with its official prompt format; the ModernBERT refusal
+classifier of Heretic's BERT scorer (\texttt{VINAY-UMRETHE/Refusal-Classifier};
+prompt and response); the RoBERTa classifier
+\texttt{Human-CentricAI/LLM-Refusal-Classifier} (response only), kept for
+continuity with Young~\cite{young2025comparative}; and Heretic's 33 keyword markers
+(lower-cased, typographic apostrophes normalised; unlike Heretic's scorer, no
+emphasis or whitespace normalisation, and empty responses are flagged as
+degenerate rather than counted as refusals) on the full response and its first
+256 tokens. LLM judges run greedily in vLLM
+with a 4{,}096-token context, except the HarmBench classifier, which runs with
+its 2{,}048-token context on the response cut to its first 512 classifier
+tokens; for 6 long code-misuse prompts the behaviour text was also shortened to
+fit (436 of 97{,}828 judged responses). BERT inputs are truncated to 512 tokens.
+% src (2026-11-06): scripts/bench/score_refusals.py lines 84, 93-97, 165-186 (run_vllm max_model_len=4096 default; HarmBench max_model_len=2048, generation truncated to 512 classifier tokens, behaviour shortened if still too long, hb_behavior_truncated flag); count of hb_behavior_truncated=true over the 74 judgments.jsonl: 436 rows, 4-6 per model, 6 distinct prompt ids (cw_astra_*, cw_rmcbench_*)
+A degeneracy heuristic flags empty responses; responses of at least 20 words in
+which more than half of the word 4-grams repeat or fewer than 15\,\% of words
+are distinct; runs of more than 40 identical characters other than whitespace
+and the separator characters used for rules in code and Markdown
+(\texttt{= - * \# \_ \textasciitilde{} .}), whose runs count only when they make up
+more than half of the response; and more than 20\,\%
+non-printable characters. In the analysis a character-run flag is kept only if
+the run reaches the end of the response, if a run of a character other than
+these separators and box-drawing characters lies outside Markdown code, or if
+a separator or box-drawing run makes up more than half of the response;
+otherwise only the non-printable test applies. This recheck cleared 119 of the
+162 raw character-run flags, which marked mainly hexadecimal constants, a long
+string copied from one prompt and box-drawing rules in coherent code. The
+outcome classes of \S\ref{sec:setup-eval} are assigned to all 97{,}828
+judged responses; WildGuard returned no refusal label for 5 of them, which are
+left unscored and excluded from WildGuard rates. Each judge was loaded at an
+explicit Hugging Face commit, resolved from the repository's main branch when
+scoring started, passed to the loader and stored with the scores. Both scoring
+batches resolved the same commits, so all 74 evaluated models were scored with
+\texttt{allenai/wildguard} at \texttt{cbba4823},
+\texttt{cais/HarmBench-Llama-2-13b-cls} at \texttt{bda70534},
+\texttt{Qwen/Qwen3Guard-Gen-8B} at \texttt{4505cb1a},
+\texttt{VINAY-UMRETHE/Refusal-Classifier} at \texttt{5c525175} and
+\texttt{Human-CentricAI/LLM-Refusal-Classifier} at \texttt{0d9379ea}.
+% src (2026-11-05 todo pass): char_run recheck: scripts/analysis/assemble.py (docstring "CHAR_RUN RECHECK"; recheck_char_run); results/analysis/assemble_log.txt ("char_run recheck: 162 raw char_run flags -> 43 kept ... 119 cleared"); results/analysis/README.md (char_run recheck: hex constants, cw_rmcbench_0346 string, box-drawing rules)
+% src (2026-11-05 todo pass): 97,828 rows = 74 cells x 1,322 and 5 unscored: results/analysis/responses_judged.csv.gz; results/analysis/assemble_log.txt ("outcome counts (all cells)"; "outcome 'unscored' rows"); results/analysis/README.md (unscored rows excluded from wg_refusal_n)
+% src (2026-11-05 todo pass): judge commits: scripts/bench/score_refusals.py (hf_revision = HfApi().model_info(repo).sha; revision=revs[repo] passed to pipeline() and vllm.LLM(revision=, tokenizer_revision=); save(): judge_revisions in refusal/summary.json); notes/overnight_log.md (08:0x: "judges loaded at the recorded HF revision"); runs/mc-rtx-1/runs/judge__batch1-r2/output.log and judge__batch1-r4/output.log (vLLM "non-default args" revision cbba4823..., bda70534...); results/analysis/dir_status.csv (judge_revisions identical for all 74 used dirs: wildguard cbba4823f3e8020e5a74a5e29bf85072def6f2ff, HarmBench bda705349d1144fa618770bea64d99ce54e3835b, Qwen3Guard 4505cb1a6f1864f21f8b27f7daf1b9a1aab6edbb, VINAY 5c525175530c1bc3f3ffb91b53f0f3d27af8db94, Human-CentricAI 0d9379eaad351ba5a89a3da24ef5b478d3daeff0); results/analysis/assemble_log.txt ("distinct judge-revision sets among used dirs: 1"); runs/mc-rtx-1/runs/judge__batch{1-r4,2}/meta.txt
+% src: scripts/bench/score_refusals.py (docstring, KEYWORDS, keyword(), degenerate(), run_bert, run_vllm, judge calls); ../heretic/src/heretic/scorers/keyword_rate.py (REFUSAL_MARKERS, _is_match: empty -> match, "*" removed, whitespace collapsed); scripts/bench/judge_templates/; notes/EXECUTION_PLAN_v2.md (Judges; finding 3)
+
+% ---------------------------------------------------------------------
+\subsection{Export and Release}
+\label{sec:setup-export}
+
+Every evaluated model is a merged, standalone checkpoint, never a live adapter.
+The selected trial is restored from a copy of the study journal patched with
+the trial's Pareto position. Heretic reloads the base model,
+recomputes the method's statistics (J-space reads its direction file), rebuilds
+the adapter from the trial's stored parameters and merges it with PEFT
+\texttt{merge\_and\_unload}. The exported checkpoint differs from the original
+only in the attention (or linear-attention) output and MLP down-projection
+matrices of the layers the trial edits, each replaced by $W+BA$ with
+$\mathrm{rank}(BA)\le1$ (DiM), 3 (MPOA, J-space), 6 (SOM) or 50 (ARA); all
+other weight tensors and the tokenizer are the base model's. Main-study
+re-exports ran on the GPU that then evaluated the model
+(\S\ref{sec:setup-compute}): the RTX box for the Qwen and Gemma pairs and the
+H200 box for the OLMo and Mistral Small pairs. All main-study searches ran on
+the H200 box, so the Qwen and Gemma exports were rebuilt on a different GPU
+from their search. For ARA, rebuilding the adapter means refitting it by
+L-BFGS from the stored hyperparameters, and the ARA exports rebuilt on the
+other GPU drifted more on the dev re-score than those rebuilt on the search
+GPU (Appendix~\ref{app:dev-rescore}).
+% src (2026-11-06): results/analysis/dir_status.csv gen_gpu (qwen*/gemma* main + Gemma gamma-MPOA: RTX PRO 6000; olmo*/mistral* main + OLMo gamma-MPOA: H200 NVL; small pair: RTX 4090; external: 5 RTX, 3 H200)
+% src (review revision, A3): results/analysis/review_sel_export_drift.csv (search mc-h200-1 for every main-study cell; export
+% src: built on mc-rtx-1 for Qwen/Gemma, mc-h200-1 for OLMo/Mistral; reexport.log "Obtaining module I/O ... Modifying model using
+% src: ARA"); review_sel_export_tests.csv (ARA 4/4 vs 0/4 drift > 2, Fisher p 0.029).
+The export step itself does not re-score the model; the released merged
+exports were therefore re-scored separately on the dev set and compared with
+the selected trial's dev refusal count and KL divergence
+(Appendix~\ref{app:dev-rescore}).
+% src: scripts/select_trial.py (patch_journal, reexport_commands: --export-strategy MERGE); scripts/eval_one.sh; scripts/eval_one_local.sh; ../heretic/src/heretic/model.py (get_merged_model: merge_and_unload); runs/mc-rtx-1/results/bench/*/reexport.log ("Restoring model from trial", "Obtaining module I/O", "Merging LoRA adapters into base model"; no dev re-scoring); notes/EXECUTION_PLAN_v2.md (finding 4)
+% src (2026-11-06): results/rescore_dev/rescore_dev_all.csv (46 released exports: sel_refusals, sel_kl vs rescore_refusals, rescore_kl); sections/08f_dev_rescore.tex (app:dev-rescore)
+
+Models are published with Heretic's upload action as public repositories
+\texttt{richardyoung/\{base\}-\{METHOD\}-heretic} with Heretic's model card.
+For MPOA, ARA and DiM the upload includes Heretic's full \texttt{reproduce/}
+manifest (configuration, study journal, requirements and weight checksums),
+which upstream Heretic can use to re-run the search and export
+(\texttt{heretic -{}-reproduce}); the manifest itself notes that reproducibility
+is not guaranteed because Heretic was installed from a local directory or
+wheel. SOM, J-space and $\gamma$-MPOA models omit it, because they need a
+project fork and, for J-space, an external direction file. The released model
+cards name neither this paper nor the fork commits (\texttt{8fd4d76},
+\texttt{fdfe54b}); all Heretic commits used are recorded in the run records
+and environment captures (\S\ref{app:setup-methods}).
+% src (2026-11-06): Hugging Face model cards of all 46 released full-weight repositories checked; none names the paper or a fork commit; runs/local-4090/*/meta.txt (8fd4d76); runs/mc-h200-1/env/heretic_commit_p33.txt; runs/*/results/bench/*/{heretic_p33_commit,plugin_commit}.txt; env/final_capture_*/git_commits.txt
+For the main study the evaluated copy is downloaded back from the published
+repository, so evaluated and published weights coincide by construction. Small-pair models were
+evaluated from a locally kept export (the workstation's Hugging Face token was
+read-only during the runs) and published afterwards by re-exporting the same
+trial; publication is accepted only if every uploaded weight shard is
+SHA-256-identical to the benchmarked copy; this check passed for all ten
+small-pair models.
+% src: scripts/eval_one.sh (publish branch; hf download back; repro=none for SOM|JSpace|GMPOA*; runs/*/results/bench/*__gmpoa/reexport.sh (--upload-repro none)); scripts/select_trial.py (--upload-repro); scripts/publish_local.sh; results/bench-4090/*/publish_check.json (10 files, all "match": true, "private": false); runs/local-4090/logs/publish_all.log; runs/local-4090/logs/publish_ara_retry2.log ("OK qwen3.5-4b__ara"); runs/mc-rtx-1/results/bench/*/hf_repo.txt; runs/mc-rtx-1/tmpmodels/*/reproduce/README.md ("Reproducibility *cannot* be guaranteed in this environment"; Contents: config.toml, journal, requirements.txt, SHA256SUMS.txt, reproduce.json); notes/overnight_log.md (03:20, 06:34-06:58)
+% src (2026-11-06): scripts/eval_one.sh (PLUG heretic-gamma / heretic-p33; repro=none for SOM|JSpace|GMPOA*); runs/mc-*/results/bench/*__gmpoa/reexport.sh (--upload-repro none) and plugin_commit.txt (fdfe54b); runs/mc-*/results/bench/*__som/heretic_p33_commit.txt (8fd4d76); runs/mc-h200-1/runs/*__{som,gmpoa}__core-s1/meta.txt (cmd PYTHONPATH=.../heretic-{p33,gamma}/src; its heretic line shows the master checkout 0db5c31); runs/local-4090/*__{som,jspace}__core-s1/meta.txt (8fd4d76); env/final_capture_{mc-h200,mc-rtx,4090-local}/git_commits.txt; model cards of the 46 released repositories checked 2026-11-06 (no paper or fork commit named)
+
+Released models keep their base licences (Gemma terms; Mistral Research
+Licence, non-commercial, for Mistral-Small-2409); the Human-CentricAI
+judge (CC~BY-NC) is used for research only.
+% src: notes/EXECUTION_PLAN_v2.md (Publishing)
+
+% ---------------------------------------------------------------------
+\subsection{Multiple-Testing Families}
+\label{app:setup-stats}
+
+Holm's procedure controls each family of related tests at a two-sided
+$\alpha=0.05$, separately for each refusal measure and prompt subset. The
+families are H1 (23 tests: 21 pair $\times$ method McNemar tests and the two
+pooled class effects), H2 (6: five per-pair interactions and the pooled one),
+modified versus original (42 models), the H3 gap model (4 terms), per-model
+keyword--WildGuard gaps (all 74 evaluated models), $\gamma$-MPOA versus MPOA
+(4), each community release versus the four models selected here for the same
+checkpoint (4 per release), seed~2 versus seed~1 (10 cells), per-benchmark
+capability changes of the $\gamma$-MPOA models (20 per reference model),
+over-refusal changes from the original (all 64 modified models), the
+256-token label change of each judge and the 256-token keyword--judge gaps
+(all 74 evaluated models each; Appendix~\ref{app:trunc256}), the two
+dev re-score tests (refusals and KL; Appendix~\ref{app:dev-rescore}), the
+100-token keyword--judge gaps (all 74 models; \S\ref{sec:res-h3}), and, in the
+sensitivity analyses, the H1 and H2 families repeated within each item subset
+(Appendix~\ref{app:item-source}) and within each harmful-compliance outcome
+(Appendix~\ref{app:harm}). Pair-level random-effects summaries, the
+heterogeneity tests, the KL-cap refits and the export-drift Fisher tests are
+not adjusted.
+% src: results/analysis/h1h2_tests.csv (n_in_family 23 / 6 / 42); scripts/analysis/h3.py (Holm over 4 GEE terms; per-cell gap Holm across all judged cells); scripts/analysis/final.py (4 gamma-MPOA vs MPOA; 4 per community release; 10 seed cells; 20 per benchmark reference); scripts/analysis/secondary.py and results/analysis/secondary_overrefusal.csv (over-refusal McNemar, Holm over the 64 modified cells)
+% src (2026-11-06, integration): scripts/analysis/truncation256.py (label change: holm_family "per judge, across all judged cells (harmful_all)", 74 cells in trunc256_cells.csv; 256-token gaps: "comparison x set_group across all judged cells" in trunc256_h3.csv, as h3.py; refitted GEE: 4 terms as above); scripts/analysis/dev_rescore_summary.py and results/analysis/dev_rescore_tests.csv (wilcoxon_p_holm over the refusal and KL tests)
+
+% ---------------------------------------------------------------------
+\subsection{Compute and Software}
+\label{sec:setup-compute}
+
+Three single-GPU machines were used (Table~\ref{tab:compute}); the two server
+boxes were rented from Massed Compute and downloaded models directly from
+Hugging Face. The Heretic environment used Python 3.12 (3.12.16 on the boxes,
+3.12.15 on the workstation), PyTorch 2.14.1 (CUDA 13.0 build), Transformers
+5.18.0, PEFT 0.21.2, Accelerate 1.15.0, Optuna 5.0.0, Datasets 5.0.1,
+safetensors 0.8.0, huggingface\_hub 1.33.0 and NumPy 2.5.4. The evaluation
+environment is a separate lock-file-pinned project with vLLM 0.33.0, lm-eval
+0.4.13, PyTorch 2.14.0 (CUDA 13.0), Transformers 5.20.2, Datasets 5.1.0 and
+Accelerate 1.15.0; vLLM's FlashInfer sampler was disabled (identical argmax
+under greedy decoding). The 168 recorded single-GPU jobs ran for 69.3\,h of
+wall-clock time in total: 32.7\,h of Heretic optimisation (73 processes,
+including eight pilot runs), 33.8\,h of evaluation (90 jobs; for selected
+models these include selection, re-export, upload and download where
+applicable) and 2.9\,h of judging (5 jobs). The totals include 6.1\,h of failed
+or aborted attempts and exclude time spent waiting for a busy GPU. Because two
+job queues shared the H200 for part of the search phase
+(\S\ref{sec:setup-deviations}), the GPUs were occupied for 67.5\,h (H200
+30.4\,h, RTX PRO 6000 22.6\,h, RTX 4090 14.5\,h). Not included are model
+downloads, work without a run record (smoke tests, the computation of the
+J-space directions, and the re-export and upload that published the
+small-pair models), evaluations run on the RTX box for another study, and the
+statistical analysis.
+% src (2026-11-05 todo pass): sum of wall_seconds in runs/mc-h200-1/runs/*/meta.txt (77: 51 Heretic incl. 6 pilot-s1, 26 bench__), runs/mc-rtx-1/runs/{bench__,judge__}*/meta.txt (32 bench__ + 5 judge__ with host massed-rtx6000; the H200 runs mirrored into runs/mc-rtx-1/runs are not counted twice; bench__ jobs of the 1.x models qwen2.5-14b, qwen2.5-coder-* and *heretic1x* belong to another study and are excluded) and runs/local-4090/*/meta.txt (22 Heretic runs incl. 2 pilots); the 32 RTX 4090 evaluation jobs have no meta.txt and are timed from START/END in runs/local-4090/logs/bench_queue.log; idle-GPU wait = gap between meta.txt start and the first line of output.log for commands with the nvidia-smi guard (0.15 h); failed = exit_code != 0 or rc != 0; occupancy = union of [start, end] intervals per machine (computed 2026-11-05, read-only, from the synced files above)
+% src: env/env_mc-h200.txt; env/env_mc-rtx.txt; env/env_4090-omarchy.txt; runs/mc-h200-1/env/nvidia-smi.txt, runs/mc-rtx-1/env/nvidia-smi.txt (Attached GPUs: 1); scripts/bench/pyproject.toml; runs/mc-rtx-1/results/bench/*/summary.json (versions); scripts/bench/run.sh (VLLM_USE_FLASHINFER_SAMPLER=0); PLAN.md (Rented GPU workflow)
+
+\begin{table*}[t]
+\centering\small
+\caption{Hardware (GPU memory from \texttt{nvidia-smi}, RAM from \texttt{free -g}).}
+\label{tab:compute}
+\begin{tabular}{@{}l >{\raggedright\arraybackslash}p{3.3cm} >{\raggedright\arraybackslash}p{2.8cm} l >{\raggedright\arraybackslash}p{4.6cm}@{}}
+\toprule
+Machine & GPU (memory) & CPU / RAM & Driver & Role \\
+\midrule
+H200 box & 1$\times$ NVIDIA H200 NVL (143{,}771 MiB) & 16 vCPU, AMD EPYC 9355 / 176 GiB & 580.126.09 & main-study search; export and evaluation of the OLMo and Mistral Small pairs (incl.\ OLMo $\gamma$-MPOA) and 3 community models; ARA/MPOA/DiM pilots \\
+RTX box & 1$\times$ RTX PRO 6000 Blackwell Server Ed.\ (97{,}887 MiB) & 16 vCPU, AMD EPYC 9335 / 141 GiB & 580.126.09 & export and evaluation of the Qwen and Gemma pairs (incl.\ Gemma $\gamma$-MPOA) and 5 community models; all judging; release \\
+Workstation & 1$\times$ GeForce RTX 4090 (24{,}564 MiB) & AMD Ryzen 9 7950X / 62 GiB & 615.78.08 & small pair: all steps; SOM and J-space pilots \\
+\bottomrule
+\end{tabular}
+\end{table*}
+% src: env/env_mc-h200.txt; env/env_mc-rtx.txt; env/env_4090-omarchy.txt; scripts/eval_one.sh; scripts/eval_one_local.sh; scripts/local_queue.sh; runs/mc-h200-1/queue.txt; runs/mc-h200-1/logs/queue.log (pilot-s1 runs: qwen3.5-4b/qwen2.5-7b x ara/mpoa/dim); runs/local-4090/qwen3.5-4b__som__pilot-s1/meta.txt, runs/local-4090/qwen3.5-4b__jspace__pilot-s1/meta.txt (host 4090-omarchy)
+
+% ---------------------------------------------------------------------
+\subsection{Deviations from the Plan}
+\label{sec:setup-deviations}
+
+\begin{itemize}
+\item \textbf{Mistral-Small-3.2 source.} The official repository ships only
+  \texttt{mistral-common} tokenizer files, without Hugging Face tokenizer or
+  processor configurations, so Heretic failed at load before any trial. The runs
+  were repeated from \texttt{unsloth/Mistral-Small-3.2-24B-Instruct-2506} pinned
+  at commit \texttt{3ed8d341b53ea3d0e4194689905477688a6cf733}, whose ten weight
+  shards are SHA-256-identical to the official ones (\texttt{config.json}
+  differs only in metadata). The Hugging Face tokenizer has a known
+  pre-tokenisation regular-expression defect (Transformers suggests
+  \texttt{fix\_mistral\_regex=True}, which Heretic does not pass) that changes
+  the tokenisation of 3 of 33{,}165 study prompts; the same tokenizer is used
+  for original and modified models in Heretic and vLLM.
+  % src: notes/overnight_log.md (02:20, 02:25); runs/mc-h200-1/logs/failures.log; runs/mc-h200-1/queue.txt (r2 lines); runs/mc-h200-1/logs/download.log; scripts/eval_one.sh (tokenizer_mode hf)
+\item \textbf{SOM relative to Piras et al.~\cite{piras2025som}.} The port ranks neurons by
+  wins over the harmful residuals (the proof of concept counted wins over the
+  map's own prototypes, reducing ``top-$k$'' to the first $k$ grid cells),
+  orthonormalises rather than sums the directions, uses one geometric decay
+  instead of per-direction strengths and a single integer layer for the global
+  scope, keeps the proof-of-concept SOM hyperparameters (not confirmed against
+  the paper), and uses a rank-6 adapter not compared with higher ranks; hence
+  ``Heretic-tuned SOM''.
+  % src: notes/overnight_log.md (02:42); ../heretic/src/heretic/modifiers/som.py (select_top_k_neurons docstring; orthonormalize_directions; suggest_parameters comment)
+\item \textbf{Concurrent jobs on the H200.} Until an idle-GPU guard was added, a
+  second job queue shared the GPU, causing out-of-memory failures. Qwen2.5-32B
+  MPOA completed 100 trials with part of the model offloaded to CPU. Qwen3.8-27B
+  MPOA failed twice (after 5 and 6 trials) and was resumed from the second
+  attempt's journal; the evaluated study has 99 completed trials and one failed
+  trial. The first Qwen2.5-32B ARA run failed at its third trial with a
+  meta-device error under CPU offloading and was repeated from scratch (100
+  trials; evaluated).
+  % src: runs/mc-h200-1/logs/queue.log (overlapping START 20:11-22:56 UTC); runs/mc-h200-1/logs/failures.log; runs/mc-h200-1/queue_b.txt; runs/mc-h200-1/runs/*/meta.txt; runs/mc-h200-1/runs/qwen2.5-32b__mpoa__core-s1/output.log ("offloaded to the cpu"); runs/mc-h200-1/runs/qwen2.5-32b__ara__core-s1/output.log (meta tensors); scripts/select_trial.py --no-write (trial counts); runs/mc-rtx-1/bench_queue.txt (evaluated run names)
+\item \textbf{Qwen3.8-27B ARA rerun.} The first Qwen3.8-27B ARA study was
+  interrupted by the same cause after 66 completed trials; one resumption
+  failed and a second completed it (99 completed, one failed). On resumption
+  Optuna re-creates the sampler from the same seed, so later proposals differ
+  from those of an uninterrupted run. Because the study was not one
+  uninterrupted optimisation, and because its dev-set result (59/100 keyword
+  refusals at KL $\le 0.1$) differed from the 0/100 at KL 0.054 reported for
+  \texttt{heretic-org/Qwen3.8-27B-heretic-ara} (same defaults, 60 trials), it
+  was repeated from scratch with identical
+  configuration and seed and no interruption (the ``clean'' run, 100 trials).
+  The clean run is evaluated; the interrupted study is retained. No such repeat
+  was run for Qwen3.8-27B MPOA.
+  % src: runs/mc-h200-1/runs/qwen3.8-27b__ara__core-s1{,-resume1,-resume2,-clean}/meta.txt, output.log; select_trial.py --no-write (66/99/100 complete; core-s1-resume2: t73 59/100 KL 0.0808); notes/EXECUTION_PLAN_v2.md (finding 1: heretic-org 0/100 @KL 0.054, same defaults, 60 trials); notes/overnight_log.md (02:20, 03:20, 04:22); runs/mc-rtx-1/bench_queue.txt (qwen3.8-27b__ara -> core-s1-clean); optuna 5.0.0 TPESampler.__init__ (self._rng = LazyRandomState(seed))
+\item \textbf{J-space directions.} Before the analysed runs the export was
+  corrected (probed rather than stored final-norm gain; $J=I$ for the last
+  block) and the directions regenerated; the J-space pilot used the earlier
+  directions.
+  % src: notes/overnight_log.md (23:05); directions/*.pt (mtime 22:35-22:37 PST); runs/local-4090/qwen3.5-4b__jspace__pilot-s1/meta.txt (21:52 PST)
+\item \textbf{Evaluation-harness corrections.} (i) lm-eval 0.4.13's
+  \texttt{mbpp\_instruct} extractor dropped the first word of every program,
+  giving pass@1 of zero; it was patched and earlier MBPP scores were recomputed
+  from logged samples. (ii) vLLM 0.33's detokeniser left the meta-space
+  character U+2581 in Gemma-2 outputs; it is mapped to a space in every
+  evaluation run after the fix, and the affected Gemma-2 evaluation was
+  repeated; the earlier Qwen2.5-32B base evaluation contains no U+2581
+  characters. (iii) The first Qwen3.8-27B
+  baseline evaluation fell back silently to the Transformers backend (vLLM
+  rejected the default concurrency for this hybrid model); it was repeated in
+  vLLM with \texttt{max\_num\_seqs = 256}, as used for all Qwen3.8/Qwen3.5
+  models. Other model-specific vLLM
+  settings: Gemma-4 image inputs disabled; Mistral with Hugging Face tokenizer
+  and configuration formats.
+  % src: scripts/bench/LM_EVAL_PATCHES.md; scripts/bench/rescore_mbpp.py; scripts/bench/bench.py (U+2581 postprocess); runs/mc-rtx-1/results/bench/*/summary.json ("postprocess" key present in all except qwen2.5-32b__base, its refusal_run/, gemma-2-27b__base.u2581-bug and qwen3.8-27b__base.hf-fallback-aborted); runs/mc-rtx-1/results/bench/qwen2.5-32b__base/**/*.jsonl (0 raw or escaped U+2581); notes/overnight_log.md (23:08, 23:45, 00:22); scripts/eval_one.sh (BENCH_VLLM_EXTRA); scripts/eval_one_local.sh
+\item \textbf{Mixed model.} The planned mixed model was to be fitted with lme4;
+  because R was not available it was fitted by variational Bayes in
+  statsmodels (\texttt{BinomialBayesMixedGLM}), which gives no $p$ values, and
+  the pooled tests use the GEE (\S\ref{sec:setup-stats}).
+  % src: notes/EXECUTION_PLAN_v2.md (Statistics: mixed-effects logistic regression, (1|prompt) + (1|family)); results/analysis/h1h2_summary.md ("R is not installed"; planned lme4 model fitted with BinomialBayesMixedGLM, checked with GEE); scripts/analysis/h1h2.py (BinomialBayesMixedGLM.fit_vb; gee)
+\item \textbf{Status.} All 42 primary runs, the four $\gamma$-MPOA controls
+  and the ten seed-2 runs were completed, selected, exported and evaluated, as
+  were the ten original models and the eight community releases, and all 74
+  evaluated models were scored by every judge on all 1{,}322 held-out
+  prompts. The three LLM judges were also applied to the 256-token cut of
+  every response (Appendix~\ref{app:trunc256}), and the 46 released merged
+  exports (42 primary, four $\gamma$-MPOA) were re-scored on the dev set
+  (\S\ref{sec:setup-export}, Appendix~\ref{app:dev-rescore}). The
+  paper-faithful SOM configuration and the J-space forward hook
+  (\S\ref{app:setup-methods}) were not run and are left to future work.
+  % src: notes/overnight_log.md (06:25 check-in); runs/mc-rtx-1/bench_queue.txt; runs/mc-h200-1/logs/runs_index.log
+  % src (2026-11-05 todo pass): results/analysis/dir_status.csv (74 used dirs, all judge_status "judged", judges_missing empty, n_judgments 1322: primary 42 = 32 main + 10 small pair, control 4 gamma_mpoa, replicate 10, original 10, external 8); notes/overnight_log.md (21:22 check-in: "judge__batch2 DONE 05:05Z (all paper-33 judging complete)"); runs/mc-rtx-1/runs/judge__batch2/meta.txt (exit_code 0); no paper-faithful SOM or J-space-hook run dirs under runs/ or results/ (the results/bench-4090/qwen2.5-7b__obliteratus-* dirs belong to paper 30)
+  % src (2026-11-06): notes/overnight_log.md (judge256__all: WildGuard, HarmBench, Qwen3Guard on response_256, 112,370 responses in 85 dirs, END rc=0 16:01Z); scripts/bench/score_refusals_256.py; refusal/judgments_256.jsonl present under source_dir for all 74 used dirs of results/analysis/dir_status.csv; sections/08e_truncation256.tex (app:trunc256)
+  % src (2026-11-06): results/rescore_dev/rescore_dev_all.csv (46 rows, rc 0: dim/mpoa/ara/som 10 each, jspace 2, gmpoa 4); sections/08f_dev_rescore.tex (app:dev-rescore)
+\end{itemize}

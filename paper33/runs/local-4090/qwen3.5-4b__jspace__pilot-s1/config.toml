@@ -1,0 +1,18 @@
+# heretic 2.0 — J-space (Jacobian-pullback) directions applied with heretic's directional ablation.
+# Plugin: heretic.modifiers.precomputed.PrecomputedDirections (branch paper33-plugins).
+# Directions: scripts/jspace_directions.py (neuronpedia/jacobian-lens, WikiText-fitted lens).
+# Same weight edit + search space as MPOA; only the direction source differs.
+# directions_path is set per model by the run command (see queue).
+modifiers = [{ plugin = "heretic.modifiers.precomputed.PrecomputedDirections" }]
+scorers = [
+  { plugin = "heretic.scorers.keyword_rate.KeywordRate", optimization = "minimize" },
+  { plugin = "heretic.scorers.kl_divergence.KLDivergence", optimization = "minimize" },
+]
+n_trials = 30
+n_startup_trials = 10
+
+[modifier.PrecomputedDirections]
+directions_path = "/data/heretic_2/33_2611_does_refusal_removal_get_harder/directions/qwen3.5-4b__jspace.pt"
+method_label = "J-space Pullback Ablation"
+orthogonalize_direction = false
+row_normalization = "full"

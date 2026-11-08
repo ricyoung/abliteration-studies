@@ -1,0 +1,35 @@
+% ============================================================
+% APPENDIX -- detail moved out of the main text to keep sections within the house word targets
+%   A  Method Definitions        sections/08a_method_definitions.tex (app:method-defs, sec:methods, sec:m-*)
+%   B  Experimental Details      sections/08b_setup_details.tex      (app:setup-*, sec:setup-export,
+%                                sec:setup-compute, sec:setup-deviations, tab:search, tab:compute)
+%   C  Threats to Validity       sections/08c_validity.tex           (app:validity)
+%   D  Additional Results        sections/08d_additional_results.tex (app:additional-results; figA1--A4,
+%                                tab:dev-refusals-*, tab:capability-*, tab:teacher-forced-*; added 2026-11-06)
+%   (D, cont.) Judging the First 256 Tokens   sections/08e_truncation256.tex (app:trunc256, tab:trunc256;
+%                                added 2026-11-06; \subsection, so it continues Appendix D)
+%   (D, cont.) Re-scoring the Released Exports on the Dev Set   sections/08f_dev_rescore.tex (app:dev-rescore,
+%                                tab:dev-rescore, tab:dev-rescore-gemma2; added 2026-11-06; \subsection)
+% The template placeholder that stood here (\section{Additional Methodological
+% Detail} with \label{app:methods}) was replaced on 2026-11-05 by the three
+% \input lines below. app:methods was never referenced; it is kept as an extra
+% label on Appendix A (08a) so that any future \ref{app:methods} still resolves.
+% The template's draft marker for appendix content was removed on 2026-11-05
+% (todo pass): appendices A--D below supply the content, including
+% 08d_additional_results.
+% ============================================================
+\input{sections/08a_method_definitions}
+\input{sections/08b_setup_details}
+\input{sections/08c_validity}
+\input{sections/08d_additional_results}
+% \clearpage (integration, 2026-11-06): flushes the figures and tables of 08d before D.1, so that Tables
+% tab:trunc256, tab:dev-rescore and tab:dev-rescore-gemma2 appear next to their text instead of after all of 08d's floats.
+\clearpage
+\input{sections/08e_truncation256}
+\input{sections/08f_dev_rescore}
+% 2026-11-06 review revision: two new appendix files (\subsection, continuing Appendix D):
+%   08g_selection_pairs.tex   KL-cap binding, pair-level pooling, both scales (app:kl-cap; tab:kl-cap-subsets, tab:lofo, tab:scales)
+%   08h_item_source_harm.tex  item source (app:item-source; tab:item-source) and harmful compliance (app:harm; tab:harm,
+%                             tab:harm-cells)
+\input{sections/08g_selection_pairs}
+\input{sections/08h_item_source_harm}

@@ -1,0 +1,9 @@
+cmd: bash -c  while [ -n "$(nvidia-smi --query-compute-apps=pid --format=csv,noheader)" ]; do sleep 30; done; cp /workspace/paper33/configs/core_dim.toml config.toml && /workspace/paper33/heretic/.venv/bin/heretic --model unsloth/Mistral-Small-3.2-24B-Instruct-2506 --model-commit 3ed8d341b53ea3d0e4194689905477688a6cf733 --seed 1 --checkpoint-action restart --trial-index 0 --model-action save --export-strategy ADAPTER --save-directory ./adapter_t0
+start: 2026-11-05T11:50:15+00:00
+host: 0538-dca2-csh200nvl-prxmx140094
+heretic 0db5c31e10ecc426440b6fb0ce4bf85352faf1a7 docs: prepare for 2.0 release (#531)
+torch 2.14.1+cu130 NVIDIA H200 NVL
+end: 2026-11-05T12:00:26+00:00
+exit_code: 0
+wall_seconds: 611
+peak_vram_mib: 50727

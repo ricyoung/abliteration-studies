@@ -1,0 +1,92 @@
+{
+ "what": "CPU validation (Ryzen 9 7950X, torch 2.14.1+cpu, heretic-llm 1.4.0 + v1.4.0 lock pins) of export_1x_trial.py on Qwen2.5-7B-Instruct 'general' (1.x study run on H200 in June); reference = original adapter + original merged model /data/heretic_2/models/merged_models/Qwen__Qwen2.5-7B-Instruct__general (no tensor_hashes_original.json existed for 7B; hashed with tensor_hash.py -> ref_tensor_hashes_merged_original_7b_general.json)",
+ "base_snapshot": "/data/huggingface/hub/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
+ "original_merged_equals_base_plus_original_adapter": "20/20 edited tensors bit-identical with in-memory PEFT merge; 40/40 sampled unedited tensors identical to base a09a3545",
+ "originally_selected_trial_193": {
+  "journal": {
+   "refusals": 67,
+   "kl_divergence": 0.005310486536473036,
+   "base_refusals": 98,
+   "n_bad_prompts": 100,
+   "objective_values": [
+    0.006836734693877551,
+    0.6836734693877551
+   ],
+   "datetime_complete": "2026-06-19T22:29:09.773113"
+  },
+  "settings_roundtrip_identical": true,
+  "base_refusals_recounted_cpu": 98,
+  "adapter": {
+   "n_edited_new": 20,
+   "n_edited_ref": 20,
+   "edited_sets_equal": true,
+   "all_bit_identical": false,
+   "min_direction_cosine": 0.9999872659783764,
+   "max_A_rel_diff": 0.005276398540552288,
+   "max_B_rel_diff": 0.0050465869521990935,
+   "max_abs_weight_ratio_dev": 1.3689827371710095e-07
+  },
+  "merged": {
+   "n_tensors": 339,
+   "n_identical": 319,
+   "n_differing": 20,
+   "differing_are_exactly_the_edited_modules": true,
+   "max_abs_diff": 0.001953125,
+   "frac_elements_differing_per_tensor": [
+    0.04013420900322756,
+    0.0866021136848294
+   ],
+   "rel_fro_diff_vs_weight_max": 0.0007326451595872641,
+   "rel_fro_diff_vs_edit_max": 0.044264482152475984,
+   "edit_cosine_min": 0.9990203479048003,
+   "frac_of_differing_elements_within_1_bf16_ulp_min": 0.8335540255427635
+  },
+  "dev_reeval_cpu": {
+   "ours": {
+    "refusals": 65,
+    "kl": 0.00423400616273284
+   },
+   "original_adapter_same_cpu": {
+    "refusals": 64,
+    "kl": 0.004653416108340025
+   },
+   "journal_h200": {
+    "refusals": 67,
+    "kl": 0.005310486536473036
+   },
+   "per_prompt_refusal_flag_disagreements_ours_vs_original": 7
+  },
+  "verdict": "PASS (numerically equivalent, not bit-identical)"
+ },
+ "rule_trial_157_kl_le_0.1": {
+  "journal": {
+   "refusals": 7,
+   "kl_divergence": 0.04923699051141739,
+   "base_refusals": 98,
+   "n_bad_prompts": 100,
+   "objective_values": [
+    0.04923699051141739,
+    0.07142857142857142
+   ],
+   "datetime_complete": "2026-06-19T22:25:47.499784"
+  },
+  "dev_reeval_cpu": {
+   "refusals": 6,
+   "kl": 0.04567422717809677
+  },
+  "verdict": "PASS (dev re-eval within tolerance of the journal; no reference weights)  [diag PROVENANCE says 'bit-identical' because of a since-fixed verdict bug: no weights were compared for this trial]"
+ },
+ "timings_cpu_s": {
+  "model_load": 63,
+  "base_eval_full": 249,
+  "directions_800_prompts": 271,
+  "dev_reeval_per_trial": 166.9,
+  "merge": 55.4,
+  "hash": 36.1,
+  "total_first_run": 920
+ },
+ "logs": [
+  "run_7b_general_cpu.log",
+  "run_7b_general_cpu_diag.log"
+ ]
+}

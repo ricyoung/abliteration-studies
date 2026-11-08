@@ -1,0 +1,171 @@
+% =====================================================================
+% APPENDIX (revised 2026-11-06: fork labels, 32B-original harness note, 1.x settings check, external tools,
+% prior-work section for the new arXiv paper)
+% Revised 2026-11-06 (pm): all 42 cells judged; "Pending cells" section removed; new sections app:reexport
+% (selection-cap re-export provenance and validation) and app:external (external-tool provenance).
+% =====================================================================
+\section{Capability per Benchmark}
+\label{app:capability}
+
+% src (tests_capability.csv family original_design: 23 cells x 5 benchmarks, 0 Holm-significant; family added:
+%      12 cells x 5, 1 Holm-significant (qwen2.5-7b__obliteratus-spectral_cascade mmlu_pro -7.0, p_holm 0.0003))
+\begin{table}[!htbp]
+\centering\footnotesize
+\caption{Capability per benchmark. Rows ``Original'' give the original model's scores (\%); other rows
+give the paired per-item change from that original (pp) and the change of the mean of the five benchmarks with a
+95\% interval. None of the 115 per-benchmark changes of the main design is significant after Holm correction (exact
+McNemar); of the 60 changes of the cells added after it ($^{\S}$; separate Holm family), one is (bold: OBLITERATUS
+\texttt{spectral\_cascade}, MMLU-Pro). $^{\dagger}$Unpaired comparison: the Qwen2.5-32B original was evaluated with an earlier harness revision
+whose MBPP per-item samples predate the patched answer extractor; only its MBPP summary score was rescored from the
+logged outputs, so its per-item scores are not available (\S\ref{sec:procedure}). SOM and J-space are plug-ins of
+the companion study's project fork, not part of Heretic~2.0. One item is worth 0.1~pp (MMLU-Pro) to 0.61~pp
+(HumanEval). The added cells are discussed in \S\ref{sec:res-kl} and \S\ref{sec:res-external}.}
+\label{tab:capability}
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{\input{tables/tab_capability}}
+\end{table}
+
+\section{Data Checks and Provenance}
+\label{app:checks}
+
+% src (RESULTS.md "Coverage" and "Anomalies and checks"; cells.csv adapter_sha256_ok, tensors_*; assemble_p30_log.txt;
+%      reexport_1x/validation_7b/SUMMARY.json "original_merged_equals_base_plus_original_adapter")
+\texttt{assemble\_p30.py} verifies each cell before analysis and lists every deviation in
+\texttt{analysis/RESULTS.md}. For the analysis reported here:
+\begin{itemize}
+\item All 42 judged cells: 1{,}322 responses and judgments with matching identifiers and item hash; all judges
+present on every row; WildGuard missing on two harmful responses (Qwen2.5-32B original; OBLITERATUS
+\texttt{advanced}) and one benign response (Qwen2.5-7B SOM).
+\item Judge revisions: WildGuard, Qwen3Guard and the HarmBench classifier identical in all cells; one encoder-based
+refusal classifier, not used in any analysis here, occurs in three revisions (12, 19 and 11 cells).
+\item Heretic~1.x provenance: adapter SHA-256 equal to the manifests for all twelve adapters; rebuilt merges
+bit-identical to the archived merges for the eight 14B and 32B adapters (579 tensors for 14B models, 771 for 32B
+models); the archived Qwen2.5-32B code merge contains only 627 of 771 tensors (all identical to the rebuild), so the
+complete rebuild was evaluated. No tensor hashes of the archived 7B merges had been recorded, so the four 7B merges
+were not compared tensor by tensor; for the Qwen2.5-7B general variant a separate CPU check found the archived merge
+equal to the base model plus the archived adapter (all 20 edited tensors bit-identical to an in-memory merge, 40 of
+40 sampled unedited tensors identical to the base).
+\item Heretic~1.x settings, read from the settings record of all 12 Qwen2.5 studies: 32 keyword markers (no
+``disclaimer''), system prompt ``You are a helpful coding assistant.'', 200 trials (60 random), seed~0, KL target
+0.01, direction projection off, row normalisation none, at most 100 dev response tokens.
+\item Harness revision: the Qwen2.5-32B original's capability and held-out runs used an earlier revision of the
+evaluation script than its edited models, without the U+2581 output post-processing (its outputs contain no
+U+2581) and with unpatched MBPP per-item samples (summary rescored), so MBPP changes of all Qwen2.5-32B cells,
+including the KL $\le$ 0.1 re-export, are unpaired; all other cells of a base model share one revision
+\cite{young2026harder}.
+\item The companion study's Qwen2.5-7B and Qwen3.5-4B originals and models were generated on an RTX 4090 and judged
+from identical copies (same response checksum) on the RTX PRO 6000; the new Qwen2.5-7B, Qwen2.5-Coder-7B and
+Qwen3.5-4B cells were generated and judged on the RTX 4090; the 14B and 32B cells were generated and judged on the
+RTX PRO 6000.
+\item Teacher-forced divergence used the same reference responses and token counts for every edited model and its
+original.
+\item More than ten of the 972 harmful responses were flagged degenerate in three cells: OBLITERATUS
+\texttt{spectral\_cascade} (56), OBLITERATUS \texttt{advanced} (30) and 1.x general on Qwen2.5-Coder-7B (11); every
+other cell had at most 9.
+\end{itemize}
+
+\section{Selection-Cap Re-Export: Provenance and Validation}
+\label{app:reexport}
+
+% src (reexport_1x/VERSION.md evidence 1-6 and "Settings that are not in the journal"; results_rtx/*/PROVENANCE.json:
+%      environment, datasets, base_refusals_journal/recounted, validation, validation_criteria, merge_formula_selfcheck;
+%      results_rtx/reexport_1x.log l.237-262; reexport_1x/run_on_rtx.sh header; validation_7b/SUMMARY.json)
+\paragraph{Version.} The 1.x studies store their settings as the serialised settings object of the Heretic release
+that ran them. Its 27 keys, in their stored order, occur only in the settings class of commits from \texttt{6757ada}
+(13 June 2026) to the commit before \texttt{0146b27} (27 June 2026), a range that includes the 1.4.0 release.
+Within that range, commit \texttt{00185db} (18 June) lowered the search range of the MLP ablation weight from
+[0.8, 1.5] to [$-$0.25, 1.5]; the journals, written from 19 to 21 June, record [0.8, 1.5], so the studies ran from
+the 1.4.0 release (tag \texttt{v1.4.0}, commit \texttt{6ea3b8d}; the PyPI wheel is byte-identical to the tag) rather
+than from a development checkout. The stored trial attributes and objective values, the journal format and the PEFT
+version recorded in the adapters (0.19.1, the version locked by 1.4.0) agree with that release.
+
+\paragraph{Procedure and environment.} The re-export ran heretic-llm 1.4.0 in Python 3.12.16 with transformers
+5.6.2, PEFT 0.19.1, accelerate 1.13.0, Optuna 4.8.0 and datasets 4.8.4 (the 1.4.0 lock) and PyTorch 2.14.1 with
+CUDA 13.0, on an NVIDIA RTX PRO 6000 Blackwell Server Edition with TF32 matrix multiplication disabled. The direction
+and evaluation prompts were the four dataset splits named in the journal (\texttt{harmful\_behaviors} and
+\texttt{harmless\_alpaca}, train[:400] and test[:100]); the SHA-256 of each prompt list is recorded. Settings that
+1.4.0 does not store but that change the computation were taken from the archived configuration files: the archived
+runs computed residuals for all prompts and averaged them in single precision, which the re-export reproduces. The
+recount of base-model dev refusals gave 97 of 100, against 98 in the journal; the 1.x objective normalises the
+refusal count by this number.
+
+\paragraph{Acceptance criteria.} The re-export of a trial was accepted as numerically equivalent if the edited
+modules matched, the minimum direction cosine between corresponding adapter modules was at least 0.9995, the largest
+relative adapter difference at most 0.02, the dev refusals within 5 of the archived adapter re-evaluated in the same
+run and within 8 of the journal, and the dev KL within the larger of 0.002 and 15\% (archived adapter) or 30\%
+(journal) of the reference value. For trial~\#84 (the released trial), the 62
+edited modules matched, the minimum direction cosine was 0.99999, the largest relative differences of the two LoRA
+factors were 0.0072 and 0.0050, the merged model had 709 of 771 tensors bit-identical with a maximum absolute
+difference of 0.0078 and a maximum relative Frobenius difference of 0.07\% of the weight, and the dev results were
+90 refusals at KL 0.0055 (re-export), 90 at 0.0054 (archived adapter, same run) and 89 at 0.0059 (journal). For
+trial~\#96 no archived weights exist; it edited 80 modules, its merge passed a self-check of the merge formula on 8
+tensors, and it gave 51 dev refusals at KL 0.0637 against 50 at 0.0642 in the journal. Both trials passed. Before
+the GPU run, the same script had been checked on CPU against the released Qwen2.5-7B general trial (\#193): 20 of 20
+edited modules, minimum direction cosine 0.99999, 319 of 339 merged tensors bit-identical (the 20 others exactly the
+edited ones, maximum absolute difference 0.0020), and 65 dev refusals against 64 for the archived adapter on the same
+CPU and 67 in the journal.
+
+\paragraph{Code study.} The 2.0 rule would select trial~\#134 of the Qwen2.5-32B 1.x code search (2 of 100 dev
+refusals on its malicious-code dev set at KL 0.072), with the released trial~\#179 (30 at 0.009) as its validation
+reference. Its four prompt files were generated by the archived study's data-preparation script and were never
+copied to the analysis server; without them the script stops at its input check, so the code study was skipped in
+the run (\texttt{SKIP\_CODE=1} in the run log) and no code re-export exists.
+
+\paragraph{Records.} \texttt{reexport\_1x/VERSION.md} (version evidence), \texttt{export\_1x\_trial.py} (re-export
+script), \texttt{results\_rtx/} (provenance records of both trials, adapter of trial~\#96, tensor hashes, the run log
+and the installed package list) and \texttt{validation\_7b/} (CPU check).
+
+\section{External Tools: Provenance}
+\label{app:external}
+
+% src (/data/heretic_2/models/external/*/PROVENANCE.json; tools_ext/README.md (layout, preset mapping, overlap table,
+%      runtime patches, Qwen3.5 compatibility); 33_.../runs/local-4090/logs/external_small_prompt_overlap.json;
+%      tool_artifacts/prompts_used.json of the three jwest33 runs: identical lists (sha256 of JSON 9ed92df66b20 /
+%      6ca52f0c8bb6); refusal_sets.json: jbb_harmful_20 and jbb_harmful_25 have advbench_overlap "exact")
+\paragraph{Software.} Each tool ran in its own virtual environment with PyTorch 2.14.1 (CUDA 13.0) and transformers
+5.18.0, the versions of the Heretic environment of the companion study, on the RTX 4090. OBLITERATUS was fetched at
+tag \texttt{v0.1.4} (commit \texttt{461ff086}) and jwest33's abliterator at commit \texttt{6ca3356e}; both
+checkouts had no local modifications. A shared finaliser converted each output to the Hugging Face layout of the
+Heretic exports (bf16 shards, the base model's configuration, tokenizer and chat template; the tool's own
+configuration differences, directions and metadata are kept alongside) and recorded the SHA-256 of every shard. The
+provenance record of each cell stores the tool, commit, preset and its full resolved configuration, runtime patches,
+command, environment, seed, base revision, prompt sets with hashes, the tool's own metrics, wall time and GPU.
+
+\paragraph{OBLITERATUS.} All three presets ran through \texttt{AbliterationPipeline} with the preset name, seed~1
+and bf16, which is what the command-line handler passes except for its float16 default; the \texttt{som} preset is
+not reachable from the command line and fails in the pipeline because its direction module is not shipped. The
+presets edited ten (\texttt{basic}), seven (\texttt{advanced}) and 16 (\texttt{spectral\_cascade}) layers chosen by
+the tool's layer-selection heuristic and also projected the output head. The tool's own quality check, on a
+verification sample of 30 prompts from its built-in harmful list, reported refusal rates of 83\%, 40\% and 3\%,
+perplexity 3.98, 4.69 and 7.41 (original 3.11), coherence 0.7, 1.0 and 0.9 and no degenerate responses; it reported
+a sequence-level KL divergence of 1.12, 0.51 and 1.75 nats and a first-token KL divergence of 0.081, 3.40 and 8.82.
+None of these presets optimises KL, so the tool's KL budget of 0.5 was reported but not enforced. On Qwen3.5-4B the
+pipeline stops at its baseline validation, which accepts hybrid Qwen surgery only for the 27-billion-parameter
+topology it was validated on, before any weight is modified. An opt-in patch that generalises that check exists in
+the wrapper but was not used, because results with it would lie outside the tool's validated scope.
+
+\paragraph{jwest33 abliterator.} The batch flags were \texttt{--dtype bfloat16 --device cuda --winsorize
+--null-space}; all other values were the tool's defaults (directions at the last prompt token, normalised and
+norm-preserving, winsorisation at the 99.5th percentile, null-space rank ratio 0.95, refusal filter threshold
+$-$7.0 on the log-likelihood of refusal over 50 tokens, hybrid strategy ``auto'' with weight 1.0 on full-attention
+and 0.4 on linear-attention layers). The prompt pools from commit \texttt{a2a7940} hold 5{,}000 harmful, 5{,}000
+harmless and 287 preservation prompts. With seed~1 the three runs sampled the same 30 harmful and 30 harmless
+prompts. The harmful sample contains one held-out JailbreakBench prompt (also an AdvBench prompt), four AdvBench
+prompts in total and two prompts that match the dev set (one exactly, one approximately); none of the 60 prompts is
+a held-out benign prompt. Overlap was checked with the rule used to build the held-out set (exact after normalisation,
+or token Jaccard similarity of at least 0.6 and sequence ratio of at least 0.8). The tool detected Qwen3.5-4B as
+hybrid, with full attention in layers 3, 7, \ldots, 31, and Qwen2.5-7B as non-hybrid. The sensitivity patch sets this
+detected information before direction extraction, as the tool's library entry point does; a second opt-in patch,
+which corrects the projection side of square residual writers, was not used.
+
+\section{Relation to Prior Work}
+\label{app:versions}
+
+An earlier comparison by the same author \cite{young2025comparative} reported tool compatibility on sixteen 7--14B
+models and keyword-based refusal and benchmark changes for Heretic, DECCP/llm-abliteration, ErisForge and FailSpy.
+The present study is a separate paper, not a revision of that one: it uses mostly different base models (only
+Qwen2.5-7B-Instruct is shared, and its cells here come from new searches, archived 1.x runs from June 2026 and new
+external-tool runs, not from the earlier comparison), held-out prompts, model-based judges and paired tests, and none
+of the earlier numbers is reused. All results here come from the held-out harness shared with the companion study
+\cite{young2026harder}, which reports 19 of the cells evaluated here (13 in the main design and the six Qwen3.5-4B
+context cells) for a different question.

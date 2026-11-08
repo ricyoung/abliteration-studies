@@ -1,0 +1,23 @@
+check,value,ok,detail
+"C2 harmful_all reproduces h1h2_generation_effects.csv (wg; max |diff| / max(1, |ref|) over 12 columns; the reference CSV has 6 significant digits)",4.98e-07,True,rows 52 vs 52
+"C2 harmful_all reproduces h1h2_models.csv GEE terms (wg; max |diff| / max(1, |ref|) of estimate/lo/hi)",4.93e-06,True,terms matched 178 of 178
+C2 harmful_all reproduces h1h2_tests.csv Holm p (wg),4.47e-07,True,tests matched 142 of 142
+"C2 set contributions add up to the 972-item originals' difference (max abs diff, pp)",4.44e-16,True,
+"C2 decomposition total equals the originals' generation effect of h1h2 (max abs diff, pp)",7.33e-15,True,differs only where a WildGuard label is missing (pairwise vs listwise)
+C3 per-cell refusal / harmful rates equal cell_rates.csv harmful_all (max abs diff; the CSV has 6 significant digits),4.90e-07,True,74 cells
+GEE heterogeneity Wald tests not computable (quasi-separation on a small subset; reported as NaN),4,True,in C2 code_weapon; C2 code_weapon: r_matrix performs f_test for using dimensions that are asymptotically non-normal
+C4 judgments_256 coverage: cells with gaps,0,True,74 cells; md5/revision/id checks of truncation256.py
+C4 every judged response has a re-tokenised row,0,True,"97,828 rows"
+C4 responses.jsonl md5 equal to dir_status.csv (tokeniser stage),74,True,of 74 cells
+C4 n_tokens in responses.jsonl equal to the assembled n_tokens,0,True,
+C4 keyword on the full response reproduces keyword_refusal (mismatching rows),0,True,"of 97,828"
+C4 keyword on the stored response_256 reproduces keyword_refusal_256 (mismatching rows),0,True,"of 97,828"
+"C4 keyword on the re-tokenised 256-token cut reproduces keyword_refusal_256, all models but OLMo-2 (mismatching rows)",0,True,"of 89,896; alternative encoding: 102"
+C4 the same for OLMo-2 (generates non-canonical tokens; newline-split encoding; mismatching rows),3,True,"of 7,932 (olmo-2-32b__gmpoa: 3); canonical encoding: 21; all 3 mismatches of the 97,828 rows are here; the 100-token bounds do not depend on the encoding"
+"C4 re-tokenised 256-token cut equals the stored response_256 text, all models but OLMo-2 (share)",0.9941,True,rows <= 256 tokens are trivially equal; OLMo-2: 0.6896 (canonical encoding 0.2124); other encoding for the rest: 0.3076; v_256a all rows 123
+C4 window monotonicity kw100 <= kw256 <= kw_full (violating rows),0,True,
+C4 bounds kw100_lo <= kw100 <= kw100_hi <= kw256 (violating rows),0,True,
+C4 responses whose 100-token keyword label is not pinned down by the bounds,17,True,"0.02% of 97,828; by model: gemma-2-27b 2, gemma-4-31b 1, mistral-small-3.2 3, olmo-2-32b 7, olmo-3.1-32b 1, qwen3.5-4b 2, qwen3.8-27b 1"
+C4 pooled kw-WG and kw256-WG gaps equal h3_gap_pooled.csv (max abs diff of point estimates),0.00e+00,True,132 rows; bootstrap limits use new draws
+C4 per-cell kw-WG gaps and Holm p equal h3_gap_cells.csv (max abs diff),0.00e+00,True,222 cell x set-group rows
+C4 H3 GEE/OLS terms with the full-text keyword equal h3_models.csv (max abs diff),0.00e+00,True,48 terms

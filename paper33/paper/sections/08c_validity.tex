@@ -1,0 +1,366 @@
+% =====================================================================
+% APPENDIX -- THREATS TO VALIDITY: FULL LIST
+%    Moved verbatim (2026-11-05) from sections/06b_limitations.tex
+%    (draft v0, 15 items) when the main-text Limitations subsection was
+%    condensed to house style; Section \ref{sec:limitations} summarises the
+%    most consequential threats and points here. Keep in sync with it.
+%    Must be \input from sections/08_appendix.tex (or main.tex after
+%    \appendix) for \ref{app:validity} to resolve.
+%    2026-11-05 (reference integration): bouthillier2021accounting,
+%    qi2025durability, cawley2010overfitting, xie2025sorrybench (kappa x100:
+%    keyword 37.3, HarmBench cls 52.5, WildGuard 60.6, FT 7-8B 80.8-81.2),
+%    zhang2019rmsnorm, kim2025periln, walsh2025olmo2, olmo2025olmo3 (Table 33:
+%    outputs-only RMSNorm; SWA 3/4 layers, 4,096 tokens), gemmateam2024gemma2,
+%    carleo2026willing, yang2025gated, marshall2024refusal (RWKV v5 nonsense
+%    under plain ablation), sainz2023nlp (new threat: benchmark exposure),
+%    huang2024catastrophic (new "Decoding" paragraph), dodge2019show,
+%    eiras2025know (storytelling FNR: HarmBench cls 0.12->0.36, WildGuard
+%    0.02->0.12), cohen1960coefficient, fleiss1971measuring, feinstein1990high.
+%    2026-11-06 fact-check pass: stale \todo markers (SOM runs, seed 2, judges, gamma-MPOA, kappa,
+%    search convergence, community references, Mistral-3.2 evaluation) replaced by the completed results.
+% =====================================================================
+% 2026-11-06 REVIEW REVISION: single-seed paragraph (batch size, heretic-org trial untested), keyword paragraph (per-window H3),
+% first-token KL paragraph ("matched" replaced; cap binding), new paragraphs on the unit of inference, item source, the
+% outcome construct and the ARA instantiation; J-space / SOM todos converted to future work; dual-use paragraph DRAFTED with
+% a marginal-risk argument (todo "author: confirm"); GGUF and sampled-decoding todos kept.
+\section{Threats to Validity: Full List}
+\label{app:validity}
+
+This appendix lists every identified limitation and threat to validity;
+Section~\ref{sec:limitations} summarises the most consequential of them. Where
+it can be stated, each limitation is given with its likely direction of bias
+and its mitigation.
+
+\paragraph{Single seed and run-to-run variance.}
+Each main-study cell is optimised with a single seed (seed~1); the
+Qwen3.8-27B ARA cell was run twice with seed~1 (see below). TPE search is stochastic
+(Heretic~\#88), and one ARA trial has been reported to yield 52 and 11 refusals
+on two machines (Heretic~\#499). Here, two seed-1 ARA runs on Qwen3.8-27B (one
+interrupted and resumed, one clean) selected trials with 59 and 63 of 100
+keyword refusals at KL~$\le 0.1$, whereas a community model with the same
+defaults and 60 trials (\texttt{heretic-org/Qwen3.8-27B-heretic-ara}) reports
+0 of 100 at KL~0.054. The evaluated Qwen3.8-27B MPOA run was resumed after an
+out-of-memory failure and completed 99 of 100 trials. Seed and configuration
+variance has altered conclusions about algorithm comparisons
+\cite{bouthillier2021accounting} and about the durability of open-weight
+safeguards \cite{qi2025durability}. Such variance can create
+or mask a generation effect in a single cell. On the small pair, all five
+methods were optimised again with seed~2 (10 runs, in place of the planned
+second seed for DiM, MPOA and ARA on the Qwen and Gemma pairs): held-out
+refusal differed between seeds in all 10 cells (median 9.4~pp, maximum
+25.2~pp), and the ARA generation effect fell from +14.2~pp to +0.0~pp, so
+the small pair meets H1 with seed~1 only. Mitigation: full Pareto fronts and
+four KL thresholds are reported, the seed-2 spread is reported next to the
+generation effects, a run-to-run standard deviation derived from it (9.2~pp
+[6.4, 16.1]) flags the 11 of 16 main-study generation effects that lie within
+seed noise (Table~\ref{tab:h1-heldout}; this assumes that the seed variance of
+the 4B and 7B models transfers to the 22--32B models), and method rankings were
+more stable than single-cell generation effects ($\eta^2$ of method 0.94 and
+0.88). Three of the ten seed-2 runs also used a generation batch size of 64
+instead of 128 after running out of memory; without them the standard
+deviation is 7.2~pp [4.8, 14.6] and the same five raw effects exceed the band
+(baseline-adjusted: six instead of three). The heretic-org trial on
+Qwen3.8-27B was not run in this pipeline, and a second seed for the
+main-study cells is left to future work.
+% src (review revision): results/analysis/review_sel_seed_runs.csv; review_sel_seed_sigma.csv; review_sel_seed_flags.csv.
+
+\paragraph{Unit of inference.}
+The generational question has the model pair as its unit, and there are four
+main-study pairs. Prompt-level intervals and tests cover prompt sampling
+within a pair only; between-family heterogeneity was large (generation
+$\times$ family $\chi^2=547.4$, 3 df), so pooled estimates are summaries of
+per-pair effects of different sign. Mitigation: per-pair effects with seed
+variance added are the primary evidence, pooled effects are reported with
+pair-level random-effects (Hartung--Knapp--Sidik--Jonkman) and prediction
+intervals, and leave-one-family-out fits are given (\S\ref{sec:res-h1},
+Appendix~\ref{app:kl-cap}).
+% src (review revision): results/analysis/review_sel_pair_heterogeneity.csv; review_sel_pair_meta.csv; review_sel_pair_lofo.csv.
+% src (2026-11-06 reframe): results/analysis/seednoise_summary.md; scripts/analysis/seednoise_flags.py
+% src: results/analysis/final_seed_cells.csv; final_seed_generation.csv; final_seed_method_vs_seed.csv; dir_status.csv (42 primary + 10 seed-2 cells judged)
+% src: notes/EXECUTION_PLAN_v2.md (Findings 1; Seeds); notes/overnight_log.md (03:20, 04:22); runs/mc-h200-1/runs/*/meta.txt (--seed 1; olmo-3.1-32b__som__core-s1 start without end); runs/mc-h200-1/logs/queue.log (START olmo-3.1-32b__som__core-s1); runs/mc-h200-1/queue.txt (mistral-small-{2409,3.2}__som__core-s1 queued, no run dir); runs/mc-h200-1/runs/qwen3.8-27b__{ara,mpoa}__core-s1*/meta.txt; runs/mc-h200-1/runs/qwen3.8-27b__mpoa__core-s1-resume1/checkpoints/*.jsonl (99 complete trials; scripts/select_trial.py --no-write)
+
+\paragraph{Selection on the development set.}
+TPE optimises, and the selection rule selects, on the 100 prompts
+(\texttt{mlabonne/harmful\_behaviors} test[:100]) that produce Heretic's refusal
+count, and refusal directions (DiM, MPOA, SOM) and ARA's harmful-side
+activations are estimated from \texttt{mlabonne/harmful\_behaviors} train[:400],
+contrasted with \texttt{mlabonne/harmless\_alpaca} train[:400] (J-space
+directions use no contrast set). Development-set refusal is therefore optimistic
+(Heretic~\#481, \#503), possibly more so for methods with larger search spaces,
+because optimising a noisy selection criterion overfits it and reusing the
+selection data for evaluation biases the estimate \cite{cawley2010overfitting}.
+Mitigation: reported refusal
+comes from a frozen held-out set of 1,322 prompts (JailbreakBench harmful and
+benign, 100 each; XSTest, 450; StrongREJECT, 313; HarmBench standard, 159;
+code-as-weapon bank, 200 \cite{young2026code})
+\cite{chao2024jailbreakbench,rottger2024xstest,souly2024strongreject,mazeika2024harmbench}; 44 items matching
+the 520 AdvBench-derived prompts are flagged and results reported with and
+without them; dev--test agreement is tested with Spearman's~$\rho$.
+% src: configs/core_*.toml; heretic config.default.toml @ 8fd4d76 (scorer and statistics splits; [modifier.{ARA,Abliteration,SOM}.{good,bad}_prompts] train[:400]); heretic src/heretic/modifiers/ara.py @ 8fd4d76 (ara_loss); scripts/jspace_directions.py (docstring: no contrast set); configs/core_jspace.toml (orthogonalize_direction = false); notes/EXECUTION_PLAN_v2.md (Findings 2; Evaluation protocol); scripts/build_refusal_sets.py; scripts/bench/refusal_sets.json (counts per set; 44 advbench_overlap flags)
+
+\paragraph{Keyword refusal.}
+Heretic counts a refusal when any of 33 marker strings appears within 100
+generated tokens. Reported keyword recall is about 0.48, against 0.77 for an LLM
+judge (Heretic~\#419; see also PR~\#196); in a human-labelled meta-evaluation,
+keyword matching reached Cohen's $\kappa=0.37$, against about 0.81 for
+fine-tuned LLM judges \cite{xie2025sorrybench}. Because TPE minimises this count, methods are
+rewarded for avoiding marker phrases rather than for complying, so selected
+models were expected to retain more refusal than counted (H3). On the
+held-out set, at the tool's 100-token window, keyword matching and WildGuard
+agreed on average over the 42 ablated models (+0.5~pp [$-$1.0, +1.9]) but
+differed significantly in both directions for 25 of them; on the full
+response keyword matching was higher (+8.4~pp), because of markers after the
+first 100 tokens (Table~\ref{tab:h3-windows}). Mitigation: keyword counts
+drive optimisation and trial selection only; held-out refusal is reported
+from WildGuard, with Qwen3Guard as a second judge and a degeneracy check, and
+held-out keyword counts are reported only for comparison with the judges
+(H3).
+% src: notes/heretic2_methods_and_eval.md (Scorers); heretic config.default.toml @ 8fd4d76 (33 keyword_markers; max_response_length = 100); notes/EXECUTION_PLAN_v2.md (Findings 3; Judges); paper/sections/02_introduction.tex (PR #196; H3); scripts/bench/score_refusals.py (judges list; keyword_refusal, keyword_refusal_256); results/analysis/dir_status.csv (74 judged); h3_gap_pooled.csv (ablated_primary kw_vs_wg +8.4 pp)
+% src (review revision): results/analysis/review_out_c4_gap_pooled.csv (kw100_vs_wg ablated_primary +0.5 [-1.0, +1.9]);
+% src: review_out_summary.md C4 (14 + 11 Holm-significant cells of 42).
+
+\paragraph{Post-norm leakage.}
+Gemma-2/4, OLMo-2 and Olmo-3.1 apply an RMSNorm \cite{zhang2019rmsnorm} with gain
+$\boldsymbol{\gamma}$ after $W_O$ and $W_{\mathrm{down}}$ (output normalisation
+\cite{kim2025periln}). OLMo~2 and Olmo~3 normalise module outputs only
+\cite{walsh2025olmo2,olmo2025olmo3}, whereas Gemma~2 normalises the input and
+the output of each sublayer \cite{gemmateam2024gemma2}. After orthogonalisation the module output
+satisfies $\hat{\mathbf{r}}^{\top}\mathbf{y}=0$, but the normalised output keeps
+a component proportional to
+$(\boldsymbol{\gamma}\odot\hat{\mathbf{r}})^{\top}\mathbf{y}$, handicapping
+direction-based methods on four of the eight main-study models. Because both
+generations of each affected family share this design, the leak mainly
+penalises direction-based methods relative to ARA within these families; it
+confounds the generation effect (H1) and its interaction with method class (H2)
+to the extent that its size differs between generations, and it is also a
+candidate mechanism for any generation effect.
+Mitigation: per-family reporting and a $\boldsymbol{\gamma}$-corrected MPOA
+control on the four post-norm models. $\gamma$-MPOA lowered held-out refusal
+relative to MPOA on all four (by 3.1--19.9~pp), but the OLMo generation effect
+remained +57.0~pp and the pooled H2 interaction $-$0.42. On Gemma-4-31B
+(the largest reduction) and OLMo-2-32B, $\gamma$-MPOA also had a larger
+teacher-forced divergence than MPOA and lost 21.4 and 8.1~pp of mean
+capability, so these two reductions are confounded with a stronger edit.
+% src: notes/EXECUTION_PLAN_v2.md (Findings 6; Design: mechanistic control); paper/sections/02_introduction.tex (H1, H2)
+% src: results/analysis/final_gmpoa_control.csv; final_gmpoa_generation.csv; final_pooled_robustness.csv
+
+\paragraph{J-space scope.}
+Instruction-tuned Jacobian lenses exist only for Qwen3.5-4B and
+Qwen2.5-7B-Instruct (\texttt{neuronpedia/jacobian-lens}, revision
+\texttt{qwen-n1000}, fitted on WikiText; Gemma lenses are base-model lenses), so
+J-space is limited to the small pair. The lens is fitted on non-chat text, and the
+direction is baked into the weights through Heretic's ablation and TPE search
+rather than applied as the reference forward hook; the direction of bias is
+unknown. J-space as a forward hook ($\alpha=1$) was planned but not run and is
+left to future work.
+% src: notes/EXECUTION_PLAN_v2.md (Findings 7); notes/overnight_log.md (23:05); scripts/jspace_directions.py; directions/*.pt (meta: lens_repo, lens_file, lens_revision); configs/core_jspace.toml
+
+\paragraph{Method implementations.}
+Heretic-tuned SOM (commit \texttt{45a4e6e}) deviates from Piras et al.~\cite{piras2025som}
+and the proof of concept (Heretic~PR~\#196): neurons are ranked by wins over
+harmful residuals (fixing a win-count bug); directions are Gram--Schmidt
+orthonormalised; one geometric decay replaces per-direction strengths; global
+scope uses a single integer layer; map settings follow the proof of concept;
+and the norm-preserving adapter has rank~6, untested against higher ranks. The
+narrower search may understate SOM; a paper-faithful SOM configuration was
+planned but not run and is left to future work. MPOA's
+row normalisation is approximated by a rank-3 LoRA, and ARA's deployed adapter
+is not row-norm-preserving. All evaluated models are merged exports, not live adapters
+(Heretic~\#490).
+
+\paragraph{ARA instantiation.}
+The released ARA model is rebuilt by refitting its adapter from the stored
+hyperparameters. The four ARA exports refitted on a different GPU from the
+search (Qwen and Gemma pairs) moved by more than two dev refusals on re-score,
+against none of the four refitted on the search machine (Fisher $p=0.029$),
+and the Gemma-4-31B ARA export re-scored at KL 0.107, above the cap. Two
+seed-1 ARA runs on Qwen3.8-27B selected 59 and 63 of 100 dev refusals,
+whereas heretic-org reports 0 of 100 at KL 0.054 with the same defaults; the
+reported trial was not tested here. These points bear on H2, whose Qwen
+reversal and Gemma support rest on single ARA cells. Mitigation: held-out
+results were measured on the released exports, so they describe the released
+models; the drift is reported per export (Appendix~\ref{app:dev-rescore}).
+% src (review revision): results/analysis/review_sel_export_drift.csv; review_sel_export_tests.csv (Fisher p 0.0286);
+% src: sections/08b_setup_details.tex (Qwen3.8-27B ARA rerun: 59 and 63 of 100; heretic-org 0/100 at KL 0.054).
+% src: notes/overnight_log.md (02:42); configs/core_som.toml; heretic git log (45a4e6e ancestor of 8fd4d76); notes/heretic2_methods_and_eval.md (Modifier 1); notes/EXECUTION_PLAN_v2.md (Findings 4, 10); scripts/eval_one.sh, scripts/eval_one_local.sh (MERGE export)
+
+\paragraph{Mistral-Small-3.2 tokeniser.}
+The official repository lacks Hugging Face tokeniser files, so the
+\texttt{unsloth} mirror (commit \texttt{3ed8d34}) was used; its 10 weight shards
+are SHA256-identical to the official ones. Its Hugging Face tokeniser has a
+known pre-tokenisation regex defect (\texttt{transformers} suggests
+\texttt{fix\_mistral\_regex=True}, which Heretic does not pass) that alters 3 of
+33,165 study prompts. The same tokeniser is used for the base model, all
+modified models and evaluation (the base evaluation recorded commit
+\texttt{3ed8d34}), so within-model comparisons should be unaffected.
+% src: notes/overnight_log.md (02:20); runs/mc-h200-1/queue.txt (r2 lines); scripts/eval_one.sh (tokenizer_mode hf); runs/mc-rtx-1/bench_queue.txt (bench__mistral-small-3.2__base without commit pin); scripts/bench/bench.py (hf_commit recorded, not enforced); runs/mc-h200-1/results/bench/mistral-small-3.2__base/summary.json (hf_commit 3ed8d341b53e...)
+
+\paragraph{Truncation.}
+Held-out responses are limited to 512 tokens; for the unmodified Qwen3.8-27B,
+491 of 1,322 responses reached the limit, and on the 972 harmful prompts
+11.2--35.3\% of the originals' responses and 17.6--87.8\% of the 42 primary
+models' responses did so. Truncation should affect long, compliant answers
+more than refusals, so judges may rate partial answers as incomplete or less
+harmful, understating harmful compliance. Mitigation: finish reasons and the
+first 256 tokens of every response are stored; keyword refusal is also
+computed on the 256-token cut; compliance is split into complete and
+incomplete compliance by finish reason (\S\ref{sec:setup-eval}); the
+keyword--WildGuard gap is reported separately for truncated and complete
+responses (\S\ref{sec:res-h3}); and the three LLM judges were also applied to
+the 256-token cut of every response (Appendix~\ref{app:trunc256}).
+% src (2026-11-06): notes/overnight_log.md (judge256__all: WildGuard, HarmBench, Qwen3Guard on response_256; END rc=0 16:01Z); scripts/bench/score_refusals_256.py; refusal/judgments_256.jsonl for all 74 used dirs of results/analysis/dir_status.csv; sections/08e_truncation256.tex (app:trunc256)
+% src: scripts/bench/refusal_sets.json (meta.max_tokens); scripts/bench/bench.py (finish_reason, response_256); scripts/bench/score_refusals.py (keyword_refusal_256 only; no incomplete class; finish_reason unused); notes/overnight_log.md (02:20); runs/mc-rtx-1/results/bench/qwen3.8-27b__base/refusal/responses.jsonl (491 finish_reason=length); notes/EXECUTION_PLAN_v2.md (Findings 5; outcome classes)
+% src (2026-11-06): results/analysis/secondary_harm_degenerate.csv (item_group harmful_all, capped_rate: originals 0.112 gemma-2-27b 109/972 to 0.353 mistral-small-2409 343/972; primary 0.176 gemma-4-31b__dim 171/972 to 0.878 qwen3.8-27b__mpoa 853/972); scripts/analysis/assemble.py and results/analysis/README.md (outcome4: compliance_complete / compliance_incomplete by finish_reason; supersedes "no incomplete class" above); results/analysis/h3_gap_pooled.csv (capped / complete)
+
+\paragraph{Generation is confounded.}
+Pairs differ in more than release date: size (the newer small-pair model is
+smaller, and after abliteration harmful-code success has been found to be
+limited by model size \cite{carleo2026willing}), architecture (Qwen3.8-27B and
+Qwen3.5-4B use hybrid attention with gated-delta-rule linear-attention layers
+\cite{yang2025gated}, whose recurrent state may carry refusal information
+that residual-stream directions do not capture, and plain directional ablation has made a
+recurrent model incoherent \cite{marshall2024refusal}; Olmo~3 adds
+sliding-window attention on three of every four layers \cite{olmo2025olmo3};
+Qwen3.8-27B, Gemma-4-31B, Mistral-Small-3.2 and Qwen3.5-4B are image-text checkpoints used with text only), training data and
+post-training recipe, and the
+interval between releases varies by family. Later checkpoints may also have
+been safety-tuned on the public held-out benchmarks (JailbreakBench, XSTest,
+StrongREJECT, HarmBench) or paraphrases of them, which would raise their
+held-out refusal for reasons other than resistance to removal
+\cite{sainz2023nlp}; the overlap check covers only
+\texttt{harmful\_behaviors} and is lexical. The four public benchmarks first appeared
+between August 2023 (XSTest) and April 2024 (JailbreakBench; HarmBench and
+StrongREJECT in February 2024), before the earliest checkpoint
+(Gemma-2-27B-it, June 2024; release months in Table~\ref{tab:models}), so
+exposure was possible for every checkpoint, and the later checkpoint of each
+pair appeared 9 to 23 months after the earlier one; the code-as-weapon bank
+(May 2026) predates only Qwen3.8-27B (August 2026). A generation effect cannot be
+% src (2026-11-05 todo pass): benchmark months from the arXiv identifiers in paper/references.bib (rottger2024xstest arXiv:2308.01263; mazeika2024harmbench arXiv:2402.04249; souly2024strongreject arXiv:2402.10260; chao2024jailbreakbench arXiv:2404.01318; young2026code arXiv:2605.28734; https://huggingface.co/api/datasets/richardyoung/code-as-weapon-bank createdAt 2026-05-21); checkpoint months: tab:models "Released" column (https://huggingface.co/api/models/<repo> createdAt; Gemma-4 first public commit 2026-04-02)
+attributed to safety training alone. The item mix also matters for the
+originals' baseline: the code-as-weapon bank (200 items) carried 52\% of the
+mean generation difference between the main-study originals, although the H1
+and H2 conclusions were the same on the four public sets alone
+(Appendix~\ref{app:item-source}). Mitigation: within-family comparisons,
+family as a random effect, and conclusions phrased as statements about later
+releases, not mechanisms.
+% src: notes/EXECUTION_PLAN_v2.md (Design; Statistics); scripts/eval_one.sh (hybrid Mamba cache comment; Gemma-4 limit_mm_per_prompt); notes/overnight_log.md (23:08, 02:20 AutoProcessor); HF cache unsloth/Mistral-Small-3.2-24B-Instruct-2506 @ 3ed8d34 config.json (Mistral3ForConditionalGeneration, vision_config)
+
+\paragraph{Decoding.}
+All refusal measurements, during search and on the held-out set, use greedy
+decoding. Changing only decoding hyperparameters raised the misalignment rate
+of 11 open models from 0\% to more than 95\% \cite{huang2024catastrophic}, so
+residual refusal under greedy decoding may overstate refusal under sampling,
+possibly by different amounts in each generation. Each prompt received one
+greedy response, and reasoning was disabled, although the Qwen3.8-27B and
+Qwen3.5-4B chat templates open a reasoning block and chain of thought can
+carry refusal \cite{yang2026beyond}. Mitigation: decoding is
+identical for every model, so within-pair comparisons are matched on decoding,
+and the conclusions are stated for greedy, non-thinking generation; a
+sampled-decoding sensitivity check is left to future work.
+% 2026-11-06 verifier pass: the todo "decide whether to add a sampled-decoding sensitivity check" resolved by author
+% decision C (no new GPU experiments; greedy decoding stated as a limitation).
+
+\paragraph{First-token KL.}
+Distribution shift is constrained only through a common cap on the KL
+divergence of the first generated token on 100 harmless prompts, which need
+not reflect sequence-level change and may not be comparable across
+vocabularies. The cap is common but not matched: it bound in 15 of the 24
+main-study direction-based runs and in all 8 ARA runs, and 4 direction-based
+runs never sampled a trial above it. Mitigation: selection at KL 0.05, 0.2 and
+0.5, teacher-forced divergence on the original model's answers to the 350
+benign held-out prompts, and H1 and H2 refitted by cap binding
+(Appendix~\ref{app:kl-cap}).
+% src: scripts/select_trial.py (REPORT_THRESHOLDS); notes/heretic2_methods_and_eval.md (KLDivergence); scripts/bench/bench.py (teacher_forced_logprobs); notes/overnight_log.md (23:12)
+% src (review revision): results/analysis/review_sel_kl_summary.csv (15 of 24; 8 of 8; 4 never left the cap).
+
+\paragraph{Capability benchmarks.}
+MMLU-Pro (1,000 items, stratified) and GSM8K (500 of 1,319) are subsets; IFEval
+(541), HumanEval (164) and MBPP (500) are complete
+\cite{wang2024mmlupro,cobbe2021training,zhou2023instruction,chen2021evaluating,austin2021program}. Thinking is disabled, so
+reasoning-mode ability is not measured. Two harness defects were corrected: the
+lm-eval~0.4.13 MBPP answer extractor (MBPP scores recomputed from logged
+samples) and a vLLM~0.33 detokeniser artefact (U+2581 left in Gemma-2 output;
+mapped to a space in every evaluation run after the fix, and the Gemma-2 base
+evaluation rerun; the earlier Qwen2.5-32B base evaluation, run without the
+mapping, contains no U+2581).
+% src: scripts/bench/README.md (Protocol); scripts/bench/LM_EVAL_PATCHES.md; scripts/bench/rescore_mbpp.py; scripts/bench/bench.py (U+2581 workaround); notes/overnight_log.md (23:45, 00:22); runs/mc-rtx-1/bench_queue.txt (gemma-2-27b__base-r2); runs/mc-rtx-1/results/bench/gemma-2-27b__base.u2581-bug; runs/mc-rtx-1/results/bench/*/summary.json (postprocess key absent only for qwen2.5-32b__base and aborted runs); runs/mc-rtx-1/results/bench/qwen2.5-32b__base/**/*.jsonl (0 U+2581)
+
+\paragraph{Outcome construct.}
+Residual refusal is not attack success: of the ablated main-study responses
+that WildGuard did not label as refusals, 75.1\% were harmful by the HarmBench
+classifier and 55.8\% by WildGuard. Mitigation: H1 and H2 were repeated with
+harmful compliance as the outcome, with the same pooled conclusions
+(Appendix~\ref{app:harm}).
+% src (review revision): results/analysis/review_out_c3_pooled.csv; review_out_summary.md C3 verdict.
+
+\paragraph{Judge validity.}
+Reported refusal and harm rely on automated judges (WildGuard, the HarmBench
+classifier, Qwen3Guard, two BERT-style classifiers)
+\cite{han2024wildguard,mazeika2024harmbench,zhao2025qwen3guard}, applied to
+all 74 evaluated models, with no human-labelled audit. Conclusions can depend
+on the classifier \cite{young2026measuring}, modified-model outputs may be out
+of distribution for the judges, and the BERT-style classifiers truncate inputs to
+512 tokens. Against human labels, WildGuard and the HarmBench classifier reached
+$\kappa$ of 0.61 and 0.53 \cite{xie2025sorrybench}, and rewriting harmful
+responses as stories raised their false-negative rates from 0.02 to 0.12 and
+from 0.12 to 0.36 \cite{eiras2025know}. Mitigation: several judges with official templates, each
+loaded at a pinned and recorded Hugging Face commit (the same five commits for
+all 74 models; Appendix~\ref{app:setup-eval}),
+% src (2026-11-05 todo pass): scripts/bench/score_refusals.py (revision=revs[repo] passed to pipeline() and vllm.LLM; supersedes the "bare repo id" note in the src line below); results/analysis/dir_status.csv (one judge_revisions set for all 74 used dirs); results/analysis/assemble_log.txt ("distinct judge-revision sets among used dirs: 1"); runs/mc-rtx-1/runs/judge__batch1-r2/output.log (vLLM revision arg)
+inter-judge agreement (Cohen's $\kappa$ for pairs \cite{cohen1960coefficient},
+Fleiss' $\kappa$ across the panel \cite{fleiss1971measuring}, each with raw
+agreement and marginals, because $\kappa$ is depressed when labels are
+imbalanced \cite{feinstein1990high}), and a separate degeneracy class.
+WildGuard and Qwen3Guard agreed at $\kappa=0.90$ on the originals and 0.82
+after ablation, but agreement between LLM judges with correlated errors is
+not confirmation \cite{hossain2026agreement}.
+% src: scripts/bench/score_refusals.py (judges; max_length=512; run_bert/run_vllm load by bare repo id; hf_revision records current sha only); notes/EXECUTION_PLAN_v2.md (Judges); results/analysis/dir_status.csv (74 judged); h3_agreement_pairs.csv (wg vs q3g: original 0.90, ablated_primary 0.82); scripts/analysis/h3.py (kappa)
+
+\paragraph{No preregistration.}
+The study was not preregistered: hypotheses were written after pilot data, and
+the protocol was revised after part of the main-study optimisation and the
+capability benchmarks of one base model (Qwen2.5-32B-Instruct) had run, though
+before any held-out response was generated.
+% src: notes/EXECUTION_PLAN_v2.md (not preregistered); notes/overnight_log.md (22:40, 22:45, 23:08, 23:12); runs/mc-h200-1/runs/*/meta.txt (start times); runs/mc-rtx-1/results/bench/qwen2.5-32b__base/summary.json (started 05:47Z, finished 06:07Z = 21:47-22:07 PST); runs/mc-rtx-1/results/bench/qwen3.8-27b__base.hf-fallback-aborted/summary.json (started 06:12Z, no results; discarded and rerun); scripts/eval_one.sh (comment: capability benchmarks already done before plan v2)
+
+\paragraph{Generalisation.}
+Ten dense models from four families (Qwen contributing two pairs), 4--32B
+parameters, English prompts and one Heretic~2.0 configuration with 100 trials
+were studied; method rankings can change with the search budget
+\cite{dodge2019show}, particularly between methods with search spaces as
+different as rank-1 DiM and rank-50 ARA; 8 of the 42 core runs (19\%) still
+improved after trial 75 (Figure~\ref{fig:search-convergence}). Results may
+not transfer to mixture-of-experts or larger models, other languages,
+reasoning mode or other implementations; eight public community releases of
+five checkpoints were evaluated as external references
+(Figure~\ref{fig:community}), and four of them reached lower held-out refusal
+than the models selected here, at larger teacher-forced divergence. Three
+presets of the external OBLITERATUS toolkit on Qwen2.5-7B-Instruct are
+evaluated with the same harness in the companion paper \cite{young2026paper30}.
+% src: notes/EXECUTION_PLAN_v2.md (Design); configs/core_*.toml (n_trials = 100); runs/mc-h200-1/models_*.txt; results/analysis/final_search_runs.csv (8 of 42 late); final_community_vs_selected.csv (4 of 8 lower)
+% src (2026-11-06, author decision: OBLITERATUS reported in paper 30 only): results/bench-4090/qwen2.5-7b__obliteratus-{basic,advanced,spectral_cascade}/push_manifest.json; ../paper30/v3_2611/analysis/RESULTS.md
+
+\paragraph{Dual use and ethics.}
+Each released model is a full merged checkpoint (plus, where provided, a
+Q4\_K\_M GGUF quantisation \todo{GGUF releases}), published on Hugging Face under
+the base model's licence (including the Gemma terms and Mistral-Small-2409's
+non-commercial licence); models whose base is licensed under Apache-2.0
+additionally carry the use restrictions of the OpenRAIL++-M licence. Server-evaluated models are the copies downloaded back
+from the published repositories; all ten RTX~4090 (small-pair) uploads are
+verified SHA256-identical, shard by shard, to the benchmarked copies.
+Reproduction manifests accompany only MPOA, ARA and DiM,
+because SOM, J-space and $\gamma$-MPOA need a project fork. No harmful completions are
+released; responses are stored privately for scoring. The study involved no
+human participants and was not human-subjects research. The marginal risk of
+the released models is limited: on each of the five checkpoints with an
+evaluated public abliteration, a public release already had held-out residual
+refusal not significantly different from (Gemma-4-31B, Mistral-Small-3.2) or
+lower than (Qwen2.5-32B,
+Qwen3.8-27B, Olmo-3.1-32B) that of the most effective model released here;
+the argument does not cover the five checkpoints without an evaluated public
+release (Gemma-2-27B, OLMo-2-32B, Mistral-Small-2409, Qwen2.5-7B,
+Qwen3.5-4B).
+% src (review revision, C7): results/analysis/final_community_vs_selected.csv (rows with ours_is_best_wg; p_holm_within_community);
+% src: drafted 2026-11-06 to replace the former todo "ethics/IRB statement"; same argument as the Ethics Statement (main.tex).
+% src: notes/EXECUTION_PLAN_v2.md (Publishing); notes/overnight_log.md (00:05, 06:34-06:58); scripts/eval_one.sh; scripts/publish_local.sh; results/bench-4090/*/publish_check.json (10 files, all match = true; qwen3.5-4b__ara after a CUDA-OOM failure, retried, check written 07:00 PST; repro_mode full for MPOA/ARA/DiM, none for SOM/J-space)
+% src (2026-11-06): scripts/eval_one.sh (repro=none for SOM|JSpace|GMPOA*); runs/mc-*/results/bench/*__gmpoa/reexport.sh (--upload-repro none)

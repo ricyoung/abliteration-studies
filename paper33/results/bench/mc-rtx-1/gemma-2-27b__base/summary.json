@@ -1,0 +1,187 @@
+{
+ "protocol_version": "1",
+ "started": "2026-11-05T08:03:21+00:00",
+ "limit_mode": "paper",
+ "method": "gemma-2-27b__base",
+ "base_model": "google/gemma-2-27b-it",
+ "backend": "vllm",
+ "seeds": {
+  "random_seed": 0,
+  "numpy_random_seed": 1234,
+  "torch_random_seed": 1234,
+  "fewshot_random_seed": 1234,
+  "vllm_seed": 1234
+ },
+ "subset_seed": 20261104,
+ "decoding": {
+  "greedy": true,
+  "do_sample": false,
+  "temperature": 0.0,
+  "apply_chat_template": true,
+  "fewshot_as_multiturn": true,
+  "enable_thinking": false,
+  "max_model_len": 8192
+ },
+ "versions": {
+  "python": "3.12.16",
+  "platform": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+  "host": "massed-rtx6000",
+  "lm_eval": "0.4.13",
+  "vllm": "0.33.0",
+  "torch": "2.14.0",
+  "transformers": "5.20.2",
+  "datasets": "5.1.0",
+  "accelerate": "1.15.0",
+  "flashinfer-python": "0.7.2.post1",
+  "torch_cuda": "13.0",
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "driver": "580.126.09",
+  "env": {
+   "VLLM_USE_FLASHINFER_SAMPLER": "0",
+   "VLLM_ATTENTION_BACKEND": null,
+   "BENCH_VLLM_EXTRA": "{}",
+   "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "sha256:uv.lock": "f76643a5de210306a28674c91ca9703792d02b8e01a0a281ba4457c9410fc25f",
+  "sha256:bench.py": "b6a926cf737347a183b4262f528d3c106b6768f176ecf60c34b36fe97a9f4612",
+  "sha256:subsets.json": "4f54c82184d9ae01a2b361a433d72604a290322fbe27882f9b37dab91fcdd4d9",
+  "sha256:run.sh": "b7396b52cbaefceb8bab22acfbbbd3866cf3b9d7a6ec247bcbf0b8a3f2f07686"
+ },
+ "benchmarks": {
+  "mmlu_pro": {
+   "metric": "exact_match,custom-extract",
+   "score": 0.428,
+   "stderr": 0.015654426245029267,
+   "n": 1000,
+   "wall_seconds": 175.0,
+   "max_gen_toks": 2048,
+   "fewshot": "5-shot CoT (task default)",
+   "lm_eval_tasks": [
+    "mmlu_pro_biology",
+    "mmlu_pro_business",
+    "mmlu_pro_chemistry",
+    "mmlu_pro_computer_science",
+    "mmlu_pro_economics",
+    "mmlu_pro_engineering",
+    "mmlu_pro_health",
+    "mmlu_pro_history",
+    "mmlu_pro_law",
+    "mmlu_pro_math",
+    "mmlu_pro_other",
+    "mmlu_pro_philosophy",
+    "mmlu_pro_physics",
+    "mmlu_pro_psychology"
+   ],
+   "per_subject": {
+    "mmlu_pro_biology": 0.5833333333333334,
+    "mmlu_pro_business": 0.3939393939393939,
+    "mmlu_pro_chemistry": 0.425531914893617,
+    "mmlu_pro_computer_science": 0.20588235294117646,
+    "mmlu_pro_economics": 0.5714285714285714,
+    "mmlu_pro_engineering": 0.07407407407407407,
+    "mmlu_pro_health": 0.3235294117647059,
+    "mmlu_pro_history": 0.75,
+    "mmlu_pro_law": 0.34065934065934067,
+    "mmlu_pro_math": 0.39285714285714285,
+    "mmlu_pro_other": 0.5974025974025974,
+    "mmlu_pro_philosophy": 0.4878048780487805,
+    "mmlu_pro_physics": 0.37037037037037035,
+    "mmlu_pro_psychology": 0.7121212121212122
+   }
+  },
+  "gsm8k": {
+   "metric": "exact_match,flexible-extract",
+   "score": 0.864,
+   "stderr": 0.015345323649758269,
+   "n": 500,
+   "wall_seconds": 146.5,
+   "max_gen_toks": 512,
+   "fewshot": "5-shot (task default)",
+   "lm_eval_tasks": [
+    "gsm8k"
+   ],
+   "secondary": {
+    "exact_match,strict-match": 0.526
+   }
+  },
+  "ifeval": {
+   "metric": "prompt_level_strict_acc,none",
+   "score": 0.6062846580406654,
+   "stderr": 0.021024834145872404,
+   "n": 541,
+   "wall_seconds": 75.3,
+   "max_gen_toks": 1280,
+   "fewshot": "0-shot",
+   "lm_eval_tasks": [
+    "ifeval"
+   ],
+   "secondary": {
+    "inst_level_strict_acc,none": 0.7170263788968825,
+    "prompt_level_loose_acc,none": 0.634011090573013
+   }
+  },
+  "humaneval": {
+   "metric": "pass@1,create_test",
+   "score": 0.7621951219512195,
+   "stderr": 0.033346454086653404,
+   "n": 164,
+   "wall_seconds": 87.5,
+   "max_gen_toks": 1024,
+   "fewshot": "0-shot",
+   "lm_eval_tasks": [
+    "humaneval_instruct"
+   ]
+  },
+  "mbpp": {
+   "metric": "pass_at_1,extract_code",
+   "score": 0.696,
+   "stderr": 0.020591649571224932,
+   "n": 500,
+   "wall_seconds": 209.3,
+   "max_gen_toks": 1024,
+   "fewshot": "3-shot (task default)",
+   "lm_eval_tasks": [
+    "mbpp_instruct"
+   ]
+  }
+ },
+ "model": "google/gemma-2-27b-it",
+ "model_info": {
+  "model": "google/gemma-2-27b-it",
+  "source": "hf",
+  "path": "/workspace/paper33/hf/hub/models--google--gemma-2-27b-it/snapshots/aaf20e6b9f4c0fcf043f6fb2a2068419086d77b0",
+  "hf_commit": "aaf20e6b9f4c0fcf043f6fb2a2068419086d77b0",
+  "tree_sha256": "5fc6363bf577c64f611feb5d8c80dabef37e48befd84fb7784b495f2249d222a",
+  "weights_bytes": 54476174394
+ },
+ "postprocess": "vLLM output text: U+2581 -> space (detokenizer workaround)",
+ "load_seconds": 63.5,
+ "lm_kwargs": {
+  "pretrained": "/workspace/paper33/hf/hub/models--google--gemma-2-27b-it/snapshots/aaf20e6b9f4c0fcf043f6fb2a2068419086d77b0",
+  "dtype": "auto",
+  "max_model_len": 8192,
+  "gpu_memory_utilization": 0.85,
+  "seed": 1234,
+  "batch_size": "auto",
+  "trust_remote_code": false,
+  "enable_thinking": false
+ },
+ "refusal_generation": {
+  "file": "/workspace/paper33/results/bench/gemma-2-27b__base/refusal/responses.jsonl",
+  "n": 1322,
+  "items_sha256": "ef772bfb0799df70245fa3a4d654e0ffe27d32e19e127afbce582011c65bb556",
+  "max_tokens": 512,
+  "wall_seconds": 141.5
+ },
+ "teacher_forced": {
+  "file": "/workspace/paper33/results/bench/gemma-2-27b__base/refusal/teacher_forced.jsonl",
+  "n_items": 350,
+  "n_tokens": 97666,
+  "mean_logprob": -0.22721868525117178,
+  "reference": "/workspace/paper33/results/bench/gemma-2-27b__base/refusal/responses.jsonl",
+  "wall_seconds": 16.5
+ },
+ "finished": "2026-11-05T08:19:11+00:00",
+ "total_seconds": 949.8,
+ "failed": []
+}

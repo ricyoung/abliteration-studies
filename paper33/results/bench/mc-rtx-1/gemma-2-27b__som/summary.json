@@ -1,0 +1,186 @@
+{
+ "protocol_version": "1",
+ "started": "2026-11-05T18:33:39+00:00",
+ "limit_mode": "paper",
+ "method": "gemma-2-27b__som",
+ "base_model": "google/gemma-2-27b-it",
+ "backend": "vllm",
+ "seeds": {
+  "random_seed": 0,
+  "numpy_random_seed": 1234,
+  "torch_random_seed": 1234,
+  "fewshot_random_seed": 1234,
+  "vllm_seed": 1234
+ },
+ "subset_seed": 20261104,
+ "decoding": {
+  "greedy": true,
+  "do_sample": false,
+  "temperature": 0.0,
+  "apply_chat_template": true,
+  "fewshot_as_multiturn": true,
+  "enable_thinking": false,
+  "max_model_len": 8192
+ },
+ "versions": {
+  "python": "3.12.16",
+  "platform": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+  "host": "massed-rtx6000",
+  "lm_eval": "0.4.13",
+  "vllm": "0.33.0",
+  "torch": "2.14.0",
+  "transformers": "5.20.2",
+  "datasets": "5.1.0",
+  "accelerate": "1.15.0",
+  "flashinfer-python": "0.7.2.post1",
+  "torch_cuda": "13.0",
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "driver": "580.126.09",
+  "env": {
+   "VLLM_USE_FLASHINFER_SAMPLER": "0",
+   "VLLM_ATTENTION_BACKEND": null,
+   "BENCH_VLLM_EXTRA": "{}",
+   "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "sha256:uv.lock": "f76643a5de210306a28674c91ca9703792d02b8e01a0a281ba4457c9410fc25f",
+  "sha256:bench.py": "f220db7bb900771428e7d4cf23af65d93ab9202a402877cb8054c54a4edfa754",
+  "sha256:subsets.json": "4f54c82184d9ae01a2b361a433d72604a290322fbe27882f9b37dab91fcdd4d9",
+  "sha256:run.sh": "b7396b52cbaefceb8bab22acfbbbd3866cf3b9d7a6ec247bcbf0b8a3f2f07686"
+ },
+ "benchmarks": {
+  "mmlu_pro": {
+   "metric": "exact_match,custom-extract",
+   "score": 0.453,
+   "stderr": 0.015749255189977683,
+   "n": 1000,
+   "wall_seconds": 174.3,
+   "max_gen_toks": 2048,
+   "fewshot": "5-shot CoT (task default)",
+   "lm_eval_tasks": [
+    "mmlu_pro_biology",
+    "mmlu_pro_business",
+    "mmlu_pro_chemistry",
+    "mmlu_pro_computer_science",
+    "mmlu_pro_economics",
+    "mmlu_pro_engineering",
+    "mmlu_pro_health",
+    "mmlu_pro_history",
+    "mmlu_pro_law",
+    "mmlu_pro_math",
+    "mmlu_pro_other",
+    "mmlu_pro_philosophy",
+    "mmlu_pro_physics",
+    "mmlu_pro_psychology"
+   ],
+   "per_subject": {
+    "mmlu_pro_biology": 0.6333333333333333,
+    "mmlu_pro_business": 0.36363636363636365,
+    "mmlu_pro_chemistry": 0.4574468085106383,
+    "mmlu_pro_computer_science": 0.2647058823529412,
+    "mmlu_pro_economics": 0.6285714285714286,
+    "mmlu_pro_engineering": 0.12345679012345678,
+    "mmlu_pro_health": 0.36764705882352944,
+    "mmlu_pro_history": 0.78125,
+    "mmlu_pro_law": 0.37362637362637363,
+    "mmlu_pro_math": 0.41964285714285715,
+    "mmlu_pro_other": 0.5844155844155844,
+    "mmlu_pro_philosophy": 0.4878048780487805,
+    "mmlu_pro_physics": 0.3888888888888889,
+    "mmlu_pro_psychology": 0.7121212121212122
+   }
+  },
+  "gsm8k": {
+   "metric": "exact_match,flexible-extract",
+   "score": 0.862,
+   "stderr": 0.015439843831953452,
+   "n": 500,
+   "wall_seconds": 146.1,
+   "max_gen_toks": 512,
+   "fewshot": "5-shot (task default)",
+   "lm_eval_tasks": [
+    "gsm8k"
+   ],
+   "secondary": {
+    "exact_match,strict-match": 0.532
+   }
+  },
+  "ifeval": {
+   "metric": "prompt_level_strict_acc,none",
+   "score": 0.6081330868761553,
+   "stderr": 0.021007372406188378,
+   "n": 541,
+   "wall_seconds": 79.9,
+   "max_gen_toks": 1280,
+   "fewshot": "0-shot",
+   "lm_eval_tasks": [
+    "ifeval"
+   ],
+   "secondary": {
+    "inst_level_strict_acc,none": 0.7146282973621103,
+    "prompt_level_loose_acc,none": 0.6266173752310537
+   }
+  },
+  "humaneval": {
+   "metric": "pass@1,create_test",
+   "score": 0.7560975609756098,
+   "stderr": 0.03363591048272823,
+   "n": 164,
+   "wall_seconds": 78.6,
+   "max_gen_toks": 1024,
+   "fewshot": "0-shot",
+   "lm_eval_tasks": [
+    "humaneval_instruct"
+   ]
+  },
+  "mbpp": {
+   "metric": "pass_at_1,extract_code",
+   "score": 0.686,
+   "stderr": 0.020776701920309,
+   "n": 500,
+   "wall_seconds": 193.0,
+   "max_gen_toks": 1024,
+   "fewshot": "3-shot (task default)",
+   "lm_eval_tasks": [
+    "mbpp_instruct"
+   ]
+  }
+ },
+ "model": "/workspace/paper33/tmpmodels/gemma-2-27b__som",
+ "model_info": {
+  "model": "/workspace/paper33/tmpmodels/gemma-2-27b__som",
+  "source": "local",
+  "path": "/workspace/paper33/tmpmodels/gemma-2-27b__som",
+  "tree_sha256": "69a31de187eada9af2cf5598f97c7108c66588a2ff4ed8706c8a58c31fe46287",
+  "weights_bytes": 54488725786
+ },
+ "postprocess": "vLLM output text: U+2581 -> space (detokenizer workaround)",
+ "load_seconds": 82.7,
+ "lm_kwargs": {
+  "pretrained": "/workspace/paper33/tmpmodels/gemma-2-27b__som",
+  "dtype": "auto",
+  "max_model_len": 8192,
+  "gpu_memory_utilization": 0.85,
+  "seed": 1234,
+  "batch_size": "auto",
+  "trust_remote_code": false,
+  "enable_thinking": false
+ },
+ "refusal_generation": {
+  "file": "/workspace/paper33/results/bench/gemma-2-27b__som/refusal/responses.jsonl",
+  "n": 1322,
+  "items_sha256": "ef772bfb0799df70245fa3a4d654e0ffe27d32e19e127afbce582011c65bb556",
+  "max_tokens": 512,
+  "wall_seconds": 167.6
+ },
+ "teacher_forced": {
+  "file": "/workspace/paper33/results/bench/gemma-2-27b__som/refusal/teacher_forced.jsonl",
+  "n_items": 350,
+  "n_tokens": 97666,
+  "mean_logprob": -0.25848558495287344,
+  "reference": "/workspace/paper33/results/bench/gemma-2-27b__base/refusal/responses.jsonl",
+  "wall_seconds": 16.5
+ },
+ "finished": "2026-11-05T18:49:52+00:00",
+ "total_seconds": 973.1,
+ "failed": []
+}

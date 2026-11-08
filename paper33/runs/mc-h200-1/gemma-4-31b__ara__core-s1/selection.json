@@ -1,0 +1,501 @@
+{
+  "run": "gemma-4-31b__ara__core-s1",
+  "run_dir": "/workspace/paper33/runs/gemma-4-31b__ara__core-s1",
+  "journal": "/workspace/paper33/runs/gemma-4-31b__ara__core-s1/checkpoints/google--gemma-4-31B-it.jsonl",
+  "model_short": "gemma-4-31b",
+  "method": "ara",
+  "tag": "core-s1",
+  "seed_from_name": 1,
+  "model": "google/gemma-4-31B-it",
+  "seed": 1,
+  "modifiers": [
+    "heretic.modifiers.ara.ARA"
+  ],
+  "finished": true,
+  "n_trials_planned": 100,
+  "n_trials_total": 100,
+  "n_trials_complete": 100,
+  "objectives": [
+    "Refusals",
+    "KL divergence"
+  ],
+  "baselines": {
+    "Refusals": 0.99,
+    "KL divergence": 0
+  },
+  "rule": {
+    "text": "among COMPLETE trials with KL <= kl_max: fewest refusals; ties -> lower KL, then lower trial index; none qualifies -> no selection",
+    "kl_max": 0.1
+  },
+  "selected": {
+    "trial_index": 37,
+    "optuna_number": 36,
+    "refusals": 0.28,
+    "refusals_display": "28/100",
+    "kl": 0.08449134230613708,
+    "scores": {
+      "Refusals": 0.28,
+      "KL divergence": 0.08449134230613708
+    },
+    "pareto_position": 8,
+    "parameters": {
+      "start_layer_index": 21,
+      "end_layer_index": 56,
+      "preserve_good_behavior_weight": 0.2981519023867627,
+      "steer_bad_behavior_weight": 0.0010376122704442547,
+      "overcorrect_relative_weight": 0.9045205529029535,
+      "neighbor_count": 13
+    }
+  },
+  "lowest_kl_trial": {
+    "trial_index": 28,
+    "optuna_number": 27,
+    "refusals": 0.98,
+    "refusals_display": "98/100",
+    "kl": 0.025230074301362038,
+    "scores": {
+      "Refusals": 0.98,
+      "KL divergence": 0.025230074301362038
+    },
+    "pareto_position": 15,
+    "parameters": {
+      "start_layer_index": 19,
+      "end_layer_index": 55,
+      "preserve_good_behavior_weight": 0.15679139464608427,
+      "steer_bad_behavior_weight": 0.0001186601269698492,
+      "overcorrect_relative_weight": 0.09102878683498904,
+      "neighbor_count": 8
+    }
+  },
+  "headless_index0_trial": {
+    "trial_index": 8,
+    "optuna_number": 7,
+    "refusals": 0.0,
+    "refusals_display": "0/100",
+    "kl": 18.551088333129883,
+    "scores": {
+      "Refusals": 0.0,
+      "KL divergence": 18.551088333129883
+    },
+    "pareto_position": 0,
+    "parameters": {
+      "start_layer_index": 8,
+      "end_layer_index": 54,
+      "preserve_good_behavior_weight": 0.10322600657764203,
+      "steer_bad_behavior_weight": 0.006188339116517527,
+      "overcorrect_relative_weight": 1.1811741540210243,
+      "neighbor_count": 5
+    }
+  },
+  "per_threshold": {
+    "0.05": {
+      "trial_index": 10,
+      "optuna_number": 9,
+      "refusals": 0.9,
+      "refusals_display": "90/100",
+      "kl": 0.030031943693757057,
+      "scores": {
+        "Refusals": 0.9,
+        "KL divergence": 0.030031943693757057
+      },
+      "pareto_position": 14,
+      "parameters": {
+        "start_layer_index": 15,
+        "end_layer_index": 32,
+        "preserve_good_behavior_weight": 0.5741176054920131,
+        "steer_bad_behavior_weight": 0.00038629074184943265,
+        "overcorrect_relative_weight": 0.7660971979742696,
+        "neighbor_count": 11
+      }
+    },
+    "0.1": {
+      "trial_index": 37,
+      "optuna_number": 36,
+      "refusals": 0.28,
+      "refusals_display": "28/100",
+      "kl": 0.08449134230613708,
+      "scores": {
+        "Refusals": 0.28,
+        "KL divergence": 0.08449134230613708
+      },
+      "pareto_position": 8,
+      "parameters": {
+        "start_layer_index": 21,
+        "end_layer_index": 56,
+        "preserve_good_behavior_weight": 0.2981519023867627,
+        "steer_bad_behavior_weight": 0.0010376122704442547,
+        "overcorrect_relative_weight": 0.9045205529029535,
+        "neighbor_count": 13
+      }
+    },
+    "0.2": {
+      "trial_index": 68,
+      "optuna_number": 67,
+      "refusals": 0.09,
+      "refusals_display": "9/100",
+      "kl": 0.1964384913444519,
+      "scores": {
+        "Refusals": 0.09,
+        "KL divergence": 0.1964384913444519
+      },
+      "pareto_position": 3,
+      "parameters": {
+        "start_layer_index": 10,
+        "end_layer_index": 60,
+        "preserve_good_behavior_weight": 0.40531606809055176,
+        "steer_bad_behavior_weight": 0.0017290203010588902,
+        "overcorrect_relative_weight": 0.9458033239698127,
+        "neighbor_count": 12
+      }
+    },
+    "0.5": {
+      "trial_index": 34,
+      "optuna_number": 33,
+      "refusals": 0.06,
+      "refusals_display": "6/100",
+      "kl": 0.34097084403038025,
+      "scores": {
+        "Refusals": 0.06,
+        "KL divergence": 0.34097084403038025
+      },
+      "pareto_position": 1,
+      "parameters": {
+        "start_layer_index": 16,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.3397893508334313,
+        "steer_bad_behavior_weight": 0.007652246057653153,
+        "overcorrect_relative_weight": 0.9774113653364802,
+        "neighbor_count": 14
+      }
+    }
+  },
+  "pareto_front": [
+    {
+      "trial_index": 8,
+      "optuna_number": 7,
+      "refusals": 0.0,
+      "refusals_display": "0/100",
+      "kl": 18.551088333129883,
+      "scores": {
+        "Refusals": 0.0,
+        "KL divergence": 18.551088333129883
+      },
+      "pareto_position": 0,
+      "parameters": {
+        "start_layer_index": 8,
+        "end_layer_index": 54,
+        "preserve_good_behavior_weight": 0.10322600657764203,
+        "steer_bad_behavior_weight": 0.006188339116517527,
+        "overcorrect_relative_weight": 1.1811741540210243,
+        "neighbor_count": 5
+      }
+    },
+    {
+      "trial_index": 34,
+      "optuna_number": 33,
+      "refusals": 0.06,
+      "refusals_display": "6/100",
+      "kl": 0.34097084403038025,
+      "scores": {
+        "Refusals": 0.06,
+        "KL divergence": 0.34097084403038025
+      },
+      "pareto_position": 1,
+      "parameters": {
+        "start_layer_index": 16,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.3397893508334313,
+        "steer_bad_behavior_weight": 0.007652246057653153,
+        "overcorrect_relative_weight": 0.9774113653364802,
+        "neighbor_count": 14
+      }
+    },
+    {
+      "trial_index": 67,
+      "optuna_number": 66,
+      "refusals": 0.07,
+      "refusals_display": "7/100",
+      "kl": 0.24992875754833221,
+      "scores": {
+        "Refusals": 0.07,
+        "KL divergence": 0.24992875754833221
+      },
+      "pareto_position": 2,
+      "parameters": {
+        "start_layer_index": 12,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.3299241183389968,
+        "steer_bad_behavior_weight": 0.0005299695764321353,
+        "overcorrect_relative_weight": 0.9795651002834197,
+        "neighbor_count": 14
+      }
+    },
+    {
+      "trial_index": 68,
+      "optuna_number": 67,
+      "refusals": 0.09,
+      "refusals_display": "9/100",
+      "kl": 0.1964384913444519,
+      "scores": {
+        "Refusals": 0.09,
+        "KL divergence": 0.1964384913444519
+      },
+      "pareto_position": 3,
+      "parameters": {
+        "start_layer_index": 10,
+        "end_layer_index": 60,
+        "preserve_good_behavior_weight": 0.40531606809055176,
+        "steer_bad_behavior_weight": 0.0017290203010588902,
+        "overcorrect_relative_weight": 0.9458033239698127,
+        "neighbor_count": 12
+      }
+    },
+    {
+      "trial_index": 51,
+      "optuna_number": 50,
+      "refusals": 0.1,
+      "refusals_display": "10/100",
+      "kl": 0.16579636931419373,
+      "scores": {
+        "Refusals": 0.1,
+        "KL divergence": 0.16579636931419373
+      },
+      "pareto_position": 4,
+      "parameters": {
+        "start_layer_index": 10,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.29515661357485057,
+        "steer_bad_behavior_weight": 0.002475986229138741,
+        "overcorrect_relative_weight": 0.9136866956192559,
+        "neighbor_count": 12
+      }
+    },
+    {
+      "trial_index": 91,
+      "optuna_number": 90,
+      "refusals": 0.12,
+      "refusals_display": "12/100",
+      "kl": 0.15354065597057343,
+      "scores": {
+        "Refusals": 0.12,
+        "KL divergence": 0.15354065597057343
+      },
+      "pareto_position": 5,
+      "parameters": {
+        "start_layer_index": 13,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.4160827452172372,
+        "steer_bad_behavior_weight": 0.0026400838146281758,
+        "overcorrect_relative_weight": 0.922401761563838,
+        "neighbor_count": 12
+      }
+    },
+    {
+      "trial_index": 89,
+      "optuna_number": 88,
+      "refusals": 0.14,
+      "refusals_display": "14/100",
+      "kl": 0.10545407235622406,
+      "scores": {
+        "Refusals": 0.14,
+        "KL divergence": 0.10545407235622406
+      },
+      "pareto_position": 6,
+      "parameters": {
+        "start_layer_index": 13,
+        "end_layer_index": 57,
+        "preserve_good_behavior_weight": 0.40755969894007454,
+        "steer_bad_behavior_weight": 0.0008895153641475417,
+        "overcorrect_relative_weight": 0.8997141863271924,
+        "neighbor_count": 13
+      }
+    },
+    {
+      "trial_index": 63,
+      "optuna_number": 62,
+      "refusals": 0.16,
+      "refusals_display": "16/100",
+      "kl": 0.10264284908771515,
+      "scores": {
+        "Refusals": 0.16,
+        "KL divergence": 0.10264284908771515
+      },
+      "pareto_position": 7,
+      "parameters": {
+        "start_layer_index": 9,
+        "end_layer_index": 59,
+        "preserve_good_behavior_weight": 0.3412996340917389,
+        "steer_bad_behavior_weight": 0.0007155469398170329,
+        "overcorrect_relative_weight": 0.904160062580538,
+        "neighbor_count": 13
+      }
+    },
+    {
+      "trial_index": 37,
+      "optuna_number": 36,
+      "refusals": 0.28,
+      "refusals_display": "28/100",
+      "kl": 0.08449134230613708,
+      "scores": {
+        "Refusals": 0.28,
+        "KL divergence": 0.08449134230613708
+      },
+      "pareto_position": 8,
+      "parameters": {
+        "start_layer_index": 21,
+        "end_layer_index": 56,
+        "preserve_good_behavior_weight": 0.2981519023867627,
+        "steer_bad_behavior_weight": 0.0010376122704442547,
+        "overcorrect_relative_weight": 0.9045205529029535,
+        "neighbor_count": 13
+      }
+    },
+    {
+      "trial_index": 57,
+      "optuna_number": 56,
+      "refusals": 0.39,
+      "refusals_display": "39/100",
+      "kl": 0.0823751762509346,
+      "scores": {
+        "Refusals": 0.39,
+        "KL divergence": 0.0823751762509346
+      },
+      "pareto_position": 9,
+      "parameters": {
+        "start_layer_index": 20,
+        "end_layer_index": 55,
+        "preserve_good_behavior_weight": 0.5181064562374711,
+        "steer_bad_behavior_weight": 0.0012036272006633849,
+        "overcorrect_relative_weight": 0.8417029859224507,
+        "neighbor_count": 15
+      }
+    },
+    {
+      "trial_index": 73,
+      "optuna_number": 72,
+      "refusals": 0.41,
+      "refusals_display": "41/100",
+      "kl": 0.08110597729682922,
+      "scores": {
+        "Refusals": 0.41,
+        "KL divergence": 0.08110597729682922
+      },
+      "pareto_position": 10,
+      "parameters": {
+        "start_layer_index": 9,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.37304712434835086,
+        "steer_bad_behavior_weight": 0.0003706254417297757,
+        "overcorrect_relative_weight": 0.8723599098419238,
+        "neighbor_count": 13
+      }
+    },
+    {
+      "trial_index": 66,
+      "optuna_number": 65,
+      "refusals": 0.45,
+      "refusals_display": "45/100",
+      "kl": 0.07631760835647583,
+      "scores": {
+        "Refusals": 0.45,
+        "KL divergence": 0.07631760835647583
+      },
+      "pareto_position": 11,
+      "parameters": {
+        "start_layer_index": 20,
+        "end_layer_index": 53,
+        "preserve_good_behavior_weight": 0.3676604790013186,
+        "steer_bad_behavior_weight": 0.0006310339879783874,
+        "overcorrect_relative_weight": 0.7660356582825115,
+        "neighbor_count": 15
+      }
+    },
+    {
+      "trial_index": 80,
+      "optuna_number": 79,
+      "refusals": 0.49,
+      "refusals_display": "49/100",
+      "kl": 0.07106568664312363,
+      "scores": {
+        "Refusals": 0.49,
+        "KL divergence": 0.07106568664312363
+      },
+      "pareto_position": 12,
+      "parameters": {
+        "start_layer_index": 9,
+        "end_layer_index": 58,
+        "preserve_good_behavior_weight": 0.3767404356589652,
+        "steer_bad_behavior_weight": 0.0005927153116088475,
+        "overcorrect_relative_weight": 0.7745952290128273,
+        "neighbor_count": 13
+      }
+    },
+    {
+      "trial_index": 55,
+      "optuna_number": 54,
+      "refusals": 0.53,
+      "refusals_display": "53/100",
+      "kl": 0.05493876338005066,
+      "scores": {
+        "Refusals": 0.53,
+        "KL divergence": 0.05493876338005066
+      },
+      "pareto_position": 13,
+      "parameters": {
+        "start_layer_index": 21,
+        "end_layer_index": 55,
+        "preserve_good_behavior_weight": 0.4482728019799856,
+        "steer_bad_behavior_weight": 0.000729725592046725,
+        "overcorrect_relative_weight": 0.7768032429778686,
+        "neighbor_count": 14
+      }
+    },
+    {
+      "trial_index": 10,
+      "optuna_number": 9,
+      "refusals": 0.9,
+      "refusals_display": "90/100",
+      "kl": 0.030031943693757057,
+      "scores": {
+        "Refusals": 0.9,
+        "KL divergence": 0.030031943693757057
+      },
+      "pareto_position": 14,
+      "parameters": {
+        "start_layer_index": 15,
+        "end_layer_index": 32,
+        "preserve_good_behavior_weight": 0.5741176054920131,
+        "steer_bad_behavior_weight": 0.00038629074184943265,
+        "overcorrect_relative_weight": 0.7660971979742696,
+        "neighbor_count": 11
+      }
+    },
+    {
+      "trial_index": 28,
+      "optuna_number": 27,
+      "refusals": 0.98,
+      "refusals_display": "98/100",
+      "kl": 0.025230074301362038,
+      "scores": {
+        "Refusals": 0.98,
+        "KL divergence": 0.025230074301362038
+      },
+      "pareto_position": 15,
+      "parameters": {
+        "start_layer_index": 19,
+        "end_layer_index": 55,
+        "preserve_good_behavior_weight": 0.15679139464608427,
+        "steer_bad_behavior_weight": 0.0001186601269698492,
+        "overcorrect_relative_weight": 0.09102878683498904,
+        "neighbor_count": 8
+      }
+    }
+  ],
+  "reexport": {
+    "pareto_position": 8,
+    "trial_index": 37,
+    "workdir": "/workspace/paper33/runs/gemma-4-31b__ara__core-s1/reexport_t37",
+    "heretic_command": "/workspace/paper33/heretic/.venv/bin/heretic --model google/gemma-4-31B-it --checkpoint-action continue --trial-index 8 --model-action save --export-strategy MERGE --save-directory /workspace/paper33/runs/gemma-4-31b__ara__core-s1/model_kl0.1_t37",
+    "script": "cd /workspace/paper33/runs/gemma-4-31b__ara__core-s1 && \\\n  mkdir -p reexport_t37/checkpoints && \\\n  cp config.toml reexport_t37/config.toml && \\\n  cp checkpoints/google--gemma-4-31B-it.jsonl reexport_t37/checkpoints/google--gemma-4-31B-it.jsonl && \\\n  /workspace/paper33/heretic/.venv/bin/python /workspace/paper33/scripts/select_trial.py --patch-journal reexport_t37/checkpoints/google--gemma-4-31B-it.jsonl --trial-index 8 --expect-trial 37 && \\\n  cd reexport_t37 && \\\n  /workspace/paper33/heretic/.venv/bin/heretic --model google/gemma-4-31B-it --checkpoint-action continue --trial-index 8 --model-action save --export-strategy MERGE --save-directory /workspace/paper33/runs/gemma-4-31b__ara__core-s1/model_kl0.1_t37 2>&1 | tee reexport.log"
+  }
+}

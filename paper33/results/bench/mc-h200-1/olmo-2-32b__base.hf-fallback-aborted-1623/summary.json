@@ -1,0 +1,58 @@
+{
+ "protocol_version": "1",
+ "started": "2026-11-05T15:31:26+00:00",
+ "limit_mode": "paper",
+ "method": "olmo-2-32b__base",
+ "base_model": "allenai/OLMo-2-0325-32B-Instruct",
+ "backend": "hf",
+ "seeds": {
+  "random_seed": 0,
+  "numpy_random_seed": 1234,
+  "torch_random_seed": 1234,
+  "fewshot_random_seed": 1234,
+  "vllm_seed": 1234
+ },
+ "subset_seed": 20261104,
+ "decoding": {
+  "greedy": true,
+  "do_sample": false,
+  "temperature": 0.0,
+  "apply_chat_template": true,
+  "fewshot_as_multiturn": true,
+  "enable_thinking": false,
+  "max_model_len": 8192
+ },
+ "versions": {
+  "python": "3.12.16",
+  "platform": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+  "host": "0538-dca2-csh200nvl-prxmx140094",
+  "lm_eval": "0.4.13",
+  "vllm": "0.33.0",
+  "torch": "2.14.0",
+  "transformers": "5.20.2",
+  "datasets": "5.1.0",
+  "accelerate": "1.15.0",
+  "flashinfer-python": "0.7.2.post1",
+  "torch_cuda": "13.0",
+  "gpu": "NVIDIA H200 NVL",
+  "driver": "580.126.09",
+  "env": {
+   "VLLM_USE_FLASHINFER_SAMPLER": "0",
+   "VLLM_ATTENTION_BACKEND": null,
+   "BENCH_VLLM_EXTRA": "{}",
+   "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "sha256:uv.lock": "f76643a5de210306a28674c91ca9703792d02b8e01a0a281ba4457c9410fc25f",
+  "sha256:bench.py": "f220db7bb900771428e7d4cf23af65d93ab9202a402877cb8054c54a4edfa754",
+  "sha256:subsets.json": "4f54c82184d9ae01a2b361a433d72604a290322fbe27882f9b37dab91fcdd4d9",
+  "sha256:run.sh": "b7396b52cbaefceb8bab22acfbbbd3866cf3b9d7a6ec247bcbf0b8a3f2f07686"
+ },
+ "benchmarks": {},
+ "model": "allenai/OLMo-2-0325-32B-Instruct",
+ "model_info": {
+  "model": "allenai/OLMo-2-0325-32B-Instruct",
+  "source": "hf",
+  "path": "/workspace/paper33/hf/hub/models--allenai--OLMo-2-0325-32B-Instruct/snapshots/b96024342a77a69aa0dda815c3454a671f477463",
+  "hf_commit": "b96024342a77a69aa0dda815c3454a671f477463"
+ }
+}

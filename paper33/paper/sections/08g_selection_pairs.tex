@@ -1,0 +1,184 @@
+% ============================================================
+% APPENDIX -- KL-CAP BINDING, PAIR-LEVEL POOLING AND THE TWO SCALES (written 2026-11-06, review revision)
+% Self-contained \subsection (app:kl-cap; tab:kl-cap-subsets, tab:lofo, tab:scales), \input from sections/08_appendix.tex
+% after 08f, so it continues the Additional Results appendix. Answers reviewer concerns A1, A2, B1 (data part), C1 and C5
+% of notes/REVIEW_v5_reviewer_agent_20261106.md. Every number comes from results/analysis/review_sel_summary.md and the
+% review_sel_*.csv files it lists (written by scripts/analysis/review_selection.py, 2026-11-06T23:44Z); the src comment
+% after each paragraph or table names the file.
+% ============================================================
+\subsection{KL-Cap Binding, Pair-Level Pooling and the Two Scales}
+\label{app:kl-cap}
+
+\paragraph{KL-cap binding.} The selection rule caps first-token KL divergence
+at 0.1 for every model. The cap binds in a run when some trial above 0.1 had
+fewer dev keyword refusals than the selected trial; a run stayed below the cap
+when at most one of its trials exceeded 0.1. In the main study the cap bound
+in 15 of the 24 direction-based runs (7 of 12 older and 8 of 12 newer models)
+and in all 8 ARA runs, every one of which reached 0 dev refusals above the cap
+(maximum KL 10.9 to 33.2). Eight direction-based runs stayed below the cap,
+four on each generation: Qwen3.8-27B MPOA, Olmo-3.1-32B MPOA and SOM and
+Mistral-Small-2409 MPOA never sampled a trial above 0.1, and OLMo-2-32B DiM,
+MPOA and SOM and Qwen3.8-27B SOM sampled one. On the small pair the cap bound
+in 4 of the 16 direction-based runs of both seeds (all four J-space runs
+stayed below it) and in all 4 ARA runs. The selected dev KL ranged from 0.018
+to 0.100 for the direction-based runs (median 0.080) and from 0.049 to 0.099
+for ARA; 7 of 24 direction-based and 1 of 8 ARA selections lay within 0.01 of
+the cap.
+% src: results/analysis/review_sel_kl_summary.csv (main seed 1 direction: 15 of 24, old 7/12, new 8/12, left the cap at most once
+% src: 4 + 4; optimisation 8 of 8, max_kl 10.90-33.25; small seed 1 and seed-2 direction: 4 of 16 binding, 8 of 16 at most once;
+% src: small ARA 4 of 4; median_sel_kl 0.0796; n_sel_kl_within_0p01_of_cap 7 and 1) = review_sel_summary.md part 1;
+% src: review_sel_kl_runs.csv (never_left_cap, left_cap_at_most_once; sel_kl range 0.018-0.100 direction, 0.049-0.099 ARA).
+
+\paragraph{Position in the search range.} The selected trial's parameters were
+read from the Optuna journals and placed in Heretic's default ranges
+(Table~\ref{tab:search}); a maximum weight counts as at the ceiling when it
+lies in the top 5\% of its range. The selected trial was at the ceiling in 5
+of the 24 main-study direction-based runs and in none of the 8 runs that
+stayed below the cap. In those 8 runs the selected maximum weights lay at a
+median of 0.81 (attention; range 0.56--0.93) and 0.89 (MLP; 0.83--0.94) of
+their range, against 0.58 and 0.84 in the other direction-based runs, so the
+selected edits lean to the strong half of the range but not to its bound. The
+search did sample the strongest maximum weights in each of the 8 runs, and
+those trials had no fewer dev refusals than the selected trial in 7 of 8 (in
+OLMo-2-32B SOM the better trial at the ceiling had KL 0.110). Counting every
+strength-type parameter (maximum weight, minimum weight, minimum-weight
+distance, SOM decay), the selected trial had at least one at the strong end of
+its range in 14 of the 24 direction-based runs and in 4 of the 8 that stayed
+below the cap (a minimum weight or minimum-weight distance in all four). The selected
+trial was one of the 30 random start-up trials of the TPE sampler in 7 of the
+24 direction-based runs (4 of the 8 that stayed below the cap) and in 1 of 8
+ARA runs. Because seed~1 and the same search space give identical start-up
+draws, two pairs of selected parameter vectors coincide across models
+(OLMo-2-32B SOM and Qwen3.8-27B SOM; Olmo-3.1-32B MPOA and Qwen3.8-27B MPOA).
+% src: results/analysis/review_sel_kl_params.csv, review_sel_kl_runs.csv (sel_max_weight_at_ceiling 5 of 24, 0 of 8;
+% src: sel_attn_max_weight_pos / sel_mlp_max_weight_pos medians; n_trials_max_weight_at_ceiling, min_refusals_max_weight_at_ceiling;
+% src: sel_is_startup_trial 7 of 24, 4 of 8, 1 of 8; sel_params_identical_to) = review_sel_summary.md part 1.
+
+\paragraph{H1 and H2 by binding.} At the level of pair $\times$ method units,
+the cap bound in both cells for Qwen DiM and ARA, all four Gemma methods, OLMo
+ARA and Mistral Small DiM and ARA; in neither cell for Qwen MPOA and OLMo
+MPOA; and in one cell for Qwen SOM, OLMo DiM and SOM, and Mistral Small MPOA
+and SOM. Table~\ref{tab:kl-cap-subsets} refits the pooled GEE of
+\S\ref{sec:res-h1} on these subsets. The raw direction-based effect was
+positive in every subset; the baseline-adjusted one was negative where the
+cap bound in both cells and positive where it did not, and the pooled +0.03 of
+all units lies between the two. The subsets also differ in family, so they
+cannot separate the cap from the family. H2 can be estimated only on units in
+which the cap bound, because it bound in every ARA cell.
+% src: results/analysis/review_sel_kl_units.csv (unit_category per pair x method); review_sel_kl_h1h2.csv; review_sel_summary.md
+% src: part 1 (family composition of the subsets).
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\caption{Pooled H1 and H2 terms (GEE, log-odds, prompt clusters, family fixed effects, 95\% intervals) refitted on
+subsets of the 16 main-study pair $\times$ method units, by whether the KL cap bound in each unit's two cells. Units:
+direction-based / ARA. Dir.: direction-based class; adj.: baseline-adjusted (minus the originals' difference); n/a:
+no ARA unit in the subset.}
+\label{tab:kl-cap-subsets}
+\begin{tabular}{@{}lcllll@{}}
+\toprule
+Subset & Units & Dir., raw & Dir., adj. & ARA, raw & H2 \\
+\midrule
+All units & 12/4 & +0.62 [+0.57, +0.68] & +0.03 [$-$0.05, +0.11] & +0.12 [+0.00, +0.24] & $-$0.50 [$-$0.62, $-$0.38] \\
+Cap bound in both cells & 5/4 & +0.32 [+0.24, +0.41] & $-$0.24 [$-$0.33, $-$0.14] & +0.11 [+0.01, +0.22] & $-$0.21 [$-$0.33, $-$0.09] \\
+Not bound in $\ge$1 cell & 7/0 & +1.03 [+0.95, +1.11] & +0.22 [+0.12, +0.32] & n/a & n/a \\
+Bound in neither cell & 2/0 & +3.23 [+2.90, +3.56] & +2.20 [+1.95, +2.45] & n/a & n/a \\
+$\ge$2 trials above the cap in both & 6/4 & +0.33 [+0.24, +0.41] & $-$0.28 [$-$0.37, $-$0.18] & +0.12 [+0.01, +0.23] & $-$0.21 [$-$0.33, $-$0.08] \\
+$\le$1 trial above the cap in a cell & 6/0 & +1.04 [+0.96, +1.12] & +0.27 [+0.17, +0.37] & n/a & n/a \\
+\bottomrule
+\end{tabular}
+\end{table}
+% src: results/analysis/review_sel_kl_h1h2.csv (S0--S5; gee_planned and gee_with_originals terms) = review_sel_summary.md part 1 table.
+
+\paragraph{Pair-level pooling.} With the pair as the unit, between-pair
+heterogeneity dominated every pooled estimand ($I^2$ 99--100\%; between-pair
+SD of the adjusted direction-based effect 22.9~pp and of the H2 contrast
+26.1~pp). The 95\% prediction intervals for a new pair, which use a $t$
+distribution on 2 degrees of freedom, were $-$5.90 to +6.02 log-odds for the
+adjusted direction-based effect and $-$11.32 to +9.21 for the H2 contrast; on
+the percentage-point scale they extend beyond $\pm$100~pp, so with four pairs
+they state only that an effect of either sign is plausible for a new pair.
+Mapping the percentage-point $\sigma$ to the logit scale by the delta method
+at each cell's rate, instead of estimating $\sigma$ on the logit scale, gave
+seed SEs up to 14.9 log-odds near 0\% refusal (Gemma-4-31B ARA) and pooled
+intervals of $-$1.61 to +1.82 (adjusted direction-based) and $-$3.59 to +2.81
+(H2). Table~\ref{tab:lofo} gives the leave-one-family-out GEE terms.
+% src: results/analysis/review_sel_pair_meta.csv (I2, tau; pi_lo / pi_hi; delta-method variant rows "prompt + seed (pp sigma,
+% src: delta method; unstable near 0%)": direction adjusted HKSJ [-1.610, 1.822], H2 log-odds [-3.594, 2.815]) = review_sel_summary.md
+% src: part 2 (tau 22.9 pp / 26.1 pp; seed SE up to 14.9 log-odds for Gemma-4 ARA).
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{Leave-one-family-out pooled GEE terms (log-odds; main study, WildGuard refusal, 972 harmful prompts).}
+\label{tab:lofo}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Term & All four & w/o Qwen & w/o Gemma & w/o OLMo & w/o Mistral Small \\
+\midrule
+Generation effect, direction class & +0.62 & +0.69 & +0.81 & +0.24 & +0.74 \\
+Generation effect, ARA & +0.12 & $-$1.37 & +1.02 & +0.24 & +0.15 \\
+Generation $\times$ class (H2) & $-$0.50 & $-$2.06 & +0.20 & $-$0.00 & $-$0.59 \\
+Baseline-adjusted, direction class & +0.03 & +0.22 & +0.13 & $-$0.51 & +0.33 \\
+Baseline-adjusted, ARA & $-$0.46 & $-$1.68 & +0.31 & $-$0.51 & $-$0.25 \\
+Originals' generation difference & +0.58 & +0.45 & +0.66 & +0.74 & +0.40 \\
+\bottomrule
+\end{tabular}
+\end{table}
+% src: results/analysis/review_sel_pair_lofo.csv (final.analysis_g; reproduces final_pooled_robustness.csv, max |difference|
+% src: 3.7e-06) = review_sel_summary.md part 2(d).
+
+\paragraph{The two scales.} Table~\ref{tab:scales} gives every pair $\times$
+method generation effect, the originals' difference and the baseline-adjusted
+effect on both scales. Raw effects of a single method have the same sign on
+both scales, because they compare two rates. Adjusted effects changed sign
+between scales in 3 of 21 cells and in significance in 5. On the percentage-point
+scale all four Mistral Small adjusted effects were large and negative
+($-$22.2 to $-$14.4~pp), whereas in log-odds they ranged from $-$1.37 to
+$-$0.10.
+% src: results/analysis/review_sel_scales.csv = review_sel_summary.md part 3 (0 of 21 raw effects differ; adjusted: sign 3 of 21,
+% src: significance 5; Mistral adjusted -22.2 to -14.4 pp, log-odds -1.37 to -0.10).
+
+\begin{table*}[t]
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Generation effect, originals' difference and baseline-adjusted generation effect per pair and method on the
+percentage-point and the log-odds scale (WildGuard refusal, 972 harmful prompts; 95\% intervals, prompt sampling only).
+Sign: the adjusted effect has opposite signs on the two scales. Sig.: its significance differs between scales.}
+\label{tab:scales}
+\begin{tabular}{@{}lllrllrlcc@{}}
+\toprule
+Pair & Method & Effect, pp & Orig., pp & Adjusted, pp & Effect, log-odds & Orig., log-odds & Adjusted, log-odds & Sign & Sig. \\
+\midrule
+Qwen & DiM & +26.9 [+23.8, +29.8] & +13.1 & +13.7 [+10.1, +17.1] & +1.16 [+1.02, +1.30] & +0.99 & +0.17 [$-$0.03, +0.37] &  & $\times$ \\
+Qwen & MPOA & +10.1 [+7.8, +12.5] & +13.1 & $-$3.1 [$-$6.3, +0.2] & +1.39 [+1.04, +1.73] & +0.99 & +0.39 [+0.01, +0.77] & $\times$ & $\times$ \\
+Qwen & SOM & $-$4.7 [$-$8.0, $-$1.4] & +13.1 & $-$17.8 [$-$21.5, $-$14.2] & $-$0.20 [$-$0.33, $-$0.06] & +0.99 & $-$1.19 [$-$1.40, $-$0.97] &  &  \\
+Qwen & ARA & +34.4 [+31.2, +37.5] & +13.1 & +21.3 [+17.1, +25.4] & +2.35 [+2.08, +2.62] & +0.99 & +1.36 [+1.05, +1.68] &  &  \\
+\midrule
+Gemma & DiM & +16.4 [+13.5, +19.3] & +1.0 & +15.3 [+13.0, +17.8] & +1.18 [+0.96, +1.40] & +0.10 & +1.07 [+0.90, +1.25] &  &  \\
+Gemma & MPOA & $-$4.7 [$-$8.6, $-$0.9] & +1.0 & $-$5.8 [$-$9.7, $-$1.7] & $-$0.19 [$-$0.35, $-$0.04] & +0.10 & $-$0.30 [$-$0.55, $-$0.04] &  &  \\
+Gemma & SOM & +2.6 [$-$1.1, +6.2] & +1.0 & +1.5 [$-$1.9, +4.9] & +0.12 [$-$0.05, +0.28] & +0.10 & +0.01 [$-$0.22, +0.24] &  &  \\
+Gemma & ARA & $-$26.0 [$-$28.9, $-$23.3] & +1.0 & $-$27.1 [$-$30.3, $-$23.6] & $-$4.07 [$-$4.87, $-$3.27] & +0.10 & $-$4.17 [$-$5.00, $-$3.34] &  &  \\
+\midrule
+OLMo & DiM & +34.8 [+31.5, +37.9] & +0.8 & +34.0 [+30.5, +37.6] & +1.45 [+1.31, +1.60] & +0.06 & +1.39 [+1.22, +1.56] &  &  \\
+OLMo & MPOA & +61.4 [+58.2, +64.4] & +0.8 & +60.6 [+57.1, +64.1] & +3.91 [+3.56, +4.25] & +0.06 & +3.85 [+3.49, +4.21] &  &  \\
+OLMo & SOM & +14.4 [+11.5, +17.3] & +0.8 & +13.6 [+10.4, +16.7] & +0.64 [+0.51, +0.78] & +0.06 & +0.58 [+0.42, +0.75] &  &  \\
+OLMo & ARA & $-$2.5 [$-$4.6, $-$0.3] & +0.8 & $-$3.3 [$-$5.8, $-$0.9] & $-$0.23 [$-$0.43, $-$0.03] & +0.06 & $-$0.29 [$-$0.52, $-$0.07] &  &  \\
+\midrule
+Mistral Small & DiM & $-$4.3 [$-$7.4, $-$1.2] & +17.9 & $-$22.2 [$-$26.1, $-$18.4] & $-$0.20 [$-$0.35, $-$0.06] & +0.80 & $-$1.00 [$-$1.18, $-$0.82] &  &  \\
+Mistral Small & MPOA & $-$2.9 [$-$4.7, $-$1.2] & +17.9 & $-$20.8 [$-$24.0, $-$17.7] & $-$0.57 [$-$0.92, $-$0.22] & +0.80 & $-$1.37 [$-$1.74, $-$1.00] &  &  \\
+Mistral Small & SOM & +3.5 [+1.7, +5.3] & +17.9 & $-$14.4 [$-$17.7, $-$11.1] & +0.70 [+0.34, +1.06] & +0.80 & $-$0.10 [$-$0.47, +0.28] &  & $\times$ \\
+Mistral Small & ARA & $-$0.7 [$-$2.1, +0.6] & +17.9 & $-$18.6 [$-$21.6, $-$15.7] & $-$0.17 [$-$0.45, +0.12] & +0.80 & $-$0.96 [$-$1.28, $-$0.65] &  &  \\
+\midrule
+Small pair & DiM & +34.1 [+30.5, +37.5] & +16.4 & +17.7 [+13.5, +21.8] & +1.54 [+1.36, +1.71] & +1.09 & +0.45 [+0.22, +0.68] &  &  \\
+Small pair & MPOA & +4.2 [+1.6, +6.9] & +16.4 & $-$12.1 [$-$15.7, $-$8.3] & +0.32 [+0.12, +0.52] & +1.09 & $-$0.77 [$-$1.03, $-$0.51] &  &  \\
+Small pair & SOM & +9.7 [+6.9, +12.4] & +16.4 & $-$6.7 [$-$10.4, $-$3.0] & +0.70 [+0.50, +0.90] & +1.09 & $-$0.39 [$-$0.65, $-$0.13] &  &  \\
+Small pair & J-space & +21.2 [+18.1, +24.3] & +16.4 & +4.8 [+1.3, +8.3] & +0.93 [+0.79, +1.07] & +1.09 & $-$0.16 [$-$0.35, +0.04] & $\times$ & $\times$ \\
+Small pair & ARA & +14.2 [+11.6, +16.9] & +16.4 & $-$2.2 [$-$6.0, +1.6] & +1.55 [+1.23, +1.86] & +1.09 & +0.46 [+0.10, +0.82] & $\times$ & $\times$ \\
+\bottomrule
+\end{tabular}
+\end{table*}
+% src: results/analysis/review_sel_scales.csv = review_sel_summary.md part 3 table (pp effects and adjusted pp with the paper's
+% src: Newcombe / bootstrap intervals; log-odds by the delta method with the paired item covariance; flags "sign differs (adj.)" and
+% src: "significance differs (adj.)").

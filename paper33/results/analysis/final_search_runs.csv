@@ -1,0 +1,57 @@
+model,method,seed,run,family,study,generation,n_trials,n_feasible,first_feasible_trial,best_at_30,best_at_50,best_at_75,best_at_100,selected_refusals,selected_trial,selected_kl,first_reach_trial,late_after_75,gain_after_75,gain_after_50
+qwen2.5-32b,dim,1,qwen2.5-32b__dim__core-s1,Qwen,main,old,100,27,1,91,90,89,89,89,62,0.0175174,54,False,0,1
+qwen2.5-32b,mpoa,1,qwen2.5-32b__mpoa__core-s1,Qwen,main,old,100,91,1,77,77,24,13,13,79,0.0599341,79,True,11,64
+qwen2.5-32b,ara,1,qwen2.5-32b__ara__core-s1-r2,Qwen,main,old,100,49,5,40,10,10,10,10,42,0.0619695,42,False,0,0
+qwen2.5-32b,som,1,qwen2.5-32b__som__core-s1,Qwen,main,old,100,23,1,73,73,73,73,73,30,0.0749924,30,False,0,0
+qwen3.8-27b,dim,1,qwen3.8-27b__dim__core-s1,Qwen,main,new,100,95,1,47,47,47,47,47,24,0.0529594,24,False,0,0
+qwen3.8-27b,mpoa,1,qwen3.8-27b__mpoa__core-s1-resume1,Qwen,main,new,99,99,1,25,25,25,25,25,30,0.0853892,30,False,0,0
+qwen3.8-27b,ara,1,qwen3.8-27b__ara__core-s1-clean,Qwen,main,new,100,14,10,77,77,63,63,63,65,0.0605131,64,False,0,14
+qwen3.8-27b,som,1,qwen3.8-27b__som__core-s1,Qwen,main,new,100,99,1,27,27,27,27,27,7,0.0842983,7,False,0,0
+gemma-2-27b,dim,1,gemma-2-27b__dim__core-s1,Gemma,main,old,100,92,1,92,89,89,89,89,35,0.0685686,35,False,0,0
+gemma-2-27b,mpoa,1,gemma-2-27b__mpoa__core-s1,Gemma,main,old,100,46,1,87,87,87,74,74,99,0.0991083,99,True,13,13
+gemma-2-27b,ara,1,gemma-2-27b__ara__core-s1,Gemma,main,old,100,56,5,43,18,16,16,16,63,0.0990216,63,False,0,2
+gemma-2-27b,som,1,gemma-2-27b__som__core-s1,Gemma,main,old,100,35,1,90,90,90,83,83,96,0.0860255,96,True,7,7
+gemma-2-27b,gamma_mpoa,1,gemma-2-27b__gmpoa__core-s1,Gemma,main,old,100,33,1,75,75,73,73,73,54,0.0968736,54,False,0,2
+gemma-4-31b,dim,1,gemma-4-31b__dim__core-s1,Gemma,main,new,100,10,2,99,98,98,98,98,40,0.0931546,40,False,0,0
+gemma-4-31b,mpoa,1,gemma-4-31b__mpoa__core-s1,Gemma,main,new,100,86,1,84,82,81,80,80,78,0.0691263,78,True,1,2
+gemma-4-31b,ara,1,gemma-4-31b__ara__core-s1,Gemma,main,new,100,19,6,83,28,28,28,28,37,0.0844913,37,False,0,0
+gemma-4-31b,som,1,gemma-4-31b__som__core-s1,Gemma,main,new,100,27,1,82,82,82,82,82,3,0.0548116,3,False,0,0
+gemma-4-31b,gamma_mpoa,1,gemma-4-31b__gmpoa__core-s1,Gemma,main,new,100,18,1,78,78,78,78,78,19,0.0609406,6,False,0,0
+olmo-2-32b,dim,1,olmo-2-32b__dim__core-s1,OLMo,main,old,100,99,1,70,32,32,32,32,37,0.0886852,37,False,0,0
+olmo-2-32b,mpoa,1,olmo-2-32b__mpoa__core-s1,OLMo,main,old,100,99,1,67,36,36,36,36,34,0.0372167,34,False,0,0
+olmo-2-32b,ara,1,olmo-2-32b__ara__core-s1,OLMo,main,old,100,16,5,45,34,34,34,34,54,0.0493958,45,False,0,0
+olmo-2-32b,som,1,olmo-2-32b__som__core-s1,OLMo,main,old,100,99,1,63,63,63,63,63,7,0.0469979,7,False,0,0
+olmo-2-32b,gamma_mpoa,1,olmo-2-32b__gmpoa__core-s1,OLMo,main,old,100,88,1,46,31,8,7,7,87,0.0851524,87,True,1,24
+olmo-3.1-32b,dim,1,olmo-3.1-32b__dim__core-s1,OLMo,main,new,100,38,1,88,88,88,88,88,35,0.0891117,23,False,0,0
+olmo-3.1-32b,mpoa,1,olmo-3.1-32b__mpoa__core-s1,OLMo,main,new,100,100,1,84,84,84,84,84,23,0.0915904,23,False,0,0
+olmo-3.1-32b,ara,1,olmo-3.1-32b__ara__core-s1,OLMo,main,new,100,8,5,48,48,48,48,48,10,0.0526023,10,False,0,0
+olmo-3.1-32b,som,1,olmo-3.1-32b__som__core-s1,OLMo,main,new,100,100,1,90,86,81,79,79,89,0.0638458,89,True,2,7
+olmo-3.1-32b,gamma_mpoa,1,olmo-3.1-32b__gmpoa__core-s1,OLMo,main,new,100,100,1,86,82,82,82,82,34,0.0993146,34,False,0,0
+mistral-small-2409,dim,1,mistral-small-2409__dim__core-s1,Mistral Small,main,old,100,34,1,84,84,69,69,69,56,0.0990129,56,False,0,15
+mistral-small-2409,mpoa,1,mistral-small-2409__mpoa__core-s1,Mistral Small,main,old,100,100,1,20,20,10,10,10,53,0.0493073,53,False,0,10
+mistral-small-2409,ara,1,mistral-small-2409__ara__core-s1,Mistral Small,main,old,100,51,5,9,9,6,4,4,91,0.0655679,91,True,2,5
+mistral-small-2409,som,1,mistral-small-2409__som__core-s1,Mistral Small,main,old,100,97,1,27,6,5,5,5,53,0.0619608,53,False,0,1
+mistral-small-3.2,dim,1,mistral-small-3.2__dim__core-s1-r2,Mistral Small,main,new,100,83,1,56,35,35,35,35,47,0.0931141,40,False,0,0
+mistral-small-3.2,mpoa,1,mistral-small-3.2__mpoa__core-s1-r2,Mistral Small,main,new,100,39,1,35,26,13,13,13,61,0.0937556,61,False,0,13
+mistral-small-3.2,ara,1,mistral-small-3.2__ara__core-s1-r2,Mistral Small,main,new,100,60,5,17,12,11,6,6,86,0.0828929,86,True,5,6
+mistral-small-3.2,som,1,mistral-small-3.2__som__core-s1,Mistral Small,main,new,100,86,1,44,40,32,18,18,95,0.0995341,95,True,14,22
+qwen2.5-7b,dim,1,qwen2.5-7b__dim__core-s1,Qwen (small pair),small,small-old,100,27,1,60,55,55,55,55,36,0.0781598,36,False,0,0
+qwen2.5-7b,mpoa,1,qwen2.5-7b__mpoa__core-s1,Qwen (small pair),small,small-old,100,93,1,48,19,19,19,19,76,0.0743333,45,False,0,0
+qwen2.5-7b,ara,1,qwen2.5-7b__ara__core-s1,Qwen (small pair),small,small-old,100,64,5,15,10,8,8,8,58,0.0205449,58,False,0,2
+qwen2.5-7b,som,1,qwen2.5-7b__som__core-s1,Qwen (small pair),small,small-old,100,91,1,28,27,27,27,27,41,0.0755758,41,False,0,0
+qwen2.5-7b,jspace,1,qwen2.5-7b__jspace__core-s1,Qwen (small pair),small,small-old,100,100,1,84,84,84,84,84,23,0.0216116,23,False,0,0
+qwen3.5-4b,dim,1,qwen3.5-4b__dim__core-s1,Qwen (small pair),small,small-new,100,94,1,36,31,30,30,30,74,0.0538753,74,False,0,1
+qwen3.5-4b,mpoa,1,qwen3.5-4b__mpoa__core-s1,Qwen (small pair),small,small-new,100,100,1,19,19,6,6,6,67,0.0542861,67,False,0,13
+qwen3.5-4b,ara,1,qwen3.5-4b__ara__core-s1,Qwen (small pair),small,small-new,100,48,5,40,40,6,6,6,75,0.0644591,75,False,0,34
+qwen3.5-4b,som,1,qwen3.5-4b__som__core-s1,Qwen (small pair),small,small-new,100,94,1,26,11,10,10,10,79,0.0549675,72,False,0,1
+qwen3.5-4b,jspace,1,qwen3.5-4b__jspace__core-s1,Qwen (small pair),small,small-new,100,100,1,59,49,48,48,48,51,0.0188453,51,False,0,1
+qwen2.5-7b,dim,2,qwen2.5-7b__dim__core-s2,Qwen (small pair),small,small-old,100,94,1,20,20,20,20,20,17,0.0544351,17,False,0,0
+qwen2.5-7b,mpoa,2,qwen2.5-7b__mpoa__core-s2,Qwen (small pair),small,small-old,100,97,1,18,18,18,18,18,17,0.0416694,17,False,0,0
+qwen2.5-7b,ara,2,qwen2.5-7b__ara__core-s2,Qwen (small pair),small,small-old,100,74,4,6,4,4,4,4,36,0.0528927,36,False,0,0
+qwen2.5-7b,som,2,qwen2.5-7b__som__core-s2,Qwen (small pair),small,small-old,100,30,1,49,45,45,45,45,31,0.0912025,31,False,0,0
+qwen2.5-7b,jspace,2,qwen2.5-7b__jspace__core-s2,Qwen (small pair),small,small-old,100,100,1,87,87,87,87,87,26,0.0180842,4,False,0,0
+qwen3.5-4b,dim,2,qwen3.5-4b__dim__core-s2,Qwen (small pair),small,small-new,100,99,1,40,30,29,28,28,80,0.0468831,80,True,1,2
+qwen3.5-4b,mpoa,2,qwen3.5-4b__mpoa__core-s2,Qwen (small pair),small,small-new,100,100,1,18,18,18,18,18,8,0.0228079,8,False,0,0
+qwen3.5-4b,ara,2,qwen3.5-4b__ara__core-s2,Qwen (small pair),small,small-new,100,56,4,28,28,28,28,28,20,0.0686202,20,False,0,0
+qwen3.5-4b,som,2,qwen3.5-4b__som__core-s2,Qwen (small pair),small,small-new,100,100,1,30,26,20,20,20,58,0.0176385,58,False,0,6
+qwen3.5-4b,jspace,2,qwen3.5-4b__jspace__core-s2,Qwen (small pair),small,small-new,100,100,1,54,54,54,54,54,17,0.0167698,17,False,0,0
