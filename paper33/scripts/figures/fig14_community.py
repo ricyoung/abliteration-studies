@@ -31,7 +31,7 @@ NAME = "fig14_community"
 OURS = ["dim", "mpoa", "som", "ara"]
 ALPHA = 0.05
 RING_MS = 9.5
-HEAD_GAP = 1.0          # y units for a block header row
+HEAD_GAP = 1.25         # y units for a block header row
 BLOCK_GAP = 0.45        # extra space between blocks
 
 
@@ -99,7 +99,7 @@ def main():
     S.apply()
     data = load()
     rows, y_end = layout(data)
-    fig = plt.figure(figsize=(S.DOUBLE_COL, 5.4))
+    fig = plt.figure(figsize=(S.DOUBLE_COL, 6.7))
     fig.get_layout_engine().set(w_pad=0.02, h_pad=0.03, wspace=0.03)
     gs = fig.add_gridspec(1, 3, width_ratios=[1.55, 0.95, 0.95])
     ax_a = fig.add_subplot(gs[0, 0])
@@ -126,7 +126,7 @@ def main():
             lab, col = S.label(key), S.TEXT_SECONDARY
         else:
             r, mk = d["comm"][key], "community"
-            lab, col = r["who"], S.color("community")
+            lab, col = r["who"], S.TEXT
         c = S.color(mk)
         ax_a.hlines(y, 100 * r["lo"], 100 * r["hi"], color=c, lw=1.0, zorder=2)
         ax_a.plot([100 * r["rate"]], [y], **S.marker_kw(mk, gen), zorder=3)
@@ -161,7 +161,7 @@ def main():
     ax_a.spines["bottom"].set_bounds(0, 100)
     ax_a.set_xticks([0, 25, 50, 75, 100])
     ax_a.set_xlabel("Held-out refusal (%, WildGuard)")
-    ax_a.text(1.025, y_top - 0.2, "community −\nbest selected\n(pp)", transform=ax_a.get_yaxis_transform(),
+    ax_a.text(1.025, y_top - 0.2, "community −\nbest selected\n(pp; * p < 0.05,\nHolm-adjusted)", transform=ax_a.get_yaxis_transform(),
               ha="left", va="top", fontsize=S.FONT_SMALL, color=S.TEXT_SECONDARY, linespacing=1.05,
               clip_on=False)
     caps = [r["cap"] for d in data.values() for r in list(d["ours"].values()) + d["comm"]]
@@ -169,10 +169,10 @@ def main():
     ax_b.set_xlim(min(caps) - 0.35, max(caps) + 0.3)          # upper end below the next unit tick
     ax_b.axvline(0, color=S.AXIS, lw=0.8, zorder=0)
     ax_b.xaxis.set_major_locator(MultipleLocator(1.0))
-    ax_b.set_xlabel("Capability change vs\nthe original (pp, mean of 5)")
+    ax_b.set_xlabel("Capability change\n(pp, mean of 5)")
     ax_c.set_xlim(-0.012, max(tfs) * 1.08)
     ax_c.axvline(0, color=S.AXIS, lw=0.8, zorder=0)
-    ax_c.set_xlabel("Teacher-forced divergence\n(nats/token, benign held-out)")
+    ax_c.set_xlabel("Teacher-forced\ndivergence (nats/token)")
     ax_a.set_title("a   Held-out refusal", loc="left", fontweight="bold")
     ax_b.set_title("b   Capability", loc="left", fontweight="bold")
     ax_c.set_title("c   Divergence", loc="left", fontweight="bold")

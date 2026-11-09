@@ -22,7 +22,7 @@ from matplotlib.colors import to_hex, to_rgb
 import style as S
 
 PAIR_KEY = {"Qwen": "qwen", "Gemma": "gemma", "OLMo": "olmo", "Mistral Small": "mistral",
-            "Qwen (small pair)": "qwen-small"}
+            "Small pair": "qwen-small"}
 # held-out figures order the methods by H2 class: direction-based first, then the optimisation-based ARA
 DIRECTION = ["dim", "mpoa", "som", "jspace"]
 METHODS_HELDOUT = ["dim", "mpoa", "som", "jspace", "ara"]

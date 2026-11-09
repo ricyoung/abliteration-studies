@@ -3,6 +3,8 @@
 % prior-work section for the new arXiv paper)
 % Revised 2026-11-06 (pm): all 42 cells judged; "Pending cells" section removed; new sections app:reexport
 % (selection-cap re-export provenance and validation) and app:external (external-tool provenance).
+% Revised 2026-11-08 (ARS review): new app:seednoise (R1); added-cell marker double dagger (S3); app:reexport notes the
+% 2.0.0 MLP range (R12); app:versions states the division of claims with the companion study (R2).
 % =====================================================================
 \section{Capability per Benchmark}
 \label{app:capability}
@@ -14,7 +16,7 @@
 \caption{Capability per benchmark. Rows ``Original'' give the original model's scores (\%); other rows
 give the paired per-item change from that original (pp) and the change of the mean of the five benchmarks with a
 95\% interval. None of the 115 per-benchmark changes of the main design is significant after Holm correction (exact
-McNemar); of the 60 changes of the cells added after it ($^{\S}$; separate Holm family), one is (bold: OBLITERATUS
+McNemar); of the 60 changes of the cells added after it ($^{\ddagger}$; separate Holm family), one is (bold: OBLITERATUS
 \texttt{spectral\_cascade}, MMLU-Pro). $^{\dagger}$Unpaired comparison: the Qwen2.5-32B original was evaluated with an earlier harness revision
 whose MBPP per-item samples predate the patched answer extractor; only its MBPP summary score was rescored from the
 logged outputs, so its per-item scores are not available (\S\ref{sec:procedure}). SOM and J-space are plug-ins of
@@ -77,7 +79,10 @@ Within that range, commit \texttt{00185db} (18 June) lowered the search range of
 [0.8, 1.5] to [$-$0.25, 1.5]; the journals, written from 19 to 21 June, record [0.8, 1.5], so the studies ran from
 the 1.4.0 release (tag \texttt{v1.4.0}, commit \texttt{6ea3b8d}; the PyPI wheel is byte-identical to the tag) rather
 than from a development checkout. The stored trial attributes and objective values, the journal format and the PEFT
-version recorded in the adapters (0.19.1, the version locked by 1.4.0) agree with that release.
+version recorded in the adapters (0.19.1, the version locked by 1.4.0) agree with that release. Heretic~2.0.0
+(\texttt{0db5c31}) carries the lowered range: the journals of the companion study's DiM searches record
+[$-$0.25, 1.5] for the MLP maximum weight, clamped at zero, and every other search range equal to that of 1.4.0
+(Table~\ref{tab:h1setup}).
 
 \paragraph{Procedure and environment.} The re-export ran heretic-llm 1.4.0 in Python 3.12.16 with transformers
 5.6.2, PEFT 0.19.1, accelerate 1.13.0, Optuna 4.8.0 and datasets 4.8.4 (the 1.4.0 lock) and PyTorch 2.14.1 with
@@ -158,14 +163,83 @@ hybrid, with full attention in layers 3, 7, \ldots, 31, and Qwen2.5-7B as non-hy
 detected information before direction extraction, as the tool's library entry point does; a second opt-in patch,
 which corrects the projection side of square residual writers, was not used.
 
+\section{Seed-Noise Threshold: Derivation}
+\label{app:seednoise}
+
+% src (2026-11-08): analysis/revision_20261108/seednoise_pairs.csv and seednoise_derivation.csv, recomputed by
+% revision_analyses.py from paper-33 results/analysis/seednoise_seed_pairs.csv and review_sel_seed_runs.csv (batch
+% sizes from each run's output.log); the values equal paper-33 seednoise_sigma.csv (sigma 9.1542 [6.3962, 16.0650],
+% threshold 25.8920 [18.0912, 45.4387]) and review_sel_seed_sigma.csv (7 pairs: sigma 7.1965 [4.7581, 14.6468],
+% threshold 20.3548 [13.4581, 41.4275]). Cell bootstrap of sigma here: [5.81, 12.11] (20,000 resamples, seed 20261108).
+The threshold used for search-level verdicts (\S\ref{sec:stats}) is estimated from the ten cells of the companion study
+\cite{young2026harder} that were optimised and evaluated twice with different search seeds: Heretic~2.0 DiM, MPOA and
+ARA and the fork plug-ins SOM and J-space, each on Qwen2.5-7B and Qwen3.5-4B, with 100 TPE trials, the selection rule of
+\S\ref{sec:models} and the held-out harness of this paper (Table~\ref{tab:seedpairs}). The seed-1 cells are the
+Qwen2.5-7B and Qwen3.5-4B Heretic~2.0 and fork cells evaluated here. For each pair, $d_i$ is the seed-2 minus seed-1
+WildGuard residual refusal on the same 972 harmful prompts, so prompt sampling is held fixed and $d_i$ reflects the
+search. Assuming a mean difference of zero (observed mean $+0.13$~pp), the run-to-run standard deviation of one cell is
+\[
+\hat\sigma=\sqrt{\frac{1}{2n}\sum_{i=1}^{n} d_i^2}=9.2~\text{pp}, \qquad n=10,
+\]
+with a 95\% interval from $\sum d_i^2/(2\sigma^2)\sim\chi^2_n$ of [6.4, 16.1]~pp (a bootstrap over the ten cells gives
+[5.8, 12.1]). The standard deviation of a difference between two independently optimised cells is
+$\sqrt{2}\,\hat\sigma=12.9$~pp [9.0, 22.7], and the threshold of two such standard deviations is 25.9~pp [18.1, 45.4],
+the interval propagated from that of $\hat\sigma$. Median $|d_i|$ was 9.4~pp and the largest 25.2~pp (SOM on
+Qwen3.5-4B).
+
+Three seed-2 runs on Qwen3.5-4B (DiM, SOM and ARA) fell back to a batch size of 64 after running out of memory, while
+their seed-1 runs and all other runs used 128, so those pairs differ in batch size as well as in seed. Without them
+($n=7$), $\hat\sigma=7.2$~pp [4.8, 14.6] and the threshold is 20.4~pp [13.5, 41.4]. The search-level rule uses the
+upper limit of the ten-pair interval (45.4~pp), which none of the version contrasts reaches; under the point threshold
+of either estimate the H1 contrast on Qwen2.5-32B (25.9~pp) and the rule-matched contrast with 2.0 DiM (35.8~pp) would
+count as exceeding search noise and the H1 contrast on Qwen2.5-7B (19.0~pp) would not.
+
+Transfer to the contrasts of this paper is an assumption. The replicates come from 100-trial Heretic~2.0 and fork
+searches on models of 4 and 7 billion parameters; the 1.x arm used 200-trial searches with another objective, and the
+reversal concerns Qwen2.5-32B, for which no replicate exists. A larger trial budget may reduce the variation of the
+selected trial, and a search that stalls, as the Qwen2.5-32B DiM search did at 89 dev refusals, may increase it.
+Neither direction was tested; a second seed per arm on Qwen2.5-32B would replace the assumption with an estimate.
+
+\begin{table}[!htbp]
+\centering\small
+\caption{Seed replicates of the companion study \cite{young2026harder} used for the seed-noise threshold. Residual
+refusal: WildGuard, 972 held-out harmful prompts (\%). $d$ = seed 2 minus seed 1 (pp). Batch: evaluation batch size
+of the search (seed 1 / seed 2). SOM and J-space are fork plug-ins.}
+\label{tab:seedpairs}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}llrrrc@{}}
+\toprule
+Model & Configuration & Seed 1 & Seed 2 & $d$ & Batch \\
+\midrule
+Qwen2.5-7B & 2.0 DiM & 20.6 & 4.4 & $-$16.2 & 128 / 128 \\
+ & 2.0 MPOA & 13.8 & 3.6 & $-$10.2 & 128 / 128 \\
+ & SOM & 12.2 & 17.5 & +5.2 & 128 / 128 \\
+ & J-space & 52.6 & 61.2 & +8.6 & 128 / 128 \\
+ & 2.0 ARA & 4.7 & 2.2 & $-$2.6 & 128 / 128 \\
+Qwen3.5-4B & 2.0 DiM & 54.6 & 48.8 & $-$5.9 & 128 / 64 \\
+ & 2.0 MPOA & 18.0 & 33.7 & +15.7 & 128 / 128 \\
+ & SOM & 21.9 & 47.1 & +25.2 & 128 / 64 \\
+ & J-space & 73.8 & 71.8 & $-$2.0 & 128 / 128 \\
+ & 2.0 ARA & 18.9 & 2.2 & $-$16.8 & 128 / 64 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Relation to Prior Work}
 \label{app:versions}
 
 An earlier comparison by the same author \cite{young2025comparative} reported tool compatibility on sixteen 7--14B
-models and keyword-based refusal and benchmark changes for Heretic, DECCP/llm-abliteration, ErisForge and FailSpy.
+models and keyword-based refusal and benchmark changes for Heretic, llm-abliteration (labelled DECCP there), ErisForge and FailSpy.
 The present study is a separate paper, not a revision of that one: it uses mostly different base models (only
 Qwen2.5-7B-Instruct is shared, and its cells here come from new searches, archived 1.x runs from June 2026 and new
 external-tool runs, not from the earlier comparison), held-out prompts, model-based judges and paired tests, and none
 of the earlier numbers is reused. All results here come from the held-out harness shared with the companion study
 \cite{young2026harder}, which reports 19 of the cells evaluated here (13 in the main design and the six Qwen3.5-4B
-context cells) for a different question.
+context cells) for a different question, whether newer model generations are harder to abliterate with one tool. The
+claims divide by result family. First reported in the companion study, and reused here as comparators: the Heretic~2.0
+and fork-plug-in models on Qwen2.5-7B, Qwen2.5-32B and Qwen3.5-4B, the originals of those models, the two community
+releases, their judge labels, the harness specification (including the degeneracy heuristic of
+\S\ref{sec:measures}) and the seed replicates. First reported here: the twelve Heretic~1.x models and the four
+coder and 14B originals, the selection-cap re-export, the external-tool cells, the tests of H1--H3, the dev-set
+comparison at matched dev KL, the search ranges, costs and direction cosines, and the derivation of the seed-noise
+threshold in Appendix~\ref{app:seednoise}. No claim of the companion study about model generations is made here.

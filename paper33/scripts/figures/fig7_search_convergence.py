@@ -43,7 +43,7 @@ import style as S
 
 NAME = "fig7_search_convergence"
 NAME_A = "figA4_search_convergence_runs"
-CORE = ["dim", "mpoa", "ara", "som", "jspace"]
+CORE = ["dim", "mpoa", "som", "jspace", "ara"]
 PANELS = CORE + ["gamma_mpoa"]
 SEED = 1
 KL_MAX = 0.1
@@ -51,7 +51,7 @@ N_TRIALS = 100
 N_STARTUP = 30          # Heretic config.default.toml n_startup_trials; verified per run below
 LATE = 75               # "late" = first reached after this trial
 BIN = 5                 # dot-histogram bin width (trials); 30 and 75 are bin edges
-MEDIAN_METHODS = ["dim", "mpoa", "ara", "som"]   # median curve only for these (10 runs each); never J-space/gamma
+MEDIAN_METHODS = ["dim", "mpoa", "som", "ara"]   # median curve only for these (10 runs each); never J-space/gamma
 LW_RUN = 0.85           # thin per-run step curves
 LW_MED = 2.0            # bold median
 LW_RUN_A = 1.1          # per-run curves in the appendix figure (at most five per panel)
@@ -364,11 +364,11 @@ def main():
         Line2D([], [], color=g, lw=0.9, linestyle=(0, (1, 1.5)), label=f"trial {LATE}"),
     ]
     hl = S.method_handles(CORE, "new")
-    hl[-1].set_label("J-space (small pair)")
+    hl[CORE.index("jspace")].set_label("J-space (small pair)")
     # two rows (legend fills column by column): summary encodings on top, method colour + shape below
     inter = [h for pair in zip(handles, hl) for h in pair]
-    fig.legend(handles=inter, loc="outside upper center", ncols=len(handles), handlelength=1.8,
-               columnspacing=1.4, handletextpad=0.5, borderaxespad=0.1, labelspacing=0.3)
+    fig.legend(handles=inter, loc="outside upper center", ncols=len(handles), handlelength=1.4,
+               columnspacing=0.9, handletextpad=0.5, borderaxespad=0.1, labelspacing=0.3)
     S.save(fig, NAME, preview_dpi=150)
     S.plt.close(fig)
 
@@ -398,7 +398,7 @@ def main():
             title(ax, f"{S.label(m)}, {gen_title[gen]}",
                   f"{len(rs)} runs; median first reach: trial {np.median([r['first'] for r in rs]):g}")
         axs[0].set_ylabel("Best dev refusals\nso far (KL ≤ 0.1)")
-    axs = sfs[4].subplots(1, 4, sharey=True, gridspec_kw={"wspace": 0.10})
+    axs = sfs[4].subplots(1, 4, sharey=True, gridspec_kw={"wspace": 0.10, "width_ratios": [0.8, 0.8, 1.0, 1.0]})
     for j, (m, gen) in enumerate((("jspace", "old"), ("jspace", "new"), ("gamma_mpoa", "old"),
                                   ("gamma_mpoa", "new"))):
         ax = axs[j]
@@ -414,13 +414,13 @@ def main():
             if ln.get_drawstyle() == "steps-post":
                 ln.set_linewidth(LW_RUN_A)
         if m == "gamma_mpoa":
-            end_labels(ax, rs, name_short)
+            end_labels(ax, rs, name_main)
             pend = gam_pending[gam_pending.generation.astype(str).map(gen_key) == gen]
             for i_, p_ in enumerate(pend.itertuples()):
                 ax.text(0.97, 0.08 + 0.12 * i_, f"{S.MODEL_DISPLAY[p_.model]}: {status_text(p_.status)}",
                         transform=ax.transAxes, ha="right", va="bottom", fontsize=S.FONT_SMALL,
                         color=S.TEXT_SECONDARY, style="italic")
-            sub = ", ".join(sorted({name_short(r).split("-")[0] for r in rs})) or "no run"
+            sub = ", ".join(S.MODEL_DISPLAY[m_] for m_ in S.MODEL_ORDER if m_ in {r["model"] for r in rs}) or "no run"
         else:
             sub = ", ".join(S.MODEL_DISPLAY[r["model"]] for r in rs)
         title(ax, f"{S.label(m)}, {gen_title[gen].split()[0]}", sub)
@@ -461,7 +461,7 @@ def main():
     print(f"  [fig7] gap to final at trial 30: median {np.median(gap30):.1f}, mean {gap30.mean():.1f}; "
           f"at 50: median {np.median(gap50):.1f}, mean {gap50.mean():.1f}, runs with gap>0 {int((gap50 > 0).sum())}")
     med_pts = {}
-    for m in ["dim", "mpoa", "ara", "som"]:
+    for m in ["dim", "mpoa", "som", "ara"]:
         med = stats[m][2]
         med_pts[m] = {t: med[t] for t in (N_STARTUP, 50, LATE, N_TRIALS)}
         print(f"  [fig7] median curve {m}: " + ", ".join(f"t{t} {v:.1f}" for t, v in med_pts[m].items()))

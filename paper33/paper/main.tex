@@ -30,6 +30,7 @@
 
 % --- Links ---
 \usepackage{url}
+\def\UrlBreaks{\do\/\do-}% 2026-11-08: allow breaks at hyphens in long repository names
 
 % --- Tables ---
 \usepackage{booktabs}
@@ -83,7 +84,9 @@
 % Full title
 % 2026-11-06 review revision (author decision B): subtitle replaced; previous title "Is Abliteration Getting Harder?
 % Directional vs. Optimization-Based Refusal Removal Across Generations of Open-Weight LLMs" (main.tex.bak-20261106-rev).
-\title{Is Abliteration Getting Harder?\\ Evidence from Four Open-Weight Model Families}
+% 2026-11-08 ARS revision (REV-12, REV-25): subtitle names the unit of analysis (release pairs); previous subtitle
+% "Evidence from Four Open-Weight Model Families" (main.tex.bak-20261108-rev).
+\title{Is Abliteration Getting Harder?\\ Evidence from Five Open-Weight Release Pairs}
 
 % Authors
 \author{
@@ -144,21 +147,64 @@
 % src: 1.1% vs MPOA 3.9%; qwen3.8-27b huihui 1.4% vs MPOA 14.0%; olmo-3.1-32b MuXodious 0.7% vs ARA 10.8%, all p_holm < 0.001;
 % src: gemma-4-31b coder3101 0.9% vs ARA 0.6%, p_holm 0.51; mistral-small-3.2 huihui 5.0% vs MPOA 4.0%, p_holm 0.44);
 % src: sections/08b_setup_details.tex (Export and Release: base licences); sections/04_methods.tex (Ethics: responses private).
+% 2026-11-08 ARS revision (REV-03, REV-04; author decision 3 in the revision FIX_DECISIONS.md, binding): release policy
+% replaces the marginal-risk argument. Previous text: main.tex.bak-20261108-rev.
+% src: Hugging Face search by the author on 2026-11-08 (FIX_DECISIONS.md, decision 3): third-party public abliterated or
+% src: uncensored derivatives exist for Gemma-2-27B (byroneverson/gemma-2-27b-it-abliterated), Mistral-Small-2409
+% src: (byroneverson/Mistral-Small-Instruct-2409-abliterated), Qwen2.5-7B (huihui-ai/Qwen2.5-7B-Instruct-abliterated-v2) and Qwen3.5-4B
+% src: (huihui-ai/Huihui-Qwen3.5-4B-abliterated), none for OLMo-2-32B; the other five checkpoints have the community releases evaluated
+% src: in results/analysis/final_community_vs_selected.csv; ARA refit drift: review_sel_export_drift.csv (app:dev-rescore).
+% 2026-11-08 adversarial check: licences from HfApi().model_info(base).card_data.license: apache-2.0 for Qwen2.5-32B,
+% Qwen3.8-27B, Qwen2.5-7B, Qwen3.5-4B, gemma-4-31B-it, both OLMo, Mistral-Small-3.2 (official and unsloth mirror); gemma
+% for gemma-2-27b-it; other/mrl for Mistral-Small-Instruct-2409. The three footnote repos exist (model_info, 2026-11-08);
+% footnote links now point to huggingface.co (bare \url{owner/repo} produced relative links).
 The study involved no human participants and no personal data and was not
 human-subjects research, so no IRB review was required. It creates and
 releases language models whose refusal behaviour has been removed, which is
-dual-use. The marginal risk of this release is limited. For each of the five
-checkpoints for which a public abliteration was evaluated, a public release
-already had held-out residual refusal not significantly different from
-(Gemma-4-31B and Mistral-Small-3.2) or lower than (Qwen2.5-32B,
-Qwen3.8-27B and Olmo-3.1-32B) that of the most effective model released here
-(\S\ref{sec:res-secondary}, Figure~\ref{fig:community}). For the other five
-checkpoints (Gemma-2-27B, OLMo-2-32B, Mistral-Small-2409, Qwen2.5-7B and
-Qwen3.5-4B) no public release was evaluated, so the argument does not extend
-to them. Responses to harmful prompts are stored privately for scoring and are
-not released. Released models keep the licence and use policy of their base
-model; models whose base is licensed under Apache-2.0 additionally carry the
-use restrictions of the OpenRAIL++-M licence.
+dual-use. The models are released openly with two exceptions. The five
+Gemma-2-27B variants are withheld (their repositories are private), because the
+Gemma Prohibited Use Policy may forbid redistributing them (see below). The
+five OLMo-2-32B variants (DiM, MPOA, SOM, ARA and $\gamma$-MPOA) are gated on
+Hugging Face with automatic approval, because OLMo-2-32B is the only base model
+studied for which no third-party public abliteration was found. For the other nine bases,
+refusal-removed derivatives were already public: for five of them, public
+releases were evaluated here (\S\ref{sec:res-secondary}), and for the other
+four (Gemma-2-27B, Mistral-Small-2409, Qwen2.5-7B and Qwen3.5-4B),
+third-party abliterated or uncensored derivatives were found on Hugging
+Face\footnote{For example
+\href{https://huggingface.co/byroneverson/gemma-2-27b-it-abliterated}{\nolinkurl{byroneverson/gemma-2-27b-it-abliterated}},
+\href{https://huggingface.co/byroneverson/Mistral-Small-Instruct-2409-abliterated}{\nolinkurl{byroneverson/Mistral-Small-Instruct-2409-abliterated}}
+and
+\href{https://huggingface.co/huihui-ai/Huihui-Qwen3.5-4B-abliterated}{\nolinkurl{huihui-ai/Huihui-Qwen3.5-4B-abliterated}};
+accessed 8 November 2026.}
+whose residual refusal was not evaluated. The argument is therefore that
+comparable models are already available, not that they are equally effective.
+The release serves two purposes that the configurations and journals alone do
+not: it lets others re-run the audit on the evaluated weights, which matters
+because re-exports from stored configurations are not exactly reproducible
+(the ARA refits drifted when rebuilt on other hardware;
+Appendix~\ref{app:dev-rescore}), and it provides fixed edited models against
+which defences and detectors can be evaluated. Responses to harmful prompts
+are stored privately for scoring and are not released. Released models keep
+the licence of their base model: Apache-2.0 (the Qwen, OLMo and
+Mistral-Small-3.2 bases and Gemma-4-31B), to which the use restrictions of
+the OpenRAIL++ licence are added; the Gemma Terms of Use and Prohibited Use
+Policy for Gemma-2-27B; or, for Mistral-Small-2409, the Mistral Research
+Licence, which permits non-commercial research use. Apache-2.0 and the
+Mistral Research Licence permit redistributing such derivatives, the latter
+for research purposes only. The Gemma Prohibited Use Policy, which the Gemma
+Terms incorporate, forbids ``attempts to override or circumvent safety
+filters'', so this study cannot state that redistributing the refusal-removed
+Gemma-2-27B derivatives is permitted, and they are not released
+(Appendix~\ref{sec:setup-export}). The
+automatic-approval gate on the OLMo-2-32B variants requires a logged-in
+Hugging Face account and shares the requester's contact details with the
+author, so access is recorded; it does not limit who can obtain the weights. A licence states the permitted use; it is not a
+technical control.
+% 2026-11-08 ARS re-review revision (REV-04; re-review observation on the gate): gate = Hugging Face default prompt (model_info
+% card_data of richardyoung/OLMo-2-0325-32B-Instruct-DiM-heretic has no extra_gated fields, gated = "auto"); licence texts read 2026-11-08; detail, quoted
+% clauses and src in sections/08b_setup_details.tex (sec:setup-export). The release itself follows author decision 3 and was
+% not changed here; whether to change the Gemma-2-27B release is left to the author.
 
 % ============================================================
 % DATA AND CODE AVAILABILITY (optional — uncomment as needed)
@@ -167,9 +213,11 @@ use restrictions of the OpenRAIL++-M licence.
 % 2026-11-06 review revision (task item 9): release contents DRAFTED; the GitHub/Zenodo todo stays.
 % src: sections/08b_setup_details.tex (fork branches paper33-plugins @ 8fd4d76 and paper33-gamma @ fdfe54b; "Journals,
 % src: configurations and logs are kept for every run"); sections/04_methods.tex (responses not released).
-The 42 primary models and the four $\gamma$-MPOA control models are public on
+The 42 primary models and the four $\gamma$-MPOA control models are on
 Hugging Face under \url{https://huggingface.co/richardyoung}
-(\texttt{<base>-<METHOD>-heretic}). The release of code and data consists of
+(\texttt{<base>-<METHOD>-heretic}); the five Gemma-2-27B variants are
+withheld (private repositories), the five OLMo-2-32B variants are gated with
+automatic approval, and the others are public. The release of code and data consists of
 the code (the Heretic fork branches \texttt{paper33-plugins} and
 \texttt{paper33-gamma}, the evaluation harness and the analysis scripts), the
 configuration of every run, the Optuna study journals and run logs, and the
@@ -180,7 +228,7 @@ harness, configurations, journals, logs and labels are at
 \url{https://github.com/ricyoung/abliteration-studies}, and the fork branches
 at \url{https://github.com/ricyoung/heretic}. The Heretic fork is released
 under AGPL-3.0, the licence of upstream Heretic; the other code and the data
-are released under OpenRAIL++-M. \todo{Zenodo DOI of the archived release}
+are released under OpenRAIL++.
 
 % ============================================================
 % REFERENCES

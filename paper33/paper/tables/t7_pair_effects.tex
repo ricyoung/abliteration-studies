@@ -6,6 +6,9 @@
 % src: variance "prompt sampling only" and "prompt + seed (sigma, 10 seed pairs)" over the 10 estimand x scale rows of
 % src: review_sel_pair_meta.csv (ARA raw pp 40.82 vs 40.85; ARA adjusted log-odds -4.59 vs -4.66); I2 0.986-0.997
 % src: (review_sel_pair_meta.csv, prompt sampling only).
+% src (2026-11-08 ARS revision, REV-11/REV-14/REV-27): seed-inclusive I2 20-89%: results/analysis/revision_heterogeneity.csv (variance
+% src: "prompt + seed, constant sigma_pp (point)" / "constant sigma_L (point)", direction raw / adjusted, ARA raw / adjusted, H2:
+% src: min 0.201 (direction raw log-odds), max 0.892 (direction adjusted pp)); Gemma without DiM: revision_h2_sensitivity.csv.
 \begin{table*}[t]
 \centering\scriptsize
 \setlength{\tabcolsep}{2pt}
@@ -15,8 +18,11 @@ the single ARA cell. Adjusted: minus the originals' own generation difference, a
 was stated. H2 contrast: ARA minus direction. pp: percentage points (paired item differences); log-odds: per-pair GEE.
 Per-pair intervals (95\%) combine prompt sampling with run-to-run (seed) variance ($\sigma=9.15$~pp, 0.83 on the logit
 scale, from the ten small-pair seed pairs). Pooled: random-effects estimate over the four main pairs with
-Hartung--Knapp--Sidik--Jonkman 95\% interval ($t_3$; prompt-sampling variance); adding seed variance moves its limits by
-at most 0.1~pp and 0.07 log-odds. Between-pair heterogeneity $I^2$ was 99--100\% for every pooled row. Per-method
+Hartung--Knapp--Sidik--Jonkman 95\% interval ($t_3$). The pooled interval uses the prompt-sampling variances; with
+run-to-run variance added its limits move by at most 0.1~pp and 0.07 log-odds, because the interval is driven by the
+spread between pairs. Between-pair heterogeneity was $I^2$ = 99--100\% with prompt-sampling variances only and 20--89\%
+with the seed-inclusive variances of this table (Table~\ref{tab:heterogeneity}). Gemma direction includes the failed
+Gemma-4-31B DiM edit; without it the Gemma direction effect was $-$1.1~pp and the H2 contrast $-$24.9~pp. Per-method
 effects are in Table~\ref{tab:h1-heldout} and the prompt-level H2 tests in Table~\ref{tab:h2-contrasts}.}
 \label{tab:pair-effects}
 \begin{tabular}{@{}lllllll@{}}

@@ -1,35 +1,35 @@
-% ABSTRACT (150--250 words, excluding the red draft line). Rewritten 2026-11-06 (reading draft v3) after the 7B 1.x
-% cells, the KL<=0.1 re-export of the 1.x general study on Qwen2.5-32B and the external-tool cells were judged.
-% Numbers (all from analysis/, assemble_p30.py run 2026-11-06T22:47Z):
-%   up to 73.1 pp: RESULTS.md "Modified vs original" (12 1.x cells; max 73.1 = qwen2.5-coder-14b 1.x general; the
-%     minimum, qwen2.5-7b 1.x code -0.9 [-2.3,+0.4], p_Holm 0.222, is not significant, hence "up to", not "0.9--").
-%   H1: RESULTS.md "H1" / tests_refusal.csv family h1_1x_vs_2.0, wg harmful_all: 32B 73.4 vs 47.4, +25.9 [23.0, 28.7];
-%     7B 39.6 vs 20.6, +19.0 [16.1, 21.9]; both p_Holm<0.001.
-%   Ten-fold cap: 1.x rule KL<=0.01 vs 2.0 rule KL<=0.1 (04_methods tab:h1setup; dev_matched_kl.csv selection_cap).
-%   KL-matched: RESULTS.md "1.x general re-exported at KL <= 0.1" / tests_refusal.csv family h1_kl_matched:
-%     cells.csv qwen2.5-32b__heretic1x-general-kl0.1 wg 11.6 [9.8, 13.8]; vs DiM -35.8 [-38.9, -32.7];
-%     vs MPOA +7.7, vs ARA +5.6 (MPOA 3.9%, ARA 6.1%); all p_Holm<0.001.
-%   External: RESULTS.md "Added cells vs their original" + cells.csv: obliteratus-basic 72.9 vs base 72.1
-%     (+0.8 [-0.6,+2.3], p_Holm 0.332); spectral_cascade 11.8, capability mean delta -5.18 [-6.90,-3.47]
-%     (tests_capability.csv family added); jwest33 qwen3.5-4b as released 1.0 (primary), hybrid fix 35.8.
-%   H2: tests_refusal.csv h2_general_vs_code (no crossover in 6 models; 32B code_weapon_excl_risk n.s.).
-%   H3: tests_refusal.csv kw_vs_judge, kw_minus_wg, max +19.5 (qwen2.5-7b DiM), original-design cells.
-% Word count 250 (numbers and intervals counted as one word each).
-\noindent\textcolor{red}{\textbf{Reading draft v3, 6 November 2026.}}\par\medskip
-
-\noindent Abliteration tools remove refusal from open-weight language models by editing weights, and
-practitioners choose among tools, versions and settings mostly from keyword-matched refusal counts on tuning
-prompts. This study rebuilt archived Heretic~1.x models with general- and code-derived refusal directions for six
-Qwen2.5 models and evaluated them, alongside Heretic~2.0, two external tools at their documented settings and two
-community releases, on 972 held-out harmful prompts, scored by a safety judge, and five capability benchmarks.
-Twelve 1.x models removed up to 73.1 percentage points (pp) of refusal. With the same edit,
-Heretic~2.0 left less residual refusal than 1.x on Qwen2.5-32B (47.4\% versus 73.4\%; 25.9~pp [23.0, 28.7]) and
-Qwen2.5-7B (20.6\% versus 39.6\%; 19.0~pp [16.1, 21.9]), but the archived 1.x runs had selected their output under
-a ten-fold tighter divergence cap. Re-exported from the same Qwen2.5-32B search at the 2.0 cap, 1.x left 11.6\%
-[9.8, 13.8], 35.8~pp [32.7, 38.9] less than its 2.0 counterpart and more than 2.0 MPOA (3.9\%) and ARA (6.1\%).
-OBLITERATUS's basic preset left refusal unchanged (72.9\% versus 72.1\%) and its spectral-cascade preset reached
-11.8\% with a 5.2-pp capability loss; jwest33's abliterator left 1.0\% on Qwen3.5-4B as released and 35.8\% with
-hybrid-architecture detection restored. A code-derived direction gave no consistent advantage on malicious-code
-prompts, and keyword matching counted up to 19.5~pp more refusals than the judge. Tool comparisons should therefore
-report the selection rule and the released model's divergence. On Qwen2.5-32B, the newer version's apparent
-advantage reflected the selection cap rather than the version.
+% ABSTRACT (150--250 words). Rewritten 2026-11-08 in response to the ARS review (R3 framing around the selection rule;
+% R4 causal attribution scoped to one Qwen2.5-32B search; R5 draft label removed; R6 single-case scope; R8 "one search
+% per arm" and search-level verdict; R14 range labelled at the archived cap; S2 fewer numbers; S4 Qwen3.5-4B outside
+% the main design; S5 re-export labelled post hoc). No number changed. Sources (analysis/, assemble_p30.py run
+% 2026-11-06T22:47Z, and analysis/revision_20261108/):
+%   0.9--73.1 pp: RESULTS.md "Modified vs original" (12 1.x cells, all selected at dev KL <= 0.01; 0.9 = qwen2.5-7b
+%     1.x code, p_Holm 0.222, not significant; 73.1 = qwen2.5-coder-14b 1.x general).
+%   H1: tests_refusal.csv family h1_1x_vs_2.0, wg harmful_all: 32B +25.9 [23.0, 28.7]; 7B +19.0 [16.1, 21.9];
+%     revision_20261108/h1_vs_threshold.csv: both "inconclusive at search level" (25.9 inside the threshold interval
+%     [18.1, 45.4]; 19.0 below the point threshold 25.9).
+%   Re-export: tests_refusal.csv kl_cap_1x -61.7 [-64.7, -58.5] (73.4 -> 11.6); h1_kl_matched vs DiM -35.8;
+%     cells.csv tf_divergence kl0.1 0.0323 vs dim 0.0165 ("about twice as far").
+%   External-tool results (and the Qwen3.5-4B cell outside the main design) were moved out of the abstract to meet
+%     the word limit (review S2); they remain in the Results, Discussion and Conclusion.
+% 2026-11-08 (adversarial check): reversal labelled as within search-to-search variation (35.8 inside [18.1, 45.4],
+%   h1_vs_threshold.csv); search range and objective added to the remaining differences (tab:h1setup).
+% Word count about 250 (numbers and intervals counted as one word each).
+% 2026-11-08 (re-review S2): number count cut. Dropped the interval of the 32B H1 difference (25.9 [23.0, 28.7],
+%   kept in Results) and the 73.4% -> 11.6% endpoints (kept in Results); the within-search contrast keeps its interval.
+\noindent Abliteration tools remove refusal from open-weight language models by editing weights, and the released
+model is chosen from a search by a selection rule that caps its divergence from the original. Tools are usually
+compared with keyword counts on tuning prompts, without reporting that rule.
+This study rebuilt archived Heretic~1.x models with general- and code-derived directions for six Qwen2.5
+models and evaluated them, alongside Heretic~2.0, two external tools run once at their documented settings and two
+community releases, on 972 held-out harmful prompts scored by a safety judge and five capability benchmarks; each
+configuration contributed one search per base model. At the archived dev-KL cap of 0.01, the twelve 1.x
+models removed between 0.9 and 73.1 percentage points (pp) of refusal. Heretic~2.0 DiM, selected under a ten-fold
+looser cap, left 25.9~pp less residual refusal than the same edit family released by 1.x on Qwen2.5-32B
+and 19.0~pp less on Qwen2.5-7B; both were significant for these checkpoints but within search-to-search
+variation. In a post hoc re-export of one Qwen2.5-32B 1.x search at the 2.0 cap, residual
+refusal fell by 61.7~pp [58.5, 64.7], to 35.8~pp below 2.0 DiM, a reversal also within
+search-to-search variation; trial budget, seed, search range, objective, system prompt and marker list still differed,
+and the re-exported model had diverged about twice as far as 2.0 DiM. Comparisons of abliteration tools should report the
+selection rule and the realised divergence of the released model. In one search on one model, changing only the
+selection cap moved residual refusal by more than the version contrast.

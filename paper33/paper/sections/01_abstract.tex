@@ -24,27 +24,46 @@
 % "including estimated run-to-run variation" (review_sel_pair_meta.csv, variance "prompt + seed (sigma, 10 seed pairs)":
 % HKSJ [-1.669, 1.797]). Word count 250 (math as one word).
 % ============================================================
-Abliteration, a family of training-free weight edits, can remove refusal
-from open-weight language models after release. The developer of
-Arbitrary-Rank Ablation (ARA), an optimisation-based method, reports that
-direction-based abliteration increasingly fails on newer models, a claim not
-yet tested independently. Three direction-based methods (four on the small
-pair) and ARA were applied in one framework, with identical prompts, search
-budget, divergence cap and selection rule, to an earlier and a later release
-of four model families (22--32 billion parameters) and one smaller Qwen
-pair, optimising each main-study model--method combination once; an
-independent judge labelled refusal on 972 held-out harmful prompts. Averaged
-over the direction-based methods, the later release retained more refusal by
-+10.7 (Qwen), +4.7 (Gemma), +36.9 (OLMo), $-$1.2 (Mistral Small) and +17.3
-percentage points (small pair); after ARA they were +34.4, $-$26.0, $-$2.5,
-$-$0.7 and +14.2. The families differed (generation $\times$ family
-$\chi^2=547$, 3 degrees of freedom). The later Qwen and Mistral Small
-originals already refused more before editing; beyond this baseline
-difference (exploratory), the direction-based effect pooled over four
-families was +0.06 log-odds, with a 95\% interval of $-$1.67 to +1.80 when the
-pair is the unit, including estimated run-to-run variation. At the tool's
-100-token window, keyword matching agreed with the judge on average (+0.5
-points) but not model by model. Audits of one model pair, removal method or
-optimisation run can therefore misjudge how removable refusal is. Refusal
-removal did not become uniformly harder in the later releases; its difficulty
-depended on the family and the method.
+% 2026-11-08 ARS REVISION (notes/ARS_review_20261108/revision_roadmap.md; author decisions in FIX_DECISIONS.md):
+% rewritten to lead with the qualitative answer (REV-10), state the budget-bound operationalisation (REV-32), use "release
+% pair" (REV-25), "fine-tuning-free" (REV-28), "the same nominal budget" (REV-40), the seed-inclusive heterogeneity instead
+% of the prompt-level chi2 = 547 (REV-14), the single-ARA-cell caveat (REV-05), item-source moderation (REV-13), the failed
+% H3 prediction (REV-39), and no "including run-to-run variation" claim for the pooled interval (REV-11).
+% src: per-pair ranges: results/analysis/review_sel_pair_effects.csv (direction raw pp -1.23 .. +36.87; ARA raw -26.03 .. +34.36);
+% src: heterogeneity: revision_heterogeneity.csv (direction raw, prompt + seed constant sigma point: pp I2 0.798, log-odds I2 0.201);
+% src: H2 per pair: review_sel_pair_effects.csv (gemma -30.8, olmo -39.3, qwen +23.6); budget / variance dependence:
+% src: revision_kl_budget_effects.csv, revision_sigma_pair_verdicts.csv; item source: review_out_c2_pair_class.csv (gemma direction
+% src: public4 -6.8, code_weapon +49.3); H3: review_out_c4_gap_pooled.csv (kw100_vs_wg +0.5), revision_kw_gap_abs.csv (mean |gap| 7.0).
+% Word count 249 (math as one word). Previous version: sections/01_abstract.tex.bak-20261108-rev.
+% 2026-11-08 adversarial check: "once per main-study model" (small pair has seed 2); I2 80% / 20% scoped to the
+% direction-based effect (ARA log-odds I2 is 79%, revision_heterogeneity.csv); "a mean 7 points" (mean |gap|,
+% revision_kw_gap_abs.csv); "not on generation alone" (generation effects exist within pairs). Word count 250.
+% 2026-11-08 ARS RE-REVIEW REVISION (re_review_report.md S2/S6 = REV-06/REV-10, NEW-3): the qualitative answer is now the
+% third sentence, an audit implication precedes the key finding, and I2 = 80% is tied to the constant run-to-run variance
+% model with the refusal-level value beside it. src: revision_heterogeneity.csv (direction raw pp, logit-level sigma (point):
+% I2 0.458 -> 46%); other numbers as above. The "22--32 billion parameters" and "once per main-study model" clauses were
+% dropped for length (both in sec:intro and sec:setup). Word count 250 (math as one word; scratchpad wc.py).
+% Previous version: sections/01_abstract.tex.bak-20261108-rr.
+Abliteration, a fine-tuning-free weight edit, removes refusal from open-weight
+language models. The developer of Arbitrary-Rank Ablation (ARA), an
+optimisation-based variant, reports that direction-based abliteration
+increasingly fails on newer models. On five release pairs, refusal removal did
+not become uniformly harder. Earlier and later Qwen, Gemma, OLMo and Mistral
+Small models and a smaller Qwen pair were edited by three or four
+direction-based methods and ARA under the same prompts, nominal search budget,
+first-token divergence cap and selection rule; removal counted as harder when
+an automatic judge found more of 972 held-out harmful prompts still refused.
+After direction-based removal, newer releases retained $-$1 to +37 percentage
+points more refusal, and after ARA $-$26 to +34. With run-to-run variation
+included, between-pair heterogeneity of the direction-based effect was high in
+percentage points under constant run-to-run variance ($I^2=80\%$) but moderate
+under refusal-level variance ($46\%$) and low in log-odds ($20\%$). ARA lost
+less effectiveness than direction-based methods in Gemma and OLMo and more in
+Qwen; each verdict rests on one ARA run, and some changed with the divergence
+budget or variance model. In Gemma the direction-based increase came from an
+author-compiled malicious-code prompt bank and reversed on public sets.
+Contrary to prediction, keyword counts at the tool's window did not undercount
+judged refusal on average, but differed by a mean 7 points per model. Audits
+of a single pair, method or prompt source can reach opposite conclusions.
+Whether a newer model resisted removal depended on the release pair, method
+and budget, not on generation alone.

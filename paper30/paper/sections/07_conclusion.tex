@@ -1,21 +1,26 @@
-% Revised 2026-11-06: efficiency claim and selection-cap claim softened; like-for-like H1 leads.
-% Revised 2026-11-06 (draft v3): 7B 1.x results, KL<=0.1 re-export (selection-cap reading now established for
-% Qwen2.5-32B), external tools. Sources: RESULTS.md "Modified vs original", "H1", "1.x general re-exported at KL <= 0.1",
-% "Added cells vs their original", "jwest33 on Qwen3.5-4B"; cells.csv capability_mean_delta (12 1.x cells and the
-% re-export: every interval includes 0); tests_refusal.csv h2_general_vs_code, kw_vs_judge; rank_flips.csv.
+% Revised 2026-11-08 (ARS review): R3 selection-rule framing; R4 causal attribution scoped to one Qwen2.5-32B search
+% with the remaining differences named; R6 single-case scope of the recommendation; R8 "one search per arm" and
+% search-level verdict; R9 divergence named in the recommendation; R14 range at the archived cap; S4 Qwen3.5-4B
+% outside the main design; S6 H2 as a pipeline; S8 "equivalent within +-2 pp" instead of "no detectable cost".
+% Sources: RESULTS.md "Modified vs original", "H1", "1.x general re-exported at KL <= 0.1"; tests_refusal.csv
+% kl_cap_1x, h1_kl_matched, h2_general_vs_code, kw_vs_judge; analysis/revision_20261108/h1_vs_threshold.csv,
+% capability_equivalence.csv (12 1.x cells equivalent), dev_matched_divergence.csv; cells.csv (jwest33 Qwen3.5-4B
+% wg 1.0, capped 87.8; obliteratus-basic 72.9).
 \section{Conclusion}
 \label{sec:conclusion}
 
-Judged on held-out prompts, archived Heretic~1.x models removed up to 73.1~pp of refusal from six Qwen2.5 models,
-depending on the model and the direction source, without a detectable capability cost. Under the archived settings,
-the same edit released by Heretic~2.0 left less residual refusal than when released by 1.x on both base models
-tested, 25.9~pp less on Qwen2.5-32B and 19.0~pp less on Qwen2.5-7B. Released from the same Qwen2.5-32B search at the
-2.0 cap, however, the 1.x model left 11.6\% of the harmful prompts refused, 35.8~pp less than 2.0 DiM though more
-than 2.0 MPOA and ARA, so on that model the version gap measured under the archived settings reflected the
-selection cap rather than the version. External tools run at their documented settings ranged from no change in
-refusal (OBLITERATUS \texttt{basic}) to near-complete removal (jwest33's abliterator as released on Qwen3.5-4B, 1.0\%), and one
-architecture-handling detail changed jwest33's result on Qwen3.5-4B by 34.8~pp. A code-derived refusal direction
-gave no consistent advantage on malicious-code prompts, and keyword counts differed from judged refusal after strong
-edits but rarely changed the order of tools. Comparisons of abliteration tools and versions should therefore report
-the selection rule and the divergence of the released model, use a judge on held-out prompts, and compare tools at
-matched selection caps.
+Judged on held-out prompts and selected at the archived dev-KL cap of 0.01, Heretic~1.x models removed between 0.9
+and 73.1~pp of refusal from six Qwen2.5 models, with capability changes equivalent to zero within $\pm$2~pp. With one
+search per arm, Heretic~2.0 DiM left 25.9~pp less residual refusal than 1.x on Qwen2.5-32B and 19.0~pp less on
+Qwen2.5-7B, differences significant for these checkpoints but inconclusive at the search level. In a post hoc
+re-export of one Qwen2.5-32B 1.x search at the 2.0 cap, equalising the cap alone moved residual refusal from 73.4\% to
+11.6\% and reversed the version contrast for these checkpoints, by an amount inside the interval of the seed-noise
+threshold, while trial budget, seed, search range, objective, system prompt and marker list still differed and the re-exported model had moved about twice as far from the original as 2.0 DiM; the reversal is as
+consistent with a weaker DiM search as with any property of the version. External tools run once at their documented
+settings ranged from no change in refusal (OBLITERATUS \texttt{basic}) to near-complete removal on the hybrid
+Qwen3.5-4B, outside the main design (jwest33's abliterator as released, with most responses running to the length
+limit). The code pipeline gave no consistent advantage on malicious-code prompts, and keyword counts differed from
+judged refusal after strong edits but rarely changed the order of tools. On the evidence of this single case,
+comparisons and robustness assessments of abliteration tools should report the selection rule and the realised
+divergence of the released model, use a judge on held-out prompts, and compare tools at matched divergence or across
+the refusal--divergence trade-off rather than at one cap.

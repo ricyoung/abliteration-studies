@@ -12,7 +12,7 @@ Revision 2026-11-06 (v3, after the added runs):
     (families h1_kl_matched and kl_cap_1x; separate Holm families);
   * new tab_external (label tab:external): external tools (OBLITERATUS, jwest33/abliterator) with context rows
     (original, Heretic 1.x general, best Heretic 2.0) on Qwen2.5-7B and Qwen3.5-4B;
-  * cells added after the pre-stated design are marked with a section sign and use the "added" Holm families.
+  * cells added after the pre-stated design are marked with a double dagger (section sign until 2026-11-08) and use the "added" Holm families.
 Numbers are read from analysis/*.csv only, except the tool-reported refusal checks of the external cells, whose
 prompt count (OBLITERATUS verify_sample_size = 30) is read from /data/heretic_2/models/external/<label>/PROVENANCE.json
 because cells.csv records the size of the corpus the 30 prompts are sampled from (842).
@@ -41,7 +41,7 @@ METHOD_ROWS = ["original", "1x_general", "1x_general_kl01", "1x_code", "dim", "m
                "jwest33_hybridfix"]
 # SOM and J-space are plug-ins of the project fork (paper33-plugins, commit 8fd4d76), not part of Heretic 2.0
 # releases; they are labelled so in every table (revision 2026-11-06).
-ADDED_MARK = r"$^{\S}$"
+ADDED_MARK = r"$^{\ddagger}$"  # 2026-11-08 (review S3): was the section sign
 METHOD_TEX = {"original": "Original", "1x_general": "1.x general", "1x_code": "1.x code",
               "1x_general_kl01": r"1.x general, KL $\le$ 0.1" + ADDED_MARK, "dim": "2.0 DiM",
               "mpoa": "2.0 MPOA", "som": "SOM (fork plug-in)", "jspace": "J-space (fork plug-in)", "ara": "2.0 ARA",
@@ -150,7 +150,7 @@ def tab_cells(cells, tests):
                      f"{ch} & {pc(c['kw_rate'])} / {pc(c['kw256_rate'])} & {pc(c['hb_harm_rate'])} & "
                      f"{pc(c['overrefusal_wg_rate'])} & {cap} & {tf} \\\\")
     L += [r"\bottomrule",
-          note(11, r"$^{\S}$ Added after the pre-stated design: the original 1.x general study re-exported at the 2.0 "
+          note(11, r"$^{\ddagger}$ Added after the pre-stated design: the original 1.x general study re-exported at the 2.0 "
                    r"selection rule (dev KL $\le$ 0.1; trial \#96); its test is in a separate Holm family."),
           note(11, r"$^{\mathrm{ns}}$ $p_\mathrm{Holm} \ge 0.05$; all other changes $p_\mathrm{Holm} < 0.001$. "
                    r"External tools and Qwen3.5-4B: Table~\ref{tab:external}."),
@@ -197,7 +197,7 @@ def tab_h1(cells, tests):
                      f"{int(r['a_only'])} / {int(r['b_only'])} & {fp(r['p_holm'])} & {fp(kp)} \\\\")
             if r["primary"]:
                 L.append(r"\addlinespace[1pt]")
-    # ---- panel (b): added, KL-matched (src: tests_refusal.csv families h1_kl_matched, kl_cap_1x; RESULTS.md
+    # ---- panel (b): added, rule-matched (renamed from "KL-matched" 2026-11-08, review R9/R11) (src: tests_refusal.csv families h1_kl_matched, kl_cap_1x; RESULTS.md
     #      sections "1.x general re-exported at KL <= 0.1 (trial #96) vs Heretic 2.0" and "... vs the original 1.x export")
     km = hd[hd["family"] == "h1_kl_matched"]
     kc = hd[hd["family"] == "kl_cap_1x"]
@@ -215,7 +215,7 @@ def tab_h1(cells, tests):
         kw_["o"] = kw_["meth"].map(meth_order)
         for j, (_, r) in enumerate(kw_.sort_values("o").iterrows()):
             kp = kk.loc[(r["a"], r["b"]), "p_holm"]
-            L.append(f"{MODEL_TEX[r['model']] if j == 0 else ''} & KL-matched & general, \\#96 & "
+            L.append(f"{MODEL_TEX[r['model']] if j == 0 else ''} & rule-matched & general, \\#96 & "
                      f"{METHOD_SHORT[r['meth']]} & {pc(r['rate_a'])} & {pc(r['rate_b'])} & "
                      f"{sgn(r['diff'])} {ci(r['lo'], r['hi'])} & {int(r['a_only'])} / {int(r['b_only'])} & "
                      f"{fp(r['p_holm'])} & {fp(kp)} \\\\")
@@ -226,13 +226,14 @@ def tab_h1(cells, tests):
                  f"{pc(r['rate_b'])} & {sgn(r['diff'])} {ci(r['lo'], r['hi'])} & "
                  f"{int(r['a_only'])} / {int(r['b_only'])} & {fp(r['p_holm'])} & {fp(kp)} \\\\")
         L += [r"\bottomrule",
-              note(10, rf"Panel (b): KL-matched rows, Holm over {nkm} contrasts (family \texttt{{h1\_kl\_matched}}); "
-                       r"cap-only row, a single test (family \texttt{kl\_cap\_1x})."),
+              # 2026-11-08 re-review (R11): internal family identifiers removed from the printed note
+              note(10, rf"Panel (b): rule-matched rows, Holm over {nkm} contrasts in a separate family; "
+                       r"cap-only row, a single unadjusted test."),
               note(10, rf"\#{int(g84['dev_trial'])}: the released 1.x general model of panel (a) (dev KL "
                        rf"{g84['dev_kl']:.3f}); \#{int(g96['dev_trial'])}: fewest dev refusals at dev KL $\le$ 0.1 "
                        rf"(KL {g96['dev_kl']:.3f}); same study, journal and heretic-llm 1.4.0."),
-              # checker 2026-11-06: "KL-matched" = same selection rule, not equal realised KL; single runs
-              note(10, r"KL-matched: both sides selected by the same rule (fewest dev refusals at dev KL $\le$ 0.1); "
+              # checker 2026-11-06: "rule-matched" (formerly "KL-matched") = same selection rule, not equal realised KL; single runs
+              note(10, r"Rule-matched: both sides selected by the same rule (fewest dev refusals at dev KL $\le$ 0.1), not at matched divergence; "
                        r"realised dev KL still differs (Table~\ref{tab:devkl}). One optimisation run per condition."),
               r"\end{tabular}"]
     else:
@@ -342,7 +343,7 @@ def tab_capability(cells, ct):
                      + f" & {sgn(mm['delta_pp'], 2, 1)} {ci(mm['lo_pp'], mm['hi_pp'], 2, 1)} \\\\")
     L += [r"\bottomrule",
           note(8, rf"Bold: per-benchmark change significant after Holm correction (pre-stated design: "
-                  rf"{fam_n.get('original_design', 0)} tests; cells added$^{{\S}}$ after it: separate family of "
+                  rf"{fam_n.get('original_design', 0)} tests; cells added$^{{\ddagger}}$ after it: separate family of "
                   rf"{fam_n.get('added', 0)} tests)."),
           note(8, r"$^{\dagger}$ Unpaired test on summary scores (per-item scores of the original not reproducible)."),
           r"\end{tabular}"]

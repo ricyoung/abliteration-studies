@@ -39,7 +39,7 @@ GAMMA_FAMILIES = ["Gemma", "OLMo"]               # gamma-MPOA is planned for the
 SEED = 1
 KL_MAX = 0.1
 TAG = {"Qwen": "Q", "Gemma": "G", "OLMo": "O", "Mistral Small": "M"}
-SMALL_FAMILY = "Qwen (small pair)"
+SMALL_FAMILY = "Small pair"
 MAIN_FAMILIES = [p[0] for p in S.PAIRS if p[0] != SMALL_FAMILY]
 X_OLD, X_NEW = 0.0, 1.0
 NUDGE = 0.085                    # x shift (old-new span = 1) for a marker that would overlap a neighbour

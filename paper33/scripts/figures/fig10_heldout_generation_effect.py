@@ -93,8 +93,9 @@ def panel(ax, fam, old, new, slots):
     n_meth = sum(s["method"] != "original" for s in slots)
     n_hi = sum(s["method"] != "original" and s["sig"] and s["delta"] > 0 for s in slots)
     n_lo = sum(s["method"] != "original" and s["sig"] and s["delta"] < 0 for s in slots)
-    ax.set_title(f"{fam}: {S.MODEL_DISPLAY[old]} → {S.MODEL_DISPLAY[new]}", loc="left", fontsize=S.FONT,
-                 fontweight="bold", pad=13)
+    ax.set_title(fam, loc="left", fontsize=S.FONT, fontweight="bold", pad=13)
+    ax.set_title(f"{S.MODEL_DISPLAY[old]} → {S.MODEL_DISPLAY[new]}", loc="right", fontsize=S.FONT_SMALL,
+                 color=S.TEXT_SECONDARY, pad=13)
     return n_hi, n_lo, n_meth
 
 
@@ -115,8 +116,8 @@ def legend_panel(ax):
     ax.legend(handles=mh, loc="upper left", bbox_to_anchor=(0.0, 0.53), ncols=3, frameon=False,
               handlelength=1.0, columnspacing=1.0, borderaxespad=0.0, labelspacing=0.55)
     ax.text(0.0, 0.17, "Above each slot: newer − older (pp), paired;\n"
-                       "grey “ns”: not significant (methods: Holm, 23 H1 tests;\n"
-                       "originals: exact McNemar, unadjusted).\n"
+                       "grey “ns”: not significant (methods: exact McNemar,\n"
+                       "Holm-adjusted over 23 H1 tests; originals: unadjusted).\n"
                        "Dashed dividers: originals | direction-based | ARA.\n"
                        "Most intervals are shorter than the markers (n = 972).",
             transform=ax.transAxes, ha="left", va="top", fontsize=S.FONT_SMALL, color=S.TEXT_SECONDARY,
@@ -134,15 +135,14 @@ def main():
         ax.set_ylim(-4, 103)                        # room for markers at 0 % / 100 %
         ax.spines["left"].set_bounds(0, 100)
         ax.set_yticks([0, 25, 50, 75, 100])
-    for ax in axes[:, 0]:
-        ax.set_ylabel("Held-out refusal (%, WildGuard)")
+    fig.supylabel("Held-out refusal (% of 972 harmful prompts, WildGuard)", fontsize=S.FONT)
     legend_panel(axes.flat[-1])
     S.save(fig, NAME)
     write_caption(data, tallies)
 
 
 def write_caption(data, tallies):
-    main_fams = [f for f, _, _ in S.PAIRS if f != "Qwen (small pair)"]
+    main_fams = [f for f, _, _ in S.PAIRS if f != "Small pair"]
     main_slots = [s for f in main_fams for s in data[f] if s["method"] != "original"]
     n_hi = sum(s["sig"] and s["delta"] > 0 for s in main_slots)
     n_lo = sum(s["sig"] and s["delta"] < 0 for s in main_slots)

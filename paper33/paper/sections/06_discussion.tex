@@ -1,338 +1,237 @@
 % ============================================================
-% DISCUSSION (1000--1500 words)
-% P1 purpose + main finding + take-home | findings in figure order, hypotheses supported or not, novelty |
-% methods/confounds | relation to prior work | limitations (constructive) | conclusion + specific future work
-% Written 2026-11-06 from sections/05_results.tex and results/analysis/FINAL_NOTES.md (06:10:27Z re-run).
-% Every number is stated in Results or in the tables/captions it cites; the src comment after each paragraph
-% names the file (paths relative to the project root).
-% Wording follows notes/atlas_sweep.md D1--D8 and E: "keyword matching and WildGuard diverge" (no human
-% audit); "the newer model of the pair", not "newer generations"; mitra2026cross is black-box, 9B vs 31B, with
-% significance reported only for Gemma 3 vs 2 (so no Gemma-2 vs Gemma-4 claim); labunets2026refusal is one 1B
-% OLMo-2 model and its rank account is a hypothesis here (rank not measured); nakamura2026measuring uses an
-% aligned-minus-base subspace and keyword scoring; wang2024my is multiple choice (analogy only); gao2026how did
-% not test WildGuard; rocchetti2026refusal's judge over-counting concerns disclaimer-wrapped harmful answers.
-% ============================================================
-% 2026-11-06 REVIEW REVISION (notes/REVIEW_v5_reviewer_agent_20261106.md; author decisions A--C): P1, H1, H2, H3, seed,
-% hypotheses, confounds and translation paragraphs rewritten for the per-pair-first framing (pair as the unit; pooled
-% values as summaries) and the per-window H3; a pooled-summary paragraph added after H1. New numbers are those of
-% sections/05_results.tex (review_sel_*.csv, review_out_*.csv); the src comment after each paragraph names the file.
+% DISCUSSION
+% P1 purpose + main finding + take-home | findings in order, hypotheses, novelty | confounds | relation to prior work |
+% limitations (06b) | conclusion follows in 07.
+% 2026-11-08 ARS REVISION (notes/ARS_review_20261108/revision_roadmap.md): shortened (REV-01): per-cell numbers that are in
+% the tables are no longer repeated; "family" -> "release pair" with per-pair architectural changes as competing explanations
+% (REV-25); H2 as a comparison of edit families (REV-23); post-norm conclusion narrowed to what gamma-MPOA shows (REV-24;
+% the reviewer's statement that uncorrected DiM and SOM give the largest direction-based effects in both post-norm pairs is
+% not made, because it is false for OLMo, where MPOA's +61.4 pp exceeds DiM's +34.8 pp: Reviewer Claim Check c043);
+% keyword-judge "disagreement", not keyword "error" (REV-33; author decision 1, no human audit); audit example replaced
+% (REV-27) and a minimal audit protocol added (REV-35); "first independent evaluation of ARA" qualified (REV-05, REV-09);
+% budget-bound construct (REV-32). Previous version: sections/06_discussion.tex.bak-20261108-rev. Literature citations are
+% those of the previous version; no reference was added.
 % ============================================================
 \section{Discussion}
 \label{sec:discussion}
 
 % P1: purpose, main finding, take-home (mirrors the abstract)
 This study tested whether refusal removal is harder in the newer model of
-pairs of open-weight models (H1), whether optimisation-based ARA withstands
-any such change better than direction-based methods (H2), and whether keyword
-counts agree with an independent judge (H3). With the pair as the unit, the
-answer differed by family. After direction-based removal the newer model
-retained much more refusal in the OLMo pair (+36.9~pp) and the small pair
-(+17.3~pp), somewhat more in Qwen (+10.7~pp) and Gemma (+4.7~pp) and none in
-Mistral Small ($-$1.2~pp), and these differences between families far exceeded
-prompt-level uncertainty. Beyond the originals' own difference, the pooled
-direction-based effect was near zero, but its pair-level interval ($-$1.67 to
-+1.80 log-odds) spans large effects of either sign, so it summarises opposing
-per-pair effects rather than showing that there is none. ARA lost less
-effectiveness than the direction-based methods in Gemma and OLMo but more in
-Qwen. At the tool's own 100-token window, keyword matching agreed with the
-judge on average but not model by model, and over full responses it counted
-more refusals than the judge. Resistance to refusal removal therefore depended
-on the combination of family, method and measure rather than uniformly on the
-model generation.
-% src: results/analysis/review_sel_pair_effects.csv (direction raw pp per pair); review_sel_pair_heterogeneity.csv (547.4);
-% src: review_sel_pair_meta.csv (direction adjusted log-odds HKSJ [-1.669, 1.796]); review_sel_pair_effects.csv (H2 contrast
-% src: per pair); review_out_c4_gap_pooled.csv (kw100_vs_wg +0.5); review_out_summary.md C4 (14 / 11 Holm-significant cells);
-% src: h3_gap_pooled.csv (kw_vs_wg +8.4).
+open-weight release pairs (H1), whether the higher-rank, optimisation-based
+ARA withstands any such change better than low-rank direction-based edits
+(H2), and whether keyword counts agree with an automatic judge (H3). Removal
+did not become uniformly harder. The newer model retained much more refusal
+after direction-based removal in the OLMo pair, somewhat more in the small,
+Qwen and Gemma pairs and none in the Mistral Small pair. ARA lost less
+effectiveness than the direction-based edits in two pairs and, in its point
+estimate, more in one, but these contrasts rest on single ARA runs and were sensitive to the variance
+model, the divergence budget and the item source. At the tool's own window,
+keyword counts matched the judge on average and disagreed with it model by
+model. The answer to the generational question therefore depended on the
+release pair, the method, the budget and the measure.
+% src: results/analysis/review_sel_pair_effects.csv; revision_sigma_pair_verdicts.csv; revision_kl_budget_effects.csv;
+% src: review_out_c2_pair_class.csv; review_out_c4_gap_pooled.csv; revision_kw_gap_abs.csv.
 
-% Table tab:pair-effects / Figure fig:heldout-generation / Table tab:h1-heldout: H1
-The per-pair effects (Table~\ref{tab:pair-effects},
-Figure~\ref{fig:heldout-generation}) differed in sign and size. The OLMo
-pair came closest to the account of the ARA author \cite{weidmann2026ara}:
-although its originals did not differ, residual refusal on Olmo-3.1-32B rose
-by 14.4--61.4~pp under the three direction-based methods, beyond seed noise
-for DiM and MPOA, but not under ARA. In the Gemma pair only DiM lost
-effectiveness, and its edit of Gemma-4-31B did not reduce refusal (90.1\%
-vs.\ 89.3\% for the original); in the Mistral Small pair every method's
-effect was smaller than the originals' own difference; and in the Qwen pair
-ARA lost the most. The originals' own difference also depended on the item
-source: the newer Qwen and Gemma originals refused the code-as-weapon prompts
-far more often than their predecessors (+43.2 and +27.0~pp; in Gemma this was
-offset by lower refusal on the public sets), whereas the Mistral Small
-difference lay mainly in the public sets; the H1 and H2 conclusions were the
-same on the public sets alone. One candidate mechanism, shown in one 1B OLMo-2 model, is that more
+% H1
+The per-pair effects (Table~\ref{tab:pair-effects}) agree with the ARA
+author's account \cite{weidmann2026ara} most closely in the OLMo pair: the
+originals did not differ, the direction-based edits left much more refusal on
+Olmo-3.1-32B, ARA did not, and, at the point estimate of the run-to-run
+standard deviation, this was the only raw per-pair increase that exceeded
+run-to-run variation under both variance models. It also held on the
+public and the code items (Table~\ref{tab:pair-source}) and under the second
+judge. One candidate mechanism, shown in one 1B OLMo-2 model, is that more
 diverse refusal openings raise the rank of refusal-related activation changes
-and weaken single-vector ablation \cite{labunets2026refusal}; it would fit
-the OLMo pattern, but rank was not measured here. This pair-specific pattern
-resembles non-monotonic black-box safety across Gemma releases
+and weaken single-vector ablation \cite{labunets2026refusal}; rank was not
+measured here. The other pairs give weaker or source-dependent evidence. The
+Gemma direction-based increase came from the author-compiled code items and
+reversed on the public sets, and in Mistral Small every method's effect was
+smaller than the originals' own difference. These pair-specific patterns
+resemble non-monotonic black-box safety across Gemma releases
 \cite{mitra2026cross} and model-specific abliteration susceptibility across 24
-open models \cite{hadetskyi2026not}. To the best of current knowledge, these
-are the first held-out, judged estimates of the generation effect for several
-removal classes on released model pairs; they show that the verdict of a
-comparison based on one pair or one method depends on the pair and the method
-chosen.
-% src: paper/tables/t4_h1_heldout.tex (OLMo DiM +34.8, MPOA +61.4, SOM +14.4, ARA -2.5 n.s.; Mistral baseline-adj.
-% src: all negative; Qwen ARA +34.4); h1h2_cells.csv (gemma-4-31b__dim failed edit); h1h2_models.csv (gee_with_originals)
-% src (review revision): results/analysis/review_out_c2_originals_decomposition.csv (code_weapon delta: qwen +43.2, gemma +27.0;
-% src: mistral public4 +20.5 vs code +8.0, code share 9%); review_out_summary.md C2 verdict (conclusions unchanged on public4).
+open models \cite{hadetskyi2026not}. To current knowledge they are the first
+held-out, judged estimates of the generation effect for several removal
+classes on released model pairs.
+% src: review_sel_pair_effects.csv (olmo originals +0.8 pp n.s.); revision_sigma_pair_verdicts.csv (olmo direction raw excludes zero
+% src: under constant and logit-level sigma, point); review_out_c2_pair_class.csv (olmo direction public +45.2, code +4.8; gemma
+% src: public -6.8, code +49.3); revision_olmo_q3g.csv (olmo direction class +32.3 pp under Qwen3Guard vs +36.9 WildGuard);
+% src: tab:h1-heldout (Mistral Small baseline-adjusted effects all negative).
 
-% Pooled summaries (review revision, author decision A)
-The pooled baseline-adjusted effect should be read in this light. With the
-prompt as the unit it was +0.03 log-odds with a narrow interval, which could
-be mistaken for a precise null; with the pair as the unit it was +0.06 with an
-interval from $-$1.67 to +1.80, and a new pair could plausibly show an effect
-of either sign. Run-to-run variance hardly changed this pooled interval
-because the variation between families was much larger than the seed noise,
-but it widened every per-pair interval, so that only four per-pair raw effects
-(OLMo and small-pair direction-based increases, the Qwen ARA increase and the
-Gemma ARA decrease) had percentage-point intervals that excluded zero once
-both sources of noise were included. The baseline
-adjustment itself depends on the scale: it changed sign between percentage
-points and log-odds in 3 of 21 pair $\times$ method cells, and near 0\%
-refusal the log-odds scale gives the Gemma ARA cell, 26.6\% to 0.6\%, the
-largest weight. Four pairs cannot represent a population of model families;
-they show that the answer to the generational question depends on the family.
-% src: results/analysis/h1h2_models.csv (gee_with_originals direction +0.03 [-0.05, +0.11]); review_sel_pair_meta.csv
-% src: (direction adjusted log-odds re 0.064, HKSJ [-1.669, 1.796], prediction interval [-5.897, 6.024]); review_sel_summary.md
-% src: part 2 (tau 22.9 pp vs seed SE 7.5 pp; per-pair half-widths 14.9 / 25.4-25.6 pp); review_sel_pair_effects.csv
-% src: (lo_total / hi_total excluding zero, raw pp); review_sel_scales.csv (sign differs in 3 of 21; Gemma ARA -4.07 log-odds).
+% Pair-level heterogeneity and competing explanations (REV-25)
+The pairs differ in more than release date, so the heterogeneity cannot be
+attributed to family lineage. Each family contributes one step, and the steps
+differ: the newer Qwen models interleave linear-attention layers with full
+attention, Gemma-2 and Gemma-4 and both OLMo models apply post-normalisation
+after $W_O$ and $W_{\mathrm{down}}$, so that part of an ablated direction
+reaches the residual stream, and the pairs also differ in depth, attention
+pattern, multimodality and post-training recipe
+(Appendix~\ref{app:setup-models}). Any of these may change how well a given
+edit works. Post-training can bypass a behaviour rather than remove it
+\cite{lee2024mechanistic,jain2024makes}, and later layers can compensate for an
+ablated component \cite{mcgrath2023hydra}; a recipe or depth that does more of
+either would predict more refusal left after a single-direction edit, but
+neither was measured here. How strongly the pairs differ also depends on the
+scale and on the run-to-run variance assumed: with seed-inclusive variances,
+$I^2$ on the percentage-point scale was 80\% under the constant and 46\% under
+the refusal-level variance model, and 20\% on the log-odds scale. Four main pairs
+cannot represent a population of release steps, and they show that a
+conclusion drawn from one pair does not transfer to another.
+% src: sections/08b_setup_details.tex (app:setup-models: qwen3_5 class with gated-delta linear attention; post-norm Gemma-2/4,
+% src: OLMo-2/3; image-text checkpoints); revision_heterogeneity.csv (direction raw I2 0.798 pp, 0.201 log-odds).
+% 2026-11-08 ARS re-review revision (NEW-3, NEW-4, REV-30): refusal-level I2 0.458 (revision_heterogeneity.csv); "at the point
+% estimate"; post-training and self-repair literature (lee2024mechanistic, jain2024makes, mcgrath2023hydra; see 03_related_work).
 
-% Table tab:h2-contrasts: H2
-The pooled support for H2 (Table~\ref{tab:h2-contrasts}) did not generalise
-across pairs: with the pair as the unit its interval included zero, and the
-prompt-level interaction reversed when Gemma was left out, vanished without
-OLMo and was near zero under keyword scoring. ARA's advantage was large where it
-occurred (0.6\% residual refusal on Gemma-4-31B, where DiM failed), but on
-Qwen3.8-27B ARA left 40.4\%, more than MPOA (14.0\%), which confines support
-for the ARA author's claim \cite{weidmann2026ara} to the OLMo and Gemma pairs.
-Both ends of this range carry caveats specific to ARA. The Gemma-4-31B export
-re-scored above the KL cap, and on Qwen3.8-27B a community model built with
-the same defaults reports 0 of 100 dev refusals and refused 26.4\% of the
-held-out prompts, against 59--63 of 100 and 40.4\% here. Because ARA's release
-step refits its adapter, and refits on a GPU other than the search GPU drifted
-more than refits on the search GPU, the ARA cells are less tightly tied to
-their searched trials than the direction-based cells. The KL cap also acted
-differently on the two classes, binding in every ARA run but in only 15 of
-the 24 direction-based runs, and where it bound in both cells of a unit the
-interaction was smaller ($-$0.21 log-odds). That the newer Qwen model retained
-more refusal under DiM, MPOA and ARA agrees with a report that Qwen3 resisted
-abliteration in one setup \cite{agnihotri2025granular}. Prior studies
-disagree about whether one direction suffices for Gemma-2: single-direction
-edits had little effect on Gemma-2-9B and Gemma-2-27B
-\cite{lee2026skindeep,siu2025cosmic}, whereas rank-1 projection sufficed for
-Gemma-2-9B within an aligned-minus-base subspace scored by keywords
-\cite{nakamura2026measuring}. Consistent with the first two, DiM removed only
-14.5~pp of Gemma-2-27B's refusal here. As the first independent evaluation of
-ARA, the study shows that its advantage is family-specific and that the step
-from searched trial to released model needs its own reproducibility check.
-% src: results/analysis/final_pooled_robustness.csv; h1h2_generation_effects.csv (qwen dim +26.9, mpoa +10.1,
-% src: ara +34.4); paper/tables/t4_h1_heldout.tex (Gemma-2 original 88.3,
-% DiM 73.8); h1h2_cells.csv (gemma-2-27b__dim diff_vs_orig -0.145)
-% src (review revision): review_sel_pair_meta.csv (H2 log-odds HKSJ [-5.214, 3.105]); review_sel_export_drift.csv (gemma-4-31b
-% src: ara KL 0.1070); final_community_vs_selected.csv (hereticorg-ara 26.4% vs qwen3.8-27b__ara 40.4%); sections/08b_setup_details.tex
-% src: (59/100, 63/100; heretic-org 0/100); review_sel_export_tests.csv (Fisher p 0.029); review_sel_kl_summary.csv (8 of 8, 15 of
-% src: 24); review_sel_kl_h1h2.csv (S1 generation x class -0.21).
+% H2 (REV-23, REV-05)
+H2 compared two edit families, low-rank projections of an estimated direction
+and rank-50 per-module updates fitted to an objective, which differ in rank,
+objective, search space and in how often the KL cap bound. The per-pair
+contrasts therefore cannot show whether refusal is distributed over more
+dimensions in the newer models; they show which family removed more refusal
+under this protocol. ARA's advantage was large where it occurred (Gemma and
+OLMo). In Qwen the point estimate was reversed, but with run-to-run variance
+the contrast was indeterminate, and the positive estimate came from the
+public items. The Gemma contrast lost its interval support under the
+refusal-level variance model and, on the dev set, changed sign with the
+budget. Each
+contrast also rests on one ARA export whose adapter was refitted after the
+search, and two of them on exports refitted on other hardware or re-scored
+above the cap. The study is therefore a first, preliminary independent
+comparison of ARA with direction-based methods across releases; support for
+the ARA author's claim \cite{weidmann2026ara} is limited to the Gemma and OLMo
+pairs and is conditional on these single cells. That the newer Qwen model
+retained more refusal under DiM, MPOA and ARA agrees with a report that Qwen3
+resisted abliteration in one setup \cite{agnihotri2025granular}, and the small
+effect of DiM on Gemma-2-27B agrees with reports that single-direction edits
+did little on Gemma-2 \cite{lee2026skindeep,siu2025cosmic}, although rank-1
+projection sufficed for Gemma-2-9B in another setup
+\cite{nakamura2026measuring}.
+% src: sections/08b_setup_details.tex (ranks); review_sel_kl_summary.csv (cap bound 8 of 8 ARA vs 15 of 24 direction);
+% src: revision_sigma_pair_verdicts.csv; revision_kl_budget_effects.csv; review_out_c2_pair_class.csv (qwen H2 public +30.3, code -1.8);
+% src: review_sel_export_drift.csv (refits on mc-rtx-1 for Qwen and Gemma; Gemma-4-31B ARA KL 0.1070); h1h2_generation_effects.csv
+% src: (qwen dim +26.9, mpoa +10.1, ara +34.4); h1h2_cells.csv (gemma-2-27b__dim diff_vs_orig -0.145).
 
-% Tables tab:h3-windows, tab:h3-gap / Figure fig:judge-agreement: H3
-H3 predicted that keyword matching would undercount refusal. Pooled over the
-ablated models, it did not at any window (Table~\ref{tab:h3-windows}). At the
-100-token window that Heretic scores, keyword matching and WildGuard agreed on
-average, but they differed significantly, in both directions, in 25 of the 42
-ablated models, so the tool's objective was close to unbiased on average and
-biased for many single models. Over full responses keyword matching counted
-more refusals than WildGuard, because safety and disclaimer markers appear
-late in long answers that WildGuard labels as compliance, as an unvalidated
-string heuristic suggested for 90.9\% of the keyword-only refusals; this
-agrees with reports that disclaimers persist after abliteration
-\cite{wuhrmann2026measuring}, that binary refusal metrics miss hedged partial
-compliance \cite{weidener2026refusalbench}, and that substring--judge
-disagreement on ablated models grows with intervention strength
-\cite{rocchetti2026refusal}. The full-response excess is therefore a property
-of the window rather than of the tool's objective. The second part of H3 held
-in the same form at every window: in the main study the gap was larger for ARA
-and on the newer models, with the prompt but not the model as the unit. Keyword matching
-tracked the judges on unmodified models, as reported before
-\cite{cui2025orbench}, and the large undercount reported in Heretic PR~\#196
-was not seen pooled at any window here. Which measure is correct cannot be decided
-without human labels: in one hand audit an LLM judge, not substring matching,
-over-counted refusal in disclaimer-wrapped answers \cite{rocchetti2026refusal},
-safety judges can degrade under distribution shift \cite{schwinn2026coin},
-and agreement between judges with correlated errors overstates the evidence
-\cite{hossain2026agreement}. The novel finding is that, on edited models of
-both generations, the keyword--judge relation changes with the edit, the model
-and the length of text read, so keyword-optimised tools are tuned against a
-signal whose error differs between models.
-% src (review revision): results/analysis/review_out_c4_gap_pooled.csv (kw100_vs_wg, kw256_vs_wg256 via trunc256_pooled.csv,
-% src: kw_vs_wg: no pooled ablated gap below zero at any window); review_out_summary.md C4 (per-cell 14 higher / 11 lower, Holm);
-% src: review_out_c4_models.csv (class, generation, generation x class: GEE significant, OLS not; 100 tokens); trunc256_models.csv
-% src: (gap256, main: generation +4.4, class +5.5, interaction +7.5 pp, GEE p_holm < 1e-10; OLS p 0.23 / 0.14 / 0.31); h3_models.csv
-% src: (full response); h3_summary.md (90.9%
-% src: safety / disclaimer vocabulary only; string heuristic, not validated); h3_agreement_pairs.csv (0.73 / 0.40 / 0.33).
+% H3 (REV-33)
+H3 predicted that keyword matching would undercount refusal; it did not at
+any window. At Heretic's 100-token window the two measures agreed on average
+but disagreed by several points for many single models, in both directions,
+and over full responses keyword matching counted more refusals because safety
+and disclaimer markers appear late in long answers that WildGuard labels as
+compliance. This agrees with reports that disclaimers persist after
+abliteration \cite{wuhrmann2026measuring}, that binary refusal metrics miss
+hedged partial compliance \cite{weidener2026refusalbench}, and that
+substring--judge disagreement grows with intervention strength
+\cite{rocchetti2026refusal}. Which measure is correct cannot be decided without
+human labels: an LLM judge over-counted refusal in disclaimer-wrapped answers
+in one hand audit \cite{rocchetti2026refusal}, safety judges can degrade under
+distribution shift \cite{schwinn2026coin}, and agreement between judges with
+correlated errors overstates the evidence \cite{hossain2026agreement}. The
+finding is therefore one of disagreement between two fallible raters: on
+edited models, the keyword--judge relation changed with the edit, the model
+and the length of text read, so a keyword-optimised search is steered by a
+signal whose relation to judged refusal differs between models.
+% src: review_out_c4_gap_pooled.csv; review_out_summary.md C4; revision_kw_gap_abs.csv; h3_summary.md (90.9% safety / disclaimer
+% src: vocabulary only, unvalidated string heuristic).
 
-% Figures fig:gmpoa-dev, fig:gmpoa-heldout: gamma-MPOA control
-The $\gamma$-MPOA control (Figures~\ref{fig:gmpoa-dev}
-and~\ref{fig:gmpoa-heldout}) indicates that the post-norm leak is real but does
-not explain the main effects. Correcting MPOA for the output gains lowered
-refusal on all four post-norm models: on Gemma-2-27B and Olmo-3.1-32B without
-a capability change, but on Gemma-4-31B, where the reduction was largest, and
-on OLMo-2-32B together with a larger teacher-forced divergence than MPOA and
-capability losses of 21.4 and 8.1~pp. The
-reductions without capability loss are consistent with the loss of
-closed-form edit guarantees in post-normalised blocks
-\cite{suresh2026reproducibility} and with norm distortions accumulating across
-RMSNorm layers \cite{dang2026selective}; the two others are confounded with a
-stronger, damaging edit. The OLMo generation effect (+57.0~pp) and the pooled
-H2 interaction ($-$0.42) nevertheless persisted. To the best of
-current knowledge, this is the first direct test of the post-norm confound in
-abliteration.
-% src: results/analysis/final_gmpoa_control.csv (vs_mpoa_diff, tf_divergence, capability_mean_delta_pp);
-% src: final_gmpoa_benchmarks.csv; final_gmpoa_generation.csv; final_pooled_robustness.csv
+% gamma-MPOA (REV-24)
+The $\gamma$-MPOA control shows that the post-norm leak matters for MPOA and
+that it is not constant across releases: the correction lowered refusal on all
+four post-norm models and more on the newer model of each pair. It did not
+remove the OLMo MPOA generation effect or the pooled prompt-level H2
+interaction, but it turned the Gemma MPOA effect strongly negative, at a large
+capability cost on Gemma-4-31B. DiM and SOM were not corrected, so their
+generation effects in the Gemma and OLMo pairs may still contain a leak that
+differs between releases. The control therefore narrows, but does not remove,
+architecture as an explanation of the post-norm pairs' results.
+% src: final_gmpoa_control.csv; revision_h2_sensitivity.csv (gamma-correction generation difference gemma -15.6, olmo -4.4 pp);
+% src: final_gmpoa_generation.csv (gemma -20.4, olmo +57.0); final_pooled_robustness.csv (-0.42); final_capability.csv (-21.4).
 
-% Figure fig:community: community releases
-Public releases (Figure~\ref{fig:community}) show that residual refusal under
-the KL budget is an upper bound, not a floor. They reached 1.4\% on
-Qwen3.8-27B and 0.7\% on Olmo-3.1-32B, where the best models selected here
-retained 14.0\% and 10.8\%, at larger teacher-forced divergence but with mean
-capability changes within 1~pp. A newer model that is harder at first-token
-KL~$\le 0.1$ is therefore not necessarily resistant in practice, in line with the view
-that tampering evaluations need strong, tuned attacks to approach worst-case
-behaviour \cite{che2025model,hossain2026tamperbench}.
-% src: results/analysis/final_community_vs_selected.csv; paper/figures/captions.md (fig14_community)
+% Construct (REV-32): community releases
+``Harder'' here means more residual refusal after a 100-trial search at
+first-token KL~$\le 0.1$. Public releases reached much lower refusal than this
+protocol on two newer checkpoints, at larger divergence but with small
+capability changes, so residual refusal under the budget is an upper bound,
+not a floor, and the protocol's ranking of checkpoints was not validated
+against stronger attacks. Tampering evaluations need strong, tuned attacks to
+approach worst-case behaviour \cite{che2025model,hossain2026tamperbench}.
+% src: final_community_vs_selected.csv (Qwen3.8-27B 1.4% vs 14.0%; Olmo-3.1-32B 0.7% vs 10.8%).
 
-
-% Figures fig:seed-dev, fig:seed-heldout: seed sensitivity
-A second seed (Figures~\ref{fig:seed-dev} and~\ref{fig:seed-heldout}) erased
-the small-pair ARA generation effect, so the small-pair H1 verdict depends on
-the seed; method nevertheless explained most of the variance among cell rates,
-so method rankings are more stable than single-cell generation effects.
-Refusal also varies across sampling seeds \cite{larsen2025instability}; the
-present data add optimisation-seed variance under greedy decoding. With a
-run-to-run standard deviation of about 9~pp per cell, only differences larger
-than about 26~pp between two singly optimised models (twice the 12.9~pp
-standard deviation of such a difference) clearly exceed the
-variation between runs, so the 11 main-study effects inside this band (Table~\ref{tab:h1-heldout})
-should be treated as provisional, with the caveat that the band transfers the
-seed variance of 4B and 7B models to the 22--32B models
-(\S\ref{sec:limitations}). Three of the ten seed pairs also differed in batch
-size; without them the band narrowed to 20.4~pp, the same five raw effects
-exceeded it, and six rather than three baseline-adjusted effects did.
-% src: results/analysis/final_seed_cells.csv; final_seed_generation.csv; final_seed_method_vs_seed.csv;
-% src: seednoise_summary.md (sigma 9.2 pp, threshold 25.9 pp, 11 of 16 within)
-% src (review revision): results/analysis/review_sel_seed_sigma.csv (threshold 20.35 pp without the batch-64 pairs);
-% src: review_sel_seed_flags.csv (exceeds_excl_b64: 5; adj_exceeds_excl_b64: 6; adj_exceeds_all10: 3).
-
-% Figures fig:capability, fig:divergence: capability and divergence
-Capability costs were small for most models but were not bounded by the
-selection budget (Figures~\ref{fig:capability} and~\ref{fig:divergence}):
-within the restricted range KL~$\le 0.1$ that selection allowed, selected
-first-token KL was unrelated to capability change, also among the 42 primary
-models alone, whereas teacher-forced divergence tracked it, and the two largest
-losses ($\gamma$-MPOA on Gemma-4-31B
-and OLMo-2-32B) occurred inside the budget. First-token KL constrains only the
-first generated token, and first-token statistics diverge from full outputs in
-other settings \cite{wang2024my}. This qualifies the report that refusal
-ablation preserves response quality across model sizes
-\cite{dombrowski2025safety}: it usually did here, but a first-token budget
-could not guarantee it.
-% src: results/analysis/final_kl_vs_capability.csv (n = 56 and "primary seed 1 only", n = 42); final_capability.csv;
-% src: final_kl_vs_capability_cells.csv
-
-
-% Figures fig:pareto--fig:search-convergence: dev set and search
-Dev-set counts (Figures~\ref{fig:pareto}--\ref{fig:search-convergence})
-would have suggested different conclusions. On the dev prompts, ARA's selected
-keyword count rose by 20.3 refusals on average from older to newer main-study
-models, whereas held-out WildGuard judging showed a small pooled ARA
-generation effect (+0.12 log-odds, $p_\mathrm{Holm}=0.135$; planned mixed
-model +0.15 [+0.04, +0.26]). This contrast mainly reflects the measure rather
-than the prompt set: Gemma-4-31B ARA had 28 of 100 dev keyword refusals,
-22.3\% held-out keyword refusals and 0.6\% held-out WildGuard refusals, and
-under held-out keyword matching the pooled ARA generation effect was +0.57
-log-odds. The best dev method was the best held-out method in only 7 of 12
-sets, as expected when one noisy criterion is both optimised and used for
-selection \cite{cawley2010overfitting}. Search length did not explain the
-generation effects: late-improving runs were equally frequent on older and
-newer models, and the failed Gemma-4-31B DiM run stopped improving at trial 40.
-Re-scoring the released exports on the dev set reproduced the selected
-trials' counts to within two refusals for 37 of 46 exports, so the dev values
-describe the released models closely; the largest changes were in ARA exports
-refitted on a different GPU from the search (\S\ref{sec:res-h2}).
-% src: paper/figures/captions.md (fig3 "For the text" means); paper/tables/t1_dev_refusals.csv (gemma-4-31b ara,
-% KL 0.1: 28); results/analysis/h1h2_models.csv (gee_planned / vb_planned optimisation gen effect); h1h2_tests.csv
-% (kw pooled optimisation class +0.57); h1h2_cells.csv (gemma-4-31b__ara kw 217/972, wg 6/972);
-% results/analysis/final_dev_vs_heldout_within_model.csv; final_search_runs.csv; final_search_tests.csv
-% src (review revision): results/analysis/dev_rescore_groups.csv (n_within_2 37 of 46); review_sel_export_tests.csv.
+% Secondary: capability and dev set
+Capability costs were small for most models, but first-token KL did not bound
+them: capability change tracked teacher-forced divergence, not the selected
+first-token KL, and the two largest losses occurred inside the budget. This
+qualifies the report that refusal ablation preserves response quality
+\cite{dombrowski2025safety}. Dev-set keyword counts would also have suggested
+different conclusions from the held-out judge, as expected when one noisy
+criterion is both optimised and used for selection
+\cite{cawley2010overfitting}.
+% src: final_kl_vs_capability.csv; final_capability.csv; final_dev_vs_heldout_within_model.csv (7 of 12).
 
 % Hypotheses restated
-In sum, H1 was not supported: no main-study pair retained more refusal on the
-newer model for every method, the generation effect differed in sign and size
-between families, and beyond the originals' own difference the pooled
-direction-based effect was near zero with a wide pair-level interval. H2 was
-supported in two of four families and pooled with the prompt as the unit, but
-not with the pair as the unit, and it was opposed in the Qwen pair. H3's
-prediction that keyword counts undercount refusal was not supported, pooled
-over the ablated models, at any window; at the tool's 100-token window keyword
-counts matched the judge on average but not model by model, and the class and
-generation differences in the gap held in the main study with the prompt but
-not the model as the unit.
-% src: as the H1, H2 and H3 paragraphs above (review_sel_pair_meta.csv, review_sel_pair_effects.csv,
-% src: review_out_c4_gap_pooled.csv, review_out_c4_models.csv, trunc256_models.csv, h3_models.csv).
+In sum, judged by the class-level per-pair effects, H1 was not supported:
+the generation effects differed in sign and size between pairs, and the data
+are consistent with the ARA author's claim in the OLMo pair and, more weakly,
+in the Gemma pair, and not in the Qwen and Mistral Small pairs. The conjunctive
+criterion, more refusal on the newer model for every method, was met by no
+main-study pair; it is a secondary summary and fragile to the seed, since the
+small pair met it with one seed but not the other. H2 held per pair in Gemma
+and OLMo and was indeterminate in Qwen, with the caveats above. H3's
+prediction that keyword counts undercount refusal was not supported.
+% 2026-11-08 ARS re-review revision (REV-17, REV-18): class-level effects lead; conjunctive criterion secondary and seed-fragile
+% (final_seed_generation.csv, small-pair ARA seed 2 +0.0 pp); Qwen H2 indeterminate (review_sel_pair_effects.csv [-5.9, +53.1]).
+% src: as above (review_sel_pair_effects.csv; revision_sigma_pair_verdicts.csv).
 
 % Methods: confounds pre-empted
-Several design features and checks address likely objections. Generation is
-confounded with size, data, post-training recipe and architecture, each of
-which can change refusal circuits \cite{nguyen2026beyond}; comparisons were
-therefore made within family and against each pair's own originals, and they
-are stated about the newer model of a pair, because two-point pairs cannot
-establish a trend \cite{mitra2026cross}. The post-norm leak was tested
-directly. Every model was selected under the same first-token KL cap, but the
-cap did not bind in 9 of the 24 direction-based runs, and 8 runs sampled at
-most one trial above it; in those 8 the selected maximum weights were not at
-the upper bound of the search range, and trials at that bound did no better in
-7 of 8, so their residual refusal is the best the search found within the cap
-rather than a limit set by that bound, although another strength parameter was
-at the strong end of its range in 4 of the 8 and the cap-bound and unbound
-units also differ in family (Appendix~\ref{app:kl-cap}). The code-as-weapon bank carried half of the
-originals' generation difference, but the conclusions were the same on the
-public item sets alone (Appendix~\ref{app:item-source}). Refusal is not
-harmful compliance: three quarters of the ablated responses that WildGuard did
-not label as refusals were harmful by the HarmBench classifier, yet the pooled
-conclusions were the same with harmful compliance as the outcome, although
-several per-pair tests changed (Appendix~\ref{app:harm}). A second LLM judge
-agreed closely with the primary judge, and no main-study pair met H1 under it
-or under full-response keyword matching (with the 256-token keyword window,
-all four OLMo methods were higher on the newer model). The small-pair
-replicate quantified seed variance, which was used to flag the per-pair
-effects that lie within it and to widen the per-pair intervals. Dev-set
-selection makes dev counts optimistic, so the hypotheses were tested on
-held-out prompts from other benchmarks; excluding the 44 held-out prompts that
-match a prompt of the search dataset changed generation effects by at most
-1.9~pp. Because first-token KL did not bound capability loss, capability and
-teacher-forced divergence were reported for every model. Finally, generation
-used one greedy response per prompt with reasoning disabled, and chain of
-thought can carry refusal \cite{yang2026beyond}, so the conclusions apply to
-greedy decoding in non-thinking mode.
-% src: results/analysis/h1h2_tests.csv (judges q3g, kw, kw256; subset excl_advbench); h1h2_summary.md ("Sensitivity");
-% h3_agreement_pairs.csv (WildGuard vs Qwen3Guard 0.82); scripts/bench/refusal_sets.json (44 overlap flags)
-% src (review revision): results/analysis/review_sel_kl_summary.csv (15 of 24 bound -> 9 not); review_sel_summary.md part 1
-% src: (0/8 at the ceiling; family composition); review_out_c2_originals_decomposition.csv (main mean code share 52%);
-% src: review_out_c3_pooled.csv (75.1% HarmBench harmful among not refused); review_out_summary.md C2 and C3 verdicts.
+Several design features address likely objections. Comparisons were made
+within release pairs and against each pair's own originals, and they are
+stated about the newer model of a pair, because two-point pairs cannot
+establish a trend \cite{mitra2026cross}. The prompt-level heterogeneity
+statistics were complemented by pair-level statistics with run-to-run
+variance, under two models of that variance. The KL cap did not bind in every
+direction-based run, so H2 was repeated on the cap-bound units and read at
+other budgets. Item source, harmful compliance, a second judge, the 44
+held-out prompts that overlap the search set and the post-norm leak were
+checked separately (Appendices~\ref{app:item-source}, \ref{app:harm},
+\ref{app:kl-cap}). Generation used one greedy response per prompt with
+reasoning disabled, and chain of thought can carry refusal
+\cite{yang2026beyond}, so the conclusions apply to greedy decoding in
+non-thinking mode.
 
-% How the findings fit other research (translation)
+% Translation (REV-27, REV-35)
 These results bear on how open-weight safety is audited. Casper et
 al.~\cite{casper2026open} list as an open problem which attack configurations
-are needed to stress-test open-weight safety. The present data indicate that
-neither one model pair nor one removal method is enough: an audit with DiM
-alone would have rated Gemma-4-31B harder than Gemma-2-27B, whereas ARA
-removed nearly all of its held-out refusal, and the OLMo and Mistral Small
-pairs would have given opposite answers to the generational question.
-Defences built around the refusal direction
-\cite{yu2025refusal,xie2025beyond,muhamed2026decoy} should therefore also be
-tested against optimisation-based removal, and tamper sweeps
-\cite{hossain2026tamperbench} should span several model families, method
-classes and divergence budgets and treat the family as the unit. For tool
-developers, keyword counts and first-token KL are insufficient evidence of
-success, and keyword counts should be read at the window used for selection.
-Fine-tuning and reinforcement-learning attacks
-\cite{qi2024finetuning,russinovich2026grp} were not compared.
+are needed to stress-test open-weight safety. Here an audit of the OLMo pair
+alone would have concluded that the newer release resists direction-based
+removal, and one of the Mistral Small pair that it does not; within Gemma, the
+DiM edit of Gemma-4-31B failed (it left refusal at the original's level), for
+reasons this study did not diagnose, and taken alone would have suggested a
+resistance that ARA did not show. A minimal audit protocol consistent with
+these results would use at least one direction-based and one higher-rank
+optimisation-based method, two or more optimisation seeds per model and
+method, held-out prompts from more than one source scored by at least two
+automatic judges, results at more than one divergence budget, and a
+full-sequence divergence and capability check. Auditors should also have
+humans label a random sample of the responses on which the judges, or a judge
+and keyword matching, disagree, together with a smaller sample on which they
+agree; 100 disagreements per release pair would estimate a disagreement error
+rate near 10\% to within about $\pm$6 points (95\%), and 50 agreements would
+check that agreement is not shared error. The present study made no such human
+check (\S\ref{sec:limitations}). In this study a 100-trial search of a
+22--32B model took a median of 18 minutes of single-GPU time for a
+direction-based method and 81 minutes for ARA, 18.1~h for the 31 timed
+main-study searches (Appendix~\ref{sec:setup-compute}), so a second seed
+roughly doubles this search time, before the evaluation of the added models.
+Such an audit would still not cover sampled
+decoding, reasoning modes, or fine-tuning and reinforcement-learning attacks
+\cite{qi2024finetuning,russinovich2026grp}. Defences built around the refusal
+direction \cite{yu2025refusal,xie2025beyond,muhamed2026decoy} should also be
+tested against optimisation-based removal. For tool developers, keyword counts
+and first-token KL are insufficient evidence of success, and keyword counts
+should be read at the window used for selection.
+% src: review_sel_pair_effects.csv (olmo direction +36.9, mistral -1.2); h1h2_cells.csv (gemma-4-31b__dim 90.1% vs original 89.3%);
+% 2026-11-08 ARS re-review revision (NEW-2, NEW-6, REV-35): the unsourced "about half an hour per search" and "a second seed is
+% cheap" replaced by measured search times (scripts/analysis/revision_rr_extra.py -> results/analysis/revision_rr_search_time.csv:
+% direction-based median 18.1 min, n = 23; ARA median 81.0 min, n = 8; 31 searches 18.1 h; resumed Qwen3.8-27B MPOA excluded);
+% "plausibly for architectural reasons" removed (no diagnostic of the failed edit exists); human spot-check size given as a
+% recommendation to auditors (author decision 1: no human audit in this study). Half-width 1.96 sqrt(0.1 x 0.9 / 100) = 0.059.
 
 \input{sections/06b_limitations}

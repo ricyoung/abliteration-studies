@@ -1,0 +1,8 @@
+quantity,estimate,lo,hi,note
+"sigma_pp (constant per cell, pp)",9.154198743199755,6.396194687533069,16.065010474130432,"sqrt(sum d^2 / 20), chi-square(10) interval; = seednoise_sigma.csv"
+"sigma_L (constant per cell, logit)",0.8278828069566279,0.578455827790454,1.4528793112549214,d = logit(s2) - logit(s1); chi-square(10) interval; = review_sel_seed_sigma.csv logit row
+sigma_L fitted to the pp differences (delta method at the seed pair's mean rate),0.7022475917951696,,,"MLE of d_pp ~ N(0, 2 sigma_L^2 (pbar(1-pbar))^2)"
+"log-likelihood, constant-pp model",6.254454094305798,,,1 parameter
+"log-likelihood, logit-level model (pp differences)",6.007427293783953,,,1 parameter; AIC difference = 2 x difference of the log-likelihoods
+"Spearman rho(|d_pp|, pbar(1-pbar))",-0.006060606060606061,,,p = 0.987
+"Spearman rho(|d_logit|, pbar(1-pbar))",-0.6,,,p = 0.0667

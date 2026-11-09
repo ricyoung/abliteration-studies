@@ -33,7 +33,8 @@
 \label{sec:related}
 
 Refusal-removal methods are reviewed below by what they assume about the
-geometry of refusal, followed by defences and evaluation practice (definitions
+geometry of refusal, followed by work on how post-training shapes a behaviour,
+defences and evaluation practice (definitions
 in Appendix~\ref{app:method-defs}).
 
 % ---------------------------------------------------------------------
@@ -41,9 +42,15 @@ in Appendix~\ref{app:method-defs}).
 
 Arditi et al.~\cite{arditi2024refusal} showed causally, across 13 chat models,
 that adding the difference between mean harmful and harmless activations
-induces refusal and ablating it suppresses refusal. Orthogonalising
+induces refusal and ablating it suppresses refusal. Contemporaneous work read
+and steered such directions from the top down: representation engineering
+extracted directions for concepts including harmlessness
+\cite{zou2023representation}, and contrastive activation addition steered
+refusal, among other behaviours, in Llama~2 chat models with mean-difference
+vectors added to the residual stream \cite{panickssery2023steering}.
+Orthogonalising
 the weights that write to the residual stream against this direction yields a
-training-free edit that needs only a few hundred prompts
+fine-tuning-free edit that needs only a few hundred prompts
 \cite{labonne2024abliteration,failspy_abliterator}, consistent with the linear
 representation hypothesis \cite{park2024linear}. The edit is fast and
 interpretable, but the direction also carries part of the harmless mean, an
@@ -127,6 +134,26 @@ stream did not \cite{bosco2026locating}. Where a direction is estimated may
 matter as much as how many are removed.
 
 % ---------------------------------------------------------------------
+\subsection{Post-Training Mechanisms and Self-Repair}
+% 2026-11-08 ARS re-review revision (REV-30): literature on how post-training shapes a behaviour and on self-repair after
+% ablation. arXiv IDs, titles and authors verified on export.arxiv.org on 2026-11-08: 2401.01967 (Lee et al.), 2407.10264
+% (Jain et al.), 2307.15771 (McGrath et al.), 2310.01405 (Zou et al.), 2312.06681 (Panickssery et al.); suggested in
+% notes/ARS_review_20261108/seat_domain_phase2.md (W9, Missing Key References).
+
+Two further literatures bear on why a newer release could resist directional
+removal without a higher-dimensional refusal representation. Mechanistic
+studies of alignment algorithms found that preference optimisation (DPO) left
+a model's toxic capability in place and learned to bypass it
+\cite{lee2024mechanistic}, and that safety fine-tuning applied a minimal
+transformation to MLP weights that routes unsafe inputs towards the null
+space of those weights \cite{jain2024makes}. How a release's post-training
+recipe implements refusal may therefore matter as much as how many directions
+refusal occupies. Ablation studies have also found self-repair, in which later
+layers compensate for an ablated component \cite{mcgrath2023hydra}; a model
+that compensates more strongly would retain more refusal after the same edit.
+Neither property was measured in the models studied here.
+
+% ---------------------------------------------------------------------
 \subsection{Defences and Evaluation Problems}
 
 Defences largely target the single-direction estimator. Adversarial training
@@ -152,17 +179,16 @@ estimation may lose value if removal no longer relies on it.
 
 Evaluation practice is a second weakness. Tools are optimised and reported
 with keyword-matched refusal counts and first-token KL divergence, yet
-keyword counts can fall far below an LLM judge's (Heretic PR~\#196), and conclusions can depend on the classifier
+keyword counts can fall far below an LLM judge's (Heretic PR~\#196, unreviewed), and conclusions can depend on the classifier
 \cite{young2026measuring}, including in abliteration studies
 \cite{agnihotri2025granular}. Against human labels, keyword matching reached
 Cohen's $\kappa=0.37$, WildGuard 0.61 and fine-tuned LLM judges about 0.81
 \cite{xie2025sorrybench}, although on unmodified models keyword matching
-tracked a GPT-4 judge closely (gaps of 1.2--2.4 points for two models, 5.5 for
-a third) \cite{cui2025orbench}, so large gaps may arise only after
+tracked a GPT-4 judge closely (gaps of 0.2--5.5 points across six models) \cite{cui2025orbench}, so large gaps may arise only after
 modification. Compliance is also not competence:
 single-vector projection raised a security-task score only from 0.46 to 0.50
 while raising unsafe compliance from 0.10 to 0.47 \cite{david2026ablating};
-abliterated code models complied with SQL-injection requests but succeeded at
+abliterated code models complied with requests to inject vulnerabilities but succeeded at
 rates bounded by model size \cite{carleo2026willing}; and jailbreaks of models
 aligned to refuse benign topics cut accuracy by up to 92\%
 \cite{nikolic2025jailbreak}. Off-target effects include more optimistic
@@ -181,13 +207,28 @@ whether removal becomes harder in newer model generations has been tested only
 indirectly: with one directional pipeline, susceptibility across 24 open
 models was model-specific rather than size-dependent, with safety-training
 methodology and architecture the strongest predictors \cite{hadetskyi2026not};
-in one 1.7B model only a combined safety-pretraining recipe stayed robust
+in one 1.7B model the full safety-pretraining recipe was the most robust
 to abliteration, and Qwen3 resisted it in one setup \cite{agnihotri2025granular}; and the earlier cross-tool comparison
 covered 7--14B models that predate ARA and the current generation
 \cite{young2025comparative}. A companion benchmark \cite{young2026paper30}
 uses the same harness to compare Heretic 1.x, Heretic 2.0 and community
-releases within the Qwen2.5 family; the Qwen2.5 models shared with that study
-are used here only for the generational question.
+releases within the Qwen2.5 family. The two studies share the evaluation
+harness, the held-out prompt set and 19 of the models evaluated here: the
+Qwen2.5-7B, Qwen2.5-32B and Qwen3.5-4B originals, their seed-1 DiM, MPOA, SOM
+and ARA models (and J-space on the two small models), and the two community
+releases of Qwen2.5-32B. For these 19 models the companion study uses the same
+stored responses (identical checksums) and therefore the same judge and
+keyword labels. The Qwen3.8-27B, Gemma, OLMo and Mistral Small models, the
+seed-2 replicates, the $\gamma$-MPOA controls and the other six community
+releases are used only here, and the comparison between releases (H1, H2) is
+reported only here.
+% 2026-11-08 ARS re-review revision (REV-09): shared models, outputs and labels named.
+% src: /data/heretic_2/paper30/v3_2611/analysis/cells.csv (responses_md5 of 19 rows equal to results/analysis/dir_status.csv
+% src: responses_md5 of the paper-33 dirs qwen2.5-7b__{base,dim,mpoa,som,jspace,ara}, qwen2.5-32b__{base,dim,mpoa,som,ara,
+% src: community-huihui,community-zetasepic-v2}, qwen3.5-4b__{base,dim,mpoa,som,jspace,ara}; same gen_dirs, so same judge files;
+% src: checked 2026-11-08); results/analysis/final_community_vs_selected.csv (8 community releases in all).
+% 2026-11-08 ARS revision (REV-09): overlap with the companion paper stated (harness and refusal_sets.json: sections/04_methods.tex,
+% sec:setup-methods; Qwen2.5 originals). The companion manuscript is in preparation and not yet public (REV-08 remains open).
 % 2026-11-06 (author decision 2): paper 30 is a NEW arXiv paper that cites 2512.13655 as prior work, so the
 % description of young2025comparative (7--14B, predates ARA) stays true; companion cited "in preparation".
 % 2026-11-06 review revision (A2): "at matched distribution shift" replaced below; the cap is common to all models but did not
@@ -197,8 +238,9 @@ paired within families. Second, all four method classes (representation-space
 methods on the small pair only) share one framework, prompt sets, budget and
 trial-selection rule under one cap on first-token KL divergence. Third, a harness independent of all optimisation
 objectives scores judged refusal on held-out prompts, capability and
-full-sequence distribution shift. Fourth, the study provides the first
-independent evaluation of ARA.
+full-sequence distribution shift. Fourth, the study provides, to current
+knowledge, the first independent comparison of ARA with direction-based
+methods across model releases, with one ARA run per model.
 Table~\ref{tab:methods} summarises the methods considered. Presets of the
 external OBLITERATUS toolkit are evaluated in the companion paper
 \cite{young2026paper30}; null-space-constrained

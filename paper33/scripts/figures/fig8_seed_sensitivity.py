@@ -35,7 +35,7 @@ import style as S
 
 NAME = "fig8_seed_sensitivity"
 MODELS = [("qwen2.5-7b", "small-old"), ("qwen3.5-4b", "small-new")]   # small pair: older, newer
-METHODS = ["dim", "mpoa", "ara", "som", "jspace"]
+METHODS = ["dim", "mpoa", "som", "jspace", "ara"]
 SEEDS = (1, 2)
 KL_MAX = 0.1
 S2_STRENGTH = 0.45          # seed 2 = method colour mixed with white at this strength (= fig3's S2_ALPHA on white)
@@ -331,7 +331,7 @@ def style_fronts(axes, trials, cells_shown):
         ax.annotate(f"KL = {KL_MAX:g}", (KL_MAX, 1.0), xycoords=ax.get_xaxis_transform(), xytext=(2.5, -1),
                     textcoords="offset points", fontsize=S.FONT_SMALL, color=S.TEXT_SECONDARY, ha="left", va="top",
                     zorder=7)
-    axes[-1].set_xlabel("First-token KL divergence from the original\n(dev set: harmless_alpaca test[:100]; log scale)")
+    axes[-1].set_xlabel("First-token KL divergence from the original\n(harmless_alpaca test[:100]; log scale)")
 
 
 # ================================================================================================ figure
@@ -342,7 +342,7 @@ def build(trials, runs, out_dir=None, caption_path=None):
     cells = load(runs, trials)
     big, small = extremes(cells)
 
-    fig = S.plt.figure(figsize=(S.TEXT_W, 3.75))
+    fig = S.plt.figure(figsize=(S.TEXT_W, 3.9))
     fig.get_layout_engine().set(w_pad=0.05, h_pad=0.03, wspace=0.06, hspace=0.04)
     gs = fig.add_gridspec(2, 2, width_ratios=[1.12, 1.0])
     ax_d = fig.add_subplot(gs[:, 0])

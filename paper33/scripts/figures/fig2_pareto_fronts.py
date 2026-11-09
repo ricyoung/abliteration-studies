@@ -42,9 +42,9 @@ KL_MAX = 0.1                 # selection threshold (select_trial.select)
 X_ZERO = 4e-5                # where KL == 0 is drawn (left axis edge, behind an axis break; smallest KL > 0 is 1.5e-4)
 X_LO, X_HI = X_ZERO, 60.0
 Y_LO, Y_HI = -4, 104
-CORE = ["dim", "mpoa", "ara", "som"]
-SMALL = CORE + ["jspace"]
-SMALL_FAMILY = "Qwen (small pair)"
+CORE = ["dim", "mpoa", "som", "ara"]
+SMALL = ["dim", "mpoa", "som", "jspace", "ara"]
+SMALL_FAMILY = "Small pair"
 CLOUD_SIZE = 3.0             # pt, diameter of the all-trials dots (appendix figures)
 CLOUD_ALPHA = {"dim": 0.40, "mpoa": 0.42, "ara": 0.50, "som": 0.60, "jspace": 0.60}   # light hues need more
 FRONT_MS = 4.6               # pt, Pareto-front vertex markers
@@ -178,8 +178,7 @@ def build(trials, runs, kind):
             txt = f"{S.MODEL_DISPLAY[old]} → {S.MODEL_DISPLAY[new]}"
         else:
             txt = S.MODEL_DISPLAY[old if kind == "old" else new]
-        if fam == SMALL_FAMILY:
-            txt += "   (small pair)"   # hardware is given in Figure 1
+        txt = f"{fam}:  {txt}"   # pair label first (Qwen, Gemma, OLMo, Mistral Small, Small pair)
         sf.suptitle(txt, x=0.0, ha="left", fontsize=S.FONT, fontweight="bold")
 
     for r, (fam, old, new) in enumerate(main_pairs):

@@ -71,9 +71,9 @@ def ypos(bi, ri):
 def main():
     S.apply()
     data = load()
-    fig = plt.figure(figsize=(S.DOUBLE_COL, 3.75))
+    fig = plt.figure(figsize=(S.DOUBLE_COL, 4.55))
     fig.get_layout_engine().set(w_pad=0.02, h_pad=0.03, wspace=0.02)
-    gs = fig.add_gridspec(1, 2, width_ratios=[0.9, 1.42])
+    gs = fig.add_gridspec(1, 2, width_ratios=[0.8, 1.55])
     ax_r = fig.add_subplot(gs[0, 0])
     ax_h = fig.add_subplot(gs[0, 1], sharey=ax_r)
     cmap, norm = S.diverging_cmap(), S.diverging_norm(VMAX)
@@ -160,10 +160,11 @@ def main():
           Line2D([], [], color=S.TEXT_SECONDARY, lw=1.0, label="95% Wilson interval")]
     fig.legend(handles=h, loc="outside lower left", ncols=5, frameon=False, handlelength=1.4,
                columnspacing=1.2)
-    ax_h.text(0.0, y_lo + 0.15, "Original rows: score (%). Orange = loss, blue = gain (colour saturates at "
-              "\u00b18 pp).\n* \u03b3-MPOA differs from the original (paired McNemar, Holm).\n"
-              "dev KL: first-token KL of the selected trial; TF div.: teacher-forced\ndivergence on benign held-out "
-              "prompts (nats per token).", ha="left", va="top", fontsize=S.FONT_SMALL, color=S.TEXT_SECONDARY,
+    ax_h.text(0.0, y_lo + 0.15, "Original rows: score (%); other rows: change vs the original (pp).\n"
+              "Orange = loss, blue = gain; colour saturates at \u00b18 pp.\n"
+              "* p < 0.05, exact McNemar, Holm-adjusted (a: 4 models; b: 20 tests).\n"
+              "dev KL: selected trial's first-token KL; TF div.: teacher-forced\n"
+              "divergence on benign held-out prompts (nats per token).", ha="left", va="top", fontsize=S.FONT_SMALL, color=S.TEXT_SECONDARY,
               linespacing=1.3)
     S.save(fig, NAME)
     write_caption(data)

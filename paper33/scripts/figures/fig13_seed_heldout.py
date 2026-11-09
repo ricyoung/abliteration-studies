@@ -152,8 +152,9 @@ def main():
                 mew=S.HOLLOW_MEW, ls=(0, (4, 2)), lw=1.2, label="older model (hollow, dashed)"),
          Line2D([], [], color=S.TEXT_SECONDARY, lw=1.0, label="95% interval"),
          Line2D([], [], color=S.TEXT_SECONDARY, marker="|", ms=7, mew=1.0, ls="none",
-                label="cross-seed combinations (b)")]
-    fig.legend(handles=h, loc="outside lower center", ncols=5, frameon=False, handlelength=1.6, columnspacing=1.2)
+                label="cross-seed combinations (b)"),
+         Line2D([], [], ls="none", label="* p < 0.05, exact McNemar, Holm-adjusted over the 10 cells (a)")]
+    fig.legend(handles=h, loc="outside lower center", ncols=3, frameon=False, handlelength=1.6, columnspacing=1.2)
     S.save(fig, NAME)
     write_caption(cells, gen)
 

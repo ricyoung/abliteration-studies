@@ -38,15 +38,19 @@
 % Paragraph 1: The Problem
 Open-weight language models ship with safety training that teaches them to
 refuse harmful requests, but their public weights allow this behaviour to be
-edited after release. Since 2024, training-free techniques called abliteration
-have made such editing cheap: with a few hundred contrasting prompts and a
+edited after release. Since 2024, fine-tuning-free techniques called
+abliteration, which need no end-to-end gradient training, have made such
+editing cheap: with a few hundred contrasting prompts and a
 single GPU, they modify a few weight matrices so that the model stops
 refusing \cite{arditi2024refusal,labonne2024abliteration}, without the
 gradient-based fine-tuning on harmful data used by earlier attacks
 \cite{qi2024finetuning,lermen2023lora}. Many abliterated
 models are published on Hugging Face, and fully automated tools are publicly
 available \cite{heretic2025}. Whether safety training withstands such editing
-therefore matters to attackers and defenders.
+therefore matters to attackers, to defenders and to anyone who audits whether
+newer releases are more robust than older ones.
+% 2026-11-08 ARS revision (REV-06, REV-28): audit stakes added; "training-free" -> "fine-tuning-free" (no end-to-end gradient
+% training; ARA fits its adapters by L-BFGS on activations, sections/08a_method_definitions.tex sec:m-ara).
 
 % Paragraph 2: What Is Known
 The original technique rests on the finding that, in many chat models,
@@ -59,11 +63,16 @@ several directions or a refusal ``cone''
 now the default of the open-source Heretic~2.0 tool,
 abandons directions and optimises each targeted weight matrix to move harmful
 outputs toward harmless ones while keeping harmless outputs fixed
-\cite{weidmann2026ara}. These methods embody competing hypotheses about where
+\cite{weidmann2026ara}. The methods are motivated by different views of where
 refusal lives, from one direction to a low-dimensional subspace or cone, a
 non-linear region (so far suggested only by visualisation
-\cite{hildebrandt2025refusal}) or a distribution across modules that only
-direct optimisation captures. If refusal is not one-dimensional, single-direction
+\cite{hildebrandt2025refusal}) or a distribution across modules. They also
+differ in edit rank (one to six for the direction-based methods used here, 50
+for ARA), objective and search space, so comparing them compares families of
+edits, not geometric hypotheses about refusal.
+% 2026-11-08 ARS revision (REV-23): the classes are operational edit families; ranks from sections/08b_setup_details.tex
+% (sec:setup-export: rank <= 1 DiM, 3 MPOA / J-space, 6 SOM, 50 ARA).
+If refusal is not one-dimensional, single-direction
 defences (\S\ref{sec:related}) may give a false sense of security, yet recent
 work offers mixed evidence on the single-direction picture
 \cite{joad2026there,wang2026on,pan2025hidden}.
@@ -81,15 +90,22 @@ Whether newer model generations resist refusal removal remains unclear. The
 author of ARA reports that older models ``can usually be decensored quite
 easily with standard abliteration'', whereas ARA ``shows its strengths
 precisely with the latest generation of models, where traditional directional
-ablation tends to be woefully inadequate'' \cite{weidmann2026ara}. If
-accurate, newer safety training would spread refusal over more dimensions or
+ablation tends to be woefully inadequate'' \cite{weidmann2026ara}. One explanation
+would be that newer safety training spreads refusal over more dimensions or
 modules, consistent with calls for alignment ``more than just a few tokens
 deep'' \cite{qi2025safety}, with evidence that harmfulness and refusal are
 encoded separately \cite{zhao2025harmfulness}, and with training methods that
 make refusal survive ablation of its direction
 \cite{yu2025refusal,xie2025beyond}. Adversarial safety fine-tuning of one 7B
 model, however, moved a still low-dimensional refusal representation to an
-earlier layer rather than expanding it \cite{lan2026dynamic}. To the best of
+earlier layer rather than expanding it \cite{lan2026dynamic}. Other
+explanations would not involve the representation of refusal at all:
+architectural changes can weaken a given edit (in post-normalised blocks part
+of an ablated direction reaches the residual stream; Appendix~\ref{app:setup-models}),
+later layers can partly compensate for an edit \cite{mcgrath2023hydra}, and the estimate of the
+direction can be contaminated by its prompt sets.
+% 2026-11-08 ARS revision (REV-31): alternative mechanisms listed next to the dimensionality account.
+To the best of
 current knowledge, the ARA author's claim has not been tested independently: the nearest
 evidence concerns safety-pretraining checkpoints of one 1.7B model
 \cite{agnihotri2025granular}, ARA has no published evaluation, and existing
@@ -99,7 +115,11 @@ gap is methodological: tools are usually evaluated with the cheap signals they
 optimise (keyword-matched refusals over short generations and first-token KL
 divergence), which can disagree sharply with stronger judges. In one public
 comparison, keyword matching reported 3--5 refusals per 100 prompts where an
-LLM judge found more than 33 (Heretic PR~\#196); keyword matching also
+LLM judge found more than 33 (Heretic PR~\#196, an unreviewed practitioner
+report\footnote{Heretic pull requests (PR~\#) and issues (\#) at
+\url{https://github.com/p-e-w/heretic} are cited in this paper as unreviewed
+practitioner reports, not as peer-reviewed evidence. They were retrieved on
+2--5 November 2026 and may have changed since.}); keyword matching also
 agrees poorly with human labels \cite{xie2025sorrybench}, and conclusions can
 depend on the classifier used \cite{young2026measuring}.
 Aggregate refusal rates can also hide failures in domains such as
@@ -112,13 +132,20 @@ complying with degraded, useless output \cite{nikolic2025jailbreak}.
 % Paragraph 4: The Solution + Hypotheses
 The present study addresses both gaps through a controlled comparison of
 refusal-removal methods on an earlier and a later release of four open-weight
-model families and one smaller pair, providing the first independent
-evaluation of ARA. The primary purpose
+model families and one smaller pair, five release pairs in all. To current
+knowledge it is the first independent comparison of ARA with direction-based
+methods across model releases; it rests on one ARA run per model. The primary purpose
 was to determine whether refusal removal becomes harder in newer model
 generations. Removal is called harder for a model when more refusal remains
 after the same search budget and selection rule, that is, when its residual
-refusal (the share of held-out harmful prompts whose response an independent
-judge, WildGuard, labels a refusal) is higher. It was hypothesised (H1) that,
+refusal (the share of held-out harmful prompts whose response an automatic
+judge, WildGuard, labels a refusal) is higher. The judge is independent of the
+optimisation objective but has not been validated against human labels on
+edited models. This is a budget-bound measure: residual refusal of the trial
+selected after 100 search trials at first-token KL divergence $\le 0.1$, not
+the difficulty of removal for an attacker with more budget.
+% 2026-11-08 ARS revision (REV-32, REV-37): operationalisation of "harder" stated; "independent judge" clarified.
+It was hypothesised (H1) that,
 with every model selected under the same cap on first-token KL divergence
 ($\le 0.1$), residual refusal after ablation would be higher for the newer
 model of each pair than for its predecessor, for every method. Because a
@@ -132,17 +159,19 @@ contrast was added after H1 was stated and is exploratory.
 % same cap" (the cap bound in 15 of 24 direction-based and 8 of 8 ARA runs: results/analysis/review_sel_kl_summary.csv);
 % the baseline-adjusted contrast labelled as added after H1; "the most widely used abliteration tool" dropped (unsupported).
 The secondary purpose was to determine whether this difficulty depends
-on method class. It was hypothesised (H2) that the generation effect would
+on the class of edit. It was hypothesised (H2) that the generation effect would
 interact with method class, such that optimisation-based ablation (ARA) would
 lose less effectiveness on newer models than direction-based methods
 (diff-in-means, projected/magnitude-preserving abliteration (MPOA),
 self-organising-map (SOM) ablation and, on a small pair, Jacobian-space
-(J-space) ablation). A third, exploratory aim was to test whether the cheap
+(J-space) ablation). Because the two classes differ in rank, objective and
+search space as well as in their motivating geometry, H2 compares edit
+families and cannot by itself separate these factors. A third, exploratory aim was to test whether the cheap
 optimisation signals agree with independent measures; it was hypothesised
 (H3) that keyword-based refusal counts would underestimate residual refusal
-relative to an independent judge, and that the size of this gap would differ
-between method classes. All methods run inside Heretic~2.0 with identical
-prompts and search budgets on four main-study pairs (Qwen, Gemma, OLMo,
+relative to an automatic judge, and that the size of this gap would differ
+between method classes. All methods run inside Heretic~2.0 with the same
+prompts and nominal search budget on four main-study pairs (Qwen, Gemma, OLMo,
 Mistral; 22--32B parameters)
 % src (2026-11-05 todo pass): 22B = Mistral-Small-Instruct-2409, 22,247,282,688 parameters (https://huggingface.co/api/models/mistralai/Mistral-Small-Instruct-2409, safetensors.total); 32B = Qwen2.5-32B-Instruct, OLMo-2-0325-32B-Instruct, Olmo-3.1-32B-Instruct; nominal sizes in tab:models
 and a small Qwen pair (7B, 4B).
@@ -158,22 +187,35 @@ generation) and full-sequence distribution shift.
 
 The study makes three contributions:
 \begin{itemize}
-\item an independent, held-out test of whether refusal removal is harder in
-  newer releases, with the model pair as the unit: the generation effect
-  differed in sign and size between the four families, and beyond the newer
-  originals' higher starting refusal the pooled direction-based effect was
-  near zero with an interval that spans large effects of either sign
+\item a held-out test of whether refusal removal is harder in newer releases,
+  with the release pair as the unit: the generation effect differed in sign
+  and size between pairs, the only raw per-pair effect that exceeded
+  run-to-run variation under both variance models, at the point estimate of the
+  run-to-run standard deviation, was the OLMo direction-based increase, and
+  some per-pair verdicts depended on the source of the test prompts
   (\S\ref{sec:res-h1});
-\item an independent evaluation of ARA against direction-based methods under
-  one search budget, KL cap and selection rule: ARA lost less effectiveness on
-  the newer model than the direction-based methods in two families, more in
-  one and about as much in one (\S\ref{sec:res-h2});
-\item evidence on the signals that abliteration tools optimise: keyword counts
-  at the tool's 100-token window matched judged refusal on average but not
-  model by model, keyword counts over full responses exceeded it, and
-  first-token KL divergence did not bound capability loss
-  (\S\ref{sec:res-h3}, \S\ref{sec:res-secondary}).
+\item a preliminary comparison of ARA with direction-based methods under one
+  nominal search budget, KL cap and selection rule: ARA lost less
+  effectiveness on the newer model in two pairs, more in one in its point
+  estimate (indeterminate with run-to-run variance) and about as much in two,
+  but each contrast rests on one ARA run whose export was
+  refitted after the search, and the verdicts changed with the KL budget and
+  the variance model (\S\ref{sec:res-h2});
+\item evidence on the signals that abliteration tools optimise: keyword
+  counts at the tool's 100-token window matched judged refusal on average but
+  disagreed with it by several points per model, and first-token KL
+  divergence did not bound capability loss (\S\ref{sec:res-h3},
+  \S\ref{sec:res-secondary}).
 \end{itemize}
+% 2026-11-08 ARS re-review revision (NEW-4): "under both variance models" qualified as holding at the point estimate of
+% sigma (revision_sigma_pair_verdicts.csv: OLMo direction raw fails at the upper limit of the logit-level model).
+% 2026-11-08 ARS re-review revision (REV-29): footnote marks all Heretic PRs and issues as unreviewed practitioner reports;
+% src: retrieval dates from notes/session_logs/commands.md (PR #211 2026-11-02T18:18Z; PR #196 2026-11-02 and 2026-11-04)
+% src: and notes/EXECUTION_PLAN_v2.md (issues #88, #419, #481, #490, #499, #503 reviewed; plan dated 2026-11-05).
+% 2026-11-08 ARS revision (REV-05, REV-13, REV-25, REV-33): contributions re-scoped to release pairs, single ARA cells,
+% item-source moderation and keyword-judge disagreement. src: results/analysis/revision_sigma_pair_verdicts.csv (olmo direction
+% raw excludes zero under constant and logit-level sigma, point); review_out_c2_pair_class.csv; review_sel_pair_effects.csv
+% (H2 per pair); revision_kl_budget_effects.csv; revision_kw_gap_abs.csv (mean |gap| 7.0 pp); final_kl_vs_capability.csv.
 % 2026-11-06 reframe: contributions lead with the baseline-adjusted pooled effect (h1h2_models.csv, gee_with_originals)
 % and the seed-noise flags (results/analysis/seednoise_summary.md); replaces "TODO(results): headline findings".
 % 2026-11-06 review revision (author decision A): contributions lead with the per-pair effects (review_sel_pair_effects.csv,

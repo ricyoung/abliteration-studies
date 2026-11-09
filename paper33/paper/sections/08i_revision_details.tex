@@ -1,0 +1,676 @@
+% ============================================================
+% APPENDIX -- REVISION DETAILS (written 2026-11-08, ARS review revision; notes/ARS_review_20261108/revision_roadmap.md)
+% \input from sections/08_appendix.tex after 08h; \subsections continue Appendix D.
+%   app:moved-results   text and figures moved out of the Results (REV-01). The text is the 2026-11-07 Results text
+%                       (sections/05_results.tex.bak-20261108-rev), moved verbatim with its src comments; only the
+%                       subsection headings became unnumbered, the tables it cited stay where they are, and two wording
+%                       changes were made ("between families" -> "between pairs", "diverge" -> "disagree").
+%                       Five figures moved with it (labels unchanged): fig:gmpoa-dev, fig:seed-dev, fig:dev-generation,
+%                       fig:kl-budget, fig:search-convergence.
+%   app:sigma-level     REV-14 / REV-15 (tab:sigma-level, tab:heterogeneity)
+%   app:kl-budgets      REV-16 / REV-32 (tab:kl-budgets)
+%   app:outcome-classes REV-34 (tab:outcome-classes)
+% ============================================================
+\subsection{Detail Moved from the Results}
+\label{app:moved-results}
+
+This subsection keeps the detailed Results text of the previous draft, which
+the main text now summarises, together with five secondary figures. Numbers and
+tests are unchanged.
+
+% ------------------------------------------------------------
+\subsubsection*{H1: Residual Refusal in the Newer Model}
+
+Table~\ref{tab:pair-effects} gives the per-pair generation effects by method
+class, and Figure~\ref{fig:heldout-generation} and Table~\ref{tab:h1-heldout}
+give them per method. After direction-based removal (mean of DiM, MPOA and
+SOM), residual refusal was higher on the newer model by +10.7~pp in the Qwen
+pair, +4.7~pp in Gemma, +36.9~pp in OLMo and $-$1.2~pp in Mistral Small, and
+by +17.3~pp in the small pair (mean including J-space). After ARA the changes
+were +34.4, $-$26.0, $-$2.5, $-$0.7 and +14.2~pp. The generation effect
+differed between pairs (prompt-level generation $\times$ pair Wald $\chi^2=547.4$, 3
+df, $p<0.001$; $\chi^2$ of 277--551 and $p\le10^{-59}$ for every judge, with
+and without the 44 prompts that overlap the search dataset). With run-to-run (seed) variance added, the per-pair half-widths grew
+to about 15~pp for the direction-based class and 25~pp for ARA, and 14 of the
+40 main-pair estimand $\times$ scale intervals excluded zero (32 with prompt
+sampling only). Of the ten raw effects on the pp scale (five pairs, two
+classes), four excluded zero: the OLMo (+36.9~pp
+[+22.1, +51.7]) and small-pair (+17.3~pp [+4.4, +30.1]) direction-based
+increases, the Qwen ARA increase (+34.4~pp [+8.8, +59.9]) and the Gemma ARA
+decrease ($-$26.0~pp [$-$51.6, $-$0.5]).
+% src (review revision): results/analysis/review_sel_pair_effects.csv (estimate, lo_total, hi_total; pp x 100) =
+% src: review_sel_summary.md part 2 per-pair table; review_sel_pair_heterogeneity.csv (wg, all, main, generation x family
+% src: (direction class) 547.366, p 2.6e-118; range over judges and subsets: review_sel_summary.md part 2(a) "chi2 277-551",
+% src: "p <= 1.1e-59"); half-widths 14.9 pp (direction class) and 25.4-25.6 pp (ARA), "of the 40 main-pair estimand x scale
+% src: cells, 32 exclude zero with prompt-only intervals and 14 with seed variance added": review_sel_summary.md part 2.
+
+The unedited originals already differed by +13.1 (Qwen), +17.9 (Mistral
+Small) and +16.4~pp (small pair), but not in Gemma ($p=0.46$) or OLMo
+($p=0.30$). Relative to this baseline difference, a contrast added after H1
+was stated and therefore exploratory, the direction-based effect was $-$2.4
+(Qwen), +3.7 (Gemma), +36.0 (OLMo), $-$19.2 (Mistral Small) and +0.9~pp (small
+pair), and the ARA effect +21.3, $-$27.1, $-$3.3, $-$18.6 and $-$2.2~pp. The
+two scales of the adjustment disagreed in places. Among the 21 pair $\times$
+method cells, the adjusted effect had opposite signs in pp and log-odds for
+three (Qwen MPOA, $-$3.1~pp but +0.39 log-odds; small-pair J-space and ARA),
+and its significance differed in five. At class level the signs differed for
+the small pair's direction-based (+0.9~pp, $-$0.30 log-odds) and ARA effects
+and for the H2 contrasts of Mistral Small and the small pair. Near 0\%
+refusal the log-odds scale magnifies differences: Gemma ARA ($26.6\%$ to
+$0.6\%$) was $-$26.0~pp but $-$4.07 log-odds, the largest log-odds effect in
+the main study.
+% src: results/analysis/h1h2_generation_effects.csv (original rows; p 0.46 / 0.30 as tab:h1-heldout);
+% src (review revision): review_sel_pair_effects.csv (direction / ARA adjusted, pp); review_sel_scales.csv = review_sel_summary.md
+% src: part 3 (sign differs in 3 of 21: Qwen MPOA -3.1 pp / +0.39 log-odds, Small pair J-space, Small pair ARA; significance
+% src: differs in 5; class level: small pair direction adjusted +0.9 pp / -0.30, small pair ARA adjusted -2.2 / +0.46,
+% src: Mistral H2 +0.5 pp / -0.06, small pair H2 -3.1 pp / +0.76; Gemma ARA -26.0 pp / -4.07 log-odds, largest |log-odds|).
+
+Pooled over the four main pairs with the pair as the unit (random effects,
+Hartung--Knapp--Sidik--Jonkman interval), the direction-based generation
+effect was +12.8~pp [$-$13.9, +39.5] (+0.55 log-odds [$-$0.66, +1.76]) and,
+beyond the originals' difference, +4.6~pp [$-$32.2, +41.3] (+0.06 log-odds
+[$-$1.67, +1.80]; 95\% prediction interval for a new pair $-$5.90 to +6.02);
+for ARA the adjusted effect was $-$6.9~pp [$-$40.7, +26.8] ($-$0.96 log-odds
+[$-$4.59, +2.68]). Heterogeneity between pairs was almost total ($I^2$
+99--100\%; between-pair SD of the adjusted direction-based effect 22.9~pp,
+against a seed SE of 7.5~pp and a prompt SE of 1.3--1.5~pp per pair), so
+adding seed variance moved these limits by at most 0.1~pp and 0.07 log-odds,
+and none of the ten pooled estimand $\times$ scale intervals excluded zero.
+With the prompt as the unit (GEE, prompt sampling only) the same quantities
+were narrow: the direction-based effect was +0.62 log-odds [+0.57, +0.68]
+($p_\mathrm{Holm}<0.001$) raw and +0.03 [$-$0.05, +0.11] ($p=0.529$) adjusted,
+the ARA effect +0.12 [+0.00, +0.24] ($p_\mathrm{Holm}=0.135$) raw and $-$0.46
+[$-$0.58, $-$0.34] ($p<0.001$) adjusted, and the originals' difference +0.58
+[+0.49, +0.66] ($p<0.001$); the planned mixed model gave unadjusted effects of
++0.86 [+0.82, +0.90] and +0.15 [+0.04, +0.26]. Leaving one family out moved
+the adjusted direction-based GEE effect between $-$0.51 (without OLMo) and
++0.33 (without Mistral Small).
+% src: results/analysis/h1h2_models.csv (wg, all, main: gee_planned gen effect | direction 0.6218 [0.5669, 0.6767],
+% src: | optimisation 0.1239 [0.0028, 0.2450]; gee_with_originals: original (baseline difference) 0.5782 [0.4940, 0.6623]
+% src: p 2.6e-41, baseline-adjusted | direction 0.0257 [-0.0542, 0.1056] p 0.529, | optimisation -0.4629 [-0.5842,
+% src: -0.3417] p 7.3e-14; vb_planned 0.8588 [0.8166, 0.9011], 0.1490 [0.0358, 0.2622]); h1h2_tests.csv (H1 p_holm
+% src: pooled direction < 0.001, optimisation 0.135)
+% src (review revision): results/analysis/review_sel_pair_meta.csv (variance "prompt sampling only": direction raw pp
+% src: re 12.77 hksj [-13.94, 39.49], log-odds 0.550 [-0.657, 1.758]; direction adjusted pp 4.56 [-32.22, 41.33], log-odds
+% src: 0.064 [-1.669, 1.796], pi [-5.897, 6.024]; ARA adjusted pp -6.95 [-40.70, 26.81], log-odds -0.957 [-4.594, 2.680];
+% src: I2 0.986-0.997; limits with seed variance: max change 0.03 pp / 0.07 log-odds); review_sel_summary.md part 2 (tau
+% src: 22.9 pp, seed SE 7.5 pp, prompt SE 1.3-1.5 pp; "HKSJ intervals that exclude zero: 0 of 10"); review_sel_pair_lofo.csv
+% src: (baseline-adjusted gen effect, direction class: without olmo -0.51, without mistral +0.33).
+
+All models were selected under the same cap on first-token KL divergence
+($\le 0.1$), but the cap did not constrain every run
+(Appendix~\ref{app:kl-cap}). It bound, in the sense that some trial above 0.1
+had fewer dev refusals than the selected trial, in 15 of the 24 main-study
+direction-based runs and in all 8 ARA runs, which reached 0 dev refusals above
+the cap (maximum KL 10.9--33.2); to stay under it, the median binding run gave
+up 24 (direction-based) and 22 (ARA) dev refusals. Four direction-based runs
+never sampled a trial above 0.1 (Qwen3.8-27B MPOA, Olmo-3.1-32B MPOA and SOM,
+Mistral-Small-2409 MPOA) and four sampled one (OLMo-2-32B DiM, MPOA and SOM,
+Qwen3.8-27B SOM). In these eight runs the selected maximum weights were not at
+the upper bound of Heretic's search range (0 of 8), and in 7 of 8 the trials
+at that bound had no fewer dev refusals than the selected trial (in the
+eighth, OLMo-2-32B SOM, the better one had KL 0.110), so the upper bound of
+the maximum weights did not limit their residual refusal; another strength
+parameter (a minimum weight or minimum-weight distance) was at the strong end
+of its range in 4 of the 8. Refitted on the pair $\times$ method
+units in which the cap bound in both cells (5 direction-based, 4 ARA), the
+direction-based effect was +0.32 log-odds [+0.24, +0.41] raw and $-$0.24
+[$-$0.33, $-$0.14] adjusted; on the 7 direction-based units in which it did
+not bind in at least one cell, +1.03 [+0.95, +1.11] and +0.22 [+0.12,
++0.32]. The two subsets also differ in family (cap-bound units: one Qwen, three
+Gemma and one Mistral Small unit; others: two Qwen, three OLMo and two Mistral
+Small units), so this split does not separate the cap from the family.
+% src (review revision): results/analysis/review_sel_kl_summary.csv ("main seed 1, direction": n_cap_binding 15 of 24,
+% src: n_never_left_cap 4, n_left_cap_at_most_once 8, median_refusals_gained_above_cap 24; "main seed 1, optimisation":
+% src: 8 of 8, min/max max_kl 10.90 / 33.25, median gained 22); review_sel_kl_runs.csv (never_left_cap / left_cap_at_most_once
+% src: runs, sel_max_weight_at_ceiling, min_refusals_max_weight_at_ceiling) = review_sel_summary.md part 1 ("0/8 of the runs
+% src: that stayed below the cap"; "no fewer refusals than the selected one in 7/8 runs"); review_sel_kl_h1h2.csv (S1 cap bound
+% src: in both cells: direction 0.3245 [0.2412, 0.4077], adjusted -0.2365 [-0.3306, -0.1424]; S2 cap not bound in at least one
+% src: cell: 1.0314 [0.9532, 1.1096], 0.2210 [0.1199, 0.3221]); family composition: review_sel_summary.md part 1.
+% src (2026-11-06 verifier pass): "not limited by the range" narrowed to the maximum-weight bound; review_sel_kl_runs.csv
+% src: sel_n_strength_params_at_strong_end > 0 in 4 of the 8 stayed-below runs (qwen3.8 / olmo-3.1 mpoa mlp.down_proj.min_weight,
+% src: olmo-3.1 som attn.o_proj.min_weight_distance, mistral-2409 mpoa mlp.down_proj.min_weight_distance); 14 of 24 overall.
+
+The per-pair effects can also be compared with the run-to-run variation of
+the search. The seed-1 and seed-2 models of the ten small-pair cells gave a
+run-to-run standard deviation of a cell's held-out refusal of 9.2~pp [6.4,
+16.1] (\S\ref{sec:setup-stats}), so the difference between two independently
+optimised cells has a standard deviation of 12.9~pp, and an effect larger than
+25.9~pp (2~SD) exceeds seed noise. Of the 16 main-study per-method effects, 5
+exceeded this band (Table~\ref{tab:h1-heldout}, last column): four increases,
+Qwen DiM (+26.9~pp [+23.8, +29.8]), Qwen ARA (+34.4~pp [+31.2, +37.5]), OLMo
+DiM (+34.8~pp [+31.5, +37.9]) and OLMo MPOA (3.6\% [2.6, 5.0] to 65.0\%
+[62.0, 68.0]; +61.4~pp [+58.2, +64.4]), and one decrease, Gemma ARA (26.6\%
+[24.0, 29.5] to 0.6\% [0.3, 1.3]; $-$26.0~pp [$-$28.9, $-$23.3]), which lay
+0.1~pp beyond the band. The other 11, from $-$4.7 to +16.4~pp, lay within
+seed noise. Across the 95\% interval of the standard deviation, between 1 and
+5 effects exceeded the band; of the baseline-adjusted effects, 3 exceeded it
+(OLMo DiM +34.0, OLMo MPOA +60.6 and Gemma ARA $-$27.1~pp). In 3 of the ten
+seed pairs (Qwen3.5-4B DiM, SOM and ARA) the seed-2 run also used a generation
+batch size of 64 instead of 128, after running out of memory at 128. Without
+these three pairs the standard deviation was 7.2~pp [4.8, 14.6] and the
+threshold 20.4~pp; the same 5 raw effects exceeded it, and the
+baseline-adjusted effects that did so rose from 3 to 6 (adding Qwen ARA
++21.3, Mistral Small DiM $-$22.2 and MPOA $-$20.8~pp). The band assumes that
+the seed variability of the 4B and 7B small-pair models transfers to the
+22--32B main-study models, each optimised once.
+% src: results/analysis/seednoise_summary.md, seednoise_sigma.csv (sigma 9.1542 [6.3962, 16.0650] chi-square df 10;
+% src: SD_diff 12.9460; threshold 25.8920 [18.0912, 45.4387]), seednoise_flags.csv (main: 5 exceed; at sigma_hi 1, at
+% src: sigma_lo 5; baseline_adj_flag 3 exceed); scripts/analysis/seednoise_flags.py
+% src (review revision): results/analysis/review_sel_seed_runs.csv (batch 64 after CUDA OOM: qwen3.5-4b__{dim,som,ara}__core-s2);
+% src: review_sel_seed_sigma.csv ("without the batch-64 seed-2 runs", pp: sigma 7.1965 [4.7581, 14.6468], threshold 20.3548);
+% src: review_sel_seed_flags.csv (exceeds_excl_b64: same 5; adj_exceeds_excl_b64: 6 = olmo dim, olmo mpoa, gemma ara + qwen ara,
+% src: mistral dim, mistral mpoa).
+
+With the prompt as the unit of inference (exact McNemar, Holm over 23 tests),
+the newer model refused significantly more in 8 of the 16 main-study
+comparisons, significantly less in 4 and not significantly differently in 4;
+4 of the 8 increases and 3 of the 4 decreases lay within seed noise, and no
+main-study pair was higher for every method, as H1 required. Gemma-4-31B
+DiM refused more than its own original (90.1\% vs.\ 89.3\%; +0.8~pp [+0.1,
++1.6], $p_\mathrm{Holm}=0.039$ over the 42 edit-versus-original tests), a
+failed edit. In the small pair all five methods refused more on the newer
+model with seed~1 (+4.2 to +34.1~pp, all $p_\mathrm{Holm}\le 0.019$).
+% src: results/analysis/h1h2_generation_effects.csv, h1h2_tests.csv (judge wg, subset all, family H1);
+% src: seednoise_crosstab.csv (newer higher 4 exceed / 4 within; newer lower 1 / 3; n.s. 0 / 4);
+% src: h1h2_cells.csv (gemma-4-31b__dim: diff_vs_orig 0.00823 [0.0006, 0.0164], p_holm_ablation 0.0386)
+
+
+
+
+Under Qwen3Guard the pooled ARA generation effect was +0.21
+[+0.10, +0.32] and under full-response keyword matching +0.57 [+0.47, +0.67]
+(both $p_\mathrm{Holm}<0.001$). Excluding the 44 held-out prompts that match a prompt of the
+search dataset (\texttt{harmful\_behaviors}) removed significance for Qwen SOM
+and Mistral Small DiM (all effects changed by $\le$1.9~pp). No main-study pair
+met H1 under Qwen3Guard or full-response keyword matching; with the 256-token
+keyword window, all four OLMo methods were higher on the newer model (OLMo ARA
++5.2~pp [+2.2, +8.3], $p_\mathrm{Holm}=0.009$).
+% src: h1h2_tests.csv
+% src: (subsets all / excl_advbench; judges q3g, kw, kw256; pooled optimisation class: q3g 0.2098 [0.1031, 0.3165]
+% src: p_holm 0.00082; kw 0.5685 [0.4714, 0.6657] p_holm 3.3e-29); h1h2_summary.md ("Sensitivity"; judge section)
+% src: h1h2_tests.csv (kw256, all, H1: olmo dim/mpoa/som/ara all reject_holm, estimate > 0; olmo ara 0.0525
+% src: [0.0219, 0.0830], p_holm 0.00865); 04_methods.tex tab:refusal-sets (44 harmful_behaviors matches)
+
+\paragraph{Item source.} About half of the originals' generation difference
+came from the code-as-weapon bank (200 of the 972 items;
+Appendix~\ref{app:item-source}). Averaged over the four main pairs, the
+originals differed by +5.0~pp [+3.8, +6.0] on the four public sets and by
++20.6~pp [+17.3, +23.8] on the code items, which contributed 52\% [44, 60] of
+the mean difference of +8.1~pp (Qwen 68\% [59, 77], Mistral Small 9\% [5,
+14]). Gemma's direction-based effects also lay in the code items (DiM, MPOA
+and SOM +65.5, +35.0 and +47.5~pp, against +3.6, $-$15.0 and $-$9.1~pp on the
+public sets). On the 772 public items alone the conclusions were unchanged:
+the baseline-adjusted direction-based GEE effect was $-$0.13 [$-$0.28,
++0.03], only the small pair was higher on the newer model for every method,
+the Holm tally was 8 higher, 6 lower and 2 not significant, and the H2
+interaction was $-$0.46 [$-$0.58, $-$0.34], in the predicted direction for
+Gemma and OLMo and opposite for Qwen and the small pair.
+% src (review revision): results/analysis/review_out_c2_originals_decomposition.csv (main_mean public4 delta 5.0 [3.8, 6.0]
+% src: (review_out_summary.md C2 decomposition table, row "mean of 4 main pairs"), code_weapon 20.6 [17.3, 23.8], total 8.1; code share
+% src: 0.52 [0.44, 0.60]; qwen 0.68 [0.59, 0.77]; mistral 0.09 [0.05, 0.14]) = review_out_summary.md C2 decomposition table;
+% src: review_out_c2_generation_effects.csv (gemma dim / mpoa / som on code_weapon +65.5 / +35.0 / +47.5, public4 +3.6 / -15.0 /
+% src: -9.1); review_out_c2_models.csv (public4, gee_with_originals direction -0.13 [-0.28, +0.03]; gee_planned gen_new:opt
+% src: -0.46 [-0.58, -0.34]); review_out_c2_tests.csv (public4 H1 tally 8/6/2; every method higher: qwen-small);
+% src: review_out_summary.md C2 findings (per-pair H2 on public4: predicted gemma, olmo; opposite qwen, qwen-small).
+
+% ------------------------------------------------------------
+\subsubsection*{H2: Generation $\times$ Edit Class}
+
+Per pair, ARA lost less effectiveness than the direction-based methods in
+Gemma (H2 contrast, ARA minus direction mean, $-$30.8~pp) and OLMo
+($-$39.3~pp), more in Qwen (+23.6~pp), and about as much in Mistral Small
+(+0.5~pp) and the small pair ($-$3.1~pp; Tables~\ref{tab:h2-contrasts}
+and~\ref{tab:pair-effects}). In log-odds the per-pair interactions were
+$-$4.27 (Gemma), $-$1.87 (OLMo), +1.89 (Qwen) and +0.76 (small pair, opposite
+in sign to its risk difference), all $p_\mathrm{Holm}<0.001$, and $-$0.06 for
+Mistral Small ($p_\mathrm{Holm}=0.696$); the pairs differed (generation
+$\times$ class $\times$ family $\chi^2=430.4$, 3 df, $p<0.001$). With seed
+variance added, only the Gemma ($-$30.8~pp [$-$60.2, $-$1.3]) and OLMo
+($-$39.3~pp [$-$68.8, $-$9.9]) contrasts excluded zero. Pooled with the pair
+as the unit, the contrast was $-$11.5~pp [$-$57.6, +34.6] ($-$1.05 log-odds
+[$-$5.21, +3.11]). With the prompt as the unit, the pooled GEE interaction was
+$-$0.50 log-odds [$-$0.62, $-$0.38] ($p_\mathrm{Holm}<0.001$, Holm over 6
+tests), and the planned mixed model gave $-$0.71 [$-$0.81, $-$0.60], both in
+the predicted direction. Leaving out Gemma reversed the pooled interaction
+(+0.20 [+0.05, +0.36], $p=0.008$), leaving out OLMo removed it (0.00
+[$-$0.15, +0.15], $p=0.98$), and under keyword scoring it was +0.02 [$-$0.08,
++0.12] ($p_\mathrm{Holm}=1.000$). Because the KL cap bound in every ARA run
+but in only 15 of the 24 direction-based runs, H2 compares a class whose
+selection was always set by the cap with one whose selection was set by it in
+part; on the units in which the cap bound in both cells, the interaction was
+$-$0.21 [$-$0.33, $-$0.09].
+% src: results/analysis/h1h2_h2_contrasts.csv; h1h2_tests.csv (family H2; judges wg, q3g, kw);
+% src: h1h2_models.csv (vb_planned gen_new:opt); final_pooled_robustness.csv (leave out gemma / olmo)
+% src (review revision): review_sel_pair_heterogeneity.csv (wg, all, main, generation x class x family 430.412, p 5.7e-93);
+% src: review_sel_pair_effects.csv (H2 contrast pp, lo_total / hi_total); review_sel_pair_meta.csv (H2 contrast, prompt
+% src: sampling only: pp -11.49 [-57.63, 34.65]; log-odds -1.054 [-5.214, 3.105]); review_sel_kl_summary.csv (15 of 24; 8 of 8);
+% src: review_sel_kl_h1h2.csv (S1 cap bound in both cells, generation x class -0.2101 [-0.3312, -0.0890]).
+
+
+Three properties of the ARA cells bear on these contrasts. First, the released
+ARA model is rebuilt by refitting its adapter (L-BFGS) from the stored trial
+parameters, not copied from the search. For the Qwen and Gemma pairs this
+refit ran on a different GPU (RTX PRO 6000) from the search (H200), and these
+four ARA exports moved by +6, +9, +5 and $-$7 dev keyword refusals when
+re-scored, whereas the four refitted on the search machine (OLMo, Mistral
+Small) moved by 0 to 2 (more than two refusals: 4 of 4 vs.\ 0 of 4, Fisher
+$p=0.029$; other methods 3 of 14 vs.\ 1 of 14, $p=0.60$;
+Appendix~\ref{app:dev-rescore}). Held-out results were measured on the
+released models, so they describe those models, but the link between the
+searched trial and the released model is weaker for these four. Second, the
+Gemma-4-31B ARA export, behind the largest H2 contrast, re-scored at a
+first-token KL of 0.107, above the cap (0.0845 during the search). Third, two
+seed-1 ARA runs on Qwen3.8-27B selected trials with 59 and 63 of 100 dev
+keyword refusals, whereas heretic-org reports 0 of 100 at KL 0.054 for a
+model built with the same defaults; this was not reproduced, the reported
+trial was not run in this pipeline, and the released heretic-org model refused
+26.4\% of the held-out prompts against 40.4\% for the ARA model selected here
+($-$14.0~pp [$-$17.0, $-$11.0]). The Qwen ARA effect (+34.4~pp), which
+reverses H2 in the Qwen pair, rests on this cell.
+% src (review revision): results/analysis/review_sel_export_drift.csv (search mc-h200-1; export built on mc-rtx-1 for
+% src: qwen2.5-32b / qwen3.8-27b / gemma-2-27b / gemma-4-31b ara: 10->16, 63->72, 16->21, 28->21; on mc-h200-1 for olmo / mistral
+% src: ara: +0, +1, +2, +0; Gemma-4-31B KL 0.0845 -> 0.1070); review_sel_export_tests.csv ("main study, ARA" Fisher p 0.0286;
+% src: "main study, other methods" 3/14 vs 1/14, p 0.596); reexport.log ("Modifying model using ARA") as cited in
+% src: review_sel_summary.md part 5; sections/08b_setup_details.tex (Qwen3.8-27B ARA rerun: 59/100 interrupted, clean run
+% src: 63/100 = tab:dev-rescore; heretic-org 0/100 at KL 0.054, notes/EXECUTION_PLAN_v2.md finding 1);
+% src: results/analysis/final_community_vs_selected.csv (qwen3.8-27b__community-hereticorg-ara vs qwen3.8-27b__ara:
+% src: community_wg_rate 0.2644, ours_wg_rate 0.4043, diff -0.1399 [-0.1696, -0.1099]).
+
+% ------------------------------------------------------------
+\subsubsection*{H3: Keyword Counts versus an Automatic Judge}
+
+Table~\ref{tab:h3-windows} reports H3 for three keyword windows; Table~\ref{tab:h3-gap}
+details the full-response comparison and Figure~\ref{fig:judge-agreement} shows the gap per model at the
+100-token window and the pooled gap at each window. At
+the window Heretic itself scores, the first 100 generated tokens, keyword
+matching and WildGuard agreed on average: over the 42 ablated models the
+keyword-minus-WildGuard gap was +0.5~pp [$-$1.0, +1.9] (main study +1.5~pp
+[+0.0, +2.9]; small pair $-$2.6~pp [$-$4.3, $-$0.9]; originals +0.7~pp
+[$-$0.1, +1.5]), and $-$0.1~pp [$-$1.6, +1.3] against WildGuard on the first
+256 tokens. Per model the sign varied: keyword matching was significantly
+higher than WildGuard in 14 of the 42 ablated models and significantly lower
+in 11 (Holm over the 74 models). With longer windows the gap grew, to +3.8~pp
+[+2.4, +5.2] at 256 tokens (both measures on the same prefix) and +8.4~pp [+6.9, +10.0] on the full response of
+at most 512 tokens, where keyword matching was higher in 34 models (24
+significant) and lower in 7 (3). Keyword refusal fell from 39.9\% on the full
+response to 32.0\% at 100 tokens while WildGuard refusal was 31.5\%, so most
+of the full-response excess came from markers that appear after the first 100
+tokens. At 100 tokens the gap was +11.0~pp [+9.7, +12.4] on responses that
+reached the 512-token cap and $-$10.4~pp [$-$12.2, $-$8.6] on responses that
+ended earlier (full response +17.7 and $-$1.2~pp). The 100-token text was
+obtained by re-tokenising the stored responses, which reproduced the stored
+256-token keyword labels in 97,825 of 97,828 responses
+(Appendix~\ref{app:trunc256}).
+% src (review revision): results/analysis/review_out_c4_gap_pooled.csv (harmful_all; kw100_vs_wg: ablated_primary +0.5
+% src: [-1.0, +1.9], rate1 0.320, rate2 0.315; ablated_primary:main +1.5 [+0.0, +2.9]; :small -2.6 [-4.3, -0.9]; original +0.7
+% src: [-0.1, +1.5]; kw100_vs_wg256 ablated_primary -0.1 [-1.6, +1.3]; kw100_vs_wg_capped_only +11.0 [+9.7, +12.4];
+% src: kw100_vs_wg_complete_only -10.4 [-12.2, -8.6]); review_out_summary.md C4 per-cell counts (kw100_vs_wg: higher 24 (14
+% src: Holm), lower 18 (11 Holm); kw_vs_wg 34 (24) / 7 (3)), from review_out_c4_gap_cells.csv; review_out_checks.csv
+% src: (re-tokenised 256-token cut reproduces keyword_refusal_256: 3 mismatching rows of 97,828).
+% src: results/analysis/h3_gap_pooled.csv (harmful_all; kw_vs_wg, _capped_only +17.7, _complete_only -1.2); trunc256_pooled.csv
+% src: (kw256_vs_wg256, ablated_primary +3.8 [+2.4, +5.2]).
+
+The structure of the gap was the same at every window. In the main study,
+with the prompt as the unit, the 100-token gap was larger for ARA than for the
+direction-based methods (+5.2~pp [+3.9, +6.4]), larger on the newer models
+(+4.7~pp [+3.4, +5.9]) and largest for ARA on the newer models (generation
+$\times$ class +8.1~pp [+6.0, +10.1]; all $p_\mathrm{Holm}<0.001$; full
+response +6.0, +4.4 and +9.4~pp). With the model as the unit ($n=32$), none of
+these terms was significant (class $p=0.17$, interaction $p=0.28$; full
+response $p=0.151$ and 0.26). In the small pair the class difference was not
+significant (100 tokens +1.1~pp, $p_\mathrm{Holm}=0.280$; full response
++0.8~pp [$-$1.5, +3.0], $p_\mathrm{Holm}=0.774$).
+% src (review revision): results/analysis/review_out_c4_models.csv (kw100_vs_wg, harmful_all, GEE_linear_paired_gap main:
+% src: class 0.0515 [0.0388, 0.0642], generation 0.0466 [0.0344, 0.0587], generation x class 0.0808 [0.0604, 0.1011], all
+% src: p_holm < 1e-12; OLS_cell_level_gap main: class p 0.172, interaction p 0.281; small GEE class 0.0114, p_holm 0.280;
+% src: kw_vs_wg rows = h3_models.csv: class 0.0601, generation 0.0440, interaction 0.0941; OLS class p 0.151, interaction
+% src: p 0.257; small class 0.008 [-0.015, 0.030], p_holm 0.774).
+
+On the full response, keyword--WildGuard agreement fell from $\kappa=0.73$
+[0.70, 0.75] in the originals to 0.40 [0.39, 0.42] (main study) and 0.33
+[0.31, 0.35] (small pair) after ablation, whereas WildGuard and Qwen3Guard
+agreed at 0.90 [0.88, 0.92] (originals) and 0.82 [0.80, 0.83] after ablation
+(42 models; main study 0.82 [0.81, 0.84], small pair 0.81 [0.78, 0.83]). Over
+the 42 ablated models, 7,503 responses were refusals by full-response keyword
+matching only and 4,059 by WildGuard only; by string heuristics that were not
+validated, 90.9\% of the keyword-only refusals matched only Heretic's safety
+and disclaimer markers (such as ``illegal'' or ``harmful''), not a
+first-person refusal or AI-identity phrase, and 60.0\% were truncated at 512
+tokens. Judging the first 256 tokens instead of the full response changed
+WildGuard refusal by +0.6~pp [+0.5, +0.7] (Appendix~\ref{app:trunc256}).
+% src: results/analysis/h3_gap_pooled.csv (harmful_all; kw_vs_wg, _capped_only, _complete_only); h3_summary.md
+% src: h3_summary.md (headline: keyword-only 7,503, WildGuard-only 4,059; 6,818 = 90.9% safety/disclaimer vocabulary
+% src: only; 4,505 = 60.0% hit the 512-token cap; note 10: wording categories are unvalidated string heuristics)
+% src: (per-cell counts); h3_agreement_pairs.csv (harmful, pooled); h3_models.csv (GEE_linear_paired_gap, OLS_cell_level_gap)
+% src (2026-11-06, integration): results/analysis/trunc256_pooled.csv (variant wg256_vs_wg, ablated_primary 0.0062 [0.0051, 0.0074])
+
+
+
+\subsubsection*{Secondary Outcomes}
+
+\paragraph{$\gamma$-MPOA control.} Correcting MPOA for the post-norm output
+gains (Figures~\ref{fig:gmpoa-dev} and~\ref{fig:gmpoa-heldout}) lowered
+held-out refusal on all four post-norm models, by 3.1~pp [2.1, 4.4]
+(OLMo-2-32B) to 19.9~pp [16.9, 22.7] (Gemma-4-31B; all $p_\mathrm{Holm}\le
+0.002$). The OLMo generation effect remained +57.0~pp [+53.8, +60.1] (MPOA
++61.4~pp), the Gemma generation effect became $-$20.4~pp [$-$23.6, $-$17.1]
+(MPOA $-$4.7~pp), and the pooled H2 interaction with $\gamma$-MPOA in place of
+MPOA was $-$0.42 [$-$0.53, $-$0.30]. Gemma-4-31B $\gamma$-MPOA lost 21.4~pp of
+mean capability at a dev KL of 0.061, with a teacher-forced divergence of
+0.128 (MPOA 0.007), and OLMo-2-32B $\gamma$-MPOA lost 8.1~pp at 0.085
+(divergence 0.196; MPOA 0.088); on Gemma-2-27B and Olmo-3.1-32B, where
+$\gamma$-MPOA lowered refusal by 4.2 and 7.5~pp, no benchmark score differed
+from the original's ($p_\mathrm{Holm}=1.0$).
+% src: results/analysis/final_gmpoa_control.csv; final_gmpoa_generation.csv (gemma gamma_mpoa -0.2037 [-0.2363, -0.1705],
+% src: moved from the fig12 caption in the review revision); final_pooled_robustness.csv
+% src: (gamma-MPOA replaces MPOA); final_gmpoa_benchmarks.csv (p_holm_within_reference, reference original:
+% src: gemma-2-27b and olmo-3.1-32b all 1.0); final_capability.csv; final_gmpoa_control.csv (tf_divergence, vs_mpoa_diff)
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig9_gamma_mpoa.pdf}
+\caption{\textbf{Gamma-corrected MPOA versus MPOA on the post-norm models (dev set).} One panel per model (columns: older and newer release; rows: Gemma, OLMo). A curve gives, for every KL budget $t$, the fewest dev keyword refusals (of 100) among the completed TPE trials of one run (100 trials, seed 1) with first-token KL divergence from the original at most $t$; it steps down at the run's Pareto-front trials (method markers; older release dashed and hollow, newer solid and filled). Past the largest KL sampled (end tick) the value is only carried forward (thin line). Faint dots: all completed trials; dotted line: the selection budget KL = 0.1; the small table (upper right for OLMo-2-32B, lower left elsewhere) reads each curve at KL $\le$ 0.1 and $\le$ 0.5. MPOA vs $\gamma$-MPOA: on Gemma-2-27B the correction changes little (74 vs 73 at KL $\le$ 0.1, 40 vs 35 at KL $\le$ 0.5). On Gemma-4-31B the two are close at KL $\le$ 0.1 (80 vs 78) but separate at larger budgets (70 vs 13 at KL $\le$ 0.5), a gap confounded with search coverage (MPOA placed 14 of 100 trials above KL 0.1, $\gamma$-MPOA 82): the MPOA curve is flat there because that region was barely explored, not because lower counts were shown to be unreachable. On OLMo-2-32B the correction lowers the count at the selection budget itself (36 vs 7 at KL $\le$ 0.1, 36 vs 3 at KL $\le$ 0.5), with similar search coverage (99 and 88 of 100 trials at KL $\le$ 0.1, none above 0.3), so this gap is not a coverage artefact. On Olmo-3.1-32B the correction changes little (84 vs 82 at KL $\le$ 0.1; neither search sampled a larger KL, so the KL $\le$ 0.5 values only repeat these). All counts are dev keyword refusals on the 100 prompts also used for optimisation and selection, not held-out refusal rates; one search per run (seed 1), budgets other than 0.1 read post hoc.}
+\label{fig:gmpoa-dev}
+\end{figure*}
+% caption: paper/figures/captions.md (fig9_gamma_mpoa)
+
+
+\paragraph{Community releases.} Of eight public abliterations
+(Figures~\ref{fig:community} and~\ref{fig:community-releases}), four refused
+less than the best model selected here for the same checkpoint (all
+$p_\mathrm{Holm}<0.001$), for example on Qwen3.8-27B (1.4\% [0.9, 2.4] vs.\
+14.0\% [12.0, 16.3]; $-$12.6~pp [$-$14.8, $-$10.5]); two did not differ significantly and two refused more. The
+four had teacher-forced divergences of 0.085--0.151 (best selected models
+0.042--0.060) and mean capability changes of $-$0.94 to $-$0.15~pp. On three
+of the five checkpoints with a public release (Qwen2.5-32B, Qwen3.8-27B,
+Olmo-3.1-32B), a public release refused less than every model selected here
+under the KL cap; on the other two (Gemma-4-31B, Mistral-Small-3.2) the best
+release did not differ significantly from the best selected model.
+% src: results/analysis/final_community_vs_selected.csv (p_holm_within_community; Holm over 4 per release)
+% src (review revision): final_community_vs_selected.csv rows with ours_is_best_wg: qwen2.5-32b huihui 1.3% / zetasepic 1.1% vs
+% src: mpoa 3.9%, qwen3.8-27b huihui 1.4% vs mpoa 14.0%, olmo-3.1-32b muxodious 0.7% vs ara 10.8% (all p_holm < 0.001);
+% src: gemma-4-31b coder3101 0.9% vs ara 0.6% (p_holm 0.51); mistral-small-3.2 huihui 5.0% vs mpoa 4.0% (p_holm 0.44);
+% src: "3 of the 5 checkpoints" = paper/figures/captions.md (fig14_community), moved from the caption.
+
+
+\paragraph{Seed sensitivity.} On the small pair a second seed changed the
+selected dev count by a median of 8 and up to 35 refusals
+(Figure~\ref{fig:seed-dev}), and held-out refusal differed between seeds in
+all 10 cells after Holm correction (median 9.4~pp, maximum 25.2~pp;
+item-level $\kappa=0.08$--0.79; Figure~\ref{fig:seed-heldout}); these
+differences give the run-to-run standard deviation used in
+\S\ref{sec:res-h1}. The ARA
+generation effect was +14.2~pp with seed~1 and +0.0~pp [$-$1.2, +1.2]
+($p=1.00$) with seed~2, the direction-based effects changed from +34.1, +4.2,
++9.7 and +21.2~pp (DiM, MPOA, SOM, J-space) to +44.3, +30.1, +29.6 and
++10.6~pp, and the H2 risk-difference contrast was $-$3.1~pp with seed~1 and
+$-$28.7~pp [$-$31.0, $-$26.5] with seed~2. Method accounted for $\eta^2=0.94$ and 0.88
+of the variance among the ten cell rates of Qwen2.5-7B and Qwen3.5-4B
+($F(4,5)=19.46$ and 9.58, $p=0.003$ and 0.015).
+% src: paper/figures/captions.md (fig8 "For the text": |s1 - s2| median 8, max 35); results/analysis/final_seed_cells.csv;
+% src: final_seed_generation.csv; final_seed_method_vs_seed.csv (eta_sq_method, anova_F, anova_p); seed-2 per-method
+% src: generation effects (DiM +44.3, MPOA +30.1, SOM +29.6, J-space +10.6) moved from the fig13 caption (paper/figures/captions.md,
+% src: fig13_seed_heldout; final_seed_generation.csv) in the review revision.
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig8_seed_sensitivity.pdf}
+\caption{\textbf{Seed sensitivity of the selected trial (dev set, small pair).} Each row is one model $\times$ method cell of the small Qwen pair, optimised twice with 100 TPE trials that differ only in the seed (same configuration, Heretic commit and RTX 4090). The two markers give the dev keyword refusals (of 100) of the trial chosen by the selection rule (fewest dev keyword refusals at first-token KL $\le$ 0.1) in the seed-1 run (full colour) and the seed-2 run (lighter); the column on the right is their absolute difference. Hollow markers and dashed lines mark the older model (Qwen2.5-7B), filled markers and solid lines the newer one (Qwen3.5-4B). The right panels show both seeds' Pareto fronts for the cell with the largest difference (Qwen2.5-7B DiM, 55 vs 20) and the cell with the smallest (Qwen2.5-7B MPOA, 19 vs 18). In the fronts, the rings mark each seed's selected trial and the dotted line the KL = 0.1 threshold. All counts are keyword matches on the 100 dev prompts used for optimisation and selection, not held-out refusal rates; seed 1 is the run evaluated elsewhere in the paper.}
+\label{fig:seed-dev}
+\end{figure*}
+% caption: paper/figures/captions.md (fig8_seed_sensitivity)
+
+
+\paragraph{Over-refusal.} WildGuard refusal on the 350 benign held-out prompts
+fell from 4.3--22.3\% in the originals to 0.0--7.4\% in the 42 primary models,
+significantly in 41 of them (exact McNemar, Holm over all 64 modified models);
+only Gemma-4-31B DiM, the failed edit, did not change significantly (+1.1~pp,
+$p_\mathrm{Holm}=0.250$).
+% src: results/analysis/secondary_overrefusal.csv (item_group benign_all; wg_overrefusal_rate originals 0.043 qwen2.5-7b to 0.223 gemma-2-27b; primary 0.000 to 0.074 gemma-2-27b__som 26/350; wg_mcnemar_p_holm < 0.05 with wg_delta_pp < 0 in 41 of 42 primary; gemma-4-31b__dim +1.14 pp, p 0.125, p_holm 0.250; Holm over the 64 modified cells)
+
+\paragraph{Harmful compliance.} Residual refusal is not the same as harmful
+compliance. Of the ablated main-study responses that WildGuard did not label
+as refusals, 75.1\% [73.4, 76.9] were harmful according to the HarmBench
+classifier and 55.8\% [53.3, 58.1] according to WildGuard's harmful-response
+label (all ten originals: 79.0\% and 29.6\%), so 16.8\% [15.7, 18.0] of all ablated
+main-study responses were neither refused nor harmful by HarmBench. With
+harmful compliance as the outcome, coded as not harmful so that a positive
+generation effect again means that removal left less on the newer model, the
+pooled conclusions were the same (Appendix~\ref{app:harm}). The
+baseline-adjusted direction-based effect was +0.05 log-odds [$-$0.02, +0.11]
+(HarmBench) and $-$0.03 [$-$0.13, +0.07] (WildGuard), against +0.03 for
+refusal; the H2 interaction was $-$0.49 [$-$0.56, $-$0.41] and $-$0.45
+[$-$0.52, $-$0.38], against $-$0.50; and per pair the interaction was in the
+predicted direction for Gemma and OLMo and opposite for Qwen under every
+outcome. Several per-pair results changed. Under HarmBench every Qwen method
+was significantly higher on the newer model, so the Qwen pair met the H1
+criterion on this outcome: Qwen SOM, Gemma MPOA and Gemma SOM became
+significantly higher, Mistral Small DiM lost significance and Mistral Small
+ARA became significantly lower. The raw pooled ARA effect became significant
+(+0.21 [+0.14, +0.28] and +0.24 [+0.18, +0.30], against +0.12 for refusal),
+and the Holm tally of the 16 main-pair tests was 11 higher, 3 lower and 2 not
+significant (HarmBench) and 10, 1 and 5 (WildGuard), against 8, 4 and 4.
+% src (review revision): results/analysis/review_out_c3_pooled.csv (ablated, main study (32): HB harmful among not refused
+% src: 75.1 [73.4, 76.9], WG harmful among not refused 55.8 [53.3, 58.1], not refused and not HB-harmful 16.8 [15.7, 18.0];
+% src: originals 79.0 / 29.6) = review_out_summary.md C3 "How much of 'not refused'"; review_out_c3_models.csv (hbnc / wghnc,
+% src: main: gee_with_originals direction +0.05 [-0.02, +0.11] / -0.03 [-0.13, +0.07]; gee_planned gen_new:opt -0.49 [-0.56,
+% src: -0.41] / -0.45 [-0.52, -0.38]; optimisation class +0.21 [+0.14, +0.28] / +0.24 [+0.18, +0.30]); review_out_c3_tests.csv
+% src: (H1 tallies 11/3/2 and 10/1/5; changed Holm decisions listed in review_out_summary.md C3); review_out_c3_h2_contrasts.csv
+% src: (per-pair interactions: gemma, olmo negative and qwen positive under every outcome).
+
+\paragraph{Capability and divergence.} Across the 42 primary models, mean
+capability change ranged from $-$4.2~pp (OLMo-2-32B ARA) to +0.9~pp
+(Qwen2.5-7B J-space; Figure~\ref{fig:capability},
+Tables~\ref{tab:capability-main}--\ref{tab:capability-small}), and
+teacher-forced divergence from 0.004 to 0.279 nats per token
+(Figure~\ref{fig:divergence},
+Tables~\ref{tab:teacher-forced-main}--\ref{tab:teacher-forced-small}). Across
+the 56 modified models with a dev trial, capability change was not correlated
+with selected dev KL (Spearman $\rho=-0.03$ [$-$0.29, +0.24], $p=0.81$) but
+was with teacher-forced divergence ($\rho=-0.48$ [$-$0.66, $-$0.24],
+$p<0.001$); every selected trial had KL~$\le 0.1$ by design. Among the 42
+primary models alone, the correlations were $\rho=+0.08$ [$-$0.22, +0.38]
+($p=0.63$) with dev KL and $-0.39$ [$-$0.63, $-$0.11] ($p=0.010$) with
+teacher-forced divergence.
+% src: results/analysis/final_kl_vs_capability_cells.csv (role primary); paper/tables/t3_teacher_forced.csv;
+% src: paper/figures/captions.md (fig6 range); final_kl_vs_capability.csv (n = 56; "primary seed 1 only" rows, n = 42)
+
+
+
+\paragraph{Development set versus held-out refusal.} On the dev prompts used
+for search and selection (Figures~\ref{fig:pareto}--\ref{fig:kl-budget},
+Table~\ref{tab:dev-refusals-main}), the selected keyword count changed from
+older to newer model by $-$2.8 (DiM), +17.3
+(MPOA), +20.3 (ARA) and $-$4.5 (SOM) refusals on average over the main pairs
+(Figure~\ref{fig:dev-generation}). The newer models' ARA counts (Qwen, Gemma,
+OLMo, Mistral Small) were 63, 28, 48 and 6 at a KL budget of 0.1 and 21, 9, 34
+and 6 at 0.2 (Figure~\ref{fig:kl-budget}). Gemma-4-31B ARA, with 28 dev
+keyword refusals, had 22.3\% [19.8, 25.0] held-out keyword refusals and 0.6\%
+held-out WildGuard refusals. Dev refusals correlated with held-out refusal
+across the 42 primary models ($\rho=0.77$ [0.61, 0.87]; older models 0.85,
+newer 0.73), and the best dev method was the
+best held-out method in 7 of 12 model $\times$ seed sets (6 of 12 without the
+KL tie-break).
+The direction of the change could differ between the two sets: in 3 of the 16
+main-pair method cells (Qwen DiM, Gemma ARA, Mistral Small MPOA) the dev change
+and a significant held-out change had opposite signs, and on the small pair
+every method's dev count fell from the older to the newer model while every
+held-out rate rose (Figure~\ref{fig:dev-generation}).
+% src: paper/tables/t1_dev_refusals_main.tex; paper/figures/captions.md (fig3 "For the text" means);
+% src: results/analysis/final_log.txt (d); final_dev_vs_heldout_within_model.csv;
+% src: h1h2_cells.csv (gemma-4-31b__ara: kw 217/972 = 0.2233 [0.1982, 0.2505]; wg 6/972 = 0.0062)
+
+\paragraph{Re-scoring the released exports.} The 46 released merged exports were
+re-scored on the development set with Heretic's own evaluator. Their keyword
+refusal counts were within two of the selected trials' counts for 37 of 46
+(median change +1, range $-$7 to +9, largest for ARA), first-token KL changed
+by a median of +0.0003, and four exports (Gemma-2-27B MPOA, Gemma-4-31B ARA
+and the $\gamma$-MPOA controls of Gemma-2-27B and Olmo-3.1-32B) re-scored
+slightly above the KL budget, at 0.103 to 0.107
+(Appendix~\ref{app:dev-rescore}). The largest changes were in ARA exports
+whose adapter had been refitted on a different GPU from the search
+(\S\ref{sec:res-h2}). The re-score also showed that the five
+Gemma-2-27B exports had been saved without the eager-attention setting that
+transformers needs for Gemma-2's attention-logit soft-capping; their public
+configurations were patched, and the held-out results are unaffected because
+all generations, benchmarks and teacher-forced divergences were computed in
+vLLM, which applies the soft-cap from the configuration regardless of this
+setting.
+% src (2026-11-06, integration): results/analysis/dev_rescore_groups.csv (row "all 46 released exports": n_within_2 37,
+% src: median_d_ref 1, min_d_ref -7, max_d_ref 9, median_d_kl 0.0003, n_over_kl_cap 4); results/analysis/dev_rescore_cells.csv
+% src: (d_refusals +9 qwen3.8-27b ara and -7 gemma-4-31b ara; over_kl_cap rows: gemma-2-27b mpoa 0.1036, gemma-4-31b ara
+% src: 0.1070, gemma-2-27b gmpoa 0.1059, olmo-3.1-32b gmpoa 0.1032; gemma2_eager rows: evaluated_rev, patched_rev12);
+% src: notes/gemma2_config_patch_20261106.log; details, mechanism and vLLM check in sections/08f_dev_rescore.tex (app:dev-rescore)
+% src (review revision): results/analysis/review_sel_export_drift.csv, review_sel_export_tests.csv (ARA, other machine 4/4 drift > 2)
+
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig3v_generation_dev_heldout.pdf}
+\caption{\textbf{Generation effect on the development set (a) and on held-out prompts (b).} One block per pair, one row per condition; hollow = older, filled = newer model; the number right of each panel is the change, newer $-$ older. (a) Dev keyword refusals (of 100) of the trial picked by the selection rule (fewest dev refusals at first-token KL $\le$ 0.1, seed 1); the Original row gives the unedited models. These prompts were also used for search and selection, so the counts are optimistically biased and untested; seed-to-seed variation is shown in Figure~\ref{fig:seed-dev}. (b) Held-out refusal judged by WildGuard, paired over the 972 harmful prompts: the H1 measure, with the same values as Figure~\ref{fig:heldout-generation} and Table~\ref{tab:h1-heldout}. Bold: significant; grey: not significant. Significance for the methods is Holm-adjusted (exact McNemar, Holm within the 23 H1 tests); significance for the originals and $\gamma$-MPOA is unadjusted (exact McNemar), because they are not H1 tests; $\dagger$ failed edit (held-out refusal not below the model's own original). $\gamma$-MPOA was run on the Gemma and OLMo pairs only, J-space on the small pair only. Single seed; 95\% Wilson intervals for (b) are in Figure~\ref{fig:heldout-generation}.}
+\label{fig:dev-generation}
+\end{figure*}
+% caption: paper/figures/captions.md (fig3v_generation_dev_heldout); replaces the horizontal fig3_generation_effect (user request 2026-11-05)
+% review revision 2026-11-06 (minor m2): the significance sentence states explicitly which markers are Holm-adjusted.
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig4_kl_budget_heatmap.pdf}
+\caption{\textbf{How much refusal is left at a given KL budget (dev set).} Each cell is the fewest dev keyword refusals (of 100) among the completed TPE trials of one optimisation run whose first-token KL divergence from the original is at most the column budget $t$. Within each pair the upper block is the older and the lower block the newer release; each block starts with the unedited original (KL 0). Darker cells mean more refusal survives. The outlined $t = 0.1$ column is the selection budget, so it equals the dev refusals of the selected models. A degree sign ($^\circ$) marks a budget that is not binding (60 cells: every completed trial already lies within it, so larger budgets were never explored and the value is the run's overall minimum); a dagger marks a minimum over fewer than 10 trials (6 cells). The columns are post-hoc budgets on one 100-trial search per run (seed 1), not separate optimisations, and the counts are dev-set numbers, not held-out refusal rates.}
+\label{fig:kl-budget}
+\end{figure*}
+% caption: paper/figures/captions.md (fig4_kl_budget_heatmap)
+
+\paragraph{Search convergence.} Of the 42 core runs, 34 reached their
+selected count by trial 75 (median trial 48) and 8 (19\%) improved later, by
+1--14 refusals (Figures~\ref{fig:search-convergence}
+and~\ref{fig:search-runs}); late runs were equally frequent on older and newer
+models (4 of 21 each; Fisher $p=1.0$). The failed Gemma-4-31B DiM run
+reached its selected count (98) at trial 40.
+% src: results/analysis/final_search_runs.csv, final_search_tests.csv; paper/figures/captions.md (fig7)
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig7_search_convergence.pdf}
+\caption{\textbf{Search-budget convergence of the 100-trial TPE searches (dev set).} Top: for each core method with ten runs (seed 1; five pairs, older and newer release), the median over the runs of the best count so far: after trial $t$, the fewest dev keyword refusals (of 100) among trials 1 to $t$ with first-token KL divergence $\le$ 0.1 from the original, i.e. the count the selection rule would have returned had the search stopped at trial $t$. Dark band: middle 50\% of the runs (25th--75th percentile); light band: all runs (minimum to maximum). Curves start at the run's first trial within the KL budget (trials 5--10 for ARA, 1--2 otherwise); the median and bands start once every run has a value. The grey band marks the 30 random startup trials of the TPE sampler, the dotted line trial 75. Bottom: the trial at which each of the 42 core runs (DiM, MPOA, ARA, SOM and, on the small pair, J-space) first reached the count it finally selected (median 48; 10 runs within the random startup); hollow markers are older, filled markers newer releases, colour and shape the method. The 8 runs (19\%) that still improved after trial 75, by 1--14 refusals, show that the selected counts are not converged minima; for the other 34 runs these data cannot tell whether a longer search would have helped. Every run is drawn as its own curve, by method and release, in Figure~\ref{fig:search-runs}, together with the two J-space runs and the 4 $\gamma$-MPOA runs (Gemma and OLMo pairs only; not counted in the histogram). All counts are keyword matches on the 100 dev prompts that were also used for search and selection, not held-out refusal rates.}
+\label{fig:search-convergence}
+\end{figure*}
+% caption: paper/figures/captions.md (fig7_search_convergence)
+
+
+
+\clearpage
+% ------------------------------------------------------------
+\subsection{Run-to-Run Variance as a Function of the Refusal Level}
+\label{app:sigma-level}
+
+The per-pair intervals of Table~\ref{tab:pair-effects} add a run-to-run
+variance $\sigma^2$ per optimised cell, with $\sigma=9.15$~pp [6.40, 16.07]
+estimated from the ten small-pair seed pairs and assumed constant across
+models, methods and refusal levels (\S\ref{sec:setup-stats}). A binomial-type
+rate varies less near 0\% and 100\%, so a second model holds the run effect
+constant on the logit scale, $\sigma_L=0.83$ [0.58, 1.45] from the same seed
+pairs, and maps it to percentage points at each cell's observed rate $p$ by
+the delta method, $\sigma_{\mathrm{pp}}=\sigma_L\,p(1-p)$. This gives about
+0.5~pp for Gemma-4-31B ARA (0.6\% refusal) and up to 20.7~pp at 50\% refusal.
+The ten seed pairs do not distinguish the two models (log-likelihood of the
+pp differences 6.25 under the constant model and 6.01 under the logit model;
+rank correlation between $|d|$ and $\bar p(1-\bar p)$ $-0.01$). Under the
+logit model, 1 of the 16 main-study per-method effects (OLMo MPOA) exceeded
+twice the run-to-run standard deviation of a difference, against 5 under the
+constant model; across the 95\% interval of $\sigma_L$, 0 to 3 did. Per pair
+(Table~\ref{tab:sigma-level}), the OLMo direction-based increase excluded zero
+under both models except at the upper limit of the logit model, whereas the
+Qwen ARA increase, the Gemma ARA decrease and the Gemma H2 contrast excluded
+zero only under the constant model. Table~\ref{tab:heterogeneity} gives the
+between-pair heterogeneity with each kind of within-pair variance, including
+the between-pair variance $\tau^2$ of every estimand, and
+Table~\ref{tab:pair-variances} the within-pair variances used as weights. The
+headline $I^2$ of the raw direction-based pp effect is therefore 80\% only
+under the constant variance model at the point estimate of $\sigma$; under
+the refusal-level model it is 46\% ($\tau^2=127$~pp$^2$ against 225~pp$^2$).
+% 2026-11-08 ARS re-review revision (REV-14, NEW-3): t11 replaced by t11b (same Q, p, I2, plus tau2) and t14 added
+% (scripts/analysis/revision_rr_extra.py from revision_heterogeneity.csv and revision_pair_variances.csv).
+% src: results/analysis/revision_sigma_model.csv (sigma_pp 9.154 [6.396, 16.065]; sigma_L 0.828 [0.578, 1.453]; log-likelihood 6.254 /
+% src: 6.007; Spearman -0.006); revision_sigma_cells.csv (gemma-4-31b ara sigma_level_pp_point 0.51); 0.828 x 0.25 = 20.7 pp;
+% src: revision_sigma_method_flags.csv (exceeds_level lo / point / hi: 3 / 1 / 0; exceeds_const point 5);
+% src: revision_sigma_pair_verdicts.csv; revision_heterogeneity.csv; revision_pair_variances.csv
+% src: (all written by scripts/analysis/revision_seed_variance.py, 2026-11-08).
+
+\input{tables/t10_sigma_level}
+\input{tables/t11b_heterogeneity_tau}
+\input{tables/t14_pair_variances}
+
+% ------------------------------------------------------------
+\subsection{Verdicts at Other KL Budgets (Development Set)}
+\label{app:kl-budgets}
+
+Only the trial selected at first-token KL~$\le 0.1$ was evaluated on held-out
+prompts, so other budgets can be read only on the 100 dev prompts, from the
+completed trials of each search. For each run the refusal--KL front $f(t)$,
+the fewest dev keyword refusals among trials with KL~$\le t$ (the original at
+KL~$=0$ included), was read at $t=0.05$, 0.1, 0.2, 0.5 and 1.0, and summarised
+without a budget as the area under the front, the mean of $f(t)$ over 200
+log-spaced budgets between 0.01 and 1. Run-to-run variation of each quantity
+was estimated from the ten small-pair seed pairs. In 7 of the 42 seed-1 runs
+the front was carried forward beyond the largest sampled KL over more than
+half of this range. Table~\ref{tab:kl-budgets} gives the class-level generation
+effects. The direction-based effects kept their sign from KL~$\le 0.1$ to
+KL~$\le 1.0$ in all four main pairs, and the OLMo direction-based increase
+exceeded run-to-run variation at every budget and on the area. The dev ARA
+effects had the same sign at every budget but the opposite sign to the
+held-out ARA effects in three of the four main pairs, as at the selected
+budget (\S\ref{sec:res-secondary}). The H2 contrast was positive at small
+budgets and negative at large ones in Gemma, negative from KL~$\le 0.1$ on in
+OLMo, and positive in Qwen at every budget.
+% src: results/analysis/revision_kl_budget_runs.csv (carried_forward_share > 0.5 in 7 of 42 seed-1 runs; t0.1 equals the selected
+% src: count in every run, checked in the script); revision_kl_budget_sigma.csv; revision_kl_budget_effects.csv (direction class
+% src: sign_as_at_0.1 = 1 for t0.2 / t0.5 / t1 in all main pairs; olmo direction beyond_noise at every quantity; ara sign as held-out
+% src: in 1 of 4 at every quantity; H2 gemma +22.7 / +7.3 / -18.7 / -29.0 / -29.0, olmo +12.7 / -26.0 / -10.0 / -0.7 / -27.7, qwen
+% src: positive throughout) (scripts/analysis/revision_kl_budgets.py, 2026-11-08).
+
+\input{tables/t12_kl_budgets}
+
+% ------------------------------------------------------------
+\subsection{Outcome Classes}
+\label{app:outcome-classes}
+
+Table~\ref{tab:outcome-classes} gives the four outcome classes of
+\S\ref{sec:setup-eval} for every original and primary model. Degenerate
+responses were at most 0.6\% of any of these models' responses. Among the 42 primary
+models, incomplete compliance (generation stopped at the 512-token limit)
+ranged from 7.6\% to 79.9\% of responses and complete compliance from 2.3\%
+to 61.3\%; 65.8\% of all non-refused responses were incomplete. Incomplete
+compliance is a property of the 512-token budget, not evidence that a
+response was unhelpful.
+% src: results/analysis/revision_outcome_classes_summary.md, revision_outcome_classes.csv (scripts/analysis/revision_outcome_classes.py,
+% src: 2026-11-08; input cell_rates.csv harmful_all).
+
+\input{tables/t13_outcome_classes}
+
+% ------------------------------------------------------------
+% 2026-11-08 ARS re-review revision (REV-20, NEW-5): mixed-model estimates moved out of the main-text H2 table, and
+% intervals for conditional retention. src: paper/tables/t15_h2_vb.tex, t16_retention.tex (scripts/analysis/revision_rr_extra.py;
+% results/analysis/revision_rr_retention.csv, revision_rr_retention_sigma.csv).
+\subsection{Mixed-Model Estimates and Conditional Retention}
+\label{app:rr-tables}
+
+Table~\ref{tab:h2-vb} gives the planned mixed logistic model of the H2
+interaction next to the GEE estimates of Table~\ref{tab:h2-contrasts}. Its
+conditional coefficients have the same sign as the GEE coefficients in every
+pair and pooled and are larger in magnitude, as expected for a conditional
+model, but the model has no pair-specific slopes and its intervals describe
+prompt sampling only. Table~\ref{tab:retention} gives the generation effects
+on conditional refusal retention with prompt-bootstrap intervals and with
+intervals that add a run-to-run standard deviation of retention of 11.0~pp
+[7.7, 19.2] per cell, estimated from the ten small-pair seed pairs. With
+run-to-run variance, the OLMo direction-based increase (+43.4~pp [+25.7,
++61.1]), the OLMo H2 contrast ($-$46.6~pp [$-$81.8, $-$11.3]) and the Qwen ARA
+increase (+36.9~pp [+6.3, +67.5]) excluded zero; no other class-level effect
+or H2 contrast did.
+% src: revision_rr_retention.csv (excludes_zero_total True: olmo direction class, olmo H2 contrast, qwen ara; False for the other
+% src: 12 class-level rows); revision_rr_retention_sigma.csv (10.96 [7.66, 19.24]); t15_h2_vb.tex (signs equal in all 6 rows).
+
+\input{tables/t15_h2_vb}
+\input{tables/t16_retention}

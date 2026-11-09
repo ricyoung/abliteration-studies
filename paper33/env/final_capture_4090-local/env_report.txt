@@ -1,0 +1,43 @@
+# environment report  host=4090-omarchy  date=2026-11-05T17:02:12-08:00
+## OS
+PRETTY_NAME="Omarchy"
+7.2.8-9-omarchy
+## CPU
+CPU(s):                                  32
+Model name:                              AMD Ryzen 9 7950X 16-Core Processor
+Thread(s) per core:                      2
+Socket(s):                               1
+CPU(s) scaling MHz:                      78%
+## RAM
+               total        used        free      shared  buff/cache   available
+Mem:              62          21           1           0          42          40
+## Disk
+/dev/dm-0       3.7T  780G  2.9T  21% /
+/dev/md127       37T  6.8T   30T  19% /data
+Filesystem      Size  Used Avail Use% Mounted on
+## GPU
+name, memory.total [MiB], driver_version, pcie.link.gen.max, pcie.link.width.max, power.limit [W], clocks.max.sm [MHz]
+NVIDIA GeForce RTX 4090, 24564 MiB, 615.78.08, 4, 16, 550.00 W, 3120 MHz
+## nvcc
+Build cuda_13.4.r13.4/compiler.38855100_0
+## heretic python (/data/heretic_2/heretic/.venv/bin/python)
+python 3.12.15
+torch 2.14.1+cu130 | CUDA (torch build) 13.0 | cuDNN 92400 | GPU NVIDIA GeForce RTX 4090 | capability (8, 9)
+transformers 5.18.0
+peft 0.21.2
+accelerate 1.15.0
+optuna 5.0.0
+datasets 5.0.1
+bitsandbytes 0.50.2
+safetensors 0.8.0
+huggingface_hub 1.33.0
+numpy 2.5.4
+heretic ?
+git /data/heretic_2/heretic: paper33-plugins 8fd4d76 0 uncommitted
+git /data/heretic_2/external/jspace-refusal: main 30a1b9c 0 uncommitted
+## bench python (/data/heretic_2/33_2611_does_refusal_removal_get_harder/scripts/bench/.venv/bin/python)
+torch 2.14.0+cu130
+vllm 0.33.0
+lm_eval 0.4.13
+transformers 5.20.2
+datasets 5.1.0

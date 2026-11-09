@@ -32,8 +32,8 @@ PAIRS = [("qwen", "Qwen", "qwen2.5-32b", "qwen3.8-27b"),
          ("gemma", "Gemma", "gemma-2-27b", "gemma-4-31b"),
          ("olmo", "OLMo", "olmo-2-32b", "olmo-3.1-32b"),
          ("mistral", "Mistral Small", "mistral-small-2409", "mistral-small-3.2"),
-         ("qwen-small", "Qwen (small pair)", "qwen2.5-7b", "qwen3.5-4b")]   # family labels as in S.PAIRS
-ORDER = ["original", "dim", "mpoa", "gamma_mpoa", "som", "ara", "jspace"]
+         ("qwen-small", "Small pair", "qwen2.5-7b", "qwen3.5-4b")]   # family labels as in S.PAIRS
+ORDER = ["original", "dim", "mpoa", "som", "jspace", "gamma_mpoa", "ara"]
 LABEL = {"original": "Original", "dim": "DiM", "mpoa": "MPOA", "gamma_mpoa": "γ-MPOA", "som": "SOM", "ara": "ARA",
          "jspace": "J-space"}
 STYLE_KEY = {"original": "base"}
@@ -151,7 +151,7 @@ def main():
                          "b   Held-out: refusal judged by WildGuard\n(% of 972 harmful prompts; tests H1)")
                 ax.set_title(title, fontsize=S.FONT, loc="left", pad=18, color=S.TEXT, fontweight="bold")
             if b == len(PAIRS) - 1:
-                ax.set_xlabel("refusals of 100 (search objective)" if col == 0 else "residual refusal (%)",
+                ax.set_xlabel("Dev keyword refusals (of 100)" if col == 0 else "Held-out refusal (%, WildGuard)",
                               fontsize=S.FONT_SMALL, color=S.TEXT_SECONDARY)
 
     # key + note in one block at the bottom (the marker key used to sit in a legend line above the titles)
@@ -166,7 +166,7 @@ def main():
     line1 = HPacker(children=[_key(False), _txt("older model"), _txt("   "), _key(True), _txt("newer model"),
                               _txt("      Numbers right of each panel: change, newer − older.")],
                     align="center", pad=0, sep=3)
-    line2 = HPacker(children=[_txt("Held-out: bold = significant, grey = not significant;  † failed edit.")],
+    line2 = HPacker(children=[_txt("Held-out: bold = significant (methods Holm-adjusted, 23 H1 tests; originals unadjusted); grey = n.s.;  † failed edit.")],
                     align="center", pad=0, sep=0)
     note = VPacker(children=[line1, line2], align="center", pad=0, sep=3)
     fig.add_artist(AnchoredOffsetbox(loc="lower center", child=note, bbox_to_anchor=(0.52, 0.008),

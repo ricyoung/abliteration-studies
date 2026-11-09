@@ -16,9 +16,30 @@
 %   (reexport_1x/VERSION.md, results_rtx/*/PROVENANCE.json, results_rtx/reexport_1x.log); external tools
 %   (/data/heretic_2/models/external/*/PROVENANCE.json; cells.csv ext_*); Holm families from tests_refusal.csv
 %   (column family, n_in_family) and tests_capability.csv (column family).
+% Revised 2026-11-08 (ARS review): R12 search ranges and objectives of both builds in tab:h1setup (src:
+%   analysis/revision_20261108/search_space.csv, read from the Optuna journals; identical to `git show
+%   v1.4.0:src/heretic/main.py` l.566-601 and `git show 0db5c31:src/heretic/modifiers/abliteration.py` l.247-297 in
+%   /data/heretic_2/heretic; 1.x objective: v1.4.0 evaluator.py get_score l.110-125); "same edit" -> "same edit family";
+%   S11 Heretic DiM vs Arditi et al.; S20 fork identity (`git diff --stat 0db5c31 8fd4d76`: config.default.toml +63
+%   lines, no deletions; new files modifiers/precomputed.py, modifiers/som.py, tests/test_som.py); R8 search-level
+%   decision rule; S7 clustered correlations; S8 equivalence margin; S9 external contrasts descriptive; R5 "earlier
+%   draft" removed; R11 "KL-matched" -> "rule-matched".
 % =====================================================================
 \section{Methods}
 \label{sec:methods}
+
+% 2026-11-07: study-design schematic (figures/src/gen.py, diagram-design primitives)
+\begin{figure*}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig0_study_design.pdf}
+\caption{\textbf{Study design.} Six kinds of model on the same Qwen2.5 bases are evaluated with one held-out,
+judge-based harness and compared with paired tests on the same prompts. The highlighted condition is the selection-cap
+test: the original Heretic~1.x general study on Qwen2.5-32B re-exported at the Heretic~2.0 selection rule
+(\S\ref{sec:reexport}). Community releases (dashed) were produced by others with undocumented procedures; the
+external tools were run by the author with their default or recommended settings. ``Rule-matched'': both arms selected
+by the same rule, not at matched divergence.}
+\label{fig:design}
+\end{figure*}
 
 \subsection{Models and Conditions}
 \label{sec:models}
@@ -27,7 +48,7 @@
 All base models of the main design are Qwen2.5 instruction-tuned checkpoints \cite{qwen2024qwen25,hui2024qwen25coder}
 in two lines, general (Qwen2.5-7B, -14B and -32B-Instruct) and coder (Qwen2.5-Coder-7B, -14B and -32B-Instruct), run
 unquantised in bf16. Each base model is evaluated unedited (the \emph{original}) and after one or more edits
-(Table~\ref{tab:conditions}); a model--condition combination is called a \emph{cell}. The main design has 29 cells,
+(Table~\ref{tab:conditions}, Figure~\ref{fig:design}); a model--condition combination is called a \emph{cell}. The main design has 29 cells,
 all judged: the six originals, twelve Heretic~1.x models (a general and a code variant on each base model), nine
 Heretic~2.0 and fork-plug-in models (five on Qwen2.5-7B, four on Qwen2.5-32B) and two community releases of
 Qwen2.5-32B. Thirteen of these cells were first reported in the companion study \cite{young2026harder}: the
@@ -49,8 +70,8 @@ evaluation prompts); dev = development prompts whose
 keyword refusals the search minimises. General direction data: \texttt{mlabonne/harmful\_behaviors} versus
 \texttt{mlabonne/harmless\_alpaca}, train[:400] each; general dev set: \texttt{harmful\_behaviors} test[:100].
 Fork plug-in: method from the project fork \texttt{paper33-plugins} (commit \texttt{8fd4d76}) of the companion
-study, not part of the Heretic~2.0 releases. Heretic~1.x general and Heretic~2.0 DiM apply the same edit
-(Table~\ref{tab:h1setup}). Qwen3.5-4B cells of the 2.0 and fork configurations are seed-1 models of the companion
+study, not part of the Heretic~2.0 releases. Heretic~1.x general and Heretic~2.0 DiM apply the same edit family
+with different search ranges and objectives (Table~\ref{tab:h1setup}). Qwen3.5-4B cells of the 2.0 and fork configurations are seed-1 models of the companion
 study, included as context for the external tools. External tools were run once at their own default or recommended
 settings, without a search or a selection rule by the author (\S\ref{sec:external}).}
 \label{tab:conditions}
@@ -69,7 +90,7 @@ as 1.x general & all six \\
 1.x general, KL $\le$ 0.1 & as 1.x general & as 1.x general & re-export of the archived 1.x general search
 (\S\ref{sec:reexport}) & fewest dev refusals at KL $\le$ 0.1 (2.0 rule): trial \#96 & 32B \\
 \midrule
-2.0 DiM & rank-1 DiM ablation (same edit as 1.x) & general; general & Heretic~2.0.0; TPE, 100 trials (30 random),
+2.0 DiM & rank-1 DiM ablation (same edit family as 1.x) & general; general & Heretic~2.0.0; TPE, 100 trials (30 random),
 seed~1 & fewest dev refusals at KL $\le$ 0.1 (companion study) & 7B, 32B; Qwen3.5-4B \\
 2.0 MPOA & projected, norm-preserving (rank 3) & as 2.0 DiM & as 2.0 DiM & as 2.0 DiM & 7B, 32B; Qwen3.5-4B \\
 2.0 ARA & rank-50 LoRA per module, L-BFGS & as 2.0 DiM & as 2.0 DiM & as 2.0 DiM & 7B, 32B; Qwen3.5-4B \\
@@ -97,8 +118,8 @@ harmless prompts sampled from the tool's pools & commit \texttt{6ca3356e}; recom
 %      good/bad(_evaluation)_prompts = configs/code_abliteration_data/{benign_code_prompts,malicious_code_prompts,
 %      benign_code_eval,malicious_code_eval}.txt)
 \paragraph{Heretic~1.x.} Rank-1 LoRA adapters \cite{hu2022lora} produced in June 2026 with Heretic~1.x
-\cite{heretic2025} were available for all six base models in two variants \todo{cite or describe the
-code-abliteration study (paper-32 project) that produced the 1.x adapters}. The run records do not name the release,
+\cite{heretic2025} were available for all six base models in two variants; they were produced by the author's earlier, unpublished
+code-abliteration study. The run records do not name the release,
 but the key set and order of the settings record stored in every 1.x study journal, together with the search range
 that the journals record for the MLP ablation weight, identify it as heretic-llm 1.4.0 (git tag \texttt{v1.4.0},
 commit \texttt{6ea3b8d}); earlier revisions store a different key order and later ones a different search range
@@ -107,12 +128,13 @@ training prompts of \texttt{mlabonne/harmful\_behaviors} and \texttt{mlabonne/ha
 \cite{zou2023universal,taori2023alpaca}, as Heretic does by default. The \emph{code} variant computes it from
 malicious-code requests (RMCBench and MalwareBench) against benign coding prompts (MBPP), uses a held-out file of
 malicious-code requests as its dev set (100 prompts, the count stored with every trial) and a file of benign coding
-prompts for its KL term. These four prompt files were not archived with the run records, so their contents and the
-sizes of the direction sets are unknown \todo{recover the paper-32 code prompt files
-(\texttt{configs/code\_abliteration\_data/*.txt})}. Both variants ran 200 TPE trials (60 random) with
+prompts for its KL term. The code pipeline therefore differs from the general one in its direction data, dev set
+and KL prompts, not only in its direction. These four prompt files, and the script that generated them, were not archived with the
+run records, so their contents and the sizes of the direction sets are unknown. Both variants ran 200 TPE trials (60 random) with
 seed~0, the optimisation system prompt ``You are a helpful coding assistant.'', at most 100 generated tokens per dev
-response, a list of 32 keyword markers (Heretic's default list without ``disclaimer''), and a KL target of 0.01,
-below which the 1.x objective replaces the KL term by a scaled refusal score. The 1.x build also exposed the
+response, a list of 32 keyword markers (Heretic's default list without ``disclaimer''), and a KL target of 0.01:
+the 1.x objective is a pair of minimised scores, the KL divergence (replaced, below the target, by the normalised
+refusal count times the target) and the refusal count normalised by the base model's dev refusals. The 1.x build also exposed the
 direction-projection and row-normalisation options that define MPOA, but the archived runs switched them off. The
 released trial was chosen by the archived study's batch wrapper, not by Heretic: the fewest dev refusals among trials
 with KL $\le$ 0.01, a cap met in all 12 runs. Each adapter was merged into its base model on CPU. The SHA-256 of all
@@ -120,15 +142,24 @@ with KL $\le$ 0.01, a cap met in all 12 runs. Each adapter was merged into its b
 identical to the archived merges, and for the four 7B adapters no tensor hashes of the archived merges had been
 recorded (Appendix~\ref{app:checks}).
 
+Heretic's directional ablation, in both versions, differs from the edit of Arditi et al.\ \cite{arditi2024refusal},
+which orthogonalises every residual writer, including the embedding, against one direction at full strength: Heretic
+edits only the attention output and MLP down-projections, with a per-layer weight kernel (a maximum weight, its
+position and a minimum weight at a given distance) and either one direction interpolated between two layers'
+directions or a separate direction per layer, all chosen by the search.
+
 \paragraph{Heretic~2.0 and fork plug-ins.} The Heretic~2.0 models are the seed-1 models of the companion study
-\cite{young2026harder}: DiM \cite{arditi2024refusal}, MPOA \cite{lai2024projected,lai2025mpoa} and ARA
+\cite{young2026harder}: DiM (a difference-in-means direction \cite{arditi2024refusal} applied with Heretic's
+per-layer weight kernel), MPOA \cite{lai2024projected,lai2025mpoa} and ARA
 \cite{weidmann2026ara}, which are built into Heretic~2.0.0 (upstream commit \texttt{0db5c31}), on Qwen2.5-32B and
 Qwen2.5-7B. SOM \cite{piras2025som} (on both models) and J-space ablation \cite{sekinal2026jspace} (on Qwen2.5-7B
 only) are plug-ins of the companion study's project fork (branch \texttt{paper33-plugins}, commit \texttt{8fd4d76});
 they are not part of any Heretic~2.0 release. SOM ports the proof of concept of Heretic pull request~\#196, and
 J-space bakes directions from the \texttt{jspace-refusal} code into the weights with Heretic's row-normalised
 directional ablation instead of the reference forward hook. All Qwen2.5-7B runs, including DiM, MPOA and ARA, ran
-from the fork, which leaves the built-in methods identical to \texttt{0db5c31}. All used the general direction data
+from the fork; \texttt{git diff 0db5c31 8fd4d76} shows that the fork only adds files (the SOM and
+precomputed-direction modifiers and their tests) and configuration entries, without changing any line of an existing
+source file, so the built-in methods are identical to \texttt{0db5c31}. All used the general direction data
 and dev set, 100 TPE trials (30 random) with seed~1, Heretic~2.0's default system prompt ``You are a helpful
 assistant.'', its 33 default keyword markers (the 1.x list plus ``disclaimer''), KL as a plain minimised objective,
 and the companion study's selection rule: the fewest dev refusals among trials with KL $\le$ 0.1, ties broken by
@@ -136,13 +167,18 @@ lower KL. The companion study's seed-1 models of the same five configurations on
 for the external-tool cells on that model; they enter no test of H1--H3.
 
 % src (tab:h1setup rows: cells.csv dev_refusals/dev_kl; RESULTS.md "Dev set at matched KL caps": 1x_general 32B
-%      <=0.1 -> 50 (0.064); dim 32B selected 89 @ 0.0175)
+%      <=0.1 -> 50 (0.064); dim 32B selected 89 @ 0.0175; 2026-11-08 search-range and selected-weight rows:
+%      analysis/revision_20261108/search_space.csv (journal distributions; selected_value of mlp.down_proj.max_weight:
+%      32B #84 0.9115, #96 1.0019, DiM #62 1.2133; 7B #193 1.1455, DiM #36 1.1863))
 \begin{table}[tbp]
 \centering\small
-\caption{Setup of the like-for-like contrast (H1). Both arms apply the same edit with the same direction data, dev
-prompts and KL prompts; every other row differs. Released trial: dev keyword refusals of 100 (dev KL), each
-counted under its own arm's system prompt and marker list. The last row gives the trial that the 2.0 rule selects
-from each search on Qwen2.5-32B; the 1.x trial was re-exported and evaluated (\S\ref{sec:reexport}).}
+\caption{Setup of the like-for-like contrast (H1). Both arms apply the same edit family with the same direction
+data, dev prompts and KL prompts. Search ranges are those recorded in each search's Optuna journal ($L$ = index of
+the last layer; 63 for Qwen2.5-32B, 27 for Qwen2.5-7B); they agree with the source of heretic-llm~1.4.0 and of
+Heretic \texttt{0db5c31}. The only range that differs is that of the MLP maximum weight; no selected or re-exported
+trial used a value below 0.8. Released trial: dev keyword refusals of 100 (dev KL), each counted under its own arm's
+system prompt and marker list. The last row gives the trial that the 2.0 rule selects from each search on
+Qwen2.5-32B; the 1.x trial was re-exported and evaluated (\S\ref{sec:reexport}).}
 \label{tab:h1setup}
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{5.2cm}%
@@ -151,13 +187,19 @@ from each search on Qwen2.5-32B; the 1.x trial was re-exported and evaluated (\S
 Setting & Heretic~1.x general (archived runs) & Heretic~2.0 DiM (companion study) \\
 \midrule
 Edit & rank-1 directional ablation, no projection, no row normalisation & same \\
+Direction & global (interpolated) or per layer; index in $[0.4L, 0.9L]$ & same \\
+Attention max.\ weight & $[0.8, 1.5]$ & same \\
+MLP max.\ weight & $[0.8, 1.5]$ & $[-0.25, 1.5]$, clamped at 0 \\
+Weight kernel & position $[0.6L, L]$; min.\ weight $[0, 1]\times$max.; distance $[1, 0.6L]$ & same \\
+Selected MLP max.\ weight & 32B: 0.91 (\#84), 1.00 (\#96); 7B: 1.15 & 32B: 1.21; 7B: 1.19 \\
 Direction data; dev; KL prompts & general; general; \texttt{harmless\_alpaca} test[:100] & same \\
 Build & heretic-llm 1.4.0 (\texttt{6ea3b8d}) & v2.0.0 (\texttt{0db5c31}); Qwen2.5-7B: fork
 \texttt{8fd4d76} \\
 Trials (random), seed & 200 (60), seed~0 & 100 (30), seed~1 \\
 Optimisation system prompt & ``You are a helpful coding assistant.'' & ``You are a helpful assistant.'' \\
 Keyword markers (dev) & 32 & 33 (adds ``disclaimer'') \\
-KL in the objective & target 0.01 (scaled refusal score below it) & minimised, no target \\
+Objective (both minimised) & KL with target 0.01 (below it: scaled refusal score); refusals / base refusals &
+keyword refusal rate; KL, no target \\
 Selection rule & fewest dev refusals, KL $\le$ 0.01 & fewest dev refusals, KL $\le$ 0.1 \\
 Released trial, Qwen2.5-32B & 89 (0.006) & 89 (0.018) \\
 Released trial, Qwen2.5-7B & 67 (0.005) & 55 (0.078) \\
@@ -314,12 +356,17 @@ used in the analysis.
 %      cells; eval.log host=4090-omarchy, "NVIDIA GeForce RTX 4090"; summary.json judge_revisions;
 %      runs/mc-rtx-1/results/bench/qwen2.5-32b__heretic1x-general-kl0.1; external PROVENANCE.json gpu RTX 4090;
 %      reexport PROVENANCE.json environment.gpus RTX PRO 6000 Blackwell Server Edition)
+% src (2026-11-08 re-review NEW-3): 33_.../runs/mc-h200-1/runs/qwen2.5-32b__{dim,mpoa,som,ara}__core-s1/meta.txt
+%      ("torch 2.14.1+cu130 NVIDIA H200 NVL", heretic 0db5c31); revision_20261108/search_cost.csv (7B 2.0/fork searches
+%      RTX 4090 from meta.txt; 1.x searches gpu "not recorded")
 The 14B and 32B models, including the KL $\le$ 0.1 re-export, and the judges of all companion-study cells ran on one
 NVIDIA RTX PRO 6000 (96 GB); the re-export itself was computed on an RTX PRO 6000 of the same type. The companion
 study's Qwen2.5-7B and Qwen3.5-4B models were generated and benchmarked on an RTX 4090 and judged on the RTX PRO
 6000. The new Qwen2.5-7B and Qwen2.5-Coder-7B cells (1.x and external tools) and the two jwest33 Qwen3.5-4B cells
 were generated, benchmarked and judged on the RTX 4090 with the same judge revisions; the external tools also ran
-there. Within each base model, all cells used the same prompts, decoding settings, reference responses for TF
+there. The companion study's Heretic~2.0 and fork searches ran on one NVIDIA H200 NVL (Qwen2.5-32B) and on the
+RTX 4090 (Qwen2.5-7B) \cite{young2026harder}; the GPUs of the archived 1.x searches were not recorded. Within each
+base model, all cells used the same prompts, decoding settings, reference responses for TF
 divergence and judges, with one exception. The Qwen2.5-32B original was evaluated in two earlier harness runs
 (capability; held-out generation and teacher forcing) whose evaluation-script revision differs from that of its
 edited models; these runs did not apply the output post-processing of later runs (mapping the SentencePiece
@@ -330,6 +377,12 @@ outputs \cite{young2026harder}. Data checks are listed in Appendix~\ref{app:chec
 \subsection{Data Analysis}
 \label{sec:stats}
 
+% src (2026-11-08): sigma 9.15 [6.40, 16.07], SD_diff 12.95, threshold 25.89 [18.09, 45.44], equal-batch threshold 20.35:
+%   analysis/revision_20261108/seednoise_derivation.csv (recomputed from paper-33 results/analysis/seednoise_seed_pairs.csv;
+%   identical to paper-33 seednoise_sigma.csv and review_sel_seed_sigma.csv); equivalence margin and TOST:
+%   revision_20261108/capability_equivalence.csv; clustered correlations: revision_20261108/correlations_clustered.csv.
+% src (2026-11-08 re-review S7): revision_20261108/s7_correlations.csv (n_boot_degenerate 0 for all; within_model_p_scipy
+%   0.0045 / 0.19 / 0.0026; within_model_p_df_adjusted 0.013 / 0.218 / 0.0088 for tf, dev_kl general, capability).
 % src (tests_refusal.csv n_in_family by family: vs_base 23, h1_1x_vs_2.0 18, h2_general_vs_code 6,
 %      within_model_pairs 76, kw_vs_judge 29; vs_base_added 12, h1_kl_matched 4, kl_cap_1x 1, external_vs_heretic 38,
 %      external_sensitivity 1, kw_vs_judge_added 13; tests_capability.csv family original_design 23 cells x 5,
@@ -353,13 +406,44 @@ jwest33 as released versus with the hybrid fix (1 test, unadjusted); and keyword
 cells (13 tests). Capability is compared per item with the same paired interval and test, Holm-adjusted over the
 115 cell--benchmark tests of the main design and separately over the 60 of the added cells; the mean change over
 the five benchmarks carries a normal interval from the per-benchmark paired variances. MBPP changes on the
-Qwen2.5-32B original use an unpaired normal test on the summary scores (\S\ref{sec:procedure}). Associations across
-edited models are Spearman correlations over the 23 edited models of the main design, with percentile bootstrap
-intervals over models (4{,}000 resamples); within a base model, the association of residual refusal with TF
+Qwen2.5-32B original use an unpaired normal test on the summary scores (\S\ref{sec:procedure}). Whether a
+capability change is negligible is assessed with two one-sided tests against an equivalence margin of $\pm$2~pp on the
+mean of the five benchmarks (equivalence when the 90\% interval lies inside the margin); the margin was chosen after
+the results were known, and the minimum change detectable with 80\% power is reported beside it. Associations across
+edited models are Spearman correlations over the 23 edited models of the main design. Because these models are
+clustered in six base models, their intervals come from a bootstrap that resamples base models with all their cells
+(4{,}000 resamples, percentile intervals; a resample in which either variable was constant or fewer than four cells
+remained would have been skipped, and none was), and each correlation is also reported for values centred within each
+base model, the analogue of base-model fixed effects. The $p$-value of a within-base correlation is that of the
+Spearman test on the centred values of the base models with at least two cells (t approximation with $n-2$ degrees of
+freedom); it does not deduct the degrees of freedom used by centring and is therefore somewhat liberal (with that
+deduction the within-base $p$-values of \S\ref{sec:res-tradeoff} become 0.013 for TF divergence, 0.22 for dev KL and 0.009 for capability). The original
+percentile bootstrap over cells is kept in the analysis records. The association
+with dev KL is reported only for the cells scored on the general dev protocol, because the code variants measure dev
+KL on other prompts. All cross-model correlations are exploratory. Within a base model, the association of residual refusal with TF
 divergence is a Spearman correlation with an exact permutation $p$-value. To separate search quality from the
 selection rule, the fewest dev refusals reachable at dev-KL caps of 0.01 to 0.5 were read from the optimisation
 records: the Pareto fronts of the 1.x runs and all trials of the 2.0 runs (the fewest refusals under a cap is always
-attained on the Pareto front, so the two sources give the same values). Analyses used Python 3.12.15 with pandas
+attained on the Pareto front, so the two sources give the same values). The same records give each arm's fewest dev
+refusals at the realised dev KL of the other arm's released trial, a comparison at matched dev divergence on the dev
+prompts only.
+
+\paragraph{Search-level decision rule.} The hypotheses concern versions, settings and pipelines, so their unit of
+replication is the search, and each configuration contributed one search per base model. A prompt-level test
+quantifies only prompt-sampling noise for two fixed checkpoints. Search-to-search variation is taken from the seed
+replicates of the companion study: the run-to-run standard deviation of one cell's residual refusal, $\sigma = 9.2$~pp
+[6.4, 16.1], gives a standard deviation of a difference between two independently optimised cells of
+$\sqrt{2}\,\sigma = 12.9$~pp and a threshold of two such standard deviations, 25.9~pp with a 95\% interval of
+[18.1, 45.4] (Appendix~\ref{app:seednoise}). A contrast between two searches supports a hypothesis at the search
+level only if it is Holm-significant and its absolute size exceeds the upper limit of that interval (45.4~pp). A
+Holm-significant contrast of smaller size is reported as ``significant for these checkpoints; search-level evidence
+inconclusive''; a contrast that is not Holm-significant does not support the hypothesis. The point threshold and the
+threshold without the three seed-2 runs that used a smaller batch size (20.4~pp) are reported as sensitivity
+readings. Contrasts between two exports of the same search (the selection-cap contrast) involve no search-to-search
+variation and are decided by the prompt-level test, but they describe one search. Keyword-versus-judge contrasts (H3)
+compare labels of identical responses and are decided by the prompt-level test. External-tool cells are single runs at
+uncontrolled divergence; their contrasts are reported descriptively, with the divergence of each cell, and are not
+used to rank tools. Analyses used Python 3.12.15 with pandas
 3.1.1, NumPy 2.5.4, SciPy 1.18.1 and statsmodels 0.15.0 \cite{seabold2010statsmodels}.
 
 \subsection{Ethics, Preregistration and Deviations}
@@ -371,14 +455,19 @@ would leave less residual refusal than Heretic~1.x; after an internal review it 
 contrast (1.x general versus 2.0 DiM), because the other methods change the edit as well as the setup and two of
 them are fork plug-ins. The narrowing was made before the 7B 1.x cells were judged, but after the 32B results were
 known. Three analyses were added after the main results were known and are reported in their own test families:
-the KL $\le$ 0.1 re-export (\S\ref{sec:reexport}), which an earlier draft had named as the decisive test of the
-selection cap; the external-tool cells; and the Qwen3.5-4B cells of the companion study as context for jwest33 on
+the KL $\le$ 0.1 re-export (\S\ref{sec:reexport}), specified as a check of the selection-cap explanation after
+the Qwen2.5-32B H1 result was known; the external-tool cells; and the Qwen3.5-4B cells of the companion study as context for jwest33 on
 that model. The comparison set deviates from the plan in four ways. First, Heretic~2.0 methods were not run on
 Qwen2.5-14B or the coder models, so on those models 1.x is compared with the original only. Second, the selection
 cap was tested on one search only, the 1.x general search on Qwen2.5-32B; the code search could not be re-exported
 (\S\ref{sec:reexport}), and no Qwen2.5-7B trial at the 2.0 rule was evaluated on the held-out prompts. Third, of the external tools, OBLITERATUS contributes
 three presets on Qwen2.5-7B only (its \texttt{som} preset lacks its direction module and it does not support
 Qwen3.5-4B), and jwest33 contributes one Qwen2.5-7B cell and, outside the Qwen2.5 design, a primary and a
-sensitivity cell on Qwen3.5-4B. Fourth, ErisForge, llm-abliteration and FailSpy were not re-run and are represented
-only by the earlier comparison \cite{young2025comparative} \todo{reconcile the earlier paper's attribution of DECCP
-and llm-abliteration}.
+sensitivity cell on Qwen3.5-4B. Fourth, ErisForge, llm-abliteration \cite{jimplus_llmabliteration} and FailSpy were not re-run and are represented
+only by the earlier comparison \cite{young2025comparative}, which labelled llm-abliteration as DECCP; DECCP is a
+separate tool \cite{lin2024deccp}. In response to internal review, the following analyses of existing records were
+added after all results were known: the search-level decision rule and the derivation of the seed-noise threshold
+(Appendix~\ref{app:seednoise}), the dev-set comparison at matched dev KL, the search ranges and costs read from the
+optimisation journals, the cosines between the general and code directions, the correlations with clustering by base
+model, and the capability equivalence tests, whose margin was chosen after the capability results were known. No new
+model was generated or evaluated for them.

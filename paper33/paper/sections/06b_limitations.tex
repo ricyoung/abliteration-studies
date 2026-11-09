@@ -36,10 +36,15 @@ conclusions about algorithm comparisons \cite{bouthillier2021accounting} and
 safeguard durability \cite{qi2025durability}. The band used to flag
 main-study effects as within seed noise (Table~\ref{tab:h1-heldout}) assumes
 that this variance, measured on 4B and 7B models, transfers to the 22--32B
-main-study models and is the same for every method and refusal level; neither
-assumption can be tested with one seed per cell, and on the percentage-point
-scale run-to-run variation is likely smaller near 0\% refusal than at
-intermediate rates. However, full Pareto fronts and
+main-study models; this cannot be tested with one seed per cell. Whether it
+depends on the refusal level could not be decided from ten seed pairs, and the
+per-pair verdicts differed between a constant and a refusal-level model
+(Appendix~\ref{app:sigma-level}): at the point estimate of the run-to-run
+standard deviation, only the OLMo direction-based increase exceeded run-to-run
+variation under both, and it did not at the upper limit of the refusal-level
+model. Every main-study run also used the
+same seed, so runs with the same search space shared their random start-up
+trials. However, full Pareto fronts and
 four KL thresholds are reported, method rankings were more stable than
 single-cell generation effects (method accounted for $\eta^2=0.94$ and 0.88 of
 the variance among the small-pair cell rates), the pooled estimates average
@@ -51,8 +56,13 @@ effects within the band are flagged as provisional. Three of the ten seed-2
 runs also used a smaller generation batch size after running out of memory;
 without them the run-to-run standard deviation was 7.2~pp instead of 9.2~pp,
 and the same five raw effects exceeded the band. A second seed for the 32
-main-study cells, which would replace the transferred band with a direct
-estimate, is left to future work.
+main-study cells, with distinct seeds per model, which would replace the
+transferred variance with a direct estimate, is left to future work. The
+re-run rule was not uniform: an interrupted Qwen3.8-27B ARA study was repeated
+from scratch, whereas the Qwen3.8-27B MPOA study was resumed
+(Appendix~\ref{app:setup-opt}).
+% 2026-11-08 ARS revision (REV-15, REV-21, REV-22): src: results/analysis/revision_sigma_pair_verdicts.csv; review_sel_kl_runs.csv
+% src: (shared start-up draws); paper/figures/data/README.md (qwen3.8-27b ARA core-s1-clean; MPOA core-s1-resume1).
 % src: results/analysis/final_seed_cells.csv (10 cells, all p_holm < 0.05; |s2 - s1| median 9.4, max 25.2 pp);
 % src: results/analysis/seednoise_summary.md (sigma 9.2 [6.4, 16.1] pp; 11 of 16 main-study effects within 25.9 pp);
 % src: final_seed_generation.csv (ara seed1 +14.2, seed2 +0.0 pp); final_seed_method_vs_seed.csv (eta_sq_method 0.94 / 0.88);
@@ -76,14 +86,16 @@ rebuilt by refitting its adapter, and the four ARA exports refitted on a
 different GPU from the search drifted by 5 to 9 dev refusals on re-score,
 whereas those refitted on the search machine drifted by at most 2; the
 Gemma-4-31B ARA export re-scored at a first-token KL of 0.107, above the cap;
-and the 0 of 100 dev refusals reported by heretic-org for an ARA model of
+and the 0 of 100 dev refusals reported by heretic-org on its model card (an
+unreviewed report) for an ARA model of
 Qwen3.8-27B with the same defaults was not reproduced (59 and 63 of 100 in two
 runs here). Held-out results describe the released models, so these points
 concern the link between search and release rather than the reported rates,
-but they bear directly on H2, whose Qwen reversal and Gemma support both rest
-on single ARA cells. Running heretic-org's reported trial through this
-pipeline and refitting the ARA exports on the search hardware are left to
-future work.
+but they bear directly on H2, whose reversed Qwen estimate and Gemma support both rest
+on single ARA cells. The per-pair H2 verdicts are therefore preliminary.
+Running heretic-org's reported trial through this pipeline, refitting the ARA
+exports on the search hardware and a second ARA seed for the Qwen and Gemma
+pairs are left to future work.
 % src (review revision): results/analysis/review_sel_export_drift.csv (|d refusals| 6, 9, 5, 7 on mc-rtx-1 vs 0, 1, 2, 0 on
 % src: mc-h200-1; Gemma-4-31B KL 0.1070); review_sel_export_tests.csv (Fisher p 0.029); sections/08b_setup_details.tex
 % src: (Qwen3.8-27B ARA rerun: 59/100 and clean 63/100; heretic-org 0/100 at KL 0.054, notes/EXECUTION_PLAN_v2.md finding 1).
@@ -91,7 +103,7 @@ future work.
 A further limitation is that trials are optimised and selected on the 100
 development prompts that produce Heretic's refusal count, which relies on 33
 keyword markers with a reported recall of about 0.48, against 0.77 for an LLM
-judge (Heretic~\#419). Development-set refusal is therefore optimistic
+judge (Heretic~\#419, an unreviewed practitioner report). Development-set refusal is therefore optimistic
 \cite{cawley2010overfitting}, and the best dev method was the best held-out
 method in only 7 of 12 model $\times$ seed sets. However, keyword counts drive
 optimisation and selection only: reported refusal comes from a frozen held-out
@@ -102,10 +114,29 @@ on the 42 ablated models).
 % src: scripts/bench/refusal_sets.json (counts per set); results/analysis/dir_status.csv (74 judged);
 % src: h3_agreement_pairs.csv (harmful, pooled, ablated_primary, wg vs q3g 0.8193 [0.8041, 0.8334]);
 % src: final_dev_vs_heldout_within_model.csv (7 of 12 with the KL tie-break)
-A related limitation is that no human-labelled audit exists. Where keyword
-matching and the judges diverged (H3), which measure is correct therefore
-cannot be decided, and agreement between LLM judges with correlated errors
-overstates the evidence \cite{hossain2026agreement}.
+A related limitation is that no human audit was made. Every refusal rate is
+therefore relative to the automatic judges, WildGuard has not been validated
+on the outputs of edited models, and where keyword matching and the judges
+disagreed (H3) neither can be called correct; agreement between LLM judges
+with correlated errors overstates the evidence \cite{hossain2026agreement}.
+WildGuard and both OLMo releases come from the same developer, whose open
+supervised post-training data for both releases include about 50,000 prompts
+from WildGuardMix, the data set released with WildGuard and used to train it\footnote{Dataset
+cards of \texttt{allenai/tulu-3-sft-olmo-2-mixture} (OLMo-2) and
+\texttt{allenai/Dolci-Instruct-SFT} (Olmo-3.1) on Hugging Face, accessed
+8 November 2026.}, so its labels of OLMo outputs may share their provenance; under the second judge,
+Qwen3Guard, the OLMo direction-based generation effect was +32.3~pp (WildGuard
++36.9~pp) and the OLMo H2 contrast $-$35.0~pp ($-$39.3~pp). The keyword count
+that drives search and selection may also be a less valid signal on one
+generation than on the other, which would bias the selected models
+differently; dev and held-out changes had opposite signs in several cells
+(Appendix~\ref{app:moved-results}), and re-selecting trials with a judge
+would test this.
+% 2026-11-08 ARS revision (REV-33, REV-36, REV-38; author decision 1): src: results/analysis/revision_olmo_q3g.csv (q3g direction
+% src: class +32.3, H2 -35.0; wg +36.9, -39.3); WildGuardMix in OLMo post-training verified 2026-11-08 on the HF dataset cards:
+% src: allenai/tulu-3-sft-olmo-2-mixture and allenai/tulu-3-sft-mixture ("Tulu 3 WildGuardMix ... 50,000 prompts"), allenai/Dolci-Instruct-SFT
+% src: ("Tulu 3 WildGuardMix ... 49,373 prompts"); model cards: OLMo-2-0325-32B-Instruct SFT on tulu-3-sft-olmo-2-mixture, Olmo-3.1 on Dolci; sections/05_results.tex.bak-20261108-rev (3 of 16 main-pair cells with opposite dev
+% src: and held-out signs; small pair all methods).
 % src: results/analysis/FINAL_NOTES.md (sec. 5, D1: no human audit exists); /data/heretic_2/PAPERS.md (stage 8 pending)
 
 Another limitation is that generation is confounded with size, architecture,
@@ -115,16 +146,22 @@ checkpoints may have been safety-tuned on the public held-out benchmarks
 post-norm models (Gemma-2/4, OLMo-2/Olmo-3.1) apply an RMSNorm \cite{zhang2019rmsnorm} after $W_O$ and
 $W_{\mathrm{down}}$, so the normalised output retains a component along the
 ablated direction, handicapping direction-based methods on four of the eight
-main-study models. Because both generations of each post-norm family
+main-study models. Because both generations of each post-norm pair
 share this design
 \cite{gemmateam2024gemma2,kim2025periln,walsh2025olmo2,olmo2025olmo3}, the leak confounds H1 and H2 only to the extent that its
 size differs between generations. However, comparisons are made within family
 and against each pair's own originals, with family as a random effect in the
 planned model \cite{baayen2008mixed}; the $\boldsymbol{\gamma}$-corrected MPOA
-control on the four post-norm models lowered held-out refusal on all four but
-left the OLMo generation effect (+57.0~pp) and the pooled H2 interaction
-($-$0.42) in place; and conclusions are stated about later releases, not about
-mechanisms such as safety training.
+control on the four post-norm models lowered held-out refusal on all four, by
+more on the newer model of each pair, but left the OLMo generation effect
+(+57.0~pp) and the pooled H2 interaction ($-$0.42) in place; DiM and SOM were
+not corrected; and conclusions are stated about later releases, not about
+mechanisms such as safety training. The 200 code-as-weapon items were compiled
+by the author and carried about half of the originals' generation difference;
+some per-pair verdicts, notably Gemma's direction-based increase, depended on
+them (Table~\ref{tab:pair-source}).
+% 2026-11-08 ARS revision (REV-13, REV-24): src: revision_h2_sensitivity.csv (gamma-correction larger on the newer model: gemma
+% src: -15.6, olmo -4.4 pp); review_out_c2_originals_decomposition.csv (52%); review_out_c2_pair_class.csv.
 % src: notes/EXECUTION_PLAN_v2.md (Design; Statistics; Findings 6); results/analysis/final_gmpoa_control.csv
 % src: (vs_mpoa_diff < 0 in all 4, p_holm <= 0.0018); final_gmpoa_generation.csv (OLMo +57.0 pp);
 % src: final_pooled_robustness.csv (gamma-MPOA in place of MPOA: interaction -0.42)

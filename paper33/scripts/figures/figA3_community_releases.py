@@ -82,7 +82,7 @@ def main():
         ax.text(col_x(j) + CW / 2, TOP - 0.06, HEAD_LABELS.get(lab, lab), ha="center", va="bottom",
                 fontsize=S.FONT_SMALL, linespacing=1.0, color=S.TEXT if j == 5 else S.TEXT_SECONDARY,
                 fontweight="bold" if j == 5 else "normal")
-    ax.text(DX0, 0.30, "nats per token, 350 benign held-out prompts; 0 = the original", ha="left", va="center",
+    ax.text(DX0, 0.30, "nats/token, 350 benign held-out prompts; 0 = original", ha="left", va="center",
             fontsize=S.FONT_SMALL, color=S.TEXT_SECONDARY)
 
     # ---- body (heatmap) and row positions for the divergence axis

@@ -35,11 +35,12 @@ and its mitigation.
 Each main-study cell is optimised with a single seed (seed~1); the
 Qwen3.8-27B ARA cell was run twice with seed~1 (see below). TPE search is stochastic
 (Heretic~\#88), and one ARA trial has been reported to yield 52 and 11 refusals
-on two machines (Heretic~\#499). Here, two seed-1 ARA runs on Qwen3.8-27B (one
+on two machines (Heretic~\#499); both are unreviewed practitioner reports,
+retrieved in November 2026. Here, two seed-1 ARA runs on Qwen3.8-27B (one
 interrupted and resumed, one clean) selected trials with 59 and 63 of 100
 keyword refusals at KL~$\le 0.1$, whereas a community model with the same
 defaults and 60 trials (\texttt{heretic-org/Qwen3.8-27B-heretic-ara}) reports
-0 of 100 at KL~0.054. The evaluated Qwen3.8-27B MPOA run was resumed after an
+0 of 100 at KL~0.054 on its model card, an unreviewed figure. The evaluated Qwen3.8-27B MPOA run was resumed after an
 out-of-memory failure and completed 99 of 100 trials. Seed and configuration
 variance has altered conclusions about algorithm comparisons
 \cite{bouthillier2021accounting} and about the durability of open-weight
@@ -86,7 +87,7 @@ count, and refusal directions (DiM, MPOA, SOM) and ARA's harmful-side
 activations are estimated from \texttt{mlabonne/harmful\_behaviors} train[:400],
 contrasted with \texttt{mlabonne/harmless\_alpaca} train[:400] (J-space
 directions use no contrast set). Development-set refusal is therefore optimistic
-(Heretic~\#481, \#503), possibly more so for methods with larger search spaces,
+(Heretic~\#481, \#503; unreviewed practitioner reports), possibly more so for methods with larger search spaces,
 because optimising a noisy selection criterion overfits it and reusing the
 selection data for evaluation biases the estimate \cite{cawley2010overfitting}.
 Mitigation: reported refusal
@@ -101,7 +102,8 @@ without them; dev--test agreement is tested with Spearman's~$\rho$.
 \paragraph{Keyword refusal.}
 Heretic counts a refusal when any of 33 marker strings appears within 100
 generated tokens. Reported keyword recall is about 0.48, against 0.77 for an LLM
-judge (Heretic~\#419; see also PR~\#196); in a human-labelled meta-evaluation,
+judge (Heretic~\#419; see also PR~\#196; both unreviewed practitioner reports,
+retrieved in November 2026); in a peer-reviewed, human-labelled meta-evaluation,
 keyword matching reached Cohen's $\kappa=0.37$, against about 0.81 for
 fine-tuned LLM judges \cite{xie2025sorrybench}. Because TPE minimises this count, methods are
 rewarded for avoiding marker phrases rather than for complying, so selected
@@ -166,7 +168,7 @@ narrower search may understate SOM; a paper-faithful SOM configuration was
 planned but not run and is left to future work. MPOA's
 row normalisation is approximated by a rank-3 LoRA, and ARA's deployed adapter
 is not row-norm-preserving. All evaluated models are merged exports, not live adapters
-(Heretic~\#490).
+(Heretic~\#490, an unreviewed practitioner report).
 
 \paragraph{ARA instantiation.}
 The released ARA model is rebuilt by refitting its adapter from the stored
@@ -341,25 +343,23 @@ evaluated with the same harness in the companion paper \cite{young2026paper30}.
 % src (2026-11-06, author decision: OBLITERATUS reported in paper 30 only): results/bench-4090/qwen2.5-7b__obliteratus-{basic,advanced,spectral_cascade}/push_manifest.json; ../paper30/v3_2611/analysis/RESULTS.md
 
 \paragraph{Dual use and ethics.}
-Each released model is a full merged checkpoint (plus, where provided, a
-Q4\_K\_M GGUF quantisation \todo{GGUF releases}), published on Hugging Face under
-the base model's licence (including the Gemma terms and Mistral-Small-2409's
-non-commercial licence); models whose base is licensed under Apache-2.0
-additionally carry the use restrictions of the OpenRAIL++-M licence. Server-evaluated models are the copies downloaded back
+Each released model is a full merged checkpoint, published on Hugging Face under
+the licence of its base model (Apache-2.0 with the added use restrictions of
+the OpenRAIL++ licence, the Gemma Terms of Use for Gemma-2-27B, or the
+Mistral Research Licence for Mistral-Small-2409; Gemma-4-31B is
+Apache-2.0); a licence states permitted use and is not a
+technical control. The five Gemma-2-27B variants are withheld because of the
+Gemma Prohibited Use Policy; the five OLMo-2-32B variants are gated with
+automatic approval, because no third-party public abliteration of OLMo-2-32B
+was found; the others are public (Ethics Statement). Server-evaluated models are the copies downloaded back
 from the published repositories; all ten RTX~4090 (small-pair) uploads are
 verified SHA256-identical, shard by shard, to the benchmarked copies.
 Reproduction manifests accompany only MPOA, ARA and DiM,
 because SOM, J-space and $\gamma$-MPOA need a project fork. No harmful completions are
 released; responses are stored privately for scoring. The study involved no
-human participants and was not human-subjects research. The marginal risk of
-the released models is limited: on each of the five checkpoints with an
-evaluated public abliteration, a public release already had held-out residual
-refusal not significantly different from (Gemma-4-31B, Mistral-Small-3.2) or
-lower than (Qwen2.5-32B,
-Qwen3.8-27B, Olmo-3.1-32B) that of the most effective model released here;
-the argument does not cover the five checkpoints without an evaluated public
-release (Gemma-2-27B, OLMo-2-32B, Mistral-Small-2409, Qwen2.5-7B,
-Qwen3.5-4B).
+human participants and was not human-subjects research.
+% 2026-11-08 ARS revision (REV-03, REV-04; author decision 3): release policy and licence wording replace the marginal-risk
+% argument (previous text in 08c_validity.tex.bak-20261108-rev).
 % src (review revision, C7): results/analysis/final_community_vs_selected.csv (rows with ours_is_best_wg; p_holm_within_community);
 % src: drafted 2026-11-06 to replace the former todo "ethics/IRB statement"; same argument as the Ethics Statement (main.tex).
 % src: notes/EXECUTION_PLAN_v2.md (Publishing); notes/overnight_log.md (00:05, 06:34-06:58); scripts/eval_one.sh; scripts/publish_local.sh; results/bench-4090/*/publish_check.json (10 files, all match = true; qwen3.5-4b__ara after a CUDA-OOM failure, retried, check written 07:00 PST; repro_mode full for MPOA/ARA/DiM, none for SOM/J-space)

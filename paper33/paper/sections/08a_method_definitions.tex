@@ -60,7 +60,7 @@ harmful ones, across 13 chat models. Because the edit is a rank-one projection,
 most of the weight matrix is untouched.
 
 \textbf{Why it exists.} It turned an interpretability finding into a
-practical, training-free procedure that needs only forward passes on a few
+practical, fine-tuning-free procedure that needs only forward passes on a few
 hundred prompts \cite{labonne2024abliteration,failspy_abliterator}.
 
 \textbf{Pros.} Simple, fast (minutes), interpretable, rank-one, few
@@ -192,7 +192,7 @@ in this study (\S\ref{sec:m-not}).
 harmful activations at each layer, take $k$ map neurons as prototypes of
 distinct ``kinds'' of harmful input, and use each prototype minus the harmless
 mean as a refusal direction; ablate all $k$, each with its own strength
-\cite{piras2025som}. The proof-of-concept Heretic integration (PR~\#196)
+\cite{piras2025som}. The proof-of-concept Heretic integration (PR~\#196, an unreviewed practitioner report)
 tunes the per-direction strengths with TPE.
 
 \textbf{Why it works.} Different harm categories (weapons, self-harm, cyber,
@@ -201,7 +201,7 @@ averages them and represents none well. The SOM finds the clusters
 without labels. Piras et al.~\cite{piras2025som} show diff-in-means is a special case.
 
 \textbf{Pros.} Strong reported results (3/100 refusals at KL $\approx 0.1$ on
-gpt-oss-20b, PR~\#196); principled multi-direction choice.
+gpt-oss-20b, PR~\#196, unreviewed); principled multi-direction choice.
 \textbf{Cons.} More hyperparameters (map size, $k$, per-direction strengths)
 make TPE converge slowly; the PoC's top-$k$ selection counts winners over the
 map's own weights instead of the data. In this study SOM is ported to

@@ -59,16 +59,21 @@ SURFACE = "#ffffff"          # print background
 NEUTRAL_MID = "#f0efec"      # diverging midpoint / pending fill
 
 # ------------------------------------------------------------------------------------------------ methods
-METHOD_ORDER = ["base", "dim", "mpoa", "ara", "som", "jspace", "gamma_mpoa", "community"]
+# House order (every figure, every legend): original, DiM, MPOA, SOM, J-space, gamma-MPOA, ARA, community.
+# Direction-based methods first (gamma-MPOA is an MPOA variant), then the optimisation-based ARA, then third parties.
+METHOD_ORDER = ["base", "dim", "mpoa", "som", "jspace", "gamma_mpoa", "ara", "community"]
+# Okabe-Ito colour-blind-safe palette (+ Tol "wine" for gamma-MPOA); min CIELAB distance between any two method
+# colours >= 10 under Machado-2009 protan/deutan/tritan simulation (closest: original grey vs ARA, deutan), and every
+# method also has its own marker shape (METHOD_MARKERS) as a redundant channel.
 METHOD_COLORS = {
-    "dim": "#2a78d6",
-    "mpoa": "#eb6834",
-    "ara": "#1baf7a",
-    "som": "#eda100",
-    "jspace": "#e87ba4",
-    "community": "#6250d6",
-    "gamma_mpoa": "#9b1c31",
-    "base": "#8a8984",       # original model
+    "base": "#7a7a7a",       # original model (grey)
+    "dim": "#0072B2",        # blue
+    "mpoa": "#D55E00",       # vermillion
+    "som": "#E69F00",        # orange
+    "jspace": "#CC79A7",     # reddish purple
+    "gamma_mpoa": "#882255", # wine (dark; distinct from MPOA vermillion by lightness)
+    "ara": "#009E73",        # bluish green
+    "community": "#56B4E9",  # sky blue
 }
 METHOD_LABELS = {"base": "Original", "dim": "DiM", "mpoa": "MPOA", "ara": "ARA", "som": "SOM",
                  "jspace": "J-space", "gamma_mpoa": "$\\gamma$-MPOA", "community": "Community"}
@@ -91,7 +96,7 @@ PAIRS = [  # (family label, old, new); the last one is the small pair
     ("Gemma", "gemma-2-27b", "gemma-4-31b"),
     ("OLMo", "olmo-2-32b", "olmo-3.1-32b"),
     ("Mistral Small", "mistral-small-2409", "mistral-small-3.2"),
-    ("Qwen (small pair)", "qwen2.5-7b", "qwen3.5-4b"),
+    ("Small pair", "qwen2.5-7b", "qwen3.5-4b"),
 ]
 FAMILY_ORDER = [p[0] for p in PAIRS]
 BENCHES = ["mmlu_pro", "gsm8k", "ifeval", "humaneval", "mbpp"]
@@ -113,8 +118,8 @@ SINGLE_COL = 3.4        # in
 DOUBLE_COL = 6.5        # in  (name kept for the scripts; it is the full text width, not a two-column span)
 TEXT_W = DOUBLE_COL
 TEXT_H = 9.0            # in, template text height (figure + caption must fit)
-FONT = 8                # pt, body text in figures
-FONT_SMALL = 7          # pt, ticks / legend / annotations: the minimum at final size
+FONT = 8.5              # pt, body text in figures
+FONT_SMALL = 7.5        # pt, ticks / legend / annotations: the minimum at final size (about 8 pt)
 LW = 1.6                # pt, data lines (house range 1.5-2)
 LW_THIN = 0.6           # pt, axes / grid / outlines
 MS = 5.5                # pt, marker diameter (>= 5)

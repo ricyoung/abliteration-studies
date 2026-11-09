@@ -1,26 +1,28 @@
 % =====================================================================
 % 1 INTRODUCTION (house pattern: problem | known | gap | purpose + hypotheses)
-% Revised 2026-11-06: H1 = like-for-like contrast (1.x general vs 2.0 DiM); SOM and J-space labelled as
-% project-fork plug-ins; 2512.13655 presented as prior work (this is a new paper); positioning sentence added.
-% Revised 2026-11-06 (draft v3): hypotheses unchanged. Added (i) the external tools to the design sentence,
-% (ii) the KL<=0.1 re-export described as the check of the selection-cap explanation that the earlier draft had
-% named as the decisive test (specified after the 32B H1 result, before the re-exported model was evaluated;
-% not a new hypothesis), (iii) companion-cell count 13 -> 19 (13 Qwen2.5 cells + Qwen3.5-4B original and its five
-% 2.0/fork cells; cells.csv provenance "paper 33" / ref_dir runs/mc-rtx-1), (iv) external tools descriptive only.
+% Revised 2026-11-08 (ARS review): R3 purpose reframed around the selection rule (tool comparison = vehicle); R2 and S1
+% contributions paragraph with the division of claims from the companion study and the position against
+% [cawley2010overfitting, dodge2019show]; R12 "same edit" -> "same edit family" with the search-space difference;
+% S6 H2 worded as a pipeline contrast; S11 weight orthogonalisation attributed to Arditi et al.; S14 residual refusal
+% as an upper bound on retained protection; S15 intended reader; R5 no draft references. Hypotheses H1--H3 are
+% unchanged in substance (pre-stated wording kept); the re-export remains a post hoc explanatory check.
+% Numbers: 61.7 pp, 89/89 dev refusals, 73.4 vs 47.4: tests_refusal.csv kl_cap_1x, cells.csv dev_refusals, wg_rate.
 % =====================================================================
 \section{Introduction}
 \label{sec:intro}
 
 Instruction-tuned language models with open weights are released with safety training that makes them refuse
-harmful requests, and that refusal can be removed after release without further training. Abliteration edits the
-weight matrices that write to the residual stream so that the model can no longer represent a refusal direction
-\cite{arditi2024refusal,labonne2024abliteration}, and a growing set of open-source tools automates the edit
-\cite{failspy_abliterator,erisforge,jimplus_llmabliteration,heretic2025,obliteratus2026,jwest33abliterator}.
-Researchers who study refusal, red-teamers who need unfiltered baselines and auditors who estimate how easily a
-release can be stripped of its safeguards must therefore choose a tool, a tool version, a method within the tool
-and the rule that selects which edited model is released. The same choice made by a malicious actor determines how
-much protection a release retains, so the relative effectiveness of these tools is a safety-relevant quantity
-rather than a matter of convenience.
+harmful requests, and that refusal can be removed after release without further training. Abliteration orthogonalises
+the weight matrices that write to the residual stream against a refusal direction, so that the model can no longer
+represent it \cite{arditi2024refusal}, and a growing set of open-source tools automates the edit
+\cite{labonne2024abliteration,failspy_abliterator,erisforge,jimplus_llmabliteration,heretic2025,obliteratus2026,jwest33abliterator}.
+Most of these tools search over edit strengths and release one edited model, chosen by a selection rule that limits
+how far the model may move from the original. Evaluators who estimate how easily a release can be stripped of its
+safeguards, developers who test safety training and release reviewers must therefore know what a tool's output
+represents: the tool, its version and its method, but also the rule that picked the released model. Residual refusal
+under a fixed evaluation harness is an upper bound on the protection a release retains against a motivated actor, who
+can resample, change the system prompt or loosen the rule, and a measure of willingness rather than of harmful
+capability.
 
 Refusal in many chat models is mediated largely by one direction in activation space \cite{arditi2024refusal}, and
 successors of the original difference-in-means (DiM) edit project the direction away from the harmless mean
@@ -30,52 +32,68 @@ self-organising maps \cite{piras2025som} or replace the direction with an optimi
 keyword-counted refusals against first-token Kullback--Leibler (KL) divergence \cite{heretic2025,akiba2019optuna}.
 Its 2.0 release reorganised the tool around modifier and scorer plug-ins and added arbitrary-rank ablation (ARA)
 as a built-in method; the direction-projection and row-normalisation options that define magnitude-preserving
-orthogonal ablation (MPOA) were already available in 1.x builds. An earlier comparison \cite{young2025comparative} evaluated
-four tools on sixteen 7--14B models and reported large differences in compatibility and in capability
+orthogonal ablation (MPOA) were already available in 1.x builds. An earlier comparison \cite{young2025comparative}
+evaluated four tools on sixteen 7--14B models and reported large differences in compatibility and in capability
 preservation, for example a GSM8K loss of 18.8 percentage points (pp) for Heretic on Yi-1.5-9B against near-zero
 losses for single-pass tools.
 
 That comparison shared the measurement practice of the tools themselves. Refusal was counted with keyword markers on
 100 prompts from the same AdvBench-derived dataset used to compute the refusal direction, each tool ran at its own
 default settings, and distribution shift was summarised by the first-token KL divergence that the search itself
-optimises. Keyword matching agrees poorly with human labels and with model-based judges
-\cite{xie2025sorrybench,young2026measuring}, and after ablation it can over-count refusals relative to a judge
-\cite{young2026harder}; selecting on the same prompts that are reported invites optimistic estimates
-\cite{cawley2010overfitting}; and tools that stop at different divergence budgets cannot be ranked without
-knowing the budget \cite{dodge2019show}. Version comparisons add a further confound: two releases of the same tool
-can apply an identical edit yet be run with different trial budgets, selection rules, system prompts and refusal
-markers, so a difference between their outputs need not reflect the version. It is also unknown whether a refusal
-direction computed from malicious-code requests, as some practitioners use for coding models, removes more refusal
-on such requests than the usual general direction. A practitioner who upgrades from Heretic~1.x to 2.0, runs
-another tool at its documented settings or downloads a community abliteration therefore has no held-out,
-judge-based evidence about what the choice buys or costs.
+optimises. Keyword matching agrees poorly with human labels and with model-based judges \cite{xie2025sorrybench},
+and after ablation it can count more refusals than a judge \cite{young2026harder}; selecting on the same prompts that
+are reported invites optimistic estimates \cite{cawley2010overfitting}; and procedures run at different budgets
+cannot be ranked without knowing the budget \cite{dodge2019show}. How large these effects are for abliteration has
+not been measured. Version comparisons add a further confound: two releases of the same tool can apply the same
+family of edits yet be run with different search ranges, trial budgets, selection rules, system prompts and refusal
+markers, so a difference between their outputs need not reflect the version. Practitioners also compute refusal
+directions from malicious-code requests for coding models, an untested heuristic whose benefit on such requests is
+unknown. Evaluators who compare a tool upgrade, another tool at its documented settings or a community abliteration
+therefore have no held-out, judge-based evidence about how much of a difference is due to the tool and how much to
+the selection rule.
 
-The primary purpose of this study was to compare abliteration tools and tool versions on the same base models with
-held-out prompts and a validated judge. Archived Heretic~1.x runs with general- and code-derived refusal directions
-were rebuilt for six Qwen2.5 models of 7--32 billion parameters and evaluated, together with Heretic~2.0 methods,
-two plug-ins of a project fork of Heretic, two further open-source tools run at their documented settings
-(OBLITERATUS and jwest33's abliterator, the latter also on the hybrid-attention Qwen3.5-4B), two community releases
-and the unedited originals, with one harness for judged refusal, capability and distribution shift. Nineteen cells
-(the Heretic~2.0 and fork-plug-in models on Qwen2.5-7B, Qwen2.5-32B and Qwen3.5-4B, their originals and the two
-community releases) were first reported in a companion study \cite{young2026harder}, which fixes the tool and
-varies model generation; this study fixes the model family and varies tool, version and direction source. Because
-Heretic~1.x with the archived settings and Heretic~2.0 DiM apply the same edit, their contrast is the like-for-like
-test of the version. \textbf{H1 (version, like-for-like):} on
-the same base model, Heretic~2.0 DiM at the companion study's settings would leave less judged residual refusal than
-Heretic~1.x with the general direction at the archived settings, without a larger capability loss. The two arms also
-differ in the KL cap of the rule that selects the released trial (0.1 versus 0.01), trial budget, search seed,
-optimisation system prompt and refusal-marker list, so H1 tests the version together with these settings, not the
-edit; MPOA, ARA and the fork plug-ins change the edit as well and are reported as additional configurations. The
-search records pointed to the tighter selection cap of the archived runs as a candidate explanation of the
-Qwen2.5-32B result, so the trial that the 2.0 selection rule picks from the archived Qwen2.5-32B 1.x general search
-was re-exported and evaluated with the same harness. This check was specified after the Qwen2.5-32B result for H1 was known and
-before the re-exported model was evaluated; it tests an explanation of the H1 contrast and is not a further
-hypothesis. The secondary purposes were to test whether the source of the refusal direction matters and whether
-keyword counts change the comparison. \textbf{H2 (prompt domain):} the 1.x code variant would leave less residual refusal than the
-general variant on malicious-code prompts and more on other harmful prompts. \textbf{H3 (measurement):}
-keyword-matched refusal would differ from judged refusal on the same responses by a tool-dependent amount, so that
-keyword counts misstate differences between tools. A further, descriptive expectation was that residual refusal
-would decrease as distribution shift increased. The external tools were not the subject of a hypothesis and are
-reported descriptively. The hypotheses were formulated after the Heretic~2.0 models had been analysed for the
-companion study and were not preregistered; H1 was narrowed from all 2.0 methods to the like-for-like contrast after
-an internal review and before the 7B 1.x cells were judged (Section~\ref{sec:deviations}).
+The primary purpose of this study was to determine how far comparisons of abliteration tools and versions depend on
+the selection rule once refusal is judged on held-out prompts. The tool comparison is the vehicle. Archived
+Heretic~1.x runs with general- and code-derived refusal directions were rebuilt for six Qwen2.5 models of 7--32
+billion parameters and evaluated, together with Heretic~2.0 methods, two plug-ins of a project fork of Heretic, two
+further open-source tools run at their documented settings (OBLITERATUS and jwest33's abliterator, the latter also on
+the hybrid-attention Qwen3.5-4B), two community releases and the unedited originals, with one harness for judged
+refusal, capability and distribution shift. Heretic~1.x with the archived settings and Heretic~2.0 DiM apply the same
+edit family, a rank-1 DiM ablation without projection or row normalisation, so their contrast is the closest
+like-for-like test of the version that the archived runs allow. \textbf{H1 (version, like-for-like):} on the same base
+model, Heretic~2.0 DiM at the companion study's settings would leave less judged residual refusal than Heretic~1.x
+with the general direction at the archived settings, without a larger capability loss. The two arms also differ in
+the KL cap of the rule that selects the released trial (0.1 versus 0.01), the search range of the MLP ablation weight,
+the KL term of the objective, trial budget, search seed, optimisation system prompt and refusal-marker list
+(Table~\ref{tab:h1setup}), so H1 tests the version together with these settings; MPOA, ARA and the fork plug-ins change
+the edit as well and are reported as additional configurations. The search records pointed to the tighter selection
+cap of the archived runs as a candidate explanation of the Qwen2.5-32B result, so the trial that the 2.0 selection
+rule picks from the archived Qwen2.5-32B 1.x general search was re-exported and evaluated with the same harness. This
+post hoc explanatory check was specified after the Qwen2.5-32B result for H1 was known and before the re-exported
+model was evaluated; it is not a further hypothesis. The secondary purposes were to test whether a code-specific
+pipeline helps on malicious-code prompts and whether keyword counts change the comparison. \textbf{H2 (prompt
+domain):} the 1.x code pipeline (code-derived direction, code dev set and code KL prompts) would leave less residual
+refusal than the general pipeline on malicious-code prompts and more on other harmful prompts. \textbf{H3
+(measurement):} keyword-matched refusal would differ from judged refusal on the same responses by a tool-dependent
+amount, so that keyword counts misstate differences between tools. A further, descriptive expectation was that
+residual refusal would decrease as distribution shift increased. The external tools were not the subject of a
+hypothesis and are reported descriptively. The hypotheses were formulated after the Heretic~2.0 models had been
+analysed for the companion study and were not preregistered; H1 was narrowed from all 2.0 methods to the
+like-for-like contrast after an internal review and before the 7B 1.x cells were judged
+(Section~\ref{sec:deviations}). Because each configuration contributed one search per base model, hypothesis verdicts
+are stated at the level of searches with an explicit rule (Section~\ref{sec:stats}).
+
+The contribution is a quantification, not a new principle. That selection on the reported data and unequal budgets
+bias comparisons is known \cite{cawley2010overfitting,dodge2019show}; this study measures the size of the effect in
+abliteration. Within one archived search, changing only the selection cap moved held-out residual refusal by 61.7~pp;
+a version contrast that favoured Heretic~2.0 under the archived settings reversed for these checkpoints, within
+search-to-search variation, when both arms were selected by the same rule; and two released trials with equal dev
+keyword counts (89 of 100, each under its own arm's system prompt and markers) left held-out refusal 26~pp apart. The
+study shares its evaluation harness with a companion study \cite{young2026harder}, which fixes the tool and varies the
+model generation. The two papers divide their claims as follows. The companion study first reported the Heretic~2.0
+and fork-plug-in models on Qwen2.5-7B, Qwen2.5-32B and Qwen3.5-4B, their originals and the two community releases (19
+cells reused here as comparators), the harness and the seed replicates from which the seed-noise threshold is
+estimated; its claims concern model generations. This paper first reports the twelve Heretic~1.x models and the four
+coder and 14B originals, the selection-cap re-export, the external-tool cells, all tests of H1--H3, the dev-set
+comparison at matched dev KL, and the derivation of the seed-noise threshold from the companion study's replicates
+(Appendix~\ref{app:seednoise}), so that the threshold can be checked from this paper.

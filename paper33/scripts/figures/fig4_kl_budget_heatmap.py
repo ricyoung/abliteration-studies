@@ -42,7 +42,7 @@ THRESHOLDS = [0.05, 0.1, 0.2, 0.5]
 SELECTION_KL = 0.1
 SEED = 1
 SPARSE_N = 10                       # dagger when fewer completed trials than this are within the budget
-METHODS = ["dim", "mpoa", "ara", "som", "jspace", "gamma_mpoa"]   # row order inside a block (after Original)
+METHODS = ["dim", "mpoa", "som", "jspace", "gamma_mpoa", "ara"]   # row order inside a block (after Original)
 MAX_METHOD_ROWS = 5                 # most method rows any model has (4 core + J-space or gamma-MPOA)
 
 CMAP = S.seq_cmap()
@@ -59,7 +59,7 @@ PANEL_GAP = 0.20                    # horizontal gap between panels
 RH = 0.150                          # row height
 BLOCK_GAP = 0.08                    # between old and new block
 CELL_PAD = 0.011                    # half of the 2-px surface gap between cells
-NONBIND = "*"                       # appended to a value whose budget is not binding
+NONBIND = "°"                       # appended to a value whose budget is not binding
 TOP = 0.04                          # first panel row starts here
 P_FAMILY = 0.09                     # family title (centre), relative to the panel top
 P_COLHEAD = 0.25                    # KL-budget column heads (centre)

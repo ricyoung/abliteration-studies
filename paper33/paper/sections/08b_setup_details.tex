@@ -108,6 +108,44 @@ on row-normalised weights whose row norms are then restored
 reseeded with the run seed.
 % src: configs/core_mpoa.toml (defaults); ../heretic/src/heretic/modifiers/abliteration.py (orthogonalize_direction=True, row_normalization=FULL, full_normalization_lora_rank=3, svd_lowrank q=2r+4 niter=6, manual_seed)
 
+\paragraph{$\gamma$-MPOA.} In a post-norm block the residual stream receives
+$\mathbf{y}=\boldsymbol{\Gamma}\mathbf{o}/\mathrm{rms}(\mathbf{o})$, with
+$\mathbf{o}=W\mathbf{z}$ the writer's output and
+$\boldsymbol{\Gamma}=\mathrm{diag}(\boldsymbol{\gamma})$ the gain of the
+following RMSNorm, so its component along the refusal direction
+$\hat{\mathbf{r}}$ is $(\boldsymbol{\Gamma}\hat{\mathbf{r}})^{\top}\mathbf{o}/\mathrm{rms}(\mathbf{o})$.
+$\gamma$-MPOA replaces MPOA's projection by the oblique projection
+\[
+W' = W - \lambda\,\mathbf{a}\mathbf{b}^{\top}W,\qquad
+\mathbf{b}=\boldsymbol{\Gamma}\hat{\mathbf{r}},\qquad \mathbf{b}^{\top}\mathbf{a}=1,
+\]
+so that $\mathbf{b}^{\top}W'=(1-\lambda)\,\mathbf{b}^{\top}W$ and the write
+along $\hat{\mathbf{r}}$ vanishes at $\lambda=1$, the per-token
+$\mathrm{rms}(\mathbf{o})$ being a scalar; $\lambda$ is MPOA's per-layer
+weight from the search. The removal direction is a ridge-regularised inverse,
+$\mathbf{a}\propto(\boldsymbol{\Gamma}^2+\delta^2 I)^{-1}\boldsymbol{\Gamma}\hat{\mathbf{r}}$
+with $\delta=0.1\,\mathrm{rms}(\boldsymbol{\gamma})$ of the writer's gain,
+because many gains are near zero. MPOA's row-norm restoration is then applied
+but confined to the kernel of $\mathbf{b}^{\top}$, so that it cannot
+reintroduce a component along $\hat{\mathbf{r}}$, and the edit is exported as
+the same rank-3 adapter (one exact rank-1 term plus a rank-2 randomised-SVD
+approximation of the restoration, projected onto that kernel). The gains are
+read from the RMSNorm after $W_O$ and $W_{\mathrm{down}}$: $1+\mathbf{w}$ for
+Gemma-2 (and Gemma-3), whose RMSNorm stores an offset weight $\mathbf{w}$, and
+the raw weight $\mathbf{w}$ for Gemma-4, OLMo-2 and Olmo-3. Each gain vector
+is checked against the module's own forward pass, and the fork's unit tests
+check that the deployed weight satisfies
+$\mathbf{b}^{\top}W'=(1-\lambda)\,\mathbf{b}^{\top}W$ to floating-point
+precision. On pre-norm models the modifier reduces to MPOA. The post-norm
+component along $\hat{\mathbf{r}}$ was not measured in forward passes of the
+selected models.
+% 2026-11-08 ARS revision (REV-26): update rule from the fork, branch paper33-gamma @ fdfe54b,
+% src: /data/heretic_2/heretic src/heretic/modifiers/gamma_mpoa.py (module docstring "Edit", "Choice of a", "Interaction with
+% src: MPOA's magnitude preservation" a)-d); Settings gamma_mode default "gain", gamma_inverse default RIDGE, gamma_eps default 0.1;
+% src: rmsnorm_gain(): Gemma2/Gemma3RMSNorm gain = 1.0 + weight, Gemma4RMSNorm gain = weight, Olmo2/Olmo3RMSNorm gain = weight,
+% src: forward-pass self-check); tests/test_gamma_mpoa.py (named in the docstring); configs/core_gmpoa.toml (no [modifier.GammaMPOA]
+% src: section, so the defaults apply); "full_normalization_lora_rank = 3" as MPOA (abliteration.py).
+
 \paragraph{SOM.} A port of the proof of concept in Heretic PR~\#196
 \cite{piras2025som}. Per layer, a $4\times4$ hexagonal self-organising map is
 fitted to the per-prompt harmful residuals (10{,}000 online iterations,
@@ -396,8 +434,14 @@ the selected trial's dev refusal count and KL divergence
 % src: scripts/select_trial.py (patch_journal, reexport_commands: --export-strategy MERGE); scripts/eval_one.sh; scripts/eval_one_local.sh; ../heretic/src/heretic/model.py (get_merged_model: merge_and_unload); runs/mc-rtx-1/results/bench/*/reexport.log ("Restoring model from trial", "Obtaining module I/O", "Merging LoRA adapters into base model"; no dev re-scoring); notes/EXECUTION_PLAN_v2.md (finding 4)
 % src (2026-11-06): results/rescore_dev/rescore_dev_all.csv (46 released exports: sel_refusals, sel_kl vs rescore_refusals, rescore_kl); sections/08f_dev_rescore.tex (app:dev-rescore)
 
-Models are published with Heretic's upload action as public repositories
-\texttt{richardyoung/\{base\}-\{METHOD\}-heretic} with Heretic's model card.
+Models are published with Heretic's upload action as repositories
+\texttt{richardyoung/\{base\}-\{METHOD\}-heretic} with Heretic's model card;
+the five Gemma-2-27B repositories are private (withheld), the five OLMo-2-32B
+repositories are gated with automatic approval, and all others are public
+(Ethics Statement).
+% 2026-11-08 ARS re-review revision (NEW-7): "public repositories" contradicted the gated OLMo-2-32B release.
+% src: HfApi().model_info on 2026-11-08: richardyoung/OLMo-2-0325-32B-Instruct-{DiM,MPOA,SOM,ARA,GMPOA}-heretic gated = "auto";
+% src: every other paper-33 repository gated = False, private = False.
 For MPOA, ARA and DiM the upload includes Heretic's full \texttt{reproduce/}
 manifest (configuration, study journal, requirements and weight checksums),
 which upstream Heretic can use to re-run the search and export
@@ -419,9 +463,55 @@ small-pair models.
 % src: scripts/eval_one.sh (publish branch; hf download back; repro=none for SOM|JSpace|GMPOA*; runs/*/results/bench/*__gmpoa/reexport.sh (--upload-repro none)); scripts/select_trial.py (--upload-repro); scripts/publish_local.sh; results/bench-4090/*/publish_check.json (10 files, all "match": true, "private": false); runs/local-4090/logs/publish_all.log; runs/local-4090/logs/publish_ara_retry2.log ("OK qwen3.5-4b__ara"); runs/mc-rtx-1/results/bench/*/hf_repo.txt; runs/mc-rtx-1/tmpmodels/*/reproduce/README.md ("Reproducibility *cannot* be guaranteed in this environment"; Contents: config.toml, journal, requirements.txt, SHA256SUMS.txt, reproduce.json); notes/overnight_log.md (03:20, 06:34-06:58)
 % src (2026-11-06): scripts/eval_one.sh (PLUG heretic-gamma / heretic-p33; repro=none for SOM|JSpace|GMPOA*); runs/mc-*/results/bench/*__gmpoa/reexport.sh (--upload-repro none) and plugin_commit.txt (fdfe54b); runs/mc-*/results/bench/*__som/heretic_p33_commit.txt (8fd4d76); runs/mc-h200-1/runs/*__{som,gmpoa}__core-s1/meta.txt (cmd PYTHONPATH=.../heretic-{p33,gamma}/src; its heretic line shows the master checkout 0db5c31); runs/local-4090/*__{som,jspace}__core-s1/meta.txt (8fd4d76); env/final_capture_{mc-h200,mc-rtx,4090-local}/git_commits.txt; model cards of the 46 released repositories checked 2026-11-06 (no paper or fork commit named)
 
-Released models keep their base licences (Gemma terms; Mistral Research
-Licence, non-commercial, for Mistral-Small-2409); the Human-CentricAI
-judge (CC~BY-NC) is used for research only.
+Released models keep the licence of their base model: Apache-2.0 (the Qwen,
+OLMo and Mistral-Small-3.2 bases and Gemma-4-31B), to which the use
+restrictions of the OpenRAIL++ licence are added; the Gemma Terms of Use and
+Prohibited Use Policy for Gemma-2-27B; or, for
+Mistral-Small-2409, the Mistral Research Licence, which permits
+non-commercial research use. The five OLMo-2-32B variants are gated
+on Hugging Face with automatic approval (Ethics Statement). A licence states
+permitted use; it is not a technical control. The Human-CentricAI judge
+(CC~BY-NC) is used for research only.
+
+Whether each licence permits redistributing a derivative whose refusal has
+been removed was checked against the licence texts, retrieved on 8 November
+2026. Apache-2.0 (Section~4) permits redistribution of modified works with a
+copy of the licence and notices of modification and contains no use
+restriction; the OLMo model cards add that the models are ``intended for
+research and educational use'' under Ai2's Responsible Use Guidelines, which
+``do not restrict the use of the Ai2 Tools for the sole purpose of scientific
+research and development''. The Mistral Research Licence~0.1 permits the
+distribution of derivatives made by the licensee (Section~2.3) provided they
+carry ``prominent notices stating that You modified the concerned Mistral
+Model'', and limits the use of derivatives to research purposes
+(Section~3.2); it contains no provision on safety behaviour, so it permits
+the release for non-commercial research use. The Gemma Terms of Use permit
+the distribution of model derivatives (Section~3.1) subject to the use
+restrictions of Section~3.2, which incorporate the Gemma Prohibited Use
+Policy; that policy forbids using Gemma or model derivatives for ``attempts to
+override or circumvent safety filters or intentionally drive Gemma or Model
+Derivatives to act in a manner that contravenes this Gemma Prohibited Use
+Policy''. The terms do not define ``safety filters'', and on a plain reading
+the removal of trained refusal may fall under this clause, so this study
+cannot state that redistributing the Gemma-2-27B derivatives is permitted.
+The five Gemma-2-27B variants were therefore made private on 9 November 2026
+and are not released; the ``Notice'' text file that Section~3.1 requires with
+every distribution was added to their repositories.
+% 2026-11-08 ARS re-review revision (REV-04): licence texts read 2026-11-08 (copies in the session scratchpad lic/):
+% src: Mistral-Small-Instruct-2409 README.md front matter via huggingface_hub.hf_hub_download (license: other, license_name mrl,
+% src: license_link https://mistral.ai/licenses/MRL-0.1.md; full MRL text in extra_gated_prompt: 2.3 Distribution of Derivatives
+% src: made by or for You; 3.2 Usage Limitation "only ... for Research Purposes"; 4.3 Derivatives subject to Section 3; no clause
+% src: on safety, guardrails or refusal); google/gemma-2-27b-it README.md (license: gemma; Terms of Use link) and
+% src: https://ai.google.dev/gemma/terms (last modified 1 April 2026: 3.1 Distribution and Redistribution incl. the "Notice" text
+% src: file; 3.2 Use Restrictions incorporating the Prohibited Use Policy) and https://ai.google.dev/gemma/prohibited_use_policy
+% src: (last modified 21 February 2024: "Attempts to override or circumvent safety filters ..."); google/gemma-4-31B-it
+% src: card_data license apache-2.0, license_link https://ai.google.dev/gemma/docs/gemma_4_license (Apache License 2.0 text);
+% src: allenai OLMo-2-0325-32B-Instruct / Olmo-3.1-32B-Instruct README.md ("intended for research and educational use",
+% src: Responsible Use Guidelines https://allenai.org/responsible-use, June 2024, "Understand and Prevent Disallowed Use Cases").
+% src: Released repos (HfApi list_repo_files, 2026-11-08): richardyoung/gemma-2-27b-it-*-heretic have no NOTICE file (README links
+% src: the Gemma terms); richardyoung/Mistral-Small-Instruct-2409-*-heretic README front matter carries the MRL text and the
+% src: heading "This is a decensored version of ..." (modification notice).
+% 2026-11-08 ARS revision (REV-03, REV-04; author decision 3 in FIX_DECISIONS.md).
 % src: notes/EXECUTION_PLAN_v2.md (Publishing)
 
 % ---------------------------------------------------------------------
@@ -475,7 +565,14 @@ job queues shared the H200 for part of the search phase
 downloads, work without a run record (smoke tests, the computation of the
 J-space directions, and the re-export and upload that published the
 small-pair models), evaluations run on the RTX box for another study, and the
-statistical analysis.
+statistical analysis. Per completed 100-trial main-study search on the H200
+box, a direction-based study took a median of 18.1 minutes (range 10.2--61.5;
+23 studies) and an ARA study 81.0 minutes (50.3--95.6; 8 studies), 18.1\,h in
+total; the resumed Qwen3.8-27B MPOA study, split over three processes, is not
+included.
+% 2026-11-08 ARS re-review revision (NEW-2): src: results/analysis/revision_rr_search_time.csv (scripts/analysis/revision_rr_extra.py,
+% src: wall_seconds of the completed seed-1 meta.txt in runs/mc-h200-1/runs; Qwen3.8-27B ARA = core-s1-clean, Qwen2.5-32B ARA and
+% src: Mistral-Small-3.2 ARA / DiM / MPOA = core-s1-r2). wall_seconds include the nvidia-smi wait loop (0.15 h over all runs).
 % src (2026-11-05 todo pass): sum of wall_seconds in runs/mc-h200-1/runs/*/meta.txt (77: 51 Heretic incl. 6 pilot-s1, 26 bench__), runs/mc-rtx-1/runs/{bench__,judge__}*/meta.txt (32 bench__ + 5 judge__ with host massed-rtx6000; the H200 runs mirrored into runs/mc-rtx-1/runs are not counted twice; bench__ jobs of the 1.x models qwen2.5-14b, qwen2.5-coder-* and *heretic1x* belong to another study and are excluded) and runs/local-4090/*/meta.txt (22 Heretic runs incl. 2 pilots); the 32 RTX 4090 evaluation jobs have no meta.txt and are timed from START/END in runs/local-4090/logs/bench_queue.log; idle-GPU wait = gap between meta.txt start and the first line of output.log for commands with the nvidia-smi guard (0.15 h); failed = exit_code != 0 or rc != 0; occupancy = union of [start, end] intervals per machine (computed 2026-11-05, read-only, from the synced files above)
 % src: env/env_mc-h200.txt; env/env_mc-rtx.txt; env/env_4090-omarchy.txt; runs/mc-h200-1/env/nvidia-smi.txt, runs/mc-rtx-1/env/nvidia-smi.txt (Attached GPUs: 1); scripts/bench/pyproject.toml; runs/mc-rtx-1/results/bench/*/summary.json (versions); scripts/bench/run.sh (VLLM_USE_FLASHINFER_SAMPLER=0); PLAN.md (Rented GPU workflow)
 

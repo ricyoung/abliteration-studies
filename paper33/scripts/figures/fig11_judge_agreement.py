@@ -48,22 +48,21 @@ GROUPS = [  # rows of (b) and (c): (pooled group, label)
     ("role:external", "Community"),
     ("role:replicate", "Seed 2 (small pair)"),
 ]
-GAP_SERIES = [  # (variant, label, marker kwargs)
-    ("kw_vs_wg", "keyword − WildGuard, all responses",
+GAP_SERIES = [  # (variant in review_out_c4_gap_pooled.csv, label, marker kwargs): keyword window vs WildGuard
+    ("kw100_vs_wg", "keyword, first 100 tokens (Heretic's window)",
      dict(marker="o", mfc=S.TEXT, mec=S.TEXT, color=S.TEXT)),
-    ("kw_vs_q3g", "keyword − Qwen3Guard, all responses",
-     dict(marker="o", mfc=S.SURFACE, mec=S.TEXT, mew=S.HOLLOW_MEW, color=S.TEXT)),
-    ("kw_vs_wg_complete_only", "keyword − WildGuard, complete (< 512 tokens)",
-     dict(marker="^", mfc=S.TEXT_SECONDARY, mec=S.TEXT_SECONDARY, color=S.TEXT_SECONDARY)),
-    ("kw_vs_wg_capped_only", "keyword − WildGuard, capped at 512 tokens",
-     dict(marker="s", mfc=S.TEXT_SECONDARY, mec=S.TEXT_SECONDARY, ms=S.MS * 0.9, color=S.TEXT_SECONDARY)),
-]
-KAPPA_SERIES = [
-    (("kw", "wg"), "keyword vs WildGuard", dict(marker="o", mfc=S.TEXT, mec=S.TEXT, color=S.TEXT)),
-    (("kw", "q3g"), "keyword vs Qwen3Guard",
-     dict(marker="o", mfc=S.SURFACE, mec=S.TEXT, mew=S.HOLLOW_MEW, color=S.TEXT)),
-    (("wg", "q3g"), "WildGuard vs Qwen3Guard",
+    ("kw256_vs_wg", "keyword, first 256 tokens",
      dict(marker="D", mfc=S.TEXT_SECONDARY, mec=S.TEXT_SECONDARY, ms=S.MS * 0.85, color=S.TEXT_SECONDARY)),
+    ("kw_vs_wg", "keyword, full response (≤ 512 tokens)",
+     dict(marker="o", mfc=S.SURFACE, mec=S.TEXT, mew=S.HOLLOW_MEW, color=S.TEXT)),
+]
+KAPPA_COLORS = "#5f5f5f"
+KAPPA_SERIES = [
+    (("kw", "wg"), "keyword vs WildGuard", dict(marker="s", mfc=S.TEXT, mec=S.TEXT, ms=S.MS * 0.9, color=S.TEXT)),
+    (("kw", "q3g"), "keyword vs Qwen3Guard",
+     dict(marker="s", mfc=S.SURFACE, mec=S.TEXT, mew=S.HOLLOW_MEW, ms=S.MS * 0.9, color=S.TEXT)),
+    (("wg", "q3g"), "WildGuard vs Qwen3Guard",
+     dict(marker="^", mfc=S.TEXT_SECONDARY, mec=S.TEXT_SECONDARY, ms=S.MS, color=S.TEXT_SECONDARY)),
 ]
 SPREAD = 0.36           # half-width over which the cells of a slot are spread
 SUB = 0.19              # vertical offset between sub-rows in (b)/(c)
@@ -75,13 +74,14 @@ def gen_of(row):
 
 
 def load():
-    cells = J.load("h3_gap_cells.csv")
-    cells = cells[(cells["comparison"] == "kw_vs_wg") & (cells["set_group"] == "harmful_all")].copy()
+    # (a) and (b) at the keyword windows of the review revision (100-token window = the one Heretic scores)
+    cells = J.load("review_out_c4_gap_cells.csv")
+    cells = cells[(cells["comparison"] == "kw100_vs_wg") & (cells["set_group"] == "harmful_all")].copy()
     if len(cells) != len(J.judged_cells()):
         raise ValueError(f"h3_gap_cells has {len(cells)} kw_vs_wg cells, dir_status {len(J.judged_cells())}")
     cells["fam_i"] = cells["pair"].map({p: i for i, p in enumerate(FAM_ORDER)})
     cells = cells.sort_values(["fam_i", "gen_new", "label"])
-    pooled = J.load("h3_gap_pooled.csv")
+    pooled = J.load("review_out_c4_gap_pooled.csv")
     pooled = pooled[pooled["subset"] == "harmful_all"]
     agree = J.load("h3_agreement_pairs.csv")
     agree = agree[(agree["subset"] == "harmful") & (agree["group_type"] == "pooled")]
@@ -89,7 +89,7 @@ def load():
     return cells, pooled, agree, models
 
 
-def pooled_row(pooled, group, variant="kw_vs_wg"):
+def pooled_row(pooled, group, variant="kw100_vs_wg"):
     return J.one(pooled[(pooled["group"] == group) & (pooled["variant"] == variant)], f"{group} {variant}")
 
 
@@ -148,8 +148,9 @@ def panel_a(ax, cells, pooled):
     ax.set_xticklabels([s[1] for s in SLOTS])
     ax.tick_params(axis="x", length=0)
     ax.grid(axis="x", visible=False)
-    ax.set_ylabel("Keyword − WildGuard\nrefusal rate (pp)")
-    ax.set_title("a   Gap per cell, held-out harmful responses", loc="left", fontweight="bold", pad=14)
+    ax.set_ylabel("Keyword (100 tokens) −\nWildGuard refusal (pp)")
+    ax.set_title("a   Gap per model at Heretic's 100-token keyword window, held-out harmful responses", loc="left",
+                 fontweight="bold", pad=14)
     return counts
 
 
@@ -203,10 +204,10 @@ def main():
         r = kappa_row(agree, g, *pair)
         return r["kappa"], r["kappa_lo"], r["kappa_hi"]
 
-    row_panel(ax_b, rows_y, GAP_SERIES, gap_get, "Keyword − judge refusal rate (pp), pooled",
-              "b   Gap by judge and by response completeness", ref=0.0)
+    row_panel(ax_b, rows_y, GAP_SERIES, gap_get, "Keyword − WildGuard refusal rate (pp), pooled",
+              "b   Pooled gap by keyword window", ref=0.0)
     row_panel(ax_c, rows_y, KAPPA_SERIES, kap_get, "Cohen's κ (agreement beyond chance)",
-              "c   Agreement before and after ablation")
+              "c   Agreement, full-response keyword")
     ax_b.set_yticks(list(rows_y.values()))
     ax_b.set_yticklabels([lab for _, lab in GROUPS])
     plt.setp(ax_c.get_yticklabels(), visible=False)
@@ -221,17 +222,17 @@ def main():
     # one key for (b) and (c): the filled / hollow circles mean the same rater pair in both panels
     hb = legend_handles(GAP_SERIES)
     hc = legend_handles(KAPPA_SERIES)
-    hb[0].set_label("keyword vs WildGuard, all responses (b, c)")
-    hb[1].set_label("keyword vs Qwen3Guard, all responses (b, c)")
-    hb[2].set_label("keyword vs WildGuard, complete (< 512 tokens; b)")
-    hb[3].set_label("keyword vs WildGuard, capped at 512 tokens (b)")
+    hc[0].set_label("keyword vs WildGuard (c)")
+    hc[1].set_label("keyword vs Qwen3Guard (c)")
     hc[2].set_label("WildGuard vs Qwen3Guard (c)")
     # two columns (filled column-wise): keyword vs WildGuard variants | Qwen3Guard pairs. Three columns overflowed the
     # 6.5 in figure width and clipped the outer labels (fact-check 2026-11-06).
-    fig.legend(handles=[hb[0], hb[2], hb[3], hb[1], hc[2]], loc="outside lower center", ncols=2, frameon=False,
+    for h in hb:
+        h.set_label(h.get_label() + " (b)")
+    fig.legend(handles=hb + hc, loc="outside lower center", ncols=2, frameon=False,
                handlelength=1.6, columnspacing=2.0)
     # method key for (a), above the panel
-    mh = S.method_handles(["base", "dim", "mpoa", "som", "jspace", "ara", "gamma_mpoa", "community"])
+    mh = S.method_handles(S.METHOD_ORDER)
     gh = S.generation_handles()
     for h, lab in zip(gh, ("older release", "newer release")):
         h.set_linestyle("none")
@@ -241,7 +242,9 @@ def main():
     fig.legend(handles=mh + gh + h_pool, loc="outside upper center", ncols=6, frameon=False, handlelength=1.3,
                columnspacing=1.1)
     S.save(fig, NAME)
-    write_caption(cells, pooled, agree, models, counts)
+    # 2026-11-07 figure pass: the paper caption (05_results.tex, captions.md) is maintained by hand for this figure;
+    # the generated draft below still describes the full-response version and is not written.
+    # write_caption(cells, pooled, agree, models, counts)
 
 
 def write_caption(cells, pooled, agree, models, counts):

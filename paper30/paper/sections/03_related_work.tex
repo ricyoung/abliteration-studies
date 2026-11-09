@@ -1,15 +1,22 @@
 % =====================================================================
 % 2 RELATED WORK (short; claims follow paper 33's verified related work, references.bib copied from paper 33)
 % Revised 2026-11-06: 2512.13655 = earlier comparison (prior work, not a previous version); J-space sentence added.
+% Revised 2026-11-08 (ARS review SC-27, CONSENSUS-3; S11): weight orthogonalisation attributed to Arditi et al.; affine
+% concept editing added; new paragraph on fine-tuning attacks, pruning/low-rank safety isolation, representation
+% engineering and defences (tamper resistance, circuit breakers, refusal-feature adversarial training, deeper
+% alignment), and on tampering-based audits. All references are the reviewers' suggestions, verified on the arXiv
+% abstract pages (export.arxiv.org API, 2026-11-08) and listed as found in notes/ARS_review_20261108/refcheck.json.
 % =====================================================================
 \section{Related Work}
 \label{sec:related}
 
 \paragraph{Directional abliteration and its variants.} Arditi et al.~\cite{arditi2024refusal} showed across 13
 chat models that the difference between mean harmful and harmless activations induces refusal when added and
-suppresses it when ablated; orthogonalising the output weights against it yields a training-free edit
-\cite{labonne2024abliteration,failspy_abliterator}. Later variants mainly reduce collateral damage: projected
-abliteration removes the harmless-mean component \cite{lai2024projected}, magnitude-preserving orthogonal ablation
+suppresses it when ablated, and that orthogonalising every weight matrix that writes to the residual stream against
+it yields a training-free edit; the edit was popularised as ``abliteration'' by community implementations
+\cite{labonne2024abliteration,failspy_abliterator}. Treating refusal as an affine rather than a linear function of the
+activations motivates removing the direction relative to a reference point \cite{marshall2024affine}. Later variants
+mainly reduce collateral damage: projected abliteration removes the harmless-mean component \cite{lai2024projected}, magnitude-preserving orthogonal ablation
 (MPOA) restores row norms \cite{lai2025mpoa}, and SVD- or SOM-based methods remove several directions
 \cite{gabliteration2024,piras2025som}. Arbitrary-rank ablation (ARA) abandons the direction and fits a low-rank
 update per module that maps harmful outputs toward harmless ones \cite{weidmann2026ara}. Jacobian-space (J-space)
@@ -33,13 +40,32 @@ on Hugging Face add a further population whose procedure is often undocumented; 
 eight such releases refused less than the best model selected under a KL cap, at a larger divergence
 \cite{young2026harder}.
 
+\paragraph{Safety removal beyond abliteration, and defences.} Abliteration is one of several low-cost ways to
+remove safety behaviour from open weights. A few fine-tuning steps on a small set of harmful examples, or even on
+benign data, degrade the safety of aligned models \cite{qi2024finetuning}, and LoRA fine-tuning removes the safety
+training of a 70B chat model on a single GPU \cite{lermen2023lora}. Pruning or low-rank modification of a small set of
+safety-critical weights also removes it \cite{wei2024brittleness}, an isolation of safety in weight space close in
+spirit to directional ablation, and representation engineering reads and steers safety-relevant concepts in
+activation space \cite{zou2023representation}. Defences aim to make such edits costlier: tamper-resistant safeguards
+train models to keep their safeguards under fine-tuning attacks \cite{tamirisa2025tamper}, circuit breakers reroute
+harmful internal representations \cite{zou2024circuit}, refusal-feature adversarial training trains against
+ablation of the refusal feature itself \cite{yu2025refat}, and alignment that extends beyond the first few output
+tokens resists attacks that act on them \cite{qi2025shallow}; self-destructing models make harmful adaptation
+expensive by design \cite{henderson2023selfdestructing}. Model-tampering attacks have been proposed as a part of
+capability evaluations \cite{che2025tampering}, rigorous audits need more than black-box access
+\cite{casper2024blackbox}, and the marginal risk of open weights is judged against what is already available
+\cite{kapoor2024societal}. None of the models evaluated here carries such a defence, so the results describe
+undefended releases; whether a defence shifts the refusal--divergence trade-off of the tools compared here was not
+tested.
+
 \paragraph{Evaluation practice.} Against human labels, keyword matching reached Cohen's $\kappa=0.37$, WildGuard
 0.61 and fine-tuned LLM judges about 0.81 \cite{xie2025sorrybench}; conclusions can depend on the classifier
 \cite{young2026measuring}, including in abliteration studies \cite{agnihotri2025granular}. Compliance is not
-competence: abliterated code models complied with malicious-code requests but succeeded at rates bounded by model
+competence: abliterated code models complied with requests to inject vulnerabilities but succeeded at rates bounded by model
 size \cite{carleo2026willing}, and a single-vector projection raised unsafe compliance far more than task skill
-\cite{david2026ablating}. Susceptibility to abliteration was model-specific rather than size-dependent across 24
-open models \cite{hadetskyi2026not}. The companion study \cite{young2026harder} used the harness adopted here to
+\cite{david2026ablating}. Susceptibility to abliteration was reported to be model-specific rather than size-dependent across
+24 open models \cite{hadetskyi2026not}. The companion study \cite{young2026harder} used the harness adopted here to
 ask whether newer model generations resist abliteration with one tool, and it reported keyword counts above judge
-counts after ablation. The present study holds the model family fixed and varies the tool, the tool version and the
-source of the refusal direction, which neither the earlier comparison nor the companion study did.
+counts after ablation. The present study holds the model family fixed and varies the tool, the tool version, the
+direction pipeline and, for one search, the selection rule, which neither the earlier comparison nor the companion
+study did.

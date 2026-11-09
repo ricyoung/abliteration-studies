@@ -156,9 +156,9 @@ def main():
     y = TOP
     for gidx, (fam, old, new, keys) in enumerate(groups):
         if gidx > 0:
-            y += GROUP_GAP + (STUDY_GAP if fam.startswith("Qwen (small") else 0)
+            y += GROUP_GAP + (STUDY_GAP if fam.startswith("Small pair") else 0)
         for gi, (xb, model) in enumerate(zip(x_blocks, [old, new])):
-            name = S.MODEL_DISPLAY[model] + (" (small pair)" if fam.startswith("Qwen (small") else "")
+            name = S.MODEL_DISPLAY[model] + (" (small pair)" if fam.startswith("Small pair") else "")
             ax.text(xb, y + GROUP_HDR * 0.55, name, ha="left", va="center", fontsize=S.FONT, fontweight="bold",
                     color=S.TEXT)
         y += GROUP_HDR

@@ -47,7 +47,7 @@ workflow.
 \begin{figure*}[tp]
 \centering
 \includegraphics[width=\textwidth]{figures/fig1_workflow.pdf}
-\caption{\textbf{Study workflow.} Five earlier-to-later pairs of instruction-tuned models are edited with four refusal-removal methods in Heretic 2.0 (five on the small pair, which adds J-space), each in a 100-trial Optuna TPE study that minimises dev keyword refusals and first-token KL divergence; the trial with the fewest dev refusals at KL $\le$ 0.1 is exported as standalone weights. The originals, the selected models and eight public community abliterations are evaluated on held-out data (judged refusal on 1,322 prompts, of which the 44 that exactly (36) or approximately (8) match a prompt of the search dataset are flagged; teacher-forced divergence on the 350 benign prompts; five capability benchmarks), and the statistics test H1--H3 and compare dev-set with held-out refusal. Dashed boxes mark additional conditions, coloured squares identify methods, and grey notes give the GPUs used for search and evaluation.}
+\caption{\textbf{Study workflow.} Five earlier-to-later pairs of instruction-tuned models are edited with four refusal-removal methods in Heretic 2.0 (five on the small pair, which adds J-space), each in a 100-trial Optuna TPE study that minimises dev keyword refusals and first-token KL divergence; the trial with the fewest dev refusals at KL $\le$ 0.1 is exported as standalone weights. The originals, the selected models and eight public community abliterations are evaluated on held-out data (judged refusal on 1,322 prompts, of which the 44 that exactly (36) or approximately (8) match a prompt of the search dataset are flagged; teacher-forced divergence on the 350 benign prompts; five capability benchmarks), and the statistics test H1--H3 and compare dev-set with held-out refusal. The highlighted step is the held-out evaluation, applied to all 74 models; the dashed box marks the $\gamma$-MPOA control, the seed-2 replicate of the small pair and the community releases, which join the same evaluation. Keyword refusal is scored on the first 100, 256 and 512 generated tokens.}
 \label{fig:workflow}
 \end{figure*}
 % caption: paper/figures/captions.md (fig1_workflow)
@@ -160,7 +160,13 @@ HarmBench and a code-as-weapon bank
 \cite{chao2024jailbreakbench,rottger2024xstest,souly2024strongreject,mazeika2024harmbench,young2026code}
 (sampling in Appendix~\ref{app:setup-eval}). The 44 harmful
 items that match a \texttt{harmful\_behaviors} prompt are flagged, and results
-are reported with and without them.
+are reported with and without them. The code-as-weapon bank was compiled by the
+author from public malicious-code prompt corpora and is described in a preprint
+that has not been peer-reviewed \cite{young2026code}; its 200 items were drawn,
+and the held-out file frozen, before any held-out response was generated.
+% 2026-11-08 ARS revision (REV-13): provenance and freeze of the code bank; src: references.bib young2026code (arXiv:2605.28734,
+% Young and Moody); sections/08b_setup_details.tex (app:setup-eval: code_safety split, sources astra, scam2prompt, rmcbench,
+% cysecbench, malwarebench, redcode; seed 20261105); this file, "frozen before any held-out response was generated".
 % src: ../heretic/src/heretic/modifiers/{abliteration,ara,som}.py (good_prompts/bad_prompts train[:400]); ../heretic/src/heretic/scorers/keyword_rate.py (test[:100]); ../heretic/src/heretic/scorers/kl_divergence.py (test[:100]); notes/EXECUTION_PLAN_v2.md (finding 2; Selection: "full Pareto fronts reported"; Distribution shift: "first-token KL (dev)"; Held-out refusal); scripts/bench/refusal_sets.json (meta; Counter of set/kind/source/advbench_overlap); scripts/build_refusal_sets.py; notes/overnight_log.md (22:45, 22:50)
 
 \begin{table}[t]
@@ -255,7 +261,12 @@ settings \cite{huang2024catastrophic}.
 WildGuard \cite{han2024wildguard} refusal label of each harmful held-out
 response; WildGuard agreed more closely with human labels than the HarmBench
 classifier and was less affected by stylistic rewriting
-\cite{xie2025sorrybench,eiras2025know}. All judges score the same stored responses: WildGuard (refusal and
+\cite{xie2025sorrybench,eiras2025know}, but it has not been validated against
+human labels on the outputs of edited models. No human audit was made here, so
+every refusal rate is relative to the automatic judges, and ``independent''
+means independent of the optimisation objective.
+% 2026-11-08 ARS revision (REV-37; author decision 1: no human audit).
+All judges score the same stored responses: WildGuard (refusal and
 harmful response), the HarmBench classifier (harmful compliance),
 Qwen3Guard-Gen-8B \cite{zhao2025qwen3guard} (second LLM judge), two
 encoder-based refusal classifiers, and Heretic's 33 keyword markers on the full
@@ -314,7 +325,13 @@ MBPP      & \texttt{mbpp\_instruct}      & 500     & 3 & pass@1 & 1{,}024 \\
 \cite{akiba2019optuna} with a multivariate TPE sampler
 \cite{bergstra2011algorithms}: 100 trials, of which the first 30 are random,
 with seed~1 (seeded generators, exceptions for two resumed studies and
-response-prefix handling in Appendix~\ref{app:setup-opt}). The ten small-pair
+response-prefix handling in Appendix~\ref{app:setup-opt}). Every model used the
+same seed, so studies with the same search space share their 30 random start-up
+draws, and two pairs of selected parameter vectors coincide across models
+(Appendix~\ref{app:kl-cap}).
+% 2026-11-08 ARS revision (REV-21): shared seed stated; src: sections/08g_selection_pairs.tex (review_sel_kl_runs.csv
+% sel_params_identical_to: OLMo-2-32B SOM = Qwen3.8-27B SOM; Olmo-3.1-32B MPOA = Qwen3.8-27B MPOA).
+The ten small-pair
 studies were repeated with seed~2 to estimate seed sensitivity
 (Appendix~\ref{app:setup-methods}). Two objectives are minimised, so each study
 yields a Pareto front. The refusal objective is the fraction of 100 greedy
@@ -366,7 +383,13 @@ errors. The planned mixed-effects logistic regression,
 in lme4 notation \cite{bates2015lme4,baayen2008mixed}, was fitted by
 variational Bayes and is reported as posterior means with $\pm 1.96$~SD
 intervals, without $p$ values; its conditional coefficients are larger in
-magnitude than the population-averaged GEE coefficients. H1 is tested by the GEE
+magnitude than the population-averaged GEE coefficients. It has no
+pair-specific generation or interaction slopes, so it cannot represent
+between-pair heterogeneity, and it is reported for completeness only, in
+Appendix~\ref{app:rr-tables} (Table~\ref{tab:h2-vb}).
+% 2026-11-08 ARS revision (REV-20). Re-review revision: the VB estimates moved from the main-text H2 table to tab:h2-vb
+% (scripts/analysis/revision_rr_extra.py splits paper/tables/t5_h2_contrasts.tex; no number changed).
+H1 is tested by the GEE
 generation effect within each method class and H2 by the generation $\times$
 class interaction, pooled and per pair. H2 is also expressed as a
 risk-difference contrast (ARA generation effect minus the mean of the
@@ -408,9 +431,10 @@ and in log-odds (per-pair GEE), raw and baseline-adjusted, with intervals that
 add run-to-run variance: each optimised cell contributes $\sigma^2$, so a
 single-method effect has $2\sigma^2$, a mean of $m$ methods $2\sigma^2/m$
 and the H2 contrast $2\sigma^2+2\sigma^2/m$, with $\sigma$ estimated on each
-scale from the seed pairs. Differences between families are tested with Wald
+scale from the seed pairs. Differences between pairs are tested at the prompt level with Wald
 tests of the generation $\times$ family and generation $\times$ class
-$\times$ family terms of the GEE (3 df). Pooled effects over the four main
+$\times$ family terms of the GEE (3 df), which treat prompts, not runs, as
+independent. Pooled effects over the four main
 pairs are summarised with a random-effects model: DerSimonian--Laird
 between-pair variance \cite{dersimonian1986meta}, a
 Hartung--Knapp--Sidik--Jonkman 95\% interval with a $t$ distribution on 3
@@ -421,6 +445,31 @@ construction. Leave-one-family-out GEE fits complete the pooled analysis. The
 baseline-adjusted contrasts were added after H1 had been stated and are
 exploratory; because the percentage-point and log-odds scales can disagree in
 sign, both are reported.
+
+Four further analyses were added in response to review, after all results were
+known, and are exploratory. First, between-pair heterogeneity is reported as
+Cochran's $Q$, $I^2$ and the DerSimonian--Laird $\tau^2$ with within-pair
+variances that include the run-to-run variance above, not only prompt
+sampling. Second, because a constant $\sigma$ in percentage points ignores
+that a rate varies less near 0\% and 100\%, the run effect is also modelled
+as constant on the logit scale, $\sigma_L$ (estimated from the logits of the
+same seed pairs), and mapped to each cell by the delta method,
+$\sigma_{\mathrm{pp}}=\sigma_L\,p(1-p)$ at the cell's rate $p$; per-pair
+verdicts are reported under both models across the interval of $\sigma$.
+Third, H2 is re-estimated on the direction-based units in which the KL cap
+bound in both cells, and the per-pair verdicts are read on the dev set at
+first-token KL budgets of 0.05 to 1.0 and on the area under each run's
+refusal--KL front, with run-to-run variance estimated from the small-pair seed
+pairs on the same quantity. Fourth, as a scale-free alternative to the
+baseline adjustment, conditional refusal retention is the share of the prompts
+refused by a model's own original that the edited model still refuses, with
+prompt-bootstrap intervals and with intervals that add a run-to-run variance
+of retention estimated, as for the refusal rate, from the ten small-pair seed
+pairs (Table~\ref{tab:retention}).
+% 2026-11-08 ARS re-review revision (NEW-5): scripts/analysis/revision_rr_extra.py -> results/analysis/revision_rr_retention.csv,
+% revision_rr_retention_sigma.csv (sigma_ret 10.96 pp [7.66, 19.24]).
+% 2026-11-08 ARS revision (REV-14, REV-15, REV-16, REV-19, REV-32): scripts/analysis/revision_seed_variance.py,
+% revision_kl_budgets.py, revision_h2_sensitivity.py, revision_misc_estimands.py (docstrings).
 % src (review revision, A1, C1): scripts/analysis/review_selection.py docstring (2) and "Statistical conventions" (per-pair pp =
 % src: mean of paired item differences; log-odds from per-pair GEE; seed variance sigma^2 per optimised cell, 2 sigma^2,
 % src: 2 sigma^2 / m, 2 sigma^2 + 2 sigma^2 / m; DL tau^2, HKSJ with t(k-1), prediction interval t(k-2) (Higgins, Thompson &
@@ -501,7 +550,9 @@ which served to verify the pipeline and are not among the analysed runs. The
 baseline-adjusted contrast was added after H1 had been stated, and the
 pair-level pooling, the KL-cap, item-source and harmful-compliance analyses
 and the 100-token keyword window were added after the held-out results were
-known; all of these are exploratory.
+known, as were the analyses added in response to review (seed-inclusive
+heterogeneity, refusal-level run-to-run variance, KL budgets, cap-bound units,
+conditional retention and outcome classes); all of these are exploratory.
 Deviations from the study plan are listed in
 Appendix~\ref{sec:setup-deviations}.
 % src: notes/EXECUTION_PLAN_v2.md ("Not preregistered (hypotheses written after pilot data)"); configs/pilot_*.toml; notes/RUNBOOK.md (Pilot first at 30 trials); runs/mc-h200-1/queue.txt (pilot-s1 runs)

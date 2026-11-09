@@ -1,0 +1,29 @@
+% Hand-written 2026-11-08 (ARS revision, REV-13): per-pair class effects by item source in the main text.
+% src: results/analysis/review_out_c2_pair_class.csv (item_subset public4 and code_weapon; judge wg; columns rd_orig,
+% src: rd_dir_raw, rd_ara_raw, rd_h2_rd with _lo / _hi; x 100), written by scripts/analysis/review_outcomes.py (C2);
+% src: item-bootstrap 95% intervals (prompt sampling only). Code items: 199 for Qwen and Mistral (one missing WildGuard label).
+\begin{table*}[t]
+\centering\scriptsize
+\setlength{\tabcolsep}{2.4pt}
+\caption{Per-pair generation effects (newer minus older model, pp) by item source: the four public sets (JailbreakBench,
+XSTest unsafe, StrongREJECT, HarmBench; 772 prompts) and the author-compiled code-as-weapon bank (200 prompts).
+Originals: unedited models. Direction: mean of the direction-based methods. H2: ARA minus direction. Item-bootstrap
+95\% intervals, prompt sampling only (run-to-run variance not added). Many edited models refused none of the code
+items, so effects on them are bounded near zero. All-item values are in Table~\ref{tab:pair-effects}; pooled log-odds
+by item set in Table~\ref{tab:item-source}.}
+\label{tab:pair-source}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllllllll@{}}
+\toprule
+ & \multicolumn{2}{c}{Originals} & \multicolumn{2}{c}{Direction} & \multicolumn{2}{c}{ARA} & \multicolumn{2}{c}{H2 contrast} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(l){8-9}
+Pair & Public & Code & Public & Code & Public & Code & Public & Code \\
+\midrule
+Qwen & +5.3 [+3.5, +7.1] & +43.2 [+36.5, +50.5] & +11.0 [+8.8, +13.3] & +9.4 [+6.5, +12.4] & +41.3 [+37.6, +45.1] & +7.5 [+4.0, +11.5] & +30.3 [+25.9, +34.6] & $-$1.8 [$-$5.5, +2.0] \\
+Gemma & $-$5.7 [$-$7.5, $-$4.0] & +27.0 [+18.0, +36.0] & $-$6.8 [$-$9.5, $-$4.4] & +49.3 [+43.7, +55.0] & $-$32.4 [$-$35.8, $-$29.0] & $-$1.5 [$-$3.5, 0.0] & $-$25.6 [$-$29.3, $-$21.9] & $-$50.8 [$-$56.3, $-$45.2] \\
+OLMo & $-$0.3 [$-$1.6, +1.0] & +5.0 [+0.5, +9.5] & +45.2 [+42.8, +47.5] & +4.8 [+2.7, +7.2] & $-$3.1 [$-$5.7, $-$0.4] & 0.0 [0.0, 0.0] & $-$48.3 [$-$51.6, $-$44.9] & $-$4.8 [$-$7.2, $-$2.7] \\
+Mistral Small & +20.5 [+17.2, +23.7] & +8.0 [+4.5, +12.1] & $-$1.6 [$-$3.5, +0.2] & +0.2 [0.0, +0.5] & $-$0.9 [$-$2.5, +0.6] & 0.0 [0.0, 0.0] & +0.7 [$-$1.6, +3.0] & $-$0.2 [$-$0.5, 0.0] \\
+Small pair & +9.5 [+7.1, +11.9] & +43.0 [+36.0, +50.0] & +20.2 [+17.9, +22.7] & +5.9 [+4.1, +7.6] & +17.7 [+14.6, +21.0] & +0.5 [0.0, +1.5] & $-$2.5 [$-$6.1, +1.2] & $-$5.4 [$-$7.2, $-$3.5] \\
+\bottomrule
+\end{tabular}}
+\end{table*}

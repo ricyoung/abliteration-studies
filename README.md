@@ -2,8 +2,8 @@
 
 This repository holds the code and data of two studies on abliteration, the training-free removal of refusal behaviour from open-weight language models:
 
-- **Paper 33: "Is Abliteration Getting Harder? Evidence from Four Open-Weight Model Families"** (`paper33/`). Asks whether refusal is harder to remove from newer model releases. It tests three direction-based methods (DiM, MPOA, SOM; plus J-space on the small pair) and ARA on four model families (Qwen, Gemma, OLMo, Mistral Small) and one small Qwen pair.
-- **Paper 30: "Comparing Abliteration Tools Under Held-Out, Judge-Based Evaluation: Heretic 1.x, Heretic 2.0 and Community Releases on Qwen2.5"** (`paper30/`). Compares Heretic 1.x and Heretic 2.0 with community releases and two external tools (OBLITERATUS, jwest33/abliterator) on Qwen2.5 models. It includes a re-export of a 1.x study at the 2.0 selection rule.
+- **Paper 33: "Is Abliteration Getting Harder? Evidence from Five Open-Weight Release Pairs"** (`paper33/`). Asks whether refusal is harder to remove from newer model releases. It tests three direction-based methods (DiM, MPOA, SOM; plus J-space on the small pair) and ARA on four model families (Qwen, Gemma, OLMo, Mistral Small) and one small Qwen pair.
+- **Paper 30: "The Selection Rule Can Reverse Abliteration Comparisons: A Held-Out, Judge-Based Case Study of Heretic 1.x, Heretic 2.0, External Tools and Community Releases on Qwen2.5"** (`paper30/`). Compares Heretic 1.x and Heretic 2.0 with community releases and two external tools (OBLITERATUS, jwest33/abliterator) on Qwen2.5 models. It includes a re-export of a 1.x study at the 2.0 selection rule.
 
 Author: Richard J. Young, Department of Information Systems, University of Nevada, Las Vegas.
 
@@ -26,13 +26,14 @@ Author: Richard J. Young, Department of Information Systems, University of Nevad
 | `paper30/analysis/` | `assemble_p30.py` and its outputs (`RESULTS.md`, cells, tests, label tables without text). |
 | `paper30/scripts/` | Tables, figures and supplementary statistics for paper 30. |
 | `paper30/reexport_1x/` | The Heretic 1.x selection-cap re-export: script, version notes, trial records, validation records, provenance and log. |
+| `paper30/hf_release/` | Release of the 13 Heretic 1.x models to Hugging Face: per-tensor verification against the evaluated models, the shard-by-shard merge used to rebuild the KL <= 0.1 re-export, card generation, adapter upload, and the upload log. |
 | `paper30/external_tools/` | Run scripts and `PROVENANCE.json` (tool commit, preset, runtime patches, base revision, seed, weight hashes) for each OBLITERATUS and jwest33 run. |
 
 ## Not included
 
 - **Responses to harmful prompts.** They are kept privately and used only for scoring.
 - **Held-out prompt text.** Only identifiers and hashes are included. The public sets can be rebuilt from their sources, listed in `refusal_sets_meta.json`. The code-as-weapon items come from the author's Code-as-Weapon Bank on Hugging Face.
-- **Model weights.** The models are on Hugging Face under [richardyoung](https://huggingface.co/richardyoung), named `<base>-<METHOD>-heretic`. The SHA-256 of every shard is in `results/bench/*/model_hash.json`.
+- **Model weights.** The models are on Hugging Face under [richardyoung](https://huggingface.co/richardyoung). Paper 33's models are named `<base>-<METHOD>-heretic`; the SHA-256 of every shard is in `paper33/results/bench/*/model_hash.json`. Paper 30's Heretic 1.x models are named `<base>-heretic1x-<general|code>`, plus `Qwen2.5-32B-Instruct-heretic1x-general-kl0.1`; each repository holds its LoRA adapter and the SHA-256 of every tensor (`tensor_hashes.json`).
 
 ## Related code
 

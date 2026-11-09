@@ -28,14 +28,14 @@ Qwen2.5-7B & primary & general & 2.0 DiM & 39.6 & 20.6 & +19.0 [+16.1, +21.9] & 
 \midrule
 \multicolumn{10}{@{}l}{\textit{(b) Added: the original 1.x general study re-exported at the 2.0 selection rule (dev KL $\le$ 0.1; trial \#96); separate Holm families}} \\
 \addlinespace[1pt]
-Qwen2.5-32B & KL-matched & general, \#96 & 2.0 DiM & 11.6 & 47.4 & $-$35.8 [$-$38.9, $-$32.7] & 5 / 353 & $<$0.001 & $<$0.001 \\
- & KL-matched & general, \#96 & 2.0 MPOA & 11.6 & 3.9 & +7.7 [+5.9, +9.7] & 83 / 8 & $<$0.001 & $<$0.001 \\
- & KL-matched & general, \#96 & 2.0 ARA & 11.6 & 6.1 & +5.6 [+3.6, +7.6] & 77 / 23 & $<$0.001 & $<$0.001 \\
- & KL-matched & general, \#96 & SOM (fork) & 11.6 & 42.7 & $-$31.1 [$-$34.0, $-$28.1] & 6 / 308 & $<$0.001 & $<$0.001 \\
+Qwen2.5-32B & rule-matched & general, \#96 & 2.0 DiM & 11.6 & 47.4 & $-$35.8 [$-$38.9, $-$32.7] & 5 / 353 & $<$0.001 & $<$0.001 \\
+ & rule-matched & general, \#96 & 2.0 MPOA & 11.6 & 3.9 & +7.7 [+5.9, +9.7] & 83 / 8 & $<$0.001 & $<$0.001 \\
+ & rule-matched & general, \#96 & 2.0 ARA & 11.6 & 6.1 & +5.6 [+3.6, +7.6] & 77 / 23 & $<$0.001 & $<$0.001 \\
+ & rule-matched & general, \#96 & SOM (fork) & 11.6 & 42.7 & $-$31.1 [$-$34.0, $-$28.1] & 6 / 308 & $<$0.001 & $<$0.001 \\
 \addlinespace[1pt]
  & cap only & general, \#96 & general, \#84 & 11.6 & 73.4 & $-$61.7 [$-$64.7, $-$58.5] & 2 / 602 & $<$0.001 & $<$0.001 \\
 \bottomrule
-\multicolumn{10}{@{}l}{\footnotesize Panel (b): KL-matched rows, Holm over 4 contrasts (family \texttt{h1\_kl\_matched}); cap-only row, a single test (family \texttt{kl\_cap\_1x}).} \\
+\multicolumn{10}{@{}l}{\footnotesize Panel (b): rule-matched rows, Holm over 4 contrasts in a separate family; cap-only row, a single unadjusted test.} \\
 \multicolumn{10}{@{}l}{\footnotesize \#84: the released 1.x general model of panel (a) (dev KL 0.006); \#96: fewest dev refusals at dev KL $\le$ 0.1 (KL 0.064); same study, journal and heretic-llm 1.4.0.} \\
-\multicolumn{10}{@{}l}{\footnotesize KL-matched: both sides selected by the same rule (fewest dev refusals at dev KL $\le$ 0.1); realised dev KL still differs (Table~\ref{tab:devkl}). One optimisation run per condition.} \\
+\multicolumn{10}{@{}l}{\footnotesize Rule-matched: both sides selected by the same rule (fewest dev refusals at dev KL $\le$ 0.1), not at matched divergence; realised dev KL still differs (Table~\ref{tab:devkl}). One optimisation run per condition.} \\
 \end{tabular}

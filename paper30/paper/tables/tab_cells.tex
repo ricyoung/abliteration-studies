@@ -26,7 +26,7 @@ Qwen2.5-Coder-14B & Original & new & 85.5 & [83.1, 87.6] & -- & 85.2 / 85.0 & 13
 \addlinespace[2pt]
 Qwen2.5-32B & Original & \cite{young2026harder} & 76.8 & [74.1, 79.4] & -- & 76.4 / 75.9 & 19.8 & 5.1 & -- & -- \\
  & 1.x general & new & 73.4 & [70.5, 76.0] & $-$3.4 & 72.9 / 72.1 & 22.1 & 2.3 & +0.19 & 0.007 \\
- & 1.x general, KL $\le$ 0.1$^{\S}$ & new & 11.6 & [9.8, 13.8] & $-$65.2 & 28.2 / 24.2 & 74.6 & 0.0 & +0.02 & 0.032 \\
+ & 1.x general, KL $\le$ 0.1$^{\ddagger}$ & new & 11.6 & [9.8, 13.8] & $-$65.2 & 28.2 / 24.2 & 74.6 & 0.0 & +0.02 & 0.032 \\
  & 1.x code & new & 65.3 & [62.3, 68.3] & $-$11.4 & 62.8 / 61.3 & 27.6 & 0.6 & $-$0.25 & 0.017 \\
  & 2.0 DiM & \cite{young2026harder} & 47.4 & [44.3, 50.6] & $-$29.4 & 55.3 / 52.5 & 40.3 & 0.6 & $-$0.05 & 0.017 \\
  & 2.0 MPOA & \cite{young2026harder} & 3.9 & [2.9, 5.3] & $-$72.9 & 17.1 / 12.3 & 85.3 & 0.0 & $-$0.03 & 0.042 \\
@@ -39,6 +39,6 @@ Qwen2.5-Coder-32B & Original & new & 75.3 & [72.5, 77.9] & -- & 77.0 / 76.3 & 19
  & 1.x general & new & 64.3 & [61.2, 67.3] & $-$11.0 & 70.5 / 69.3 & 28.7 & 2.0 & +0.50 & 0.004 \\
  & 1.x code & new & 61.1 & [58.0, 64.1] & $-$14.2 & 69.3 / 67.7 & 30.7 & 1.1 & +0.29 & 0.004 \\
 \bottomrule
-\multicolumn{11}{@{}l}{\footnotesize $^{\S}$ Added after the pre-stated design: the original 1.x general study re-exported at the 2.0 selection rule (dev KL $\le$ 0.1; trial \#96); its test is in a separate Holm family.} \\
+\multicolumn{11}{@{}l}{\footnotesize $^{\ddagger}$ Added after the pre-stated design: the original 1.x general study re-exported at the 2.0 selection rule (dev KL $\le$ 0.1; trial \#96); its test is in a separate Holm family.} \\
 \multicolumn{11}{@{}l}{\footnotesize $^{\mathrm{ns}}$ $p_\mathrm{Holm} \ge 0.05$; all other changes $p_\mathrm{Holm} < 0.001$. External tools and Qwen3.5-4B: Table~\ref{tab:external}.} \\
 \end{tabular}

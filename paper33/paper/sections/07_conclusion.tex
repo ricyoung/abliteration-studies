@@ -11,37 +11,44 @@
 % review_sel_pair_heterogeneity.csv, review_sel_pair_meta.csv); H3 per window (review_out_c4_gap_pooled.csv); future work now
 % names the second seed for the main cells, the heretic-org ARA trial and ARA refits on the search hardware (author
 % decision C), and the planned-but-not-run SOM / J-space conditions, sampled decoding and reasoning mode.
+% 2026-11-08 ARS REVISION (REV-05, REV-07, REV-25, REV-32): release pairs; budget-bound operationalisation; ARA re-scoped as
+% preliminary and single-cell; the audit standard no longer prescribes seeds the study lacks without saying so.
+% src: review_sel_pair_effects.csv; revision_sigma_pair_verdicts.csv; revision_kl_budget_effects.csv; review_out_c2_pair_class.csv;
+% src: review_out_c4_gap_pooled.csv; final_kl_vs_capability.csv. Previous version: sections/07_conclusion.tex.bak-20261108-rev.
 \section{Conclusion}
 \label{sec:conclusion}
 
 This study compared direction-based and optimisation-based refusal removal on
-an earlier and a later release of four open-weight model families and one
-smaller pair, under one search budget, KL cap and selection rule, with
-held-out refusal scored by an independent judge. Refusal removal did not
-become uniformly harder. After direction-based removal the generation effect
-was large for OLMo and the small pair, small for Qwen and Gemma and near zero
-for Mistral Small;
-beyond the newer originals' higher starting refusal, the pooled effect was
-near zero with a pair-level interval that spans large effects of either sign.
-ARA lost less effectiveness than the direction-based methods in two families
-and more in one. At the tool's 100-token window, keyword counts matched judged
-refusal on average but not model by model, and first-token KL did not bound
-capability loss. Claims that a model generation resists refusal removal, or
-that a removal tool succeeds, therefore require several model pairs analysed
-as pairs, the unedited models as reference, several method classes and
-optimisation seeds, held-out judged evaluation and a full-sequence measure of
-collateral change.
+five open-weight release pairs under one nominal search budget, KL cap and
+selection rule, with held-out refusal labelled by automatic judges. Measured
+as residual refusal after a 100-trial search at first-token KL divergence
+$\le 0.1$, refusal removal did not become uniformly harder in the later
+releases. The generation effect differed in sign and size between pairs; at
+the point estimate of the run-to-run standard deviation, only the OLMo pair's
+direction-based increase exceeded run-to-run variation under both variance
+models considered, and some per-pair verdicts depended on the
+source of the test prompts. In a preliminary comparison resting on one ARA run
+per model, ARA lost less effectiveness than the direction-based methods in two
+pairs and, in its point estimate, more in one, and these verdicts changed with the variance model and
+the divergence budget. At the tool's 100-token window, keyword counts matched
+judged refusal on average but not model by model, and first-token KL did not
+bound capability loss. Claims that a newer model resists refusal removal, or
+that a removal tool succeeds, therefore need several release pairs analysed as
+pairs, the unedited models as reference, several method classes, held-out
+judged evaluation, more than one divergence budget, a full-sequence measure of
+collateral change and several optimisation seeds per model; the present study
+met the last requirement only on the small pair.
 
 Four directions follow. First, a second optimisation seed for the 32
-main-study cells would test whether the family-specific effects exceed
-run-to-run variation. Second, running heretic-org's reported Qwen3.8-27B ARA
-trial through this pipeline, and refitting the ARA exports on the search
-hardware, would show whether the Qwen reversal and the Gemma-4-31B result
-depend on the search or on the release step. Third, a human-labelled audit of
-the responses on which keyword matching and the judges disagree would
-establish which measure is correct and estimate judge error on edited models
-\cite{gao2026how}. Fourth, judge labels for non-selected trials would allow
-Pareto fronts to be re-selected with a judged objective and a full-sequence
-divergence constraint. Until such checks are routine, a model's apparent
-resistance to refusal removal should be read as a statement about one family,
-one method and one measure, not about its generation.
+main-study cells would replace the transferred run-to-run variance with a
+direct estimate. Second, running heretic-org's reported Qwen3.8-27B ARA trial
+through this pipeline, and refitting the ARA exports on the search hardware,
+would show whether the reversed Qwen estimate and the Gemma-4-31B result depend on the
+search or on the release step. Third, a human-labelled audit of the responses
+on which keyword matching and the judges disagree would show which measure is
+closer to human judgement on edited models \cite{gao2026how}. Fourth, judge
+labels for non-selected trials would allow Pareto fronts to be re-selected
+with a judged objective and a full-sequence divergence constraint. Until such
+checks are routine, a model's apparent resistance to refusal removal should be
+read as a statement about one release pair, one method, one budget and one
+measure, not about its generation.

@@ -19,27 +19,36 @@
 %   kw_minus_wg minus kw256_minus_wg); edited_kw_only_capped_share 0.4464, edited_wg_comply_capped_share 0.5719.
 %   Seed-noise threshold 25.9 pp [18.1, 45.4] (2 x SD_diff 12.9) and 7B DiM seed 2 = 4.4%: paper 33
 %   results/analysis/seednoise_summary.md and final_seed_generation.csv.
+% Revised 2026-11-08 (ARS review): R4/R6/R8 verdicts and single-case scope; R9 divergence reading and matched-dev
+%   comparison; R11 "rule-matched"; R13 contrast-set account first, direction cosines; R14 susceptibility claim restated
+%   as a fixed-cap observation; R15 new subsection for robustness audits (search costs: analysis/revision_20261108/
+%   search_cost.csv); S12 jwest33 qualification; S18 cyber implication; S19 search-record argument heuristic; R10
+%   (author decision 1) no human audit, "validated" removed.
 % =====================================================================
 \section{Discussion}
 \label{sec:discussion}
 
-This study rebuilt archived Heretic~1.x models and compared them, on held-out prompts with a validated judge, with
-Heretic~2.0, two project-fork plug-ins, two external tools run at their documented settings and two community
-releases on the same base models. The twelve 1.x models removed between 0.9~pp (not significant) and 73.1~pp of
-refusal, depending on the base model and the direction source. In the like-for-like contrast, the same edit released
-by Heretic~2.0 left 25.9~pp less residual refusal than when released by 1.x on Qwen2.5-32B and 19.0~pp less on
-Qwen2.5-7B, so H1 was supported as stated. The check of the selection cap reversed the reading of that result:
-released from the same Qwen2.5-32B search under the 2.0 rule, the 1.x model left 35.8~pp less residual refusal than
-2.0 DiM. On that model, the advantage of the newer version under the archived settings therefore reflects the rule
-that selected the released trial, not the version; on Qwen2.5-7B the same check was not run. For a practitioner, the selection rule and the divergence at which a tool
-releases its output matter at least as much as the tool's version, and external tools run at their documented
-settings ranged from no effect on refusal to near-complete removal.
+This study asked how far comparisons of abliteration tools and versions depend on the rule that selects the released
+model, using rebuilt Heretic~1.x models, Heretic~2.0, two project-fork plug-ins, two external tools run at their
+documented settings and two community releases on the same Qwen2.5 base models, judged on held-out prompts. Selected at
+the archived cap, the twelve 1.x models removed between 0.9~pp (not significant) and 73.1~pp of refusal. In the
+like-for-like contrast, Heretic~2.0 DiM left 25.9~pp less residual refusal than 1.x on Qwen2.5-32B and 19.0~pp less on
+Qwen2.5-7B; both differences were significant for these checkpoints, but with one search per arm neither exceeded the
+range of search-to-search variation, so the search-level evidence for H1 was inconclusive. In a post hoc re-export of the
+Qwen2.5-32B 1.x search at the 2.0 cap, the same search released a model that left 61.7~pp less residual refusal than
+its archived export and 35.8~pp less than 2.0 DiM. In this one search on one model, the selection cap alone was
+sufficient to move residual refusal by more than the version contrast and to reverse it for these checkpoints, by an
+amount inside the interval of the seed-noise threshold. The overall lesson is that a tool comparison is hard to
+interpret without the selection rule and the realised divergence of the released models;
+external tools run at their documented settings ranged from no effect on refusal to near-complete removal on one
+model.
 % src: RESULTS.md "Modified vs original" (0.9 = qwen2.5-7b 1.x code, p_Holm 0.222; 73.1 = coder-14b 1.x general);
 % RESULTS.md "H1" (+25.9 [23.0, 28.7]; +19.0 [16.1, 21.9]); RESULTS.md "1.x general re-exported at KL <= 0.1"
 % (-35.8 [-38.9, -32.7]).
 
 The like-for-like contrast (Figure~\ref{fig:refusal}, Table~\ref{tab:h1}) was large and robust to the judge on both
-base models, and the search records had already indicated where to look. The archived 1.x runs released the trial
+base models, and the search records suggested where to look; that suggestion was heuristic, because the dev counts of
+the two versions are not on a common scale, and it carries no inferential weight here. The archived 1.x runs released the trial
 with the fewest dev refusals at dev KL $\le$ 0.01, a cap ten times tighter than the companion study's 0.1. On
 Qwen2.5-32B the released 1.x trial had kept 89 of 100 dev refusals, whereas the same search had reached 50 at dev KL
 0.064 (Figure~\ref{fig:devkl}). Re-exported with heretic-llm 1.4.0, the release identified from the run records,
@@ -48,12 +57,24 @@ that trial left 11.6\% of the harmful prompts refused (\S\ref{sec:res-kl}, Table
 measurable capability change. Each of these decisions held under keyword matching, under Qwen3Guard and without the
 AdvBench-overlap prompts. With the cap equalised, the older version's search thus released
 a model that removed more refusal than the newer version's DiM search, the reverse of the H1 contrast. This does not
-show that 1.x is the better version. The arms still differ in trial budget (200 versus 100 trials), seed, system
-prompt, marker list and the KL target of the 1.x objective, and at dev KL $\le$ 0.1 the 2.0 DiM search never went
-below 89 dev refusals, so the reversal is as consistent with a weaker DiM search as with any property of the
-version. On
-Qwen2.5-7B, where no trial was re-exported, the 1.x general search had reached 7 dev refusals at KL $\le$ 0.1 against
-55 for DiM; this points in the same direction, but on dev scales that are not directly comparable.
+show that 1.x is the better version. The arms still differ in trial budget (200 versus 100 trials), seed, the MLP
+weight range, the KL target of the 1.x objective, system prompt and marker list; at dev KL $\le$ 0.1 the 2.0 DiM
+search never went below 89 dev refusals; and a second seed of the same DiM configuration on Qwen2.5-7B in the
+companion study left 4.4\% instead of 20.6\% \cite{young2026harder}. The reversal is therefore as consistent with a
+weaker DiM search as with any property of the version, and it lies inside the interval of the seed-noise threshold.
+The cap also did not equalise divergence. Trial~\#96 moved the model about twice as far as 2.0 DiM (TF divergence
+0.032 versus 0.017), and within Qwen2.5-32B residual refusal fell almost monotonically with TF divergence. A reading
+in which every released checkpoint lies on one refusal--divergence curve per base model, and the cap only decides
+where on that curve a search stops, fits these data at least as well as a reading in terms of version. The
+within-search records are consistent with it: on Qwen2.5-32B the 1.x search had reached only 87 dev refusals by dev KL
+0.012 and reached 50 at 0.064, and on the held-out prompts the two exports of that search differed by 61.7~pp. The dev
+counts of the two versions are not on a common scale and are not used to compare the searches. The within-search cap
+contrast is the robust result; the version reading is not.
+% 2026-11-08 (re-review R9/S19): cross-version dev-count comparisons (32B 87 vs 89; 7B 7 vs 55) removed from the
+% argument; src for the within-search values: tab_devkl and revision_20261108/dev_matched_divergence.csv (1.x 32B 87 @
+% 0.0122, 50 @ 0.0642); tests_refusal.csv kl_cap_1x (-61.7).
+% src (2026-11-08): revision_20261108/dev_matched_divergence.csv (32B at DiM KL 0.0175: 1.x 87 vs DiM 89; 7B at DiM
+% KL 0.0782: 1.x 7 vs 55); paper-33 seednoise_seed_pairs.csv (7B DiM seed 1 20.6, seed 2 4.4); h1_vs_threshold.csv.
 % src: dev_matched_kl.csv (32B 1x_general: selected 89 @ 0.0059, min_ref_kl0.1 = 50 @ 0.0642; 32B dim min_ref_kl0.1
 % = 89 @ 0.0175, kl0.2 = 56 @ 0.160; 7B 1x_general kl0.1 = 7 @ 0.049, 7B dim selected 55 @ 0.078);
 % RESULTS.md coverage row qwen2.5-32b__heretic1x-general-kl0.1 (heretic-llm 1.4.0, git v1.4.0 6ea3b8d; trial #96);
@@ -63,7 +84,7 @@ Qwen2.5-7B, where no trial was re-exported, the 1.x general search had reached 7
 % (+0.02 [-1.27, +1.31]); 04_methods tab:h1setup (budget, seed, prompt, markers, KL target).
 
 Not every newer configuration removed more refusal than 1.x. On Qwen2.5-32B, only MPOA and ARA, which also change
-the edit, left less held-out refusal than the KL-matched 1.x model (they had reached 13 and 10 dev refusals at the
+the edit, left less held-out refusal than the rule-matched 1.x model (they had reached 13 and 10 dev refusals at the
 2.0 cap), by 7.7 and 5.6~pp. Both differences are well below the companion study's seed-noise threshold of
 25.9~pp \cite{young2026harder}, so the order of these three models could change with another search seed. On
 Qwen2.5-7B, J-space (fork plug-in) left 13.0~pp [10.3, 15.6] more residual refusal than 1.x general. The external
@@ -75,8 +96,13 @@ the least refusal of the external presets on that model, but at the largest TF d
 degenerate responses and the only per-benchmark loss in the study that survived Holm correction. Qwen2.5-7B is not a
 hybrid model, so the restored hybrid-architecture detection had no effect on jwest33's run there, which is
 effectively the tool as released; it did not differ significantly from 2.0 DiM after Holm correction. On the
-hybrid-attention Qwen3.5-4B, the tool as released left 1.0\% of the harmful prompts refused, less than every
-Heretic configuration evaluated there, whereas the run with the detection restored, which differs only in that
+hybrid-attention Qwen3.5-4B, outside the main design, the tool as released left 1.0\% of the harmful prompts refused,
+less than every Heretic configuration evaluated there; but 87.8\% of its harmful responses ran to the 512-token limit
+and at least 17.7\% were labelled neither a refusal by WildGuard nor harmful by the HarmBench classifier, so this cell
+looks more like an over-broad edit than a better one.
+% src (2026-11-08): cells.csv qwen3.5-4b__jwest33-asreleased wg_rate 0.0103, hb_harm_rate 0.8128 -> 1-0.0103-0.8128 =
+% 0.177 (lower bound on responses neither refused nor harmful), capped_rate 0.878.
+By contrast, the run with the detection restored, which differs only in that
 detail, left 35.8\%, a difference of 34.8~pp [31.8, 37.8]. Each
 of these cells describes one preset of one tool in a single run; together they show how strongly the outcome depends on the preset and on
 architecture handling, not which algorithm is better.
@@ -91,17 +117,27 @@ architecture handling, not which algorithm is better.
 % +2.7 [0.3, 5.1], p_Holm 0.132; 4B as released vs dim/mpoa/som/jspace/ara all negative, p_Holm<0.001; hybrid fix vs
 % dim -18.8, p_Holm<0.001); external_sensitivity (-34.8 [-37.8, -31.8]).
 
-The source of the refusal direction mattered less than expected (Figure~\ref{fig:general-code}). The originals
-already complied with most malicious-code requests, refusing only 13.5--34.0\% of them, so a code-specific
-direction had little refusal to target, and in all six models the variant that left less residual refusal on one
-subset left less or equal residual refusal on the other; on four of them (both 7B and both 14B models) the general
-variant was lower on both. A largely shared refusal mechanism \cite{arditi2024refusal} would produce this pattern,
-but the two variants did not differ simply in how far their searches moved the model: the code variant diverged less
-than the general variant on three models and more on two, and on Qwen2.5-7B it diverged about eight times as far
-(TF divergence 0.075 versus 0.009 nats per token) while leaving refusal unchanged ($-$0.9~pp [$-$2.3, +0.4]). A
-shared mechanism was not tested directly, for example by comparing the two directions layer by layer or the two
-variants at matched divergence. Coder checkpoints were not consistently easier or harder to edit: the general
-variant removed 72.9 and 73.1~pp on Qwen2.5-Coder-7B and Qwen2.5-Coder-14B but 11.0~pp on Qwen2.5-Coder-32B.
+The code pipeline gave no advantage (Figure~\ref{fig:general-code}), and the leading explanation lies in its
+contrast set. A difference-in-means direction isolates refusal only if the ``harmful'' side of the contrast is
+refused. The originals refused only 13.5--34.0\% of the code-as-weapon prompts, so a direction computed from
+malicious-code requests against short programming tasks mostly captures their difference in topic and style, and a
+code dev set with few refusals gives the search little signal (the Qwen2.5-32B code search reached 2 of 100 dev
+refusals on it at dev KL 0.072). The archived adapters agree with this account: the directions removed by the two
+pipelines had cosines of only 0.19 to 0.63, so the null result does not arise because both pipelines removed the same
+direction. A shared refusal mechanism \cite{arditi2024refusal} is not excluded, but it is not needed to explain the
+pattern. The base model's refusal rate on the code pipeline's own direction and dev prompts cannot be reported,
+because those prompt files were not archived. The two pipelines also did not differ simply in how far their searches
+moved the model: the code variant diverged less than the general variant on three models and more on two, and on
+Qwen2.5-7B it diverged about eight times as far (TF divergence 0.075 versus 0.009 nats per token) while leaving
+refusal unchanged ($-$0.9~pp [$-$2.3, +0.4]). The code searches were selected at the same tight cap that suppressed
+most of the achievable removal in the general search on Qwen2.5-32B, so the H2 result holds only at that cap. Coder
+checkpoints were not consistently easier or harder to edit at that cap: the general variant removed 72.9 and 73.1~pp
+on Qwen2.5-Coder-7B and Qwen2.5-Coder-14B but 11.0~pp on Qwen2.5-Coder-32B. For cyber-misuse threat models, the weak
+baseline refusal matters in its own right: on these models the safeguards against attack-code requests were thin
+before any edit, so any uplift attributed to abliteration should be stated as the change from the original, not as the
+level after editing, and compliance is not competence \cite{carleo2026willing}.
+% src (2026-11-08): revision_20261108/direction_cosine.csv (0.19-0.63); reexport_1x run header (32B code trial #134:
+% 2/100 at KL 0.0717).
 % src: cells.csv wg_code_rate of originals (7B 13.5, coder-7B 32.0, 14B 17.0, coder-14B 34.0, 32B 16.1, coder-32B
 % 18.5); RESULTS.md "H2" (code_weapon and harmful_noncode rows, 6 models); cells.csv tf_divergence of 1.x cells
 % (code < general: coder-7B, 14B, coder-14B; code > general: 7B 0.0749 vs 0.0089, 32B 0.0168 vs 0.0066; equal:
@@ -114,7 +150,7 @@ none, by up to 19.5~pp; one of 76 within-model pairs changed sign between the tw
 significantly under keyword matching only, and every 1.x-versus-2.0 decision was the same under both. Keyword
 reports would therefore understate the reductions achieved by the strongest edits relative to either judge. The
 direction of the gap is not fixed, however: among the added cells keyword matching counted 16.6~pp more refusals
-than WildGuard for the KL-matched 1.x model but 21.1~pp fewer for J-space on Qwen3.5-4B. The data show disagreement
+than WildGuard for the rule-matched 1.x model but 21.1~pp fewer for J-space on Qwen3.5-4B. The data show disagreement
 between keyword matching and the judges, not which of them is correct, and the correlation of the gap with the
 refusal removed is partly mechanical, because as judged refusal approaches zero the only possible disagreements are
 keyword flags on answers the judge counts as compliant. In the companion study the gap was concentrated in responses
@@ -122,7 +158,7 @@ that reached the 512-token limit \cite{young2026harder}. Here, restricting keywo
 removed a median of only 2.4~pp of the gap, and keyword-only refusals had reached the limit less often than the
 responses WildGuard counted as compliant, so on these models the gap is not explained by long responses alone;
 safety vocabulary early in otherwise compliant answers, such as warnings and disclaimers, is a plausible source that
-a human audit could confirm. The re-exported 1.x model shows the same problem one step earlier, in the search
+only a human audit could confirm; none was done. The re-exported 1.x model shows the same problem one step earlier, in the search
 itself. Trial~\#96 had kept 50 of 100 dev refusals by keyword count, yet on the held-out prompts it left 28.2\%
 refused by keyword count and 11.6\% by WildGuard. On identical held-out responses keyword matching accounted for
 16.6~pp [13.4, 19.7] of that difference; the remainder reflects differences between the dev protocol
@@ -141,18 +177,18 @@ contrast both had 89 dev refusals, each under its own arm's protocol, and left 7
 
 Within Qwen2.5-32B the ranking of tools largely followed how far they moved the model (Figure~\ref{fig:tradeoff}):
 residual refusal fell almost monotonically with TF divergence across the eight edited models of the main design
-(Spearman $\rho=-0.93$, exact permutation $p=0.002$), the KL-matched 1.x model fell into the same ordering (11.6\% at 0.032 nats per token,
+(Spearman $\rho=-0.93$, exact permutation $p=0.002$), the rule-matched 1.x model fell into the same ordering (11.6\% at 0.032 nats per token,
 between SOM and MPOA), and the community releases sat at its far end (0.085 and 0.151 nats per token). The ordering
 did not hold on Qwen2.5-7B: the 1.x code variant moved the model further than any other Heretic configuration on that
 model (0.075 nats per token) without changing refusal, and OBLITERATUS \texttt{basic} diverged by 0.058 without
 changing it either. Across the 23 edited models of the main design residual refusal still fell as TF divergence rose
-(Spearman $\rho=-0.75$ [$-$0.93, $-$0.38]), but the same divergence corresponded to very different reductions on
+(Spearman $\rho=-0.75$ [$-$0.93, $-$0.36], bootstrap over base models), but the same divergence corresponded to very different reductions on
 different base models, and on one model tools differed at equal divergence (on Qwen2.5-32B, 2.0 DiM left 17.9~pp
 less residual refusal than 1.x code, both at 0.017). Divergence is therefore a cost an edit pays, not a
 model-independent measure of what it buys. Capability benchmarks registered little of this. In the main design no
-per-benchmark change survived correction and the mean changes stayed within one point, although models that removed
-more refusal tended to lose slightly more (Spearman $\rho=+0.50$ [0.08, 0.79] between residual refusal and mean
-change). The one clear loss accompanied the largest divergence in the study, OBLITERATUS \texttt{spectral\_cascade}
+per-benchmark change survived correction, the mean changes stayed within one point and 21 of 23 were equivalent to zero
+within $\pm$2~pp, although models that removed more refusal tended to lose slightly more (exploratory; Spearman
+$\rho=+0.50$ [0.18, 0.73] between residual refusal and mean change, also within base models). The one clear loss accompanied the largest divergence in the study, OBLITERATUS \texttt{spectral\_cascade}
 at 0.471 nats per token. At the divergences reached by the Heretic searches, TF divergence on benign prompts is
 therefore a more sensitive indicator of what an edit changes than the five benchmarks, although the absence of
 significant benchmark changes reflects limited power as well as small effects. The earlier comparison's 18.8-point
@@ -168,19 +204,20 @@ Yi model was evaluated, so the two results do not conflict.
 
 To the best of current knowledge this is the first held-out, judge-based comparison of two versions of the same
 abliteration tool in a documented like-for-like setup that also releases the older version's search under the newer
-version's selection rule, of general- versus code-derived refusal directions, and of Heretic output against external
-tools and public community releases on the same checkpoints. H1 was supported on both base models on which both
-versions were judged, but on Qwen2.5-32B the KL-matched check showed that the support reflects the archived
-selection cap rather than the version; on Qwen2.5-7B the difference (19.0~pp) is below the companion study's
-seed-noise threshold of 25.9~pp [18.1, 45.4], and the companion study's second seed of the same DiM configuration
-left 4.4\% instead of 20.6\% \cite{young2026harder}. H2 was not supported, and H3 was partially supported, because the
-keyword--judge gap was tool-dependent but rarely reordered tools.
+version's selection rule, of general- versus code-derived pipelines, and of Heretic output against external
+tools and public community releases on the same checkpoints. H1 was significant for the released checkpoints on both
+base models but inconclusive at the search level: on Qwen2.5-32B the difference (25.9~pp) lies inside the interval
+of the seed-noise threshold [18.1, 45.4], and the rule-matched check reversed it; on Qwen2.5-7B the difference
+(19.0~pp) is below the point threshold, and the companion study's second seed of the same DiM configuration left 4.4\%
+instead of 20.6\% \cite{young2026harder}. H2 was not supported at the archived cap, and H3 was partially supported,
+because the keyword--judge disagreement was tool-dependent but rarely reordered tools.
 
 Several alternative explanations were examined. The like-for-like arms differ in trial budget, search seed,
 optimisation system prompt, marker list and KL objective as well as in selection cap and version
-(Table~\ref{tab:h1setup}). The KL-matched re-export removes the cap difference for one search and leaves the others,
-so it shows that the cap alone suffices to reverse the Qwen2.5-32B contrast, not that it is the only setting that
-matters. The re-export could itself have drifted from the archived run; it was accepted only after re-exporting the
+(Table~\ref{tab:h1setup}). The rule-matched re-export removes the cap difference for one search and leaves the others,
+so it shows that the cap alone suffices to reverse the Qwen2.5-32B contrast for these checkpoints, not that it is the
+only setting that matters. The MLP-weight range of 2.0 includes values that 1.x could not reach, but none of the
+selected or re-exported trials used a value below the 1.x lower bound (all between 0.91 and 1.21). The re-export could itself have drifted from the archived run; it was accepted only after re-exporting the
 originally released trial with the same script had reproduced the archived adapter numerically
 (\S\ref{sec:reexport}, Appendix~\ref{app:reexport}), and trial~\#96 reproduced its own record (51 versus 50 dev
 refusals). The eight rebuilt 14B and 32B
@@ -188,13 +225,15 @@ refusals). The eight rebuilt 14B and 32B
 hashes exist, but their adapters matched their manifests. Within each base model all cells were generated with
 identical decoding, prompts and judges; the one harness difference, for the Qwen2.5-32B original, affects its MBPP
 comparisons, which are unpaired, and output post-processing that changes nothing in its responses. Removing the 44
-AdvBench-overlap prompts changed no decision of the main design or of the KL-matched check; among the external-tool
+AdvBench-overlap prompts changed no decision of the main design or of the rule-matched check; among the external-tool
 comparisons it changed one WildGuard decision (OBLITERATUS \texttt{advanced} versus 1.x general on Qwen2.5-7B,
 $-$4.6~pp, no longer significant) and three Qwen3Guard decisions (the same pair, and \texttt{spectral\_cascade}
 versus MPOA and versus SOM, which became significant). Removing the 41 code-as-weapon prompts drawn from the
 code variant's source corpora removed the only evidence for a code-specific advantage. WildGuard has moderate
-agreement with human labels \cite{xie2025sorrybench}, but Qwen3Guard reproduced every 1.x-versus-2.0 decision and
-every decision of the KL-matched check. SOM and J-space are plug-ins of the companion study's fork, so their
+published agreement with human labels (Cohen's $\kappa=0.61$) on another response distribution
+\cite{xie2025sorrybench}, and no human audit was done here, so every rate is relative to the automatic judges.
+Qwen3Guard reproduced every 1.x-versus-2.0 decision and every decision of the rule-matched check, but two automatic
+judges can share errors. SOM and J-space are plug-ins of the companion study's fork, so their
 contrasts describe configurations that a Heretic~2.0 user does not obtain from a release. Finally, 19 of the 42
 judged cells were first reported in the companion study; they serve here as comparators, and the hypotheses concern
 the new 1.x cells.
@@ -209,9 +248,12 @@ the new 1.x cells.
 % h1_kl_matched q3g (all significant, same sign as wg); cells.csv provenance (19 companion cells: 7B x6, 32B x7,
 % qwen3.5-4b x6; 42 judged).
 
-The results agree with reports that susceptibility to abliteration is model-specific rather than a function of
-size \cite{hadetskyi2026not}: the same 1.x procedure removed 3.4~pp from Qwen2.5-32B and 73.1~pp from
-Qwen2.5-Coder-14B. They extend the companion study's observation that public releases reach lower refusal at larger
+At a fixed tight cap the refusal removed varied by model: selected at dev KL $\le$ 0.01, the same 1.x procedure removed
+3.4~pp from Qwen2.5-32B and 73.1~pp from Qwen2.5-Coder-14B. These differences are compatible with reports that
+susceptibility to abliteration is model-specific rather than size-dependent \cite{hadetskyi2026not}, but they are not
+evidence of resistance: at a cap of 0.1 every 1.x general search had reached 5 to 50 dev refusals
+(Table~\ref{tab:devkl}), and the Qwen2.5-32B search, re-exported there, removed 65.2~pp. Differences between models at
+a tight cap therefore measure at least partly where each model's refusal--divergence trade-off crosses the cap. They extend the companion study's observation that public releases reach lower refusal at larger
 divergence \cite{young2026harder}: on Qwen2.5-32B the archived output of an older tool lies at the low-divergence end
 of the same within-model ordering, and the same search, released at the newer cap, moves into its middle. They also
 qualify the earlier tool ranking \cite{young2025comparative}, which ran each tool at its defaults and so mixed
@@ -222,5 +264,33 @@ part of a tool's behaviour: on hybrid-attention models, whether a code path dete
 much as the choice of method.
 % src: RESULTS.md "Modified vs original" (32B 1.x general -3.4; coder-14B 1.x general -73.1); cells.csv wg_rate on
 % qwen2.5-7b (obliteratus 72.9 / 35.0 / 11.8; Heretic + jwest33 4.7--71.2).
+
+\subsection{Implications for Robustness Audits}
+\label{sec:audit}
+
+% src (2026-11-08): analysis/revision_20261108/search_cost.csv (journal timestamps, first trial start to last trial
+% completion; 1.x general 17.69-41.28 min, 1.x code 48.68-156.55 min, GPU not recorded; 2.0 DiM 8.09 min RTX 4090
+% (7B), 19.57 min H200 NVL (32B); other complete 2.0/fork searches 8.35-51.78 min); tab_devkl / dev_matched_kl.csv
+% (1.x general at KL <= 0.1: 5-50 dev refusals); cells.csv kl0.1 capability +0.02 [-1.27, 1.31];
+% revision_20261108/capability_equivalence.csv (kl0.1 90% interval [-1.07, 1.10]).
+For developers, auditors and release reviewers who assess how easily a release can be stripped of its safeguards,
+three consequences follow, each resting on the evidence above and therefore on one search for the cap effect. First,
+a robustness claim should state the selection cap or divergence at which it was measured and should not be made at a
+cap tighter than the loosest one that leaves capability unchanged. Here, the re-exported model at dev KL $\le$ 0.1
+showed a capability change equivalent to zero within $\pm$2~pp, and at that cap every 1.x general search had reached 5
+to 50 dev refusals of 100, so dev KL $\le$ 0.1 is a defensible minimum; reporting residual refusal as a curve against
+divergence (Figure~\ref{fig:devkl}, Table~\ref{tab:devkl}) is preferable to a single point, and model cards
+\cite{mitchell2019modelcards} offer a place for the selection rule, the dev KL, the held-out divergence and the judged
+refusal. Second, the attacker's cost is small. The 200-trial 1.x general searches took 18 to 41 minutes of search time,
+the code searches 49 to 157 minutes, and the 100-trial 2.0 DiM searches 8 minutes on one RTX 4090
+(Qwen2.5-7B) and 20 minutes on one H200 (Qwen2.5-32B), excluding model loading and export; re-exporting a different
+trial from an existing search needs no new search at all. The hardware of the 1.x searches was not recorded. Third, a
+single run of a tool at its default settings, as for the external tools here, is a lower bound on the refusal that
+tool can remove, not an estimate of release robustness, and the residual refusal measured by a single greedy response
+under a benign system prompt is an upper bound on the protection a release retains against a motivated actor. White-box
+tampering evaluations of this kind complement black-box audits \cite{casper2024blackbox,che2025tampering}, and defences
+such as tamper-resistant training \cite{tamirisa2025tamper} or refusal-feature adversarial training \cite{yu2025refat}
+should be evaluated by whether they shift the whole refusal--divergence trade-off, not only the point a default cap
+selects.
 
 \input{sections/06b_limitations}
