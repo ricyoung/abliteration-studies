@@ -207,6 +207,28 @@ The study makes three contributions:
   divergence did not bound capability loss (\S\ref{sec:res-h3},
   \S\ref{sec:res-secondary}).
 \end{itemize}
+
+% 2026-11-09: results-at-a-glance figure added (scripts/figures/fig15_at_a_glance.py). Sources:
+% results/analysis/h1h2_generation_effects.csv (judge wg, subset all) for panel (a);
+% results/analysis/revision_sigma_pair_verdicts.csv (*_const_point, *_level_point) for panel (b).
+Figure~\ref{fig:at-a-glance} summarises the held-out answer to H1 and the per-pair effects.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig15_at_a_glance.pdf}
+\caption{\textbf{Refusal removal did not become uniformly harder.} (a) Change in held-out refusal from the older to
+the newer release of each pair (newer minus older, percentage points; WildGuard judge, 972 harmful prompts not used
+for search or selection), for the unedited originals and for the model each removal method selected (fewest dev
+refusals at first-token KL $\le$ 0.1, seed 1). Blue: the newer release kept more refusal (removal harder); orange:
+less (removal easier). Bold: significant (methods: exact McNemar, Holm over the 23 H1 tests; originals: exact
+McNemar, unadjusted); ns: not significant; $\dagger$ failed edit (Gemma-4-31B DiM left more refusal than its own
+original). (b) Per-pair effect of the direction-based methods (pooled over DiM, MPOA and SOM; J-space added on the
+small pair) and of ARA, with 95\% intervals that add run-to-run variation at its point estimate to prompt sampling:
+thick bars assume constant run-to-run variance, thin bars variance that scales with the refusal level. Filled
+marker: both intervals exclude zero, which holds only for the OLMo direction-based increase. Refusal levels and
+Wilson intervals of every cell are in Figure~\ref{fig:heldout-generation}.}
+\label{fig:at-a-glance}
+\end{figure*}
 % 2026-11-08 ARS re-review revision (NEW-4): "under both variance models" qualified as holding at the point estimate of
 % sigma (revision_sigma_pair_verdicts.csv: OLMo direction raw fails at the upper limit of the logit-level model).
 % 2026-11-08 ARS re-review revision (REV-29): footnote marks all Heretic PRs and issues as unreviewed practitioner reports;
