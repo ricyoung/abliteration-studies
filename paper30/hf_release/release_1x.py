@@ -73,8 +73,8 @@ A refusal-ablated ("abliterated") version of [{base}](https://huggingface.co/{ba
 (heretic-llm 1.4.0, git tag v1.4.0, `6ea3b8d`) as a rank-1 LoRA edit of `o_proj` and `down_proj`, merged into bf16 weights.
 It is one of the models evaluated in:
 
-> Richard J. Young. *The Selection Rule Can Reverse Abliteration Comparisons: A Held-Out, Judge-Based Case Study of
-> Heretic 1.x, Heretic 2.0, External Tools and Community Releases on Qwen2.5* (paper 30; arXiv link to be added).
+> Richard J. Young. *The Selection Rule Can Reverse LLM Abliteration Tool Comparisons: Heretic 1.x, Heretic 2.0,
+> OBLITERATUS and Community Releases on Qwen2.5 and Qwen2.5-Coder* (paper 30; arXiv link to be added).
 
 It is released for research on abliteration and its evaluation, not as a general-purpose assistant.
 
