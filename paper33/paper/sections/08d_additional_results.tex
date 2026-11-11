@@ -85,3 +85,37 @@ compliance as the outcome.
 \input{tables/t3_teacher_forced_main}
 
 \input{tables/t3_teacher_forced_small}
+
+% ---------------------------------------------------------------------
+% 2026-11-10 ARS re-review revision (NEW-6): diagnosis of the failed Gemma-4-31B DiM edit, replacing the unsupported
+% "plausibly for architectural reasons".
+% src: scripts/analysis/postnorm_gain_scan.py -> results/analysis/gemma4_dim_kl_bands.csv (from the Optuna journal
+% src: runs/mc-h200-1/runs/gemma-4-31b__dim__core-s1/checkpoints/google--gemma-4-31B-it.jsonl) and
+% src: results/analysis/postnorm_gain_scan.csv (post-norm weights read from the base-model safetensors on Hugging Face);
+% src: results/analysis/review_sel_kl_runs.csv (kl_of_best_above_cap: every other direction-based primary run <= 0.371).
+\subsection{The Failed Gemma-4-31B DiM Edit}
+\label{app:gemma4-dim}
+In the Gemma-4-31B DiM study, 10 of the 100 trials met the KL cap and 90
+exceeded it. Every trial with a first-token KL below 3 (28 trials) refused 98
+to 100 of the 100 dev prompts; lower refusal appeared only above a KL of 3
+(minimum 3 of 100 between 3 and 8, and 0 above 8), where the edited model is
+far from the original. In every other direction-based primary study, the
+lowest-refusal trial above the cap had a KL of at most 0.37. The edit therefore
+did not trade refusal against divergence gradually: within any usable budget it
+had no effect. Two mechanisms proposed for similar failures on Gemma-3 are a
+residual-stream coordinate of very large magnitude that dominates the
+difference-in-means estimate \cite{mishra2026onecoordinate,lai2025mpoa} and
+learned normalisation gains that amplify it \cite{mishra2026onecoordinate}. The
+post-sublayer RMSNorm gains of the four post-norm models were therefore read
+from the released weights. Gemma-2-27B and Gemma-4-31B both had recurring
+outlier channels (a gain over 20 times the layer's median in 39 of 92 and 27 of
+120 post-norm vectors, mostly one channel in Gemma-2-27B and two in
+Gemma-4-31B), whereas OLMo-2-32B and Olmo-3.1-32B had 3 of 128 and 1 of 128.
+The median coefficient of variation of the gains was 0.65 and 0.68 for the
+attention outputs and 0.38 and 0.62 for the feed-forward outputs of the two
+Gemma models, and 0.09 to 0.34 in the OLMo models; outlier channels were more
+frequent in Gemma-2-27B than in Gemma-4-31B (42\% and 23\% of vectors). The gains thus separate the Gemma family from
+OLMo, consistent with the larger effect of the $\gamma$ correction on the Gemma
+models (\S\ref{sec:res-secondary}), but they do not separate Gemma-4-31B from
+Gemma-2-27B, on which DiM lowered refusal. The activation outlier was not
+measured, and the cause of the failure remains untested.

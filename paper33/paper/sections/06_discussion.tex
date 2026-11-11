@@ -202,9 +202,20 @@ al.~\cite{casper2026open} list as an open problem which attack configurations
 are needed to stress-test open-weight safety. Here an audit of the OLMo pair
 alone would have concluded that the newer release resists direction-based
 removal, and one of the Mistral Small pair that it does not; within Gemma, the
-DiM edit of Gemma-4-31B failed (it left refusal at the original's level), for
-reasons this study did not diagnose, and taken alone would have suggested a
-resistance that ARA did not show. A minimal audit protocol consistent with
+DiM edit of Gemma-4-31B failed (it left refusal at the original's level), and
+taken alone would have suggested a resistance that ARA did not show. Its
+search found no trial that lowered dev refusal below 98\% at a first-token KL
+under 3, thirty times the cap; refusal fell only in trials with larger KL
+(Appendix~\ref{app:gemma4-dim}). Difference-in-means directions have failed in
+a similar way on Gemma-3, where the failure has been attributed to
+high-magnitude outlier channels that dominate the estimate
+\cite{lai2025mpoa,mishra2026onecoordinate}, and refusal may also occupy more
+than one direction \cite{wollschlager2025geometry}. Both Gemma models carry
+outlier post-norm gain channels, more dispersed than in the OLMo models, so
+these accounts do not by themselves explain why the edit failed on Gemma-4-31B but
+not on Gemma-2-27B; the cause was not tested.
+% 2026-11-10 (NEW-6, author request): src: results/analysis/gemma4_dim_kl_bands.csv; results/analysis/postnorm_gain_scan.csv (scripts/analysis/postnorm_gain_scan.py); GPU: tab:compute (H200 NVL, 143,771 MiB).
+ A minimal audit protocol consistent with
 these results would use at least one direction-based and one higher-rank
 optimisation-based method, two or more optimisation seeds per model and
 method, held-out prompts from more than one source scored by at least two
@@ -216,7 +227,7 @@ agree; 100 disagreements per release pair would estimate a disagreement error
 rate near 10\% to within about $\pm$6 points (95\%), and 50 agreements would
 check that agreement is not shared error. The present study made no such human
 check (\S\ref{sec:limitations}). In this study a 100-trial search of a
-22--32B model took a median of 18 minutes of single-GPU time for a
+22--32B model took a median of 18 minutes on one NVIDIA H200 GPU (141~GB) for a
 direction-based method and 81 minutes for ARA, 18.1~h for the 31 timed
 main-study searches (Appendix~\ref{sec:setup-compute}), so a second seed
 roughly doubles this search time, before the evaluation of the added models.

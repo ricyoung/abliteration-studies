@@ -357,7 +357,8 @@ trial's parameters in Heretic's search ranges (Appendix~\ref{app:kl-cap}).
 \paragraph{Export and release.} Each selected trial is merged into a
 standalone checkpoint that differs from the original only in the edited
 matrices; the 42 primary models and the four $\gamma$-MPOA controls are
-published on Hugging Face, and the ten seed-2 replicates are evaluated but not
+published on Hugging Face, except the five Gemma-2-27B variants, which are
+withheld; the ten seed-2 replicates are evaluated but not
 released (Appendix~\ref{sec:setup-export}).
 % src: scripts/select_trial.py (patch_journal, reexport_commands: --export-strategy MERGE); ../heretic/src/heretic/model.py (get_merged_model: merge_and_unload); scripts/eval_one.sh (publish branch); scripts/publish_local.sh; results/bench-4090/*/publish_check.json ("private": false)
 

@@ -86,7 +86,9 @@
 % Directional vs. Optimization-Based Refusal Removal Across Generations of Open-Weight LLMs" (main.tex.bak-20261106-rev).
 % 2026-11-08 ARS revision (REV-12, REV-25): subtitle names the unit of analysis (release pairs); previous subtitle
 % "Evidence from Four Open-Weight Model Families" (main.tex.bak-20261108-rev).
-\title{Is Abliteration Getting Harder?\\ Evidence from Five Open-Weight Release Pairs}
+% 2026-11-10 (author decision): denser, more searchable subtitle naming the tool and the newer models; previous subtitle
+% "Evidence from Five Open-Weight Release Pairs" (main.tex.bak-20261110-title).
+\title{Is Abliteration Getting Harder?\\ Refusal Removal from Open-Weight LLMs with Heretic on Qwen3.8, Gemma~4, Olmo~3.1 and Mistral Small~3.2 Versus Their Predecessors}
 
 % Authors
 \author{
@@ -118,7 +120,7 @@
 \end{abstract}
 
 % Keywords — separate with \and
-\keywords{Abliteration \and Refusal Removal \and Refusal Direction \and Open-Weight LLMs \and LLM Safety \and Model Editing}
+\keywords{Abliteration \and Refusal Removal \and Refusal Direction \and Arbitrary-Rank Ablation \and Heretic \and Open-Weight LLMs \and LLM Safety \and Model Editing \and Qwen \and Gemma \and OLMo \and Mistral Small \and WildGuard}
 
 % ============================================================
 % BODY
@@ -166,7 +168,8 @@ Gemma-2-27B variants are withheld (their repositories are private), because the
 Gemma Prohibited Use Policy may forbid redistributing them (see below). The
 five OLMo-2-32B variants (DiM, MPOA, SOM, ARA and $\gamma$-MPOA) are gated on
 Hugging Face with automatic approval, because OLMo-2-32B is the only base model
-studied for which no third-party public abliteration was found. For the other nine bases,
+studied for which no third-party public abliteration was found. For the other nine bases
+(the Gemma-2-27B variants among them are withheld regardless),
 refusal-removed derivatives were already public: for five of them, public
 releases were evaluated here (\S\ref{sec:res-secondary}), and for the other
 four (Gemma-2-27B, Mistral-Small-2409, Qwen2.5-7B and Qwen3.5-4B),
@@ -185,11 +188,10 @@ because re-exports from stored configurations are not exactly reproducible
 (the ARA refits drifted when rebuilt on other hardware;
 Appendix~\ref{app:dev-rescore}), and it provides fixed edited models against
 which defences and detectors can be evaluated. Responses to harmful prompts
-are stored privately for scoring and are not released. Released models keep
-the licence of their base model: Apache-2.0 (the Qwen, OLMo and
+are stored privately for scoring and are not released. Released models (all
+except the five withheld Gemma-2-27B variants) keep the licence of their base model: Apache-2.0 (the Qwen, OLMo and
 Mistral-Small-3.2 bases and Gemma-4-31B), to which the use restrictions of
-the OpenRAIL++ licence are added; the Gemma Terms of Use and Prohibited Use
-Policy for Gemma-2-27B; or, for Mistral-Small-2409, the Mistral Research
+the OpenRAIL++ licence are added; or, for Mistral-Small-2409, the Mistral Research
 Licence, which permits non-commercial research use. Apache-2.0 and the
 Mistral Research Licence permit redistributing such derivatives, the latter
 for research purposes only. The Gemma Prohibited Use Policy, which the Gemma
