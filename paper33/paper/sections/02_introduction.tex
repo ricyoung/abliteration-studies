@@ -113,15 +113,16 @@ abliteration comparisons \cite{young2025comparative} predate both ARA and
 current open models. A second
 gap is methodological: tools are usually evaluated with the cheap signals they
 optimise (keyword-matched refusals over short generations and first-token KL
-divergence), which can disagree sharply with stronger judges. In one public
+divergence), which can disagree sharply with stronger judges: keyword matching
+agrees poorly with human labels \cite{xie2025sorrybench}, and conclusions can
+depend on the classifier used \cite{young2026measuring}. In one public
 comparison, keyword matching reported 3--5 refusals per 100 prompts where an
 LLM judge found more than 33 (Heretic PR~\#196, an unreviewed practitioner
 report\footnote{Heretic pull requests (PR~\#) and issues (\#) at
 \url{https://github.com/p-e-w/heretic} are cited in this paper as unreviewed
-practitioner reports, not as peer-reviewed evidence. They were retrieved on
-2--5 November 2026 and may have changed since.}); keyword matching also
-agrees poorly with human labels \cite{xie2025sorrybench}, and conclusions can
-depend on the classifier used \cite{young2026measuring}.
+practitioner reports, not as peer-reviewed evidence. Each is at
+\url{https://github.com/p-e-w/heretic/pull/<N>} or \url{.../issues/<N>}; they
+were retrieved on 2--5 November 2026 and may have changed since.}).
 Aggregate refusal rates can also hide failures in domains such as
 cybersecurity \cite{hadetskyi2026not} and malicious code generation, for which
 validated prompt banks and systematic corpus reviews now exist
@@ -178,7 +179,8 @@ and a small Qwen pair (7B, 4B).
 % 2026-11-06 (author decision, supersedes author decision 3): OBLITERATUS is reported in the companion paper 30 only
 % (young2026paper30), not in paper 33, so the clause announcing it as a planned small-pair reference was removed here;
 % the one-sentence pointer to paper 30 is in sec:setup-methods (04_methods.tex) and Appendix app:setup-methods (08b).
-Models selected by a fixed rule are released, run logs, configurations and
+Models selected by a fixed rule are released (except the five Gemma-2-27B
+variants, which are withheld; Appendix~\ref{sec:setup-export}), run logs, configurations and
 study journals are released with the code (Data and Code Availability), and
 every model is scored by one harness,
 independent of every optimisation objective, for judged refusal, capability

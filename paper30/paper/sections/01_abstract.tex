@@ -17,19 +17,26 @@
 % Word count about 250 (numbers and intervals counted as one word each).
 % 2026-11-08 (re-review S2): number count cut. Dropped the interval of the 32B H1 difference (25.9 [23.0, 28.7],
 %   kept in Results) and the 73.4% -> 11.6% endpoints (kept in Results); the within-search contrast keeps its interval.
-\noindent Abliteration tools remove refusal from open-weight language models by editing weights, and the released
-model is chosen from a search by a selection rule that caps its divergence from the original. Tools are usually
-compared with keyword counts on tuning prompts, without reporting that rule.
-This study rebuilt archived Heretic~1.x models with general- and code-derived directions for six Qwen2.5
-models and evaluated them, alongside Heretic~2.0, two external tools run once at their documented settings and two
-community releases, on 972 held-out harmful prompts scored by a safety judge and five capability benchmarks; each
-configuration contributed one search per base model. At the archived dev-KL cap of 0.01, the twelve 1.x
-models removed between 0.9 and 73.1 percentage points (pp) of refusal. Heretic~2.0 DiM, selected under a ten-fold
-looser cap, left 25.9~pp less residual refusal than the same edit family released by 1.x on Qwen2.5-32B
-and 19.0~pp less on Qwen2.5-7B; both were significant for these checkpoints but within search-to-search
-variation. In a post hoc re-export of one Qwen2.5-32B 1.x search at the 2.0 cap, residual
-refusal fell by 61.7~pp [58.5, 64.7], to 35.8~pp below 2.0 DiM, a reversal also within
-search-to-search variation; trial budget, seed, search range, objective, system prompt and marker list still differed,
-and the re-exported model had diverged about twice as far as 2.0 DiM. Comparisons of abliteration tools should report the
-selection rule and the realised divergence of the released model. In one search on one model, changing only the
-selection cap moved residual refusal by more than the version contrast.
+% 2026-11-10 (author decision: dense, searchable abstract; may exceed 250 words, stays under arXiv's 1,920 characters):
+% names the six models, the Heretic 2.0 methods, the two external tools, the judge, the prompt sources and the five
+% benchmarks; the interval [58.5, 64.7] and "35.8 pp below 2.0 DiM" moved out (kept in Results), and the list of settings
+% that still differed is shortened to "other search settings" (tab:h1setup). No number or claim is new. SOM and J-space
+% are fork plug-ins, not Heretic 2.0 methods (sec:methods), so they are not listed under Heretic 2.0.
+% Previous version: 01_abstract.tex.bak-20261110-title.
+\noindent Abliteration tools remove refusal from open-weight large language models (LLMs) by weight editing, and the
+released model is chosen from a search by a selection rule that caps its divergence from the original. Tools are usually
+compared with keyword refusal counts on tuning prompts, without reporting that rule.
+This study rebuilt archived Heretic~1.x models with general- and code-derived refusal directions for six Qwen2.5
+models (Qwen2.5-7B, -14B and -32B and their Qwen2.5-Coder variants) and evaluated them, alongside the Heretic~2.0 methods
+difference-in-means (DiM), MPOA and Arbitrary-Rank Ablation, two external tools run once at their documented settings (OBLITERATUS and jwest33's
+abliterator) and two community abliterated releases, on 972 held-out harmful prompts (JailbreakBench, XSTest,
+StrongREJECT, HarmBench and malicious-code requests) scored by the automatic WildGuard judge without human audit, and on
+MMLU-Pro, GSM8K, IFEval, HumanEval and MBPP; each configuration contributed one search per base model. At the archived
+dev-KL cap of 0.01, the twelve 1.x models removed 0.9 to 73.1 percentage points (pp) of refusal. Heretic~2.0 DiM,
+selected under a ten-fold looser cap, left 25.9~pp less residual refusal than 1.x on Qwen2.5-32B and 19.0~pp less on
+Qwen2.5-7B, significant for these checkpoints but within search-to-search variation. In a post hoc re-export of one
+Qwen2.5-32B 1.x search at the 2.0 cap, residual refusal fell by 61.7~pp, reversing the version contrast, again within
+search-to-search variation; other search settings still differed, and the re-exported model had diverged about twice
+as far as 2.0 DiM. Comparisons of abliteration tools should report the selection rule and the realised divergence of the
+released model. In one search on one model, changing only the selection cap moved residual refusal by more than the
+version contrast.

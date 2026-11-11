@@ -463,10 +463,10 @@ small-pair models.
 % src: scripts/eval_one.sh (publish branch; hf download back; repro=none for SOM|JSpace|GMPOA*; runs/*/results/bench/*__gmpoa/reexport.sh (--upload-repro none)); scripts/select_trial.py (--upload-repro); scripts/publish_local.sh; results/bench-4090/*/publish_check.json (10 files, all "match": true, "private": false); runs/local-4090/logs/publish_all.log; runs/local-4090/logs/publish_ara_retry2.log ("OK qwen3.5-4b__ara"); runs/mc-rtx-1/results/bench/*/hf_repo.txt; runs/mc-rtx-1/tmpmodels/*/reproduce/README.md ("Reproducibility *cannot* be guaranteed in this environment"; Contents: config.toml, journal, requirements.txt, SHA256SUMS.txt, reproduce.json); notes/overnight_log.md (03:20, 06:34-06:58)
 % src (2026-11-06): scripts/eval_one.sh (PLUG heretic-gamma / heretic-p33; repro=none for SOM|JSpace|GMPOA*); runs/mc-*/results/bench/*__gmpoa/reexport.sh (--upload-repro none) and plugin_commit.txt (fdfe54b); runs/mc-*/results/bench/*__som/heretic_p33_commit.txt (8fd4d76); runs/mc-h200-1/runs/*__{som,gmpoa}__core-s1/meta.txt (cmd PYTHONPATH=.../heretic-{p33,gamma}/src; its heretic line shows the master checkout 0db5c31); runs/local-4090/*__{som,jspace}__core-s1/meta.txt (8fd4d76); env/final_capture_{mc-h200,mc-rtx,4090-local}/git_commits.txt; model cards of the 46 released repositories checked 2026-11-06 (no paper or fork commit named)
 
-Released models keep the licence of their base model: Apache-2.0 (the Qwen,
+Released models (all except the five withheld Gemma-2-27B variants) keep the
+licence of their base model: Apache-2.0 (the Qwen,
 OLMo and Mistral-Small-3.2 bases and Gemma-4-31B), to which the use
-restrictions of the OpenRAIL++ licence are added; the Gemma Terms of Use and
-Prohibited Use Policy for Gemma-2-27B; or, for
+restrictions of the OpenRAIL++ licence are added; or, for
 Mistral-Small-2409, the Mistral Research Licence, which permits
 non-commercial research use. The five OLMo-2-32B variants are gated
 on Hugging Face with automatic approval (Ethics Statement). A licence states

@@ -36,8 +36,25 @@ Heretic~2.0 and fork searches on Qwen2.5-7B and Qwen3.5-4B; applying it to 200-t
 assumes that search-to-search variation is similar there, which was not checked. Responses were greedy and
 limited to 512 tokens, so refusal later in long answers and sampling effects are not captured. Residual refusal
 measures willingness, not the usefulness of a harmful answer; the HarmBench classifier's compliance label is only a
-proxy \cite{carleo2026willing}. No human audit of the judged responses was done, so every rate is relative to the automatic judges, whose agreement
-with human labels on abliterated outputs is unknown; the keyword--judge disagreement reported for H3 shows that the
+proxy \cite{carleo2026willing}. No human audit of the judged responses was done, so every rate is relative to the automatic judges. The audit was
+omitted because it would have exposed annotators to harmful content and required an ethics review, which was outside
+the time and resources of this study. A check made afterwards found that the two automatic judges agreed closely
+(below), which makes a reversal of the headline contrasts through judge error unlikely but does not replace a human
+audit. The judges'
+agreement with human labels on abliterated outputs remains unknown. The two judges agreed with each other: across the 40,822
+judged held-out responses, WildGuard and Qwen3Guard gave the same refusal label to 94.6\% (Cohen's $\kappa=0.89$),
+and in the three cells behind the headline contrasts on Qwen2.5-32B (1.x general, its re-export at the 2.0 cap and
+2.0 DiM) $\kappa$ was 0.89, 0.78 and 0.85, with rates differing by at most 1.9~pp, an order of magnitude less than
+those contrasts. Agreement between two automatic judges does not exclude errors they share, and it was lowest where
+refusal was rare ($\kappa$ 0.28 and 0.62 for the two community releases and 0.27 for jwest33's abliterator as
+released on Qwen3.5-4B, although raw agreement was above 95\%). The largest rate differences were on the hybrid
+Qwen3.5-4B, outside the main design: Qwen3Guard found 9.4~pp more refusal than WildGuard for ARA (28.3\% and
+18.9\%) and 7.7~pp more for MPOA, so rates on that model are the least certain.
+% 2026-11-10 (second re-review, R10 b): src: analysis/revision_20261110/interjudge_kappa.csv (interjudge_kappa.py on (+ 2026-11-10 round 3: qwen3.5-4b ara 0.6252 18.9 vs 28.3; mpoa 18.0 vs 25.7; jwest33-asreleased kappa 0.2734 raw 0.9588)
+% analysis/responses_p30.csv.gz, kind = harmful, both labels present): __ALL__ n 40822 agree 0.9455 kappa 0.8891;
+% 32b heretic1x-general 0.8913 (73.4 vs 71.9); kl0.1 0.7846 (11.6 vs 13.5); 32b dim 0.8474 (47.4 vs 48.0);
+% huihui 0.6222 (raw 0.9866), zetasepic-v2 0.2758 (raw 0.9794).
+The keyword--judge disagreement reported for H3 shows that the
 two automatic measures differ, not which is correct. The equivalence margin for capability was chosen after the
 results were known. The jwest33 cells on Qwen2.5-7B use the tool's input-side projection of the square attention
 output projection, and a run with the wrapper's opt-in correction was not made. The 1.x code variant's prompt files could not

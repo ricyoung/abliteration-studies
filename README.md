@@ -2,8 +2,8 @@
 
 This repository holds the code and data of two studies on abliteration, the training-free removal of refusal behaviour from open-weight language models:
 
-- **Paper 33: "Is Abliteration Getting Harder? Evidence from Five Open-Weight Release Pairs"** (`paper33/`). Asks whether refusal is harder to remove from newer model releases. It tests three direction-based methods (DiM, MPOA, SOM; plus J-space on the small pair) and ARA on four model families (Qwen, Gemma, OLMo, Mistral Small) and one small Qwen pair.
-- **Paper 30: "The Selection Rule Can Reverse Abliteration Comparisons: A Held-Out, Judge-Based Case Study of Heretic 1.x, Heretic 2.0, External Tools and Community Releases on Qwen2.5"** (`paper30/`). Compares Heretic 1.x and Heretic 2.0 with community releases and two external tools (OBLITERATUS, jwest33/abliterator) on Qwen2.5 models. It includes a re-export of a 1.x study at the 2.0 selection rule.
+- **Paper 33: "Is Abliteration Getting Harder? Refusal Removal from Open-Weight LLMs with Heretic on Qwen3.8, Gemma 4, Olmo 3.1 and Mistral Small 3.2 Versus Their Predecessors"** (`paper33/`). Asks whether refusal is harder to remove from newer model releases. It tests three direction-based methods (DiM, MPOA, SOM; plus J-space on the small pair) and ARA on four model families (Qwen, Gemma, OLMo, Mistral Small) and one small Qwen pair.
+- **Paper 30: "The Selection Rule Can Reverse LLM Abliteration Tool Comparisons: Heretic 1.x, Heretic 2.0, OBLITERATUS and Community Releases on Qwen2.5 and Qwen2.5-Coder"** (`paper30/`). Compares Heretic 1.x and Heretic 2.0 with community releases and two external tools (OBLITERATUS, jwest33/abliterator) on Qwen2.5 models. It includes a re-export of a 1.x study at the 2.0 selection rule.
 
 Author: Richard J. Young, Department of Information Systems, University of Nevada, Las Vegas.
 
@@ -12,7 +12,7 @@ Author: Richard J. Young, Department of Information Systems, University of Nevad
 | Path | Contents |
 |---|---|
 | `paper33/scripts/bench/` | Evaluation harness. It generates held-out responses with vLLM, runs the five capability benchmarks with patched lm-eval, scores refusal with the judges (`score_refusals.py`, `score_refusals_256.py`) and keeps the judge templates. |
-| `paper33/scripts/analysis/` | Every statistical analysis in paper 33. Run `run_all.sh` (see its header for the order); the outputs go to `results/analysis/`. |
+| `paper33/scripts/analysis/` | Every statistical analysis in paper 33. Run `run_all.sh` (see its header for the order); the outputs go to `results/analysis/`. `postnorm_gain_scan.py` (Appendix D.1) is run separately: it reads the post-norm gain weights of the four post-norm base models from Hugging Face, so it needs access to those models. |
 | `paper33/scripts/figures/` | Figure scripts and styles. |
 | `paper33/scripts/*.py, *.sh` | Trial selection, tensor hashing, the dev-set re-score of released exports, and the Heretic 1.x rebuild. |
 | `paper33/configs/` | Search configurations (`core_*.toml`). |

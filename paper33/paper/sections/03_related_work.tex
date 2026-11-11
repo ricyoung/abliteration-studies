@@ -179,9 +179,12 @@ estimation may lose value if removal no longer relies on it.
 
 Evaluation practice is a second weakness. Tools are optimised and reported
 with keyword-matched refusal counts and first-token KL divergence, yet
-keyword counts can fall far below an LLM judge's (Heretic PR~\#196, unreviewed), and conclusions can depend on the classifier
-\cite{young2026measuring}, including in abliteration studies
-\cite{agnihotri2025granular}. Against human labels, keyword matching reached
+conclusions can depend on the classifier \cite{young2026measuring}, including
+in abliteration studies \cite{agnihotri2025granular}, and in one unreviewed
+practitioner report keyword counts fell far below an LLM judge's (Heretic
+PR~\#196).
+% 2026-11-10 (second re-review, S18): peer-reviewed sources now lead; the PR is cited after them.
+Against human labels, keyword matching reached
 Cohen's $\kappa=0.37$, WildGuard 0.61 and fine-tuned LLM judges about 0.81
 \cite{xie2025sorrybench}, although on unmodified models keyword matching
 tracked a GPT-4 judge closely (gaps of 0.2--5.5 points across six models) \cite{cui2025orbench}, so large gaps may arise only after
