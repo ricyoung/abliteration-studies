@@ -60,7 +60,16 @@ main-study cells, with distinct seeds per model, which would replace the
 transferred variance with a direct estimate, is left to future work. The
 re-run rule was not uniform: an interrupted Qwen3.8-27B ARA study was repeated
 from scratch, whereas the Qwen3.8-27B MPOA study was resumed
-(Appendix~\ref{app:setup-opt}).
+(Appendix~\ref{app:setup-opt}). Its selected trial is a seeded start-up draw
+that an uninterrupted study would also have evaluated, so the resumption can
+only have raised its dev refusal rate, which would favour finding the newer
+Qwen model harder for MPOA; the one study run both ways (ARA) differed by 4 of
+100 dev refusals. Likewise, for $\gamma$-MPOA the post-norm component along
+$\hat{\mathbf{r}}$ was not measured in forward passes of the selected models:
+only the weight identity $\mathbf{b}^{\top}W'=(1-\lambda)\,\mathbf{b}^{\top}W$
+was checked (Appendix~\ref{app:setup-methods}).
+% 2026-11-11 ARS polish S14 (REV-22), S15 (REV-26): src: results/analysis/review_rerun_s14_studies.csv, review_rerun_s14_replay.csv;
+% src: 08b_setup_details.tex (gamma-MPOA weight identity checked by unit tests; post-norm component not measured)
 % 2026-11-08 ARS revision (REV-15, REV-21, REV-22): src: results/analysis/revision_sigma_pair_verdicts.csv; review_sel_kl_runs.csv
 % src: (shared start-up draws); paper/figures/data/README.md (qwen3.8-27b ARA core-s1-clean; MPOA core-s1-resume1).
 % src: results/analysis/final_seed_cells.csv (10 cells, all p_holm < 0.05; |s2 - s1| median 9.4, max 25.2 pp);

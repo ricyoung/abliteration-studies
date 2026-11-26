@@ -638,7 +638,25 @@ Workstation & 1$\times$ GeForce RTX 4090 (24{,}564 MiB) & AMD Ryzen 9 7950X / 62
   was repeated from scratch with identical
   configuration and seed and no interruption (the ``clean'' run, 100 trials).
   The clean run is evaluated; the interrupted study is retained. No such repeat
-  was run for Qwen3.8-27B MPOA.
+  was run for Qwen3.8-27B MPOA. Instead, its journal was checked against the
+  seeded start-up sequence. The study was resumed after 7 recorded trials (6
+  complete, 1 failed). On resumption the sampler restarted the seed-1 start-up
+  sequence, so trials 7--29 repeat the first 23 start-up draws: all 30 start-up
+  trials have the same parameters, position for position, as the uninterrupted
+  seed-1 Olmo-3.1-32B MPOA study, and the 6 trials evaluated twice gave dev
+  keyword refusals within 1 of 100 of each other. The selected trial (number 29,
+  25/100 at KL 0.085) is one of these repeated start-up draws, so an
+  uninterrupted seed-1 study would have evaluated the same parameters (as its
+  trial 22) and, under the selection rule, selected a trial with at most about
+  25/100 dev refusals. The resumption can therefore have raised, but not lowered,
+  the dev refusal rate of the selected Qwen3.8-27B MPOA trial; its effect on
+  held-out refusal was not measured. For the one study run both ways
+  (Qwen3.8-27B ARA, seed 1), the resumed and clean selections differed by 4 of
+  100 dev keyword refusals (59 and 63).
+  % 2026-11-11 ARS polish S14 (REV-22): src: scripts/analysis/review_rerun_s14.py; results/analysis/review_rerun_s14_studies.csv
+  % src: (MPOA resume after 7 trials; sel #29 25/100 KL 0.0854, start-up phase, after resume; ARA resumed t73 59/100 vs clean t65 63/100);
+  % src: results/analysis/review_rerun_s14_replay.csv (30/30 start-up params equal olmo-3.1-32b__mpoa__core-s1 at uninterrupted position;
+  % src: 6 twice-evaluated trials, max |diff| 1/100); review_rerun_s14_summary.csv; review_sel_kl_runs.csv (sel_params_identical_to; olmo-3.1 MPOA sel #22)
   % src: runs/mc-h200-1/runs/qwen3.8-27b__ara__core-s1{,-resume1,-resume2,-clean}/meta.txt, output.log; select_trial.py --no-write (66/99/100 complete; core-s1-resume2: t73 59/100 KL 0.0808); notes/EXECUTION_PLAN_v2.md (finding 1: heretic-org 0/100 @KL 0.054, same defaults, 60 trials); notes/overnight_log.md (02:20, 03:20, 04:22); runs/mc-rtx-1/bench_queue.txt (qwen3.8-27b__ara -> core-s1-clean); optuna 5.0.0 TPESampler.__init__ (self._rng = LazyRandomState(seed))
 \item \textbf{J-space directions.} Before the analysed runs the export was
   corrected (probed rather than stored final-norm gain; $J=I$ for the last
