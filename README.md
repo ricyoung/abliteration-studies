@@ -3,7 +3,7 @@
 This repository holds the code and data of two studies on abliteration, the training-free removal of refusal behaviour from open-weight language models:
 
 - **Paper 33: "Is Abliteration Getting Harder? Not Uniformly: Refusal Removal by Direction-Based Ablation and ARA in Heretic on the Qwen3.8, Gemma 4, Olmo 3.1 and Mistral Small 3.2 LLMs Versus Their Predecessors"** (`paper33/`). Asks whether refusal is harder to remove from newer model releases. It tests three direction-based methods (DiM, MPOA, SOM; plus J-space on the small pair) and ARA on four model families (Qwen, Gemma, OLMo, Mistral Small) and one small Qwen pair.
-- **Paper 30: "The Selection Rule Can Reverse LLM Abliteration Tool Comparisons: Heretic 1.x, Heretic 2.0, OBLITERATUS and Community Releases on Qwen2.5 and Qwen2.5-Coder"** (`paper30/`). Compares Heretic 1.x and Heretic 2.0 with community releases and two external tools (OBLITERATUS, jwest33/abliterator) on Qwen2.5 models. It includes a re-export of a 1.x study at the 2.0 selection rule.
+- **Paper 30: "The Selection Rule Can Reverse LLM Abliteration Tool Comparisons: A Case Study of Heretic 1.x and 2.0 on Qwen2.5"** (`paper30/`). Compares Heretic 1.x and Heretic 2.0 with community releases and two external tools (OBLITERATUS, jwest33/abliterator) on Qwen2.5 models. It includes a re-export of a 1.x study at the 2.0 selection rule.
 
 Author: Richard J. Young, Department of Information Systems, University of Nevada, Las Vegas.
 
@@ -46,4 +46,7 @@ The author's own code, run records, labels and paper sources are released under 
 
 ## Citation
 
-Please cite the papers (arXiv identifiers to be added).
+Please cite the papers.
+
+- Paper 33: [arXiv:2611.17846](https://arxiv.org/abs/2611.17846).
+- Paper 30: arXiv identifier to be added.

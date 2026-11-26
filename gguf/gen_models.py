@@ -15,8 +15,8 @@ P30 = "/data/heretic_2/paper30/v3_2611"
 OUT = "/data/heretic_2/gguf/models.json"
 T33 = ("Is Abliteration Getting Harder? Not Uniformly: Refusal Removal by Direction-Based Ablation and ARA in Heretic "
        "on the Qwen3.8, Gemma 4, Olmo 3.1 and Mistral Small 3.2 LLMs Versus Their Predecessors")
-T30 = ("The Selection Rule Can Reverse LLM Abliteration Tool Comparisons: Heretic 1.x, Heretic 2.0, OBLITERATUS and "
-       "Community Releases on Qwen2.5 and Qwen2.5-Coder")
+T30 = ("The Selection Rule Can Reverse LLM Abliteration Tool Comparisons: A Case Study of Heretic 1.x and 2.0 on "
+       "Qwen2.5")
 
 FAM = {  # analysis model key -> base repo, display, params (B), licence family (Ollama library name), flags
     "qwen2.5-32b": ("Qwen/Qwen2.5-32B-Instruct", "Qwen2.5-32B-Instruct", 32.8, "qwen2.5", {}),
